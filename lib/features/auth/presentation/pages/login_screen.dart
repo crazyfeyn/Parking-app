@@ -1,0 +1,124 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_application/core/constants/app_dimens.dart';
+import 'package:flutter_application/core/extension/extensions.dart';
+import 'package:flutter_application/core/widgets/button_widget.dart';
+import 'package:flutter_application/core/widgets/text_widget.dart';
+import 'package:flutter_application/features/auth/presentation/pages/register_screen.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+
+class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
+  final passController = TextEditingController();
+  final emailController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Column(
+      children: [
+        Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height * 1,
+          decoration: const BoxDecoration(
+            color: Color.fromRGBO(27, 24, 41, 10),
+          ),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.only(
+                    top: AppDimens.PADDING_50, left: AppDimens.PADDING_20),
+                width: double.infinity,
+                height: 225,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage('assets/images/bg_auth.png'),
+                  ),
+                ),
+                child: const Text(
+                  "Glad to see you!!",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 32,
+                      color: Colors.white),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(AppDimens.PADDING_20),
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.758,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  children: [
+                    TextWidget(
+                      labelText: 'Email',
+                      controller: emailController,
+                    ),
+                    TextWidget(
+                      labelText: 'password',
+                      controller: passController,
+                      suffixIcon: const Icon(
+                        Icons.remove_red_eye_outlined,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        const Spacer(),
+                        RichText(
+                          text: const TextSpan(
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
+                            text: 'Forgot password',
+                            children: [
+                              TextSpan(
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold),
+                                  text: ' Retrive'),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    const ButtonWidget(text: 'Login'),
+                    20.hs(),
+                    ZoomTapAnimation(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RegisterScreen(),
+                            ));
+                      },
+                      child: RichText(
+                        text: const TextSpan(
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                          text: 'Don`t have an account?',
+                          children: [
+                            TextSpan(
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold),
+                                text: ' Register'),
+                          ],
+                        ),
+                      ),
+                    ),
+                    20.hs(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ));
+  }
+}
