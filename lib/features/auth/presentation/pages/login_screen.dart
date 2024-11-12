@@ -3,6 +3,7 @@ import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
 import 'package:flutter_application/core/widgets/text_widget.dart';
+import 'package:flutter_application/features/auth/presentation/pages/forget_password_screen.dart';
 import 'package:flutter_application/features/auth/presentation/pages/register_screen.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -16,7 +17,6 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
         body: Column(
       children: [
-        
         Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.height * 1,
@@ -68,19 +68,29 @@ class LoginScreen extends StatelessWidget {
                     Row(
                       children: [
                         const Spacer(),
-                        RichText(
-                          text: const TextSpan(
-                            style: TextStyle(
-                              color: Colors.grey,
+                        ZoomTapAnimation(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ForgetPasswordScreen(),
+                              ),
+                            );
+                          },
+                          child: RichText(
+                            text: const TextSpan(
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                              text: 'Forgot password',
+                              children: [
+                                TextSpan(
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold),
+                                    text: ' Retrive'),
+                              ],
                             ),
-                            text: 'Forgot password',
-                            children: [
-                              TextSpan(
-                                  style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold),
-                                  text: ' Retrive'),
-                            ],
                           ),
                         ),
                       ],
