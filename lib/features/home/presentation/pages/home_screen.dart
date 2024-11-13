@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/home/data/datasources/define_place_with_lat_lng_datasource.dart';
 import 'package:flutter_application/features/home/data/datasources/location_datasource.dart';
+import 'package:flutter_application/features/profile/presentation/pages/profile_screen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
@@ -62,6 +63,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           ZoomTapAnimation(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(),
+                  ));
+            },
             child: Container(
               height: 45,
               width: 45,
