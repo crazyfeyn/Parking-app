@@ -31,8 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
       final location = await LocationService.getCurrentLocation();
       setState(() {
         currentLocation = LatLng(
-          location.latitude ?? 0.0,
-          location.longitude ?? 0.0,
+          location.latitude ?? 35.8430201,
+          location.longitude ?? 127.1376109,
         );
         isLoading = false;
       });
