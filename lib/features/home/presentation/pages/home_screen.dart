@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/home/data/datasources/define_place_with_lat_lng_datasource.dart';
 import 'package:flutter_application/features/home/data/datasources/location_datasource.dart';
@@ -134,7 +133,6 @@ class _HomeScreenState extends State<HomeScreen> {
         isLoading = false;
       });
 
-      // Get address for the location
       if (currentLocation != null) {
         final address = await DefinePlaceWithLatlng.getAddressFromCoordinates(
           currentLocation!.latitude,
