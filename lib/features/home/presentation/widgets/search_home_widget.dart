@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
-import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/features/home/presentation/widgets/search_widget.dart';
 
 class SearchWidgetHome extends StatelessWidget {
@@ -8,16 +7,13 @@ class SearchWidgetHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: const EdgeInsets.all(AppDimens.PADDING_20),
-      sliver: SliverList(
-        delegate: SliverChildListDelegate(
-          [
-            const SearchWidget(),
-            40.hs(),
-          ],
-        ),
+    return const Padding(
+      padding: EdgeInsets.only(
+        top: AppDimens.PADDING_20,
+        left: AppDimens.PADDING_20,
+        right: AppDimens.PADDING_20,
       ),
+      child: SearchWidget(),
     );
   }
 }
