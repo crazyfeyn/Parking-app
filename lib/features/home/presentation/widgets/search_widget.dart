@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
-import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/features/home/presentation/widgets/search_option_screen.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -37,6 +36,7 @@ class SearchWidget extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
               borderRadius: BorderRadius.circular(AppDimens.BORDER_RADIUS_12),
+              color: Colors.white,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
