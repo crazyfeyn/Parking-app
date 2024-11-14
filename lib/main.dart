@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/history/presentation/pages/history_screen.dart';
 import 'package:flutter_application/features/home/presentation/pages/home_screen.dart';
 
 void main(List<String> args) {
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: HistoryScreen(),
     );
   }
 }
