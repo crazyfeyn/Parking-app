@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/home/data/datasources/define_place_with_lat_lng_datasource.dart';
 import 'package:flutter_application/features/home/data/datasources/location_datasource.dart';
+import 'package:flutter_application/features/home/presentation/widgets/near_spot_widget.dart';
 import 'package:flutter_application/features/profile/presentation/pages/profile_screen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
@@ -99,111 +100,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       children: [
                         for (int i = 0; i < 4; i++)
-                          ZoomTapAnimation(
-                            onTap: () {},
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.all(AppDimens.PADDING_12),
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: AppDimens.MARGIN_8,
-                              ),
-                              width: 270,
-                              height: 105,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    AppDimens.BORDER_RADIUS_15),
-                                color: Colors.white,
-                              ),
-                              child: const Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Vunupal geod locator',
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                          Text(
-                                            'On Spot Paking',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          Text(
-                                            '100 won',
-                                            style: TextStyle(
-                                              color: Color(0xFF3277D8),
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                          Text(
-                                            'for hr',
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 11,
-                                            ),
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            CupertinoIcons.car_fill,
-                                            color: Colors.blue,
-                                          ),
-                                          Text(
-                                            '15 Cars Spots',
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.directions_walk_rounded,
-                                            color: Colors.blue,
-                                          ),
-                                          Text(
-                                            '1.3 km away',
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
+                          NearSpotWidget(
+                              orienter: 'Near Bus Station',
+                              price: 12.50,
+                              carSpots: '13',
+                              distance: 8)
                       ],
                     ),
                   ),
