@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
+import 'package:flutter_application/features/history/presentation/pages/detail_screen.dart';
 import 'package:flutter_application/features/history/presentation/widgets/period_widget.dart';
 import 'package:flutter_application/features/history/presentation/widgets/search_widget.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -36,7 +37,10 @@ class HistoryScreen extends StatelessWidget {
                   return Column(
                     children: [
                       ZoomTapAnimation(
-                        onTap: () {},
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const DetailScreen())),
                         child: Container(
                           padding: const EdgeInsets.all(AppDimens.PADDING_14),
                           margin: const EdgeInsets.only(

@@ -9,7 +9,6 @@ class PeriodWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 130,
       padding: const EdgeInsets.all(AppDimens.PADDING_10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppDimens.BORDER_RADIUS_10),
@@ -17,6 +16,7 @@ class PeriodWidget extends StatelessWidget {
       ),
       child: Center(
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Icon(
               CupertinoIcons.clock,
