@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/home/data/datasources/define_place_with_lat_lng_datasource.dart';
+import 'package:flutter_application/features/home/presentation/widgets/search_home_widget.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import 'package:flutter_application/features/home/data/datasources/location_datasource.dart';
 import 'package:flutter_application/features/home/presentation/widgets/near_spot_widget.dart';
 import 'package:flutter_application/features/profile/presentation/pages/profile_screen.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
-import 'package:flutter_application/features/home/presentation/widgets/search_home_widget.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,10 +32,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ZoomTapAnimation(
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ProfileScreen(),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfileScreen(),
+                ),
+              );
             },
             child: Container(
               height: 45,
@@ -62,14 +62,15 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Stack(
           children: [
             isLoading || currentLocation == null
-                ? const Center(child: CircularProgressIndicator())
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
                 : SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: GoogleMap(
                       initialCameraPosition: CameraPosition(
                         target: currentLocation!,
                         zoom: 15,
-                        tilt: 0,
                       ),
                       onMapCreated: (controller) {
                         mapController = controller;
@@ -100,10 +101,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         for (int i = 0; i < 4; i++)
                           NearSpotWidget(
-                              orienter: 'Near Bus Station',
-                              price: 12.50,
-                              carSpots: '13',
-                              distance: 8)
+                            orienter: 'Near Bus Station',
+                            price: 12.50,
+                            carSpots: '13',
+                            distance: 8,
+                          )
                       ],
                     ),
                   ),
@@ -124,7 +126,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _getCurrentLocation() async {
     try {
+      setState(() {
+        isLoading = true;
+      });
+
       final location = await LocationService.getCurrentLocation();
+
+      if (location == null) {
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
+
       setState(() {
         currentLocation = LatLng(
           location.latitude ?? 35.8430201,
@@ -134,14 +148,13 @@ class _HomeScreenState extends State<HomeScreen> {
       });
 
       if (currentLocation != null) {
-        final address = await DefinePlaceWithLatlng.getAddressFromCoordinates(
-          currentLocation!.latitude,
-          currentLocation!.longitude,
-        );
-        print('Current address: $address');
+        // final address = await DefinePlaceWithLatlng.getAddressFromCoordinates(
+        //   currentLocation!.latitude,
+        //   currentLocation!.longitude,
+        // );
+        // print("Current address: $address");
       }
     } catch (e) {
-      print('Error getting location: $e');
       setState(() {
         isLoading = false;
       });

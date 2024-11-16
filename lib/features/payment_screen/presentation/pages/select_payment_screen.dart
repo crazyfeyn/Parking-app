@@ -23,7 +23,6 @@ class SelectPaymentScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              for (int i = 0; i < 3; i++) const CardWidget(),
               ZoomTapAnimation(
                 onTap: () {},
                 child: Container(
@@ -54,6 +53,7 @@ class SelectPaymentScreen extends StatelessWidget {
                       ],
                     )),
               ),
+              for (int i = 0; i < 3; i++) const CardWidget(),
             ],
           ),
         ),
