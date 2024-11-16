@@ -55,6 +55,8 @@
 	<string>14.0</string>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
+	<key>MinimumOSVersion</key>
+ <string>14.0</string>
 	<key>GMSApiKey</key>
 	<string>AIzaSyDm9itJq8n-dpqw4m88T3NuGaPTU7RFT-E</string>
 </dict>
