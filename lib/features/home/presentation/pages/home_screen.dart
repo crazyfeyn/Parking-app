@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/home/data/datasources/define_place_with_lat_lng_datasource.dart';
 import 'package:flutter_application/features/home/presentation/widgets/search_home_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -70,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: GoogleMap(
                       initialCameraPosition: CameraPosition(
                         target: currentLocation!,
-                        zoom: 15,
+                        zoom: 25,
                       ),
                       onMapCreated: (controller) {
                         mapController = controller;
@@ -148,11 +149,11 @@ class _HomeScreenState extends State<HomeScreen> {
       });
 
       if (currentLocation != null) {
-        // final address = await DefinePlaceWithLatlng.getAddressFromCoordinates(
-        //   currentLocation!.latitude,
-        //   currentLocation!.longitude,
-        // );
-        // print("Current address: $address");
+        final address = await DefinePlaceWithLatlng.getAddressFromCoordinates(
+          currentLocation!.latitude,
+          currentLocation!.longitude,
+        );
+        print("Current address: $address");
       }
     } catch (e) {
       setState(() {
