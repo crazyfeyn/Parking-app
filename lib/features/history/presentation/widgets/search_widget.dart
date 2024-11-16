@@ -7,7 +7,9 @@ class SearchHistoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      margin: EdgeInsets.only(top: AppDimens.MARGIN_16),
+      color: Colors.white,
       padding: const EdgeInsets.symmetric(horizontal: AppDimens.PADDING_10),
       child: Row(
         children: [
@@ -16,7 +18,7 @@ class SearchHistoryWidget extends StatelessWidget {
               controller: searchController,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search, size: 20),
-                labelText: 'Search a job type...',
+                labelText: 'Search',
                 border: OutlineInputBorder(
                   borderRadius:
                       BorderRadius.circular(AppDimens.BORDER_RADIUS_10),
