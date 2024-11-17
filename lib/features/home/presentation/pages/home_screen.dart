@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/booking/presentation/pages/booking_screen.dart';
 import 'package:flutter_application/features/home/data/datasources/define_place_with_lat_lng_datasource.dart';
 import 'package:flutter_application/features/home/presentation/widgets/search_home_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -26,9 +27,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const ZoomTapAnimation(
-          child: Icon(Icons.menu),
-        ),
+        leading: ZoomTapAnimation(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BookingScreen(),
+                  ));
+            },
+            child: Icon(Icons.menu)),
         actions: [
           ZoomTapAnimation(
             onTap: () {
