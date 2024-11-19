@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             isLoading || currentLocation == null
                 ? const Center(
-                    child: SizedBox(),
+                    child: CircularProgressIndicator(),
                   )
                 : SizedBox(
                     height: MediaQuery.of(context).size.height,
