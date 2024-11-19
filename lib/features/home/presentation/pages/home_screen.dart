@@ -32,10 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => BookingScreen(),
+                    builder: (context) => const BookingScreen(),
                   ));
             },
-            child: Icon(Icons.menu)),
+            child: const Icon(Icons.menu)),
         actions: [
           ZoomTapAnimation(
             onTap: () {

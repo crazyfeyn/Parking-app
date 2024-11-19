@@ -43,6 +43,5 @@ class LocationService {
       throw Exception('Failed to get current location.');
     }
     return _currentLocation!;
-
   }
 }
