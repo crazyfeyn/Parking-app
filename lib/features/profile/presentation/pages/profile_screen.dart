@@ -4,7 +4,6 @@ import 'package:flutter_application/core/constants/app_dimens.dart';
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
                         left: AppDimens.PADDING_20,
                         right: AppDimens.PADDING_20),
                     width: double.infinity,
-                    height: 225,
+                    height: MediaQuery.of(context).size.height * 0.24,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
                         fit: BoxFit.cover,
@@ -80,9 +79,11 @@ class ProfileScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(AppDimens.PADDING_20),
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.758,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
+                  height: MediaQuery.of(context).size.height * 0.759,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(AppDimens.BORDER_RADIUS_30),
+                        topRight: Radius.circular(AppDimens.BORDER_RADIUS_30)),
                     color: Colors.white,
                   ),
                   child: Column(

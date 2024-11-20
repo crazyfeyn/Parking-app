@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 const SearchWidgetHome(),
                 SizedBox(
-                  height: 200,
+                  height: MediaQuery.of(context).size.height * 0.2,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(

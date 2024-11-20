@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/home/presentation/pages/home_screen.dart';
-import 'package:flutter_application/features/payment_screen/presentation/pages/select_payment_screen.dart';
 
 void main(List<String> args) {
   runApp(const MyApp());
