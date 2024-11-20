@@ -13,7 +13,7 @@ class ForgetPasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leadingWidth: 80,
+        leadingWidth: 70,
         leading: const BackButtonWidget(),
         title: const Text("Forget password"),
       ),
@@ -47,7 +47,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ConfirmPassScreen(),
+                      builder: (context) => const ConfirmPassScreen(),
                     ));
               },
               text: 'Send',

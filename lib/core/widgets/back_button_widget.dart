@@ -14,8 +14,8 @@ class BackButtonWidget extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(left: AppDimens.MARGIN_20),
         alignment: Alignment.center,
-        width: 50,
-        height: 50,
+        width: 20,
+        height: 20,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppDimens.BORDER_RADIUS_20),
           color: Colors.grey.shade300,
