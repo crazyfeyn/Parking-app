@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             isLoading || currentLocation == null
                 ? const Center(
-                    child: CircularProgressIndicator(),
+                    child: SizedBox(),
                   )
                 : SizedBox(
                     height: MediaQuery.of(context).size.height,
@@ -131,7 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: const Icon(Icons.location_on),
               ),
             ),
-         
           ],
         ),
       ),
@@ -151,6 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
 
       final location = await LocationService.getCurrentLocation();
+      print('-----');
 
       setState(() {
         currentLocation = LatLng(
