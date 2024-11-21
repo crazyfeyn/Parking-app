@@ -26,6 +26,8 @@
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -47,10 +49,6 @@
 	<string>We need your location to provide better service.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>We need your location to provide better service.</string>
-	<key>MinimumOSVersion</key>
-	<string>14.0</string>
-	<key>io.flutter.embedded_views_preview</key>
-	<true/>
 	<key>GMSApiKey</key>
 	<string>AIzaSyDm9itJq8n-dpqw4m88T3NuGaPTU7RFT-E</string>
 </dict>
