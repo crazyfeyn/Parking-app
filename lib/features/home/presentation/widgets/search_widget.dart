@@ -31,8 +31,8 @@ class SearchWidget extends StatelessWidget {
           },
           child: Container(
             padding: const EdgeInsets.all(AppDimens.PADDING_10),
-            width: 390,
-            height: 52,
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: MediaQuery.of(context).size.height * 0.057,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
               borderRadius: BorderRadius.circular(AppDimens.BORDER_RADIUS_12),
