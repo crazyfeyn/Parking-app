@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Flutter Application</string>
+	<string>Android</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>flutter_application</string>
+	<string>android</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -45,14 +45,5 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>The app requires your location to find services near you.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>The app requires your location to provide better recommendations.</string>
-	<key>GMSApiKey</key>
-	<string>AIzaSyDm9itJq8n-dpqw4m88T3NuGaPTU7RFT-E</string>
-	<key>GMSApiKey</key>
-<string>AIzaSyDm9itJq8n-dpqw4m88T3NuGaPTU7RFT-E</string>
-
 </dict>
 </plist>
