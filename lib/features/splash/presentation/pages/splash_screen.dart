@@ -17,6 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 3)).then((_) {
       bool isLogged = _checkIfLoggedIn();
       Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
         context,
         PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 600),

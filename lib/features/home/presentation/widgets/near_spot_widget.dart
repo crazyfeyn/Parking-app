@@ -9,7 +9,8 @@ class NearSpotWidget extends StatelessWidget {
   final String carSpots;
   final double distance;
 
-  NearSpotWidget({
+  const NearSpotWidget({
+    super.key,
     required this.orienter,
     required this.price,
     required this.carSpots,

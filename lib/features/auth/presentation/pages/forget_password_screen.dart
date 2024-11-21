@@ -47,7 +47,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ConfirmPassScreen(),
+                      builder: (context) => const ConfirmPassScreen(),
                     ));
               },
               text: 'Send',

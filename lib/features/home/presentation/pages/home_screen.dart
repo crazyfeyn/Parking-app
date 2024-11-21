@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       children: [
                         for (int i = 0; i < 4; i++)
-                          NearSpotWidget(
+                          const NearSpotWidget(
                             orienter: 'Near Bus Station',
                             price: 12.50,
                             carSpots: '13',
@@ -139,13 +139,6 @@ class _HomeScreenState extends State<HomeScreen> {
       });
 
       final location = await LocationService.getCurrentLocation();
-
-      if (location == null) {
-        setState(() {
-          isLoading = false;
-        });
-        return;
-      }
 
       setState(() {
         currentLocation = LatLng(
