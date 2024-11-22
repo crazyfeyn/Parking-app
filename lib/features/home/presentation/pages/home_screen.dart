@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   separatorBuilder: (context, index) => 5.ws(),
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    return NearSpotWidget(
+                    return const NearSpotWidget(
                       orienter: 'Near Bus Station',
                       price: 12.50,
                       carSpots: '13',
