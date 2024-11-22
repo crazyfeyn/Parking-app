@@ -37,7 +37,8 @@ class LocationService {
       final currentLocation = await _location.getLocation();
       print('Current location received: $currentLocation');
 
-      if (currentLocation.latitude == null || currentLocation.longitude == null) {
+      if (currentLocation.latitude == null ||
+          currentLocation.longitude == null) {
         throw Exception('Failed to retrieve location.');
       }
 
@@ -50,7 +51,8 @@ class LocationService {
 
       // Handle specific errors
       if (e.toString().contains('Location services are disabled')) {
-        throw Exception('Please enable location services in your device settings.');
+        throw Exception(
+            'Please enable location services in your device settings.');
       }
       if (e.toString().contains('Location permissions are denied')) {
         throw Exception('Please grant location permissions to the app.');
