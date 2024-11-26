@@ -51,5 +51,8 @@
 	<string>The app requires your location to provide better recommendations.</string>
 	<key>GMSApiKey</key>
 	<string>AIzaSyDm9itJq8n-dpqw4m88T3NuGaPTU7RFT-E</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
+
 </dict>
 </plist>
