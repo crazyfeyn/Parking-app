@@ -20,8 +20,6 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -53,8 +51,5 @@
 	<string>The app requires your location to provide better recommendations.</string>
 	<key>GMSApiKey</key>
 	<string>AIzaSyDm9itJq8n-dpqw4m88T3NuGaPTU7RFT-E</string>
-	<key>GMSApiKey</key>
-<string>AIzaSyDm9itJq8n-dpqw4m88T3NuGaPTU7RFT-E</string>
-
 </dict>
 </plist>
