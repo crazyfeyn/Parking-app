@@ -46,6 +46,8 @@ dependencies:
   http: ^1.2.2
   geocoding: ^3.0.0
   google_maps_flutter: ^2.9.0
+  flutter_stripe: ^11.3.0
+  dio: ^5.7.0
 
 dev_dependencies:
   flutter_test:

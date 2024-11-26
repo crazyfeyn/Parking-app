@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/config/stripe_service.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -23,7 +24,9 @@ class NearSpotWidget extends StatelessWidget {
     return Column(
       children: [
         ZoomTapAnimation(
-          onTap: () {},
+          onTap: () {
+            StripeService.instance.makePayment();
+          },
           child: Container(
             padding: const EdgeInsets.all(AppDimens.PADDING_12),
             margin: const EdgeInsets.symmetric(
@@ -47,7 +50,7 @@ class NearSpotWidget extends StatelessWidget {
                       style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 14,
                       ),
                       textAlign: TextAlign.start,
                     ),
@@ -57,14 +60,15 @@ class NearSpotWidget extends StatelessWidget {
                           '${price.toStringAsFixed(0)} won',
                           style: const TextStyle(
                             color: Color(0xFF3277D8),
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13,
                           ),
                         ),
                         const Text(
                           'for hr',
                           style: TextStyle(
                             color: Colors.grey,
-                            fontSize: 11,
+                            fontSize: 8,
                           ),
                         ),
                       ],
@@ -79,12 +83,13 @@ class NearSpotWidget extends StatelessWidget {
                         const Icon(
                           CupertinoIcons.car_fill,
                           color: Colors.blue,
+                          size: 17,
                         ),
                         Text(
                           '$carSpots Cars Spots',
                           style: const TextStyle(
                             color: Colors.grey,
-                            fontSize: 14,
+                            fontSize: 12,
                           ),
                         ),
                       ],
@@ -94,12 +99,13 @@ class NearSpotWidget extends StatelessWidget {
                         const Icon(
                           Icons.directions_walk_rounded,
                           color: Colors.blue,
+                          size: 17,
                         ),
                         Text(
                           '${distance.toStringAsFixed(1)} km away',
                           style: const TextStyle(
                             color: Colors.grey,
-                            fontSize: 14,
+                            fontSize: 12,
                           ),
                         ),
                       ],
