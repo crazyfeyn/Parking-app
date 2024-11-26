@@ -10,7 +10,7 @@ void main(List<String> args) async {
 
 Future<void> _setup() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey = StripeConstants.stripePublishableKey; 
+  Stripe.publishableKey = StripeConstants.stripePublishableKey;
 }
 
 class MyApp extends StatelessWidget {
