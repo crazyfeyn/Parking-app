@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-
-import 'package:flutter_application/features/home/data/datasources/define_place_with_lat_lng_datasource.dart';
-import 'package:flutter_application/features/home/presentation/widgets/app_bar_widget.dart';
-import 'package:flutter_application/features/home/presentation/widgets/button_for_map_widget.dart';
-import 'package:flutter_application/features/home/presentation/widgets/search_home_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
-import 'package:flutter_application/features/home/data/datasources/location_datasource.dart';
+import 'package:flutter_application/features/home/presentation/widgets/app_bar_widget.dart';
+import 'package:flutter_application/features/home/presentation/widgets/button_for_map_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/near_spot_widget.dart';
-
+import 'package:flutter_application/features/home/presentation/widgets/search_home_widget.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,6 +20,47 @@ class _HomeScreenState extends State<HomeScreen> {
   GoogleMapController? mapController;
   LatLng? currentLocation;
   bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      // Check if location services are enabled
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        throw Exception('Location services are disabled.');
+      }
+
+      // Check location permissions
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          throw Exception('Location permissions are denied.');
+        }
+      }
+
+      // Get current position
+      Position position = await Geolocator.getCurrentPosition();
+      setState(() {
+        currentLocation = LatLng(position.latitude, position.longitude);
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Error retrieving location: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,19 +78,18 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             isLoading || currentLocation == null
                 ? const Center(
-                    child: SizedBox(),
+                    child: CircularProgressIndicator(),
                   )
                 : SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: GoogleMap(
                       initialCameraPosition: CameraPosition(
                         target: currentLocation!,
-                        zoom: 25,
+                        zoom: 15,
                       ),
                       onMapCreated: (controller) {
                         mapController = controller;
                       },
-                      mapType: MapType.normal,
                       myLocationEnabled: true,
                       myLocationButtonEnabled: false,
                       markers: {
@@ -125,9 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
               left: 10,
               bottom: 120,
               child: ButtonForMapWidget(
-                onTap: () async {
-                  await _getCurrentLocation();
-                },
+                onTap: _getCurrentLocation,
                 child: const Icon(Icons.location_on),
               ),
             ),
@@ -135,42 +170,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _getCurrentLocation();
-  }
-
-  Future<void> _getCurrentLocation() async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-
-      final location = await LocationService.getCurrentLocation();
-      print('-----');
-
-      setState(() {
-        currentLocation = LatLng(
-          location.latitude ?? 35.8430201,
-          location.longitude ?? 127.1376109,
-        );
-        isLoading = false;
-      });
-
-      if (currentLocation != null) {
-        final address = await DefinePlaceWithLatlng.getAddressFromCoordinates(
-          currentLocation!.latitude,
-          currentLocation!.longitude,
-        );
-        print("Current address: $address");
-      }
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-    }
   }
 }
