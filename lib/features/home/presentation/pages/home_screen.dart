@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -65,109 +67,125 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarWidget(),
-      body: LiquidPullToRefresh(
-        animSpeedFactor: 5,
-        height: MediaQuery.of(context).size.height * 0.2,
-        color: Colors.black,
-        onRefresh: () async {
-          await _getCurrentLocation();
-          return Future.delayed(const Duration(seconds: 1));
-        },
-        child: Stack(
-          children: [
-            isLoading || currentLocation == null
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    child: GoogleMap(
-                      initialCameraPosition: CameraPosition(
-                        target: currentLocation!,
-                        zoom: 15,
-                      ),
-                      onMapCreated: (controller) {
-                        mapController = controller;
-                      },
-                      myLocationEnabled: true,
-                      myLocationButtonEnabled: false,
-                      markers: {
-                        Marker(
-                          markerId: const MarkerId('currentLocation'),
-                          position: currentLocation!,
-                          infoWindow: const InfoWindow(
-                            title: 'Current Location',
-                          ),
+      // appBar: const AppBarWidget(),
+      body: Stack(
+        children: [
+          isLoading || currentLocation == null
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                      target: currentLocation!,
+                      zoom: 15,
+                    ),
+                    onMapCreated: (controller) {
+                      mapController = controller;
+                    },
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: false,
+                    markers: {
+                      Marker(
+                        markerId: const MarkerId('currentLocation'),
+                        position: currentLocation!,
+                        infoWindow: const InfoWindow(
+                          title: 'Current Location',
                         ),
-                      },
+                      ),
+                    },
+                  ),
+                ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              50.hs(),
+              Row(
+                children: [
+                  const SearchWidgetHome(),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: AppDimens.PADDING_18,
+                      left: AppDimens.BORDER_RADIUS_10,
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.all(AppDimens.PADDING_12),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius:
+                            BorderRadius.circular(AppDimens.BORDER_RADIUS_15),
+                        color: Colors.white,
+                      ),
+                      child: Image.asset(
+                        'assets/icons/configure_icon.png',
+                        height: 24,
+                        width: 24,
+                      ),
                     ),
                   ),
-            const Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SearchWidgetHome(),
-              ],
+                ],
+              )
+            ],
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.12,
+              child: ListView.separated(
+                itemCount: 20,
+                separatorBuilder: (context, index) => 5.ws(),
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return const NearSpotWidget(
+                    orienter: 'Near Bus Station',
+                    price: 12.50,
+                    carSpots: '13',
+                    distance: 8,
+                  );
+                },
+              ),
             ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.12,
-                child: ListView.separated(
-                  itemCount: 20,
-                  separatorBuilder: (context, index) => 5.ws(),
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return const NearSpotWidget(
-                      orienter: 'Near Bus Station',
-                      price: 12.50,
-                      carSpots: '13',
-                      distance: 8,
+          ),
+          Positioned(
+            right: 10,
+            bottom: 120,
+            child: Column(
+              children: [
+                ButtonForMapWidget(
+                  onTap: () {
+                    mapController?.animateCamera(
+                      CameraUpdate.zoomIn(),
                     );
                   },
-                ),
-              ),
-            ),
-            Positioned(
-              right: 10,
-              bottom: 120,
-              child: Column(
-                children: [
-                  ButtonForMapWidget(
-                    onTap: () {
-                      mapController?.animateCamera(
-                        CameraUpdate.zoomIn(),
-                      );
-                    },
-                    child: const Icon(
-                      Icons.add,
-                      size: 30,
-                    ),
+                  child: const Icon(
+                    Icons.add,
+                    size: 30,
                   ),
-                  10.hs(),
-                  ButtonForMapWidget(
-                    onTap: () {
-                      mapController?.animateCamera(
-                        CameraUpdate.zoomOut(),
-                      );
-                    },
-                    child: const Icon(Icons.remove),
-                  )
-                ],
-              ),
+                ),
+                10.hs(),
+                ButtonForMapWidget(
+                  onTap: () {
+                    mapController?.animateCamera(
+                      CameraUpdate.zoomOut(),
+                    );
+                  },
+                  child: const Icon(Icons.remove),
+                )
+              ],
             ),
-            Positioned(
-              left: 10,
-              bottom: 120,
-              child: ButtonForMapWidget(
-                onTap: _getCurrentLocation,
-                child: const Icon(Icons.location_on),
-              ),
+          ),
+          Positioned(
+            left: 10,
+            bottom: 120,
+            child: ButtonForMapWidget(
+              onTap: _getCurrentLocation,
+              child: const Icon(Icons.location_on),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

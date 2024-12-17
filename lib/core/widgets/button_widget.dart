@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -19,9 +20,9 @@ class ButtonWidget extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black),
           borderRadius: BorderRadius.circular(
-            AppDimens.BORDER_RADIUS_20,
+            AppDimens.BORDER_RADIUS_15,
           ),
-          color: const Color(0xFF130F26),
+          color: AppConstants.mainColor,
         ),
         child: Text(
           text,
