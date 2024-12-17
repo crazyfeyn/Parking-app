@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
@@ -11,37 +12,22 @@ class RegisterScreen extends StatelessWidget {
   final confirmPassController = TextEditingController();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
+  final nameController = TextEditingController();
+  final lastNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: [
-        Container(
-          width: double.infinity,
-          height: MediaQuery.of(context).size.height * 1,
-          decoration: const BoxDecoration(
-            color: Color.fromRGBO(27, 24, 41, 10),
-          ),
+        backgroundColor: AppConstants.whiteColor,
+        body: SafeArea(
           child: Column(
             children: [
-              Container(
-                padding: const EdgeInsets.only(
-                    top: AppDimens.PADDING_50, left: AppDimens.PADDING_20),
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.24,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('assets/images/bg_auth.png'),
-                  ),
-                ),
-                child: const Text(
-                  "Let`s Start",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 32,
-                      color: Colors.white),
+              const Text(
+                "Let`s Start",
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 24,
+                  color: Color(0xFF323232),
                 ),
               ),
               Container(
@@ -57,26 +43,41 @@ class RegisterScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     TextWidget(
+                      labelText: 'Enter your name',
+                      controller: nameController,
+                      keyboardType: TextInputType.name,
+                    ),
+                    TextWidget(
+                      labelText: 'Enter your last name',
+                      controller: lastNameController,
+                      keyboardType: TextInputType.name,
+                    ),
+                    TextWidget(
                       labelText: 'Email',
                       controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
                     ),
                     TextWidget(
-                      labelText: 'password',
+                      labelText: 'Set your password',
                       controller: passController,
+                      obscureText: true,
                       suffixIcon: const Icon(
                         Icons.remove_red_eye_outlined,
                       ),
                     ),
                     TextWidget(
-                      labelText: 'password authicated',
+                      labelText: 'Confirm password',
                       controller: confirmPassController,
+                      obscureText: true,
                       suffixIcon: const Icon(
                         Icons.remove_red_eye_outlined,
                       ),
                     ),
                     TextWidget(
-                      labelText: 'phone',
+                      labelText: 'Phone',
                       controller: phoneController,
+                      keyboardType: TextInputType.phone,
+                      maxLength: 10,
                     ),
                     const Spacer(),
                     const ButtonWidget(text: 'Register'),
@@ -107,8 +108,6 @@ class RegisterScreen extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ],
-    ));
+        ));
   }
 }

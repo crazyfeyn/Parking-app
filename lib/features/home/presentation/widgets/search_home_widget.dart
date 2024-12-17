@@ -11,7 +11,6 @@ class SearchWidgetHome extends StatelessWidget {
       padding: EdgeInsets.only(
         top: AppDimens.PADDING_20,
         left: AppDimens.PADDING_20,
-        right: AppDimens.PADDING_20,
       ),
       child: SearchWidget(),
     );

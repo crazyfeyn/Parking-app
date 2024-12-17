@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
@@ -15,33 +16,16 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: [
-        Container(
-          width: double.infinity,
-          height: MediaQuery.of(context).size.height * 1,
-          decoration: const BoxDecoration(
-            color: Color.fromRGBO(27, 24, 41, 10),
-          ),
+        backgroundColor: AppConstants.whiteColor,
+        body: SafeArea(
           child: Column(
             children: [
-              Container(
-                padding: const EdgeInsets.only(
-                    top: AppDimens.PADDING_50, left: AppDimens.PADDING_20),
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.24,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('assets/images/bg_auth.png'),
-                  ),
-                ),
-                child: const Text(
-                  "Glad to see you!!",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 32,
-                      color: Colors.white),
+              const Text(
+                "Log in",
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 24,
+                  color: Color(0xFF323232),
                 ),
               ),
               Container(
@@ -130,8 +114,6 @@ class LoginScreen extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ],
-    ));
+        ));
   }
 }

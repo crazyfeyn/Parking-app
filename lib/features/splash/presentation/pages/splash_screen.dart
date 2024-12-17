@@ -46,12 +46,23 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Padding(
         padding: const EdgeInsets.all(AppDimens.PADDING_20),
         child: Center(
-          child: Image.asset(
-            'assets/images/logo_1.png',
-            width: 194,
-            height: 150,
-          ),
-        ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/logo_1.png',
+              width: 194,
+              height: 150,
+            ),
+            const Text(
+              'Park my truck',
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFFFFFFFF)),
+            )
+          ],
+        )),
       ),
     );
   }
