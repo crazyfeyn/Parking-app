@@ -33,7 +33,7 @@ class ProfilePinned extends StatelessWidget {
           ),
           10.ws(),
           const Text(
-            'Lobar Shermatova',
+            'Jessika hola',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,

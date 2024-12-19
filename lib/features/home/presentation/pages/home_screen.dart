@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
+import 'package:flutter_application/features/home/presentation/widgets/filter_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-
-import 'package:flutter_application/features/home/presentation/widgets/app_bar_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/button_for_map_widget.dart';
-import 'package:flutter_application/features/home/presentation/widgets/near_spot_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/search_home_widget.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -101,57 +98,17 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               50.hs(),
-              Row(
+              const Row(
                 children: [
-                  const SearchWidgetHome(),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: AppDimens.PADDING_18,
-                      left: AppDimens.BORDER_RADIUS_10,
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.all(AppDimens.PADDING_12),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius:
-                            BorderRadius.circular(AppDimens.BORDER_RADIUS_15),
-                        color: Colors.white,
-                      ),
-                      child: Image.asset(
-                        'assets/icons/configure_icon.png',
-                        height: 24,
-                        width: 24,
-                      ),
-                    ),
-                  ),
+                  SearchWidgetHome(),
+                  FilterWidget(),
                 ],
               )
             ],
           ),
           Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.12,
-              child: ListView.separated(
-                itemCount: 20,
-                separatorBuilder: (context, index) => 5.ws(),
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return const NearSpotWidget(
-                    orienter: 'Near Bus Station',
-                    price: 12.50,
-                    carSpots: '13',
-                    distance: 8,
-                  );
-                },
-              ),
-            ),
-          ),
-          Positioned(
             right: 10,
-            bottom: 120,
+            bottom: 10,
             child: Column(
               children: [
                 ButtonForMapWidget(
@@ -179,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Positioned(
             left: 10,
-            bottom: 120,
+            bottom: 15,
             child: ButtonForMapWidget(
               onTap: _getCurrentLocation,
               child: const Icon(Icons.location_on),

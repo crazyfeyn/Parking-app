@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/stripe_constants.dart';
-import 'package:flutter_application/features/auth/presentation/pages/register_screen.dart';
-import 'package:flutter_application/features/home/presentation/pages/home_screen.dart';
 import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
-import 'package:flutter_application/features/splash/presentation/pages/splash_screen.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main(List<String> args) async {
