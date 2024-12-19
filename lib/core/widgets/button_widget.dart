@@ -18,7 +18,7 @@ class ButtonWidget extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.06,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.black),
+          // border: Border.all(color: Colors.black),
           borderRadius: BorderRadius.circular(
             AppDimens.BORDER_RADIUS_15,
           ),

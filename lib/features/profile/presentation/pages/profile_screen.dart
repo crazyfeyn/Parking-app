@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
-import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/features/history/presentation/pages/history_screen.dart';
 import 'package:flutter_application/features/payment_screen/presentation/pages/select_payment_screen.dart';
 import 'package:flutter_application/features/profile/presentation/widgets/profile_pinned.dart';
