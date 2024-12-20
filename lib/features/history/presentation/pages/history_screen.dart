@@ -1,132 +1,120 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
-import 'package:flutter_application/core/extension/extensions.dart';
-import 'package:flutter_application/features/history/presentation/pages/detail_screen.dart';
-import 'package:flutter_application/features/history/presentation/widgets/period_widget.dart';
-import 'package:flutter_application/features/history/presentation/widgets/search_widget.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+import 'package:flutter_application/features/history/presentation/widgets/parking_item_widget.dart';
 
-class HistoryScreen extends StatelessWidget {
+class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
+
+  @override
+  State<HistoryScreen> createState() => _HistoryScreenState();
+}
+
+class _HistoryScreenState extends State<HistoryScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'History',
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(20.0),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadiusDirectional.circular(
+                AppDimens.BORDER_RADIUS_30,
+              ),
+              color: AppConstants.whiteColor,
+            ),
+            child: Container(
+              padding: const EdgeInsets.all(AppDimens.PADDING_4),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: TabBar(
+                controller: _tabController,
+                tabs: const [
+                  Tab(text: 'History parking'),
+                  Tab(text: 'Current parking'),
+                ],
+                indicator: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                indicatorSize: TabBarIndicatorSize.tab,
+                labelStyle: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
+                unselectedLabelColor: Colors.black,
+                labelColor: Colors.white,
+                dividerColor: Colors.transparent,
+                indicatorPadding: const EdgeInsets.all(0),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.all(0),
+              ),
+            ),
           ),
         ),
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverPersistentHeader(
-            pinned: true,
-            floating: true,
-            delegate: _SearchHistoryDelegate(),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            itemCount: 2,
+            itemBuilder: (context, index) {
+              return const ParkingItem(
+                title: 'Logan, UT Truck & Trailer Parking on W 200 N',
+                bookingType: 'Per day',
+                startDate: '12.12.2024',
+                endDate: '14.12.2024',
+                timeZone: '1:20',
+                vehicleType: 'Truck',
+                price: '\$20.00',
+                priceStatus: 'Paid',
+                parkingStatus: 'Closed',
+                priceStatusColor: Colors.green,
+                parkingStatusColor: Colors.red,
+              );
+            },
           ),
-          SliverPadding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: AppDimens.PADDING_20),
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return Column(
-                    children: [
-                      ZoomTapAnimation(
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const DetailScreen())),
-                        child: Container(
-                          padding: const EdgeInsets.all(AppDimens.PADDING_14),
-                          margin: const EdgeInsets.only(
-                              bottom: AppDimens.MARGIN_16),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFFFFFF),
-                            borderRadius: BorderRadius.circular(
-                                AppDimens.BORDER_RADIUS_15),
-                          ),
-                          clipBehavior: Clip.hardEdge,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadiusDirectional.circular(
-                                  AppDimens.BORDER_RADIUS_15),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Image.asset(
-                                  'assets/images/logo_1.png',
-                                  height: 100,
-                                  width: 105,
-                                  color: Colors.black,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Graha Mall',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    5.hs(),
-                                    const Text(
-                                      'Brakha street',
-                                      style: TextStyle(
-                                        color: Colors.grey,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    const Text(
-                                      '12 Aug',
-                                      style: TextStyle(
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    5.hs(),
-                                    //date time type beradigan qilib to'g'irlab qo'y
-                                    const PeriodWidget(hour: '4'),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-                childCount: 10,
-              ),
-            ),
+          ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            itemCount: 2,
+            itemBuilder: (context, index) {
+              return const ParkingItem(
+                title: 'Main Street Parking Lot',
+                bookingType: 'Hourly',
+                startDate: '20.12.2024',
+                endDate: '20.12.2024',
+                timeZone: '14:30',
+                vehicleType: 'Car',
+                price: '\$5.00',
+                priceStatus: 'Pending',
+                parkingStatus: 'In progress',
+                priceStatusColor: Colors.orange,
+                parkingStatusColor: Colors.blue,
+              );
+            },
           ),
         ],
       ),
     );
-  }
-}
-
-class _SearchHistoryDelegate extends SliverPersistentHeaderDelegate {
-  @override
-  double get maxExtent => 100.0; // height of the search widget
-  @override
-  double get minExtent => 60.0; // min height when collapsed
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return false; // No need to rebuild on scrolling
-  }
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return SearchHistoryWidget();
   }
 }
