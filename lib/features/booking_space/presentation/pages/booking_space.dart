@@ -23,7 +23,8 @@ class BookingSpaceScreen extends StatelessWidget {
         padding: const EdgeInsets.all(AppDimens.PADDING_16),
         child: Column(
           children: [
-            const AvailableSpotsIndicator(availableSpots: 2),
+            const AvailableSpotsIndicator(availableSpots: 0),
+            14.hs(),
             WhiteBackWidget(
                 widget: Column(
               children: [

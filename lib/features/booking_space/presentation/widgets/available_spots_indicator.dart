@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
-import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/widgets/white_back_widget.dart';
 
@@ -22,11 +21,28 @@ class AvailableSpotsIndicator extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Spaces available', style: AppConstants.textStyle_16),
-              Text('$availableSpots available',
-                  style: AppConstants.textStyle_14),
+              Text(
+                availableSpots > 0 ? 'Spaces available' : 'No spaces available',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: availableSpots > 0
+                      ? AppConstants.blackColor
+                      : AppConstants.mainColor,
+                ),
+              ),
+              Text(
+                '$availableSpots available',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: availableSpots > 0
+                      ? AppConstants.blackColor
+                      : AppConstants.mainColor,
+                ),
+              ),
             ],
-          )
+          ),
         ],
       ),
     );
