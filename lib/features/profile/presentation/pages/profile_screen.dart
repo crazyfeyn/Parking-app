@@ -3,6 +3,9 @@ import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/features/history/presentation/pages/history_screen.dart';
 import 'package:flutter_application/features/payment_screen/presentation/pages/select_payment_screen.dart';
+import 'package:flutter_application/features/profile/presentation/pages/contact_detail_screen.dart';
+import 'package:flutter_application/features/profile/presentation/pages/payments_screen.dart';
+import 'package:flutter_application/features/profile/presentation/pages/vehicles_screen.dart';
 import 'package:flutter_application/features/profile/presentation/widgets/profile_pinned.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -35,12 +38,25 @@ class ProfileScreen extends StatelessWidget {
                       _profileButtons(
                         'phone',
                         'Contact details',
-                        () {},
+                        () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ContactDetailScreen(),
+                              ));
+                        },
                       ),
                       _profileButtons(
                         'card',
                         'Payment methods',
-                        () {},
+                        () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PaymentsScreen(),
+                              ));
+                        },
                       ),
                       _profileButtons(
                           'listing',
@@ -61,7 +77,13 @@ class ProfileScreen extends StatelessWidget {
                       _profileButtons(
                         'vehicle',
                         'Your vehicles',
-                        () {},
+                        () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VehiclesScreen(),
+                              ));
+                        },
                       ),
                     ],
                   ),
@@ -78,6 +100,7 @@ class ProfileScreen extends StatelessWidget {
     return ZoomTapAnimation(
       onTap: onTap,
       child: ListTile(
+        contentPadding: EdgeInsets.zero,
         leading: Image.asset(
           'assets/icons/${path}_icon.png',
           color: AppConstants.mainColor,

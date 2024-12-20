@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/home/data/datasources/spots_service.dart';
@@ -27,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _getCurrentLocation() async {
-    Dio dio = await Dio();
+    Dio dio =  Dio();
     final s = SpotService(dio);
     await s.fetchAllSpots();
     setState(() {

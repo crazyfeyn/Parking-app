@@ -40,7 +40,7 @@ class TextWidget extends StatelessWidget {
           controller: controller,
           keyboardType: keyboardType,
           decoration: InputDecoration(
-            counterText: '', // Hide the character count
+            counterText: '',
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: borderColor ?? Colors.black),
             ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
-import 'package:flutter_application/core/extension/extensions.dart';
 
 class WhiteBackWidget extends StatelessWidget {
   final Widget widget;

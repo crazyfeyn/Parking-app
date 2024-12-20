@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
-import 'package:flutter_application/features/auth/presentation/pages/register_screen.dart';
 import 'package:flutter_application/features/splash/presentation/widgets/when_first_widget.dart';
 import 'package:flutter_application/features/splash/presentation/widgets/when_second_widget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
