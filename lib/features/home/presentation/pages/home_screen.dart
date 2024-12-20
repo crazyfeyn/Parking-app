@@ -1,12 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application/core/constants/app_dimens.dart';
+import 'package:flutter_application/features/home/data/datasources/spots_service.dart';
 import 'package:flutter_application/features/home/presentation/widgets/filter_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_application/features/home/presentation/widgets/button_for_map_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/search_home_widget.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,6 +27,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _getCurrentLocation() async {
+    Dio dio = await Dio();
+    final s = SpotService(dio);
+    await s.fetchAllSpots();
     setState(() {
       isLoading = true;
     });
@@ -69,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           isLoading || currentLocation == null
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: SizedBox(),
                 )
               : SizedBox(
                   height: MediaQuery.of(context).size.height,
@@ -145,5 +148,25 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  Set<Marker> markers = {};
+
+  Future<void> _addCustomMarker(LatLng coordinates, String title) async {
+    BitmapDescriptor customIcon = await BitmapDescriptor.asset(
+      const ImageConfiguration(size: Size(48, 48)),
+      'assets/icons/location_icon.png',
+    );
+
+    setState(() {
+      markers.add(
+        Marker(
+          markerId: MarkerId(title),
+          position: coordinates,
+          infoWindow: InfoWindow(title: title),
+          icon: customIcon,
+        ),
+      );
+    });
   }
 }
