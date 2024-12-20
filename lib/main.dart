@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/stripe_constants.dart';
+import 'package:flutter_application/features/booking_space/presentation/pages/booking_space.dart';
 import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main(List<String> args) async {
   await _setup();
-  runApp(const MyApp());
+  runApp(
+    const MyApp(),
+  );
 }
 
 Future<void> _setup() async {
@@ -20,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainScreen(),
+      home: BookingSpaceScreen(),
     );
   }
 }

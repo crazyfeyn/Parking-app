@@ -10,10 +10,21 @@ class AppConstants {
   static const Color whiteColor = Color(0xFFFFFFFF);
   static const Color blackColor = Color(0xFF000000);
   static const Color grayColor = Color(0xFFF2F2F3);
-  static const baseUrl = 'http://18.222.167.242:4444/itjobs/';
+  static const Color shadeColor = Color(0xFF787878);
+  static const baseUrl = 'http://127.0.0.1:8000/';
   static const String sharedId = 'idUser';
   static const String sharedToken = 'tokenUser';
   static const String boolHome = 'isGrid';
+  static const TextStyle textStyle_16 = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: AppConstants.blackColor,
+  );
+  static const TextStyle textStyle_14 = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppConstants.blackColor,
+  );
 }
 
 enum Status { loading, error, success, initial }
