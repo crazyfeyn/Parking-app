@@ -12,7 +12,10 @@ class AppConstants {
   static const Color grayColor = Color(0xFFF2F2F3);
   static const Color shadeColor = Color(0xFF787878);
   static const baseUrl = 'http://127.0.0.1:8000/';
+  static const baseseconUrl = 'http://45.137.151.35:8000/';
   static const String sharedId = 'idUser';
+  static const String userToken = 'userToken';
+  static const String userRefresh = 'userRefresh';
   static const String sharedToken = 'tokenUser';
   static const String boolHome = 'isGrid';
   static const TextStyle textStyle_16 = TextStyle(

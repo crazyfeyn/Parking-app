@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/stripe_constants.dart';
-import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
+import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
+import 'package:flutter_application/features/auth/presentation/pages/login_screen.dart';
+import 'package:flutter_application/server_locator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'server_locator.dart' as di;
 
 void main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await di.init();
   await _setup();
   runApp(
     const MyApp(),
@@ -20,9 +26,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MainScreen(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) {
+            return sl<AuthBloc>();
+          },
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: LoginScreen(),
+      ),
     );
   }
 }
