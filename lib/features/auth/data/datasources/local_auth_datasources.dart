@@ -13,7 +13,10 @@ class LocalAuthDatasources {
   }
 
   Future<String> getToken() async {
+    print('hello fro  local mdata');
+
     final recponce = await localConfig.getToken();
+    print(recponce);
     if (recponce.isNotEmpty) {
       return recponce;
     }

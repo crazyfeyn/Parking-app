@@ -31,6 +31,11 @@ class AuthRepositoriesImpl extends AuthRepositories {
   }
 
   @override
+  Future<bool> authoricated() {
+    return authDatasources.authicated();
+  }
+
+  @override
   Future<Either<Failure, void>> logOut() {
     // TODO: implement logOut
     throw UnimplementedError();

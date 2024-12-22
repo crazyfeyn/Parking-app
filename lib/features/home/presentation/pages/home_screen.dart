@@ -2,8 +2,10 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:flutter_application/features/home/data/datasources/spots_service.dart';
 import 'package:flutter_application/features/home/presentation/widgets/filter_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_application/features/home/presentation/widgets/button_for_map_widget.dart';
@@ -26,10 +28,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _getCurrentLocation();
+    context.read<AuthBloc>().add(const AuthEvent.refresh());
   }
 
   Future<void> _getCurrentLocation() async {
-    Dio dio =  Dio();
+    Dio dio = Dio();
     final s = SpotService(dio);
     await s.fetchAllSpots();
     setState(() {
@@ -79,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
               : SizedBox(
                   height: MediaQuery.of(context).size.height,
                   child: GoogleMap(
+                    zoomControlsEnabled: false,
                     initialCameraPosition: CameraPosition(
                       target: currentLocation!,
                       zoom: 15,

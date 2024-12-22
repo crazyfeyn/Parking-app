@@ -13,6 +13,8 @@ class LocalConfig {
   }
 
   Future<String> getToken() async {
+    print('hello from localconfig');
+
     final token = sharedPreferences.getString(
       AppConstants.userToken,
     );
