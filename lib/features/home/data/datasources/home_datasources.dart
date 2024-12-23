@@ -18,7 +18,6 @@ class HomeDatasources {
       }
 
       final permissionStatus = await _location.hasPermission();
-      print(permissionStatus);
       if (permissionStatus == PermissionStatus.denied) {
         final permissionRequested = await _location.requestPermission();
         if (permissionRequested != PermissionStatus.granted) {
@@ -47,78 +46,95 @@ class HomeDatasources {
         '${AppConstants.baseseconUrl}locations/list',
       );
 
+      // Check if the response is successful
       if (response.statusCode == 200) {
+        print(
+            'Response data: ${response.data}'); // Debug log for the raw response
         final List<dynamic> data = response.data as List<dynamic>;
+
+        // Check if the data is empty
+        if (data.isEmpty) {
+          print('No data received from API.');
+          return [];
+        }
+
         final List<LocationModel> locations = data.map((json) {
+          print(
+              'Parsing location: $json'); // Debug log for each location object
+
           return LocationModel(
-            id: json['id'] as int,
-            name: json['name'] as String,
-            description: json['description'] as String,
-            address: json['address'] as String,
-            city: json['city'] as String,
-            state: json['state'] as String,
-            zipCode: json['zip_code'] as String,
-            phNumber: json['ph_number'] as String,
-            schedule: json['schedule'] as String?,
-            weeklyRate: double.parse(json['weekly_rate']),
-            dailyRate: double.parse(json['daily_rate']),
-            monthlyRate: double.parse(json['monthly_rate']),
-            twentyFourHours: json['twenty_four_hours'] as bool,
-            limitedEntryExitTimes: json['limited_entry_exit_times'] as bool,
-            lowboysAllowed: json['lowboys_allowed'] as bool,
-            bobtailOnly: json['bobtail_only'] as bool,
-            containersOnly: json['containers_only'] as bool,
-            oversizedAllowed: json['oversized_allowed'] as bool,
-            hazmatAllowed: json['hazmat_allowed'] as bool,
-            doubleStackAllowed: json['double_stack_allowed'] as bool,
-            securityAtGate: json['security_at_gate'] as bool,
-            roamingSecurity: json['roaming_security'] as bool,
+            id: json['id'],
+            name: json['name'],
+            description: json['description'] ?? '',
+            address: json['address'] ?? '',
+            city: json['city'] ?? '',
+            state: json['state'] ?? '',
+            zipCode: json['zip_code'] ?? '',
+            phNumber: json['ph_number'] ?? '',
+            schedule: json['schedule'],
+            weeklyRate: double.tryParse(json['weekly_rate'].toString()) ?? 0.0,
+            dailyRate: double.tryParse(json['daily_rate'].toString()) ?? 0.0,
+            monthlyRate:
+                double.tryParse(json['monthly_rate'].toString()) ?? 0.0,
+            twentyFourHours: json['twenty_four_hours'] ?? false,
+            limitedEntryExitTimes: json['limited_entry_exit_times'] ?? false,
+            lowboysAllowed: json['lowboys_allowed'] ?? false,
+            bobtailOnly: json['bobtail_only'] ?? false,
+            containersOnly: json['containers_only'] ?? false,
+            oversizedAllowed: json['oversized_allowed'] ?? false,
+            hazmatAllowed: json['hazmat_allowed'] ?? false,
+            doubleStackAllowed: json['double_stack_allowed'] ?? false,
+            securityAtGate: json['security_at_gate'] ?? false,
+            roamingSecurity: json['roaming_security'] ?? false,
             landingGearSupportRequired:
-                json['landing_gear_support_required'] as bool,
-            laundryMachines: json['laundry_machines'] as bool,
-            freeShowers: json['free_showers'] as bool,
-            paidShowers: json['paid_showers'] as bool,
-            repairShop: json['repair_shop'] as bool,
+                json['landing_gear_support_required'] ?? false,
+            laundryMachines: json['laundry_machines'] ?? false,
+            freeShowers: json['free_showers'] ?? false,
+            paidShowers: json['paid_showers'] ?? false,
+            repairShop: json['repair_shop'] ?? false,
             paidContainerStackingServices:
-                json['paid_container_stacking_services'] as bool,
-            trailerSnowScraper: json['trailer_snow_scraper'] as bool,
-            truckWash: json['truck_wash'] as bool,
-            food: json['food'] as bool,
-            noTowedVehicles: json['no_towed_vehicles'] as bool,
-            email: json['email'] as String,
-            truckAllowed: json['truck_allowed'] as bool,
-            trailerAllowed: json['trailer_allowed'] as bool,
-            truckTrailerAllowed: json['truck_trailer_allowed'] as bool,
-            cameras: json['cameras'] as bool,
-            fenced: json['fenced'] as bool,
-            asphalt: json['asphalt'] as bool,
-            lights: json['lights'] as bool,
-            repairsAllowed: json['repairs_allowed'] as bool,
+                json['paid_container_stacking_services'] ?? false,
+            trailerSnowScraper: json['trailer_snow_scraper'] ?? false,
+            truckWash: json['truck_wash'] ?? false,
+            food: json['food'] ?? false,
+            noTowedVehicles: json['no_towed_vehicles'] ?? false,
+            email: json['email'] ?? '',
+            truckAllowed: json['truck_allowed'] ?? false,
+            trailerAllowed: json['trailer_allowed'] ?? false,
+            truckTrailerAllowed: json['truck_trailer_allowed'] ?? false,
+            cameras: json['cameras'] ?? false,
+            fenced: json['fenced'] ?? false,
+            asphalt: json['asphalt'] ?? false,
+            lights: json['lights'] ?? false,
+            repairsAllowed: json['repairs_allowed'] ?? false,
             images: (json['images'] as List<dynamic>?)
                 ?.map((imageJson) => LocationImage(
-                      id: imageJson['id'] as int,
-                      image: imageJson['image'] as String,
+                      id: imageJson['id'],
+                      image: imageJson['image'] ?? '',
                     ))
                 .toList(),
             longitude: json['longitude'] != null
-                ? double.parse(json['longitude'])
+                ? double.tryParse(json['longitude'].toString())
                 : null,
             latitude: json['latitude'] != null
-                ? double.parse(json['latitude'])
+                ? double.tryParse(json['latitude'].toString())
                 : null,
-            bankAccountAdded: json['bank_account_added'] as String?,
-            availableSpots: json['available_spots'] as String?,
-            status: LocationStatus(
-              id: json['status']['id'] as int,
-              name: json['status']['name'] as String,
-            ),
+            bankAccountAdded: json['bank_account_added'],
+            availableSpots: json['available_spots'],
+            status: json['status'] != null
+                ? LocationStatus(
+                    id: json['status']['id'],
+                    name: json['status']['name'],
+                  )
+                : null,
           );
         }).toList();
 
-        print('Spots fetched: $locations');
+        print(
+            'Locations fetched: $locations'); // Debug log for the parsed locations
         return locations;
       } else {
-        print('Error fetching spots: ${response.statusCode} ${response.data}');
+        print('Failed to fetch data. Status code: ${response.statusCode}');
         return [];
       }
     } on DioException catch (e) {

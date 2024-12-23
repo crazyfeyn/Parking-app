@@ -2,10 +2,10 @@ part of 'home_bloc.dart';
 
 @freezed
 class HomeState with _$HomeState {
-  factory HomeState({
+  const factory HomeState({
     @Default(Status.initial) Status status,
     LatLng? currentLocation,
-    List<LatLng>? locations,
+    List<LocationModel>? locations,
     String? errorMessage,
   }) = _HomeState;
 }

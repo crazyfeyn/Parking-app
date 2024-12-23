@@ -7,7 +7,7 @@ class LocationModel {
   final String state;
   final String zipCode;
   final String phNumber;
-  final String? schedule;
+  final String schedule;
   final double weeklyRate;
   final double dailyRate;
   final double monthlyRate;
@@ -43,9 +43,9 @@ class LocationModel {
   final List<LocationImage>? images;
   final double? longitude;
   final double? latitude;
-  final String? bankAccountAdded;
-  final String? availableSpots;
-  final LocationStatus status;
+  final bool? bankAccountAdded;
+  final int? availableSpots;
+  final LocationStatus? status; // Made nullable
 
   LocationModel({
     required this.id,
@@ -56,7 +56,7 @@ class LocationModel {
     required this.state,
     required this.zipCode,
     required this.phNumber,
-    this.schedule,
+    required this.schedule,
     required this.weeklyRate,
     required this.dailyRate,
     required this.monthlyRate,
@@ -94,7 +94,7 @@ class LocationModel {
     this.latitude,
     this.bankAccountAdded,
     this.availableSpots,
-    required this.status,
+    this.status, // Nullable
   });
 }
 

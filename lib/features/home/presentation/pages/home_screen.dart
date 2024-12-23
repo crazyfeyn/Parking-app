@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_application/features/home/presentation/widgets/filter_widget.dart';
@@ -22,8 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch current location when screen initializes
+    // Fetch current location and all locations when screen initializes
     context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
+    context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
   }
 
   @override
@@ -35,7 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
             case Status.loading:
               return const Center(child: CircularProgressIndicator());
             case Status.success:
-              return _buildGoogleMap();
+              return _buildGoogleMap(
+                  state.locations); // Pass the locations to the map builder
             case Status.error:
               return const Center(
                 child: Text('Error fetching location'),
@@ -48,30 +51,55 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildGoogleMap() {
+  Widget _buildGoogleMap(List<LocationModel>? locations) {
     // Default to a fallback location if current location is null
-    final location = currentLocation ?? const LatLng(0, 0);
+    final location = currentLocation ?? const LatLng(33.592806, -84.388716);
+
+    // Create markers for all fetched locations, ensuring each has a unique MarkerId
+    Set<Marker> markers = {
+      if (currentLocation != null)
+        Marker(
+          markerId: const MarkerId('currentLocation'),
+          position: location,
+          infoWindow: const InfoWindow(title: 'Current Location'),
+        ),
+      if (locations != null)
+        for (var loc in locations)
+          if (loc.latitude != null && loc.longitude != null)
+            Marker(
+                markerId: MarkerId(loc.id.toString()),
+                position: LatLng(loc.latitude!, loc.longitude!),
+                infoWindow: InfoWindow(title: loc.name),
+                onTap: () {
+                  mapController?.animateCamera(
+                    CameraUpdate.newLatLngZoom(
+                      LatLng(loc.latitude!, loc.longitude!),
+                      15.0,
+                    ),
+                  );
+
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => HomeScreen()),
+                  // );
+
+                  // You might also want to update some state or show additional UI
+                }),
+    };
 
     return Stack(
       children: [
         GoogleMap(
           initialCameraPosition: CameraPosition(
             target: location,
-            zoom: 15,
+            zoom: 5,
           ),
           onMapCreated: (controller) {
             mapController = controller;
           },
           myLocationEnabled: true,
           myLocationButtonEnabled: false,
-          markers: {
-            if (currentLocation != null)
-              Marker(
-                markerId: const MarkerId('currentLocation'),
-                position: location,
-                infoWindow: const InfoWindow(title: 'Current Location'),
-              ),
-          },
+          markers: markers,
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,

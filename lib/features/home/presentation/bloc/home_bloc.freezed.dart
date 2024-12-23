@@ -290,7 +290,7 @@ abstract class _getCurrentLocation implements HomeEvent {
 mixin _$HomeState {
   Status get status => throw _privateConstructorUsedError;
   LatLng? get currentLocation => throw _privateConstructorUsedError;
-  List<LatLng>? get locations => throw _privateConstructorUsedError;
+  List<LocationModel>? get locations => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
   /// Create a copy of HomeState
@@ -308,7 +308,7 @@ abstract class $HomeStateCopyWith<$Res> {
   $Res call(
       {Status status,
       LatLng? currentLocation,
-      List<LatLng>? locations,
+      List<LocationModel>? locations,
       String? errorMessage});
 }
 
@@ -344,7 +344,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
       locations: freezed == locations
           ? _value.locations
           : locations // ignore: cast_nullable_to_non_nullable
-              as List<LatLng>?,
+              as List<LocationModel>?,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -364,7 +364,7 @@ abstract class _$$HomeStateImplCopyWith<$Res>
   $Res call(
       {Status status,
       LatLng? currentLocation,
-      List<LatLng>? locations,
+      List<LocationModel>? locations,
       String? errorMessage});
 }
 
@@ -398,7 +398,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
       locations: freezed == locations
           ? _value._locations
           : locations // ignore: cast_nullable_to_non_nullable
-              as List<LatLng>?,
+              as List<LocationModel>?,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -410,10 +410,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$HomeStateImpl implements _HomeState {
-  _$HomeStateImpl(
+  const _$HomeStateImpl(
       {this.status = Status.initial,
       this.currentLocation,
-      final List<LatLng>? locations,
+      final List<LocationModel>? locations,
       this.errorMessage})
       : _locations = locations;
 
@@ -422,9 +422,9 @@ class _$HomeStateImpl implements _HomeState {
   final Status status;
   @override
   final LatLng? currentLocation;
-  final List<LatLng>? _locations;
+  final List<LocationModel>? _locations;
   @override
-  List<LatLng>? get locations {
+  List<LocationModel>? get locations {
     final value = _locations;
     if (value == null) return null;
     if (_locations is EqualUnmodifiableListView) return _locations;
@@ -446,8 +446,8 @@ class _$HomeStateImpl implements _HomeState {
         (other.runtimeType == runtimeType &&
             other is _$HomeStateImpl &&
             (identical(other.status, status) || other.status == status) &&
-            const DeepCollectionEquality()
-                .equals(other.currentLocation, currentLocation) &&
+            (identical(other.currentLocation, currentLocation) ||
+                other.currentLocation == currentLocation) &&
             const DeepCollectionEquality()
                 .equals(other._locations, _locations) &&
             (identical(other.errorMessage, errorMessage) ||
@@ -455,12 +455,8 @@ class _$HomeStateImpl implements _HomeState {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      status,
-      const DeepCollectionEquality().hash(currentLocation),
-      const DeepCollectionEquality().hash(_locations),
-      errorMessage);
+  int get hashCode => Object.hash(runtimeType, status, currentLocation,
+      const DeepCollectionEquality().hash(_locations), errorMessage);
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -472,10 +468,10 @@ class _$HomeStateImpl implements _HomeState {
 }
 
 abstract class _HomeState implements HomeState {
-  factory _HomeState(
+  const factory _HomeState(
       {final Status status,
       final LatLng? currentLocation,
-      final List<LatLng>? locations,
+      final List<LocationModel>? locations,
       final String? errorMessage}) = _$HomeStateImpl;
 
   @override
@@ -483,7 +479,7 @@ abstract class _HomeState implements HomeState {
   @override
   LatLng? get currentLocation;
   @override
-  List<LatLng>? get locations;
+  List<LocationModel>? get locations;
   @override
   String? get errorMessage;
 
