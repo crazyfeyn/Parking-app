@@ -29,31 +29,21 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<HomeBloc, HomeState>(
-        listener: (context, state) {
-          // Update current location when state is successful and data is available
-          if (state.status == Status.success && state.currentLocation != null) {
-            setState(() {
-              currentLocation = state.currentLocation;
-            });
+      body: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          switch (state.status) {
+            case Status.loading:
+              return const Center(child: CircularProgressIndicator());
+            case Status.success:
+              return _buildGoogleMap();
+            case Status.error:
+              return const Center(
+                child: Text('Error fetching location'),
+              );
+            case Status.initial:
+              return const Center(child: Text('Getting started...'));
           }
         },
-        child: BlocBuilder<HomeBloc, HomeState>(
-          builder: (context, state) {
-            switch (state.status) {
-              case Status.loading:
-                return const Center(child: CircularProgressIndicator());
-              case Status.success:
-                return _buildGoogleMap();
-              case Status.error:
-                return const Center(
-                  child: Text('Error fetching location'),
-                );
-              case Status.initial:
-                return const Center(child: Text('Getting started...'));
-            }
-          },
-        ),
       ),
     );
   }
