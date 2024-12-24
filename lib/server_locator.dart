@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_application/core/config/dio_config.dart';
 import 'package:flutter_application/core/config/local_config.dart';
 import 'package:flutter_application/core/config/dio_config.dart';
 import 'package:flutter_application/features/auth/data/datasources/auth_datasources.dart';
 import 'package:flutter_application/features/auth/data/datasources/local_auth_datasources.dart';
 import 'package:flutter_application/features/auth/data/repositories/auth_repositories.dart';
+import 'package:flutter_application/features/auth/domain/usecases/authicated_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/login_user_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/refresh_user_token_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/register_user_usecase.dart';
@@ -63,6 +65,7 @@ Future<void> init() async {
         localAuthDatasources: sl<LocalAuthDatasources>(),
       ));
   sl.registerLazySingleton(
+
       () => LocalAuthDatasources(localConfig: sl<LocalConfig>()));
 
   // Home Feature

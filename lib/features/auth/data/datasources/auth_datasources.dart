@@ -12,7 +12,9 @@ class AuthDatasources {
   AuthDatasources({
     required this.dio,
     required this.localAuthDatasources,
-  });
+  }) {
+    dio.interceptors.add(DioInterceptor(localConfig: localAuthDatasources));
+  }
   Timer? _tokenRefreshTimer;
   Future<void> logIn(String password, String email) async {
     print(password);
@@ -49,12 +51,14 @@ class AuthDatasources {
   }
 
   Future<void> resetPass(String email) async {
+    print(email);
     final recponce = await dio.post(
-      '${AppConstants.baseUrl}users/reset-password',
+      '${AppConstants.baseseconUrl}users/reset-password/',
       data: {
         "email": email,
       },
     );
+    print(recponce);
     if (recponce.statusCode == 200) {
       return;
     }
@@ -62,6 +66,7 @@ class AuthDatasources {
   }
 
   Future<void> startTokenAutoRefresh() async {
+    print('hlelelleel');
     _tokenRefreshTimer = Timer.periodic(
       const Duration(minutes: 5),
       (timer) async {
@@ -72,6 +77,7 @@ class AuthDatasources {
         }
       },
     );
+    print('TOKEN REFRESHED');
   }
 
   Future<void> stopTokenAutoRefresh() async {
@@ -80,8 +86,13 @@ class AuthDatasources {
 
   Future<void> _refreshToken() async {
     try {
+      print("[_refreshToken] Attempting to refresh token...");
       final token = await localAuthDatasources.getRefreshToken();
+      print("[_refreshToken] Current refresh token: $token");
+
       if (token.isEmpty) {
+        print(
+            "[_refreshToken] Refresh token is empty. Throwing CacheException.");
         throw CacheException();
       }
 
@@ -90,14 +101,125 @@ class AuthDatasources {
         data: {'refresh': token},
       );
 
+      print("[_refreshToken] Server response: ${response.data}");
+
       if (response.statusCode == 200) {
         await localAuthDatasources.saveToken(response.data['access']);
+        print(
+            "[_refreshToken] Token refreshed successfully. New token: ${response.data['access']}");
       } else {
+        print(
+            "[_refreshToken] Failed to refresh token. Server responded with status code: ${response.statusCode}");
         throw ServerException();
       }
     } catch (e) {
-      print("Ошибка обновления токена: $e");
+      print("[_refreshToken] Error during token refresh: $e");
       rethrow;
     }
+  }
+
+  Future<bool> authicated() async {
+    print('hello fro mdata');
+    final recponce = await localAuthDatasources.getToken();
+    print(recponce);
+    if (recponce.isNotEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
+class DioInterceptor implements Interceptor {
+  final LocalAuthDatasources localConfig;
+
+  DioInterceptor({required this.localConfig});
+
+  @override
+  void onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
+    print('Request: ${options.method} ${options.uri}');
+
+    try {
+      final token = await localConfig.getToken();
+
+      if (token.isNotEmpty) {
+        options.headers['Authorization'] = 'Bearer $token';
+      }
+    } catch (e) {
+      print('Error fetching token: $e');
+    }
+
+    handler.next(options);
+  }
+
+  @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
+    print('Response: ${response.statusCode} ${response.data}');
+    handler.next(response);
+  }
+
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
+    print('Request failed: ${err.response?.statusCode}, ${err.message}');
+
+    if (err.response?.statusCode == 401) {
+      try {
+        await _refreshToken();
+
+        final newToken = await localConfig.getToken();
+        if (newToken.isNotEmpty) {
+          err.requestOptions.headers['Authorization'] = 'Bearer $newToken';
+
+          // Clone the original request with updated headers
+          final clonedRequest = await _retry(err.requestOptions);
+          return handler.resolve(clonedRequest);
+        }
+      } catch (e) {
+        print('Token refresh failed: $e');
+        return handler.next(err);
+      }
+    }
+
+    handler.next(err);
+  }
+
+  Future<void> _refreshToken() async {
+    final refreshToken = await localConfig.getRefreshToken();
+
+    if (refreshToken.isEmpty) {
+      throw Exception('Refresh token not found');
+    }
+
+    try {
+      final response = await Dio().post(
+        '${AppConstants.baseseconUrl}users/token/refresh/',
+        data: {'refresh': refreshToken},
+      );
+
+      if (response.statusCode == 200) {
+        final newAccessToken = response.data['access'];
+        await localConfig.saveToken(newAccessToken);
+      } else {
+        throw Exception('Failed to refresh token');
+      }
+    } catch (e) {
+      print('Error during token refresh: $e');
+      rethrow;
+    }
+  }
+
+  Future<Response> _retry(RequestOptions requestOptions) async {
+    final options = Options(
+      method: requestOptions.method,
+      headers: requestOptions.headers,
+    );
+
+    return Dio().request(
+      requestOptions.path,
+      data: requestOptions.data,
+      queryParameters: requestOptions.queryParameters,
+      options: options,
+    );
   }
 }

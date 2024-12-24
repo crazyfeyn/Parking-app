@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/features/auth/domain/usecases/authicated_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/login_user_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/refresh_user_token_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/register_user_usecase.dart';
@@ -17,16 +18,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   RefreshUserTokenUsecase refreshUserTokenUsecase;
   RegisterUserUsecase registerUserUsecase;
   ResetPassUserUsecase resetPassUserUsecase;
+  AuthicatedUsecase authicatedUsecase;
   AuthBloc(
     this.loginUserUsecase,
     this.refreshUserTokenUsecase,
     this.registerUserUsecase,
     this.resetPassUserUsecase,
+    this.authicatedUsecase,
   ) : super(AuthState()) {
     on<_log>(_logIn);
     on<_reg>(_register);
     on<_resetPass>(_reset);
     on<_refreshToken>(_refresh);
+    on<_authicated>(_auth);
   }
   Future<void> _logIn(_log event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: Status.loading));
@@ -36,6 +40,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(
         state.copyWith(status: Status.error),
       );
+      
     }, (data) {
       emit(
         state.copyWith(status: Status.success),
@@ -75,7 +80,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _refresh(_refreshToken event, Emitter<AuthState> emit) async {
+    await refreshUserTokenUsecase.call(null);
+  }
 
-    await refreshUserTokenUsecase(null);
+  Future<void> _auth(_authicated event, Emitter<AuthState> emit) async {
+    final recponce = await authicatedUsecase.call(null);
+    if (recponce == true) {
+      emit(state.copyWith(status: Status.success));
+    } else {
+      emit(state.copyWith(status: Status.error));
+    }
   }
 }
