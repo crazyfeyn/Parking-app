@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/stripe_constants.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
-import 'package:flutter_application/features/auth/presentation/pages/login_screen.dart';
-import 'package:flutter_application/features/auth/presentation/pages/register_screen.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
 import 'package:flutter_application/server_locator.dart';
@@ -40,7 +38,7 @@ class MyApp extends StatelessWidget {
           return sl<HomeBloc>();
         })
       ],
-      child: MaterialApp(
+      child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: MainScreen(),
       ),
