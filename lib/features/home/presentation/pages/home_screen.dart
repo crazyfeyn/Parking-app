@@ -1,16 +1,13 @@
-// ignore_for_file: unused_element
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
-import 'package:flutter_application/features/home/data/datasources/spots_service.dart';
-import 'package:flutter_application/features/home/presentation/widgets/filter_widget.dart';
+import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter_application/features/home/presentation/widgets/filter_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/button_for_map_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/search_home_widget.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
+import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
+import 'package:flutter_application/core/constants/app_constants.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,13 +19,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   GoogleMapController? mapController;
   LatLng? currentLocation;
-  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation();
-    context.read<AuthBloc>().add(const AuthEvent.refresh());
+    // Fetch current location and all locations when screen initializes
+    context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
+    context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
   }
 
   Future<void> _getCurrentLocation() async {
@@ -72,107 +69,123 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: const AppBarWidget(),
-      body: Stack(
-        children: [
-          isLoading || currentLocation == null
-              ? const Center(
-                  child: SizedBox(),
-                )
-              : SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: GoogleMap(
-                    zoomControlsEnabled: false,
-                    initialCameraPosition: CameraPosition(
-                      target: currentLocation!,
-                      zoom: 15,
-                    ),
-                    onMapCreated: (controller) {
-                      mapController = controller;
-                    },
-                    myLocationEnabled: true,
-                    myLocationButtonEnabled: false,
-                    markers: {
-                      Marker(
-                        markerId: const MarkerId('currentLocation'),
-                        position: currentLocation!,
-                        infoWindow: const InfoWindow(
-                          title: 'Current Location',
-                        ),
-                      ),
-                    },
-                  ),
-                ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              50.hs(),
-              const Row(
-                children: [
-                  SearchWidgetHome(),
-                  FilterWidget(),
-                ],
-              )
-            ],
-          ),
-          Positioned(
-            right: 10,
-            bottom: 10,
-            child: Column(
-              children: [
-                ButtonForMapWidget(
-                  onTap: () {
-                    mapController?.animateCamera(
-                      CameraUpdate.zoomIn(),
-                    );
-                  },
-                  child: const Icon(
-                    Icons.add,
-                    size: 30,
-                  ),
-                ),
-                10.hs(),
-                ButtonForMapWidget(
-                  onTap: () {
-                    mapController?.animateCamera(
-                      CameraUpdate.zoomOut(),
-                    );
-                  },
-                  child: const Icon(Icons.remove),
-                )
-              ],
-            ),
-          ),
-          Positioned(
-            left: 10,
-            bottom: 15,
-            child: ButtonForMapWidget(
-              onTap: _getCurrentLocation,
-              child: const Icon(Icons.location_on),
-            ),
-          ),
-        ],
+      body: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          switch (state.status) {
+            case Status.loading:
+              return const Center(child: CircularProgressIndicator());
+            case Status.success:
+              return _buildGoogleMap(
+                  state.locations); // Pass the locations to the map builder
+            case Status.error:
+              return const Center(
+                child: Text('Error fetching location'),
+              );
+            case Status.initial:
+              return const Center(child: Text('Getting started...'));
+          }
+        },
       ),
     );
   }
 
-  Set<Marker> markers = {};
+  Widget _buildGoogleMap(List<LocationModel>? locations) {
+    // Default to a fallback location if current location is null
+    final location = currentLocation ?? const LatLng(33.592806, -84.388716);
 
-  Future<void> _addCustomMarker(LatLng coordinates, String title) async {
-    BitmapDescriptor customIcon = await BitmapDescriptor.asset(
-      const ImageConfiguration(size: Size(48, 48)),
-      'assets/icons/location_icon.png',
-    );
-
-    setState(() {
-      markers.add(
+    // Create markers for all fetched locations, ensuring each has a unique MarkerId
+    Set<Marker> markers = {
+      if (currentLocation != null)
         Marker(
-          markerId: MarkerId(title),
-          position: coordinates,
-          infoWindow: InfoWindow(title: title),
-          icon: customIcon,
+          markerId: const MarkerId('currentLocation'),
+          position: location,
+          infoWindow: const InfoWindow(title: 'Current Location'),
         ),
-      );
-    });
+      if (locations != null)
+        for (var loc in locations)
+          if (loc.latitude != null && loc.longitude != null)
+            Marker(
+                markerId: MarkerId(loc.id.toString()),
+                position: LatLng(loc.latitude!, loc.longitude!),
+                infoWindow: InfoWindow(title: loc.name),
+                onTap: () {
+                  mapController?.animateCamera(
+                    CameraUpdate.newLatLngZoom(
+                      LatLng(loc.latitude!, loc.longitude!),
+                      15.0,
+      // appBar: const AppBarWidget(),
+                    ),
+                  );
+
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => HomeScreen()),
+                  // );
+
+                  // You might also want to update some state or show additional UI
+                }),
+    };
+
+    return Stack(
+      children: [
+        GoogleMap(
+          initialCameraPosition: CameraPosition(
+            target: location,
+            zoom: 5,
+          ),
+          onMapCreated: (controller) {
+            mapController = controller;
+          },
+          myLocationEnabled: true,
+          myLocationButtonEnabled: false,
+          markers: markers,
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            50.hs(),
+            const Row(
+              children: [
+                SearchWidgetHome(),
+                FilterWidget(),
+              ],
+            ),
+          ],
+        ),
+        Positioned(
+          right: 10,
+          bottom: 10,
+          child: Column(
+            children: [
+              ButtonForMapWidget(
+                onTap: () {
+                  mapController?.animateCamera(CameraUpdate.zoomIn());
+                },
+                child: const Icon(Icons.add, size: 30),
+              ),
+              10.hs(),
+              ButtonForMapWidget(
+                onTap: () {
+                  mapController?.animateCamera(CameraUpdate.zoomOut());
+                },
+                child: const Icon(Icons.remove),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          left: 10,
+          bottom: 15,
+          child: ButtonForMapWidget(
+            onTap: () {
+              context
+                  .read<HomeBloc>()
+                  .add(const HomeEvent.getCurrentLocation());
+            },
+            child: const Icon(Icons.location_on),
+          ),
+        ),
+      ],
+    );
   }
 }

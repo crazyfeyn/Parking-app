@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
+
 class SpotService {
   final Dio dio;
 
@@ -8,10 +9,7 @@ class SpotService {
   Future<void> fetchAllSpots() async {
     try {
       final response = await dio.get(
-        '${AppConstants.baseUrl}spots',
-        options: Options(headers: {
-          'Authorization': 'Bearer YOUR_TOKEN',
-        }),
+        '${AppConstants.baseseconUrl}locations/list',
       );
       if (response.statusCode == 200) {
         print('Spots fetched: ${response.data}');
