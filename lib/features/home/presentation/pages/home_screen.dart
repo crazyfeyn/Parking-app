@@ -28,43 +28,43 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
   }
 
-  Future<void> _getCurrentLocation() async {
-    Dio dio = Dio();
-    final s = SpotService(dio);
-    await s.fetchAllSpots();
-    setState(() {
-      isLoading = true;
-    });
+  // Future<void> _getCurrentLocation() async {
+  //   Dio dio = Dio();
+  //   final s = SpotService(dio);
+  //   await s.fetchAllSpots();
+  //   setState(() {
+  //     isLoading = true;
+  //   });
 
-    try {
-      // Check if location services are enabled
-      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        throw Exception('Location services are disabled.');
-      }
+  //   try {
+  //     // Check if location services are enabled
+  //     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //     if (!serviceEnabled) {
+  //       throw Exception('Location services are disabled.');
+  //     }
 
-      // Check location permissions
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          throw Exception('Location permissions are denied.');
-        }
-      }
+  //     // Check location permissions
+  //     LocationPermission permission = await Geolocator.checkPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       permission = await Geolocator.requestPermission();
+  //       if (permission == LocationPermission.denied) {
+  //         throw Exception('Location permissions are denied.');
+  //       }
+  //     }
 
-      // Get current position
-      Position position = await Geolocator.getCurrentPosition();
-      setState(() {
-        currentLocation = LatLng(position.latitude, position.longitude);
-        isLoading = false;
-      });
-    } catch (e) {
-      print('Error retrieving location: $e');
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
+  //     // Get current position
+  //     Position position = await Geolocator.getCurrentPosition();
+  //     setState(() {
+  //       currentLocation = LatLng(position.latitude, position.longitude);
+  //       isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     print('Error retrieving location: $e');
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
             case Status.loading:
               return const Center(child: CircularProgressIndicator());
             case Status.success:
-              return _buildGoogleMap(
-                  state.locations); // Pass the locations to the map builder
+              return _buildGoogleMap(state.locations);
             case Status.error:
               return const Center(
                 child: Text('Error fetching location'),
@@ -113,7 +112,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     CameraUpdate.newLatLngZoom(
                       LatLng(loc.latitude!, loc.longitude!),
                       15.0,
-      // appBar: const AppBarWidget(),
                     ),
                   );
 
