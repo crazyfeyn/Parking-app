@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
+import 'package:flutter_application/features/home/presentation/widgets/booking_modal_bottom_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_application/features/home/presentation/widgets/filter_widget.dart';
@@ -107,20 +108,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 markerId: MarkerId(loc.id.toString()),
                 position: LatLng(loc.latitude!, loc.longitude!),
                 infoWindow: InfoWindow(title: loc.name),
-                onTap: () {
+                onTap: () async {
                   mapController?.animateCamera(
                     CameraUpdate.newLatLngZoom(
                       LatLng(loc.latitude!, loc.longitude!),
                       15.0,
                     ),
                   );
-
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => HomeScreen()),
-                  // );
-
-                  // You might also want to update some state or show additional UI
+                  // ignore: use_build_context_synchronously
+                  showLocationDetails(context, loc);
                 }),
     };
 

@@ -9,9 +9,11 @@ import 'package:flutter_application/features/booking_space/presentation/widgets/
 import 'package:flutter_application/features/booking_space/presentation/widgets/payment_method_picker.dart';
 import 'package:flutter_application/features/booking_space/presentation/widgets/start_date_picker_widget.dart';
 import 'package:flutter_application/features/booking_space/presentation/widgets/vehicle_type_picker.dart';
+import 'package:flutter_application/features/home/data/models/location_model.dart';
 
 class BookingSpaceScreen extends StatelessWidget {
-  const BookingSpaceScreen({super.key});
+  final LocationModel locationModel;
+  const BookingSpaceScreen({super.key, required this.locationModel});
 
   @override
   Widget build(BuildContext context) {

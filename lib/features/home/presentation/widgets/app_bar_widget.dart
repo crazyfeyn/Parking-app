@@ -11,15 +11,6 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: ZoomTapAnimation(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const BookingScreen(),
-                ));
-          },
-          child: const Icon(Icons.menu)),
       actions: [
         ZoomTapAnimation(
           onTap: () {
