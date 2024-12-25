@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
-import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:flutter_application/features/auth/presentation/pages/login_screen.dart';
 import 'package:flutter_application/features/home/presentation/pages/home_screen.dart';
@@ -23,7 +22,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppConstants.mainColor,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state.status == Status.success) {
@@ -61,20 +59,30 @@ class _SplashScreenState extends State<SplashScreen> {
             );
           }
         },
-        child: Padding(
-          padding: const EdgeInsets.all(AppDimens.PADDING_20),
+        child: Container(
+          decoration: const BoxDecoration(
+            color: AppConstants.mainColor,
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              alignment: Alignment(-1, 0.9),
+              image: AssetImage(
+                'assets/images/bg.png',
+              ),
+            ),
+          ),
           child: Center(
               child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/images/logo_1.png',
+                'assets/images/logo.png',
                 width: 194,
                 height: 150,
               ),
               const Text(
                 'Park my truck',
                 style: TextStyle(
+                    letterSpacing: 8,
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: Color(0xFFFFFFFF)),

@@ -6,7 +6,6 @@ import 'package:flutter_application/core/widgets/back_button_widget.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
 import 'package:flutter_application/core/widgets/text_widget.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
-import 'package:flutter_application/features/auth/presentation/pages/confirm_pass_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
