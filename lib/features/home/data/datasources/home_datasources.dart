@@ -48,8 +48,6 @@ class HomeDatasources {
 
       // Check if the response is successful
       if (response.statusCode == 200) {
-        print(
-            'Response data: ${response.data}'); // Debug log for the raw response
         final List<dynamic> data = response.data as List<dynamic>;
 
         // Check if the data is empty
@@ -59,9 +57,6 @@ class HomeDatasources {
         }
 
         final List<LocationModel> locations = data.map((json) {
-          print(
-              'Parsing location: $json'); // Debug log for each location object
-
           return LocationModel(
             id: json['id'],
             name: json['name'],
@@ -130,8 +125,6 @@ class HomeDatasources {
           );
         }).toList();
 
-        print(
-            'Locations fetched: $locations'); // Debug log for the parsed locations
         return locations;
       } else {
         print('Failed to fetch data. Status code: ${response.statusCode}');

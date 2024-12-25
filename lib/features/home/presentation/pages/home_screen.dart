@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
+import 'package:flutter_application/features/home/presentation/widgets/booking_modal_bottom_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_application/features/home/presentation/widgets/filter_widget.dart';
@@ -28,43 +29,43 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
   }
 
-  Future<void> _getCurrentLocation() async {
-    Dio dio = Dio();
-    final s = SpotService(dio);
-    await s.fetchAllSpots();
-    setState(() {
-      isLoading = true;
-    });
+  // Future<void> _getCurrentLocation() async {
+  //   Dio dio = Dio();
+  //   final s = SpotService(dio);
+  //   await s.fetchAllSpots();
+  //   setState(() {
+  //     isLoading = true;
+  //   });
 
-    try {
-      // Check if location services are enabled
-      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        throw Exception('Location services are disabled.');
-      }
+  //   try {
+  //     // Check if location services are enabled
+  //     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //     if (!serviceEnabled) {
+  //       throw Exception('Location services are disabled.');
+  //     }
 
-      // Check location permissions
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          throw Exception('Location permissions are denied.');
-        }
-      }
+  //     // Check location permissions
+  //     LocationPermission permission = await Geolocator.checkPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       permission = await Geolocator.requestPermission();
+  //       if (permission == LocationPermission.denied) {
+  //         throw Exception('Location permissions are denied.');
+  //       }
+  //     }
 
-      // Get current position
-      Position position = await Geolocator.getCurrentPosition();
-      setState(() {
-        currentLocation = LatLng(position.latitude, position.longitude);
-        isLoading = false;
-      });
-    } catch (e) {
-      print('Error retrieving location: $e');
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
+  //     // Get current position
+  //     Position position = await Geolocator.getCurrentPosition();
+  //     setState(() {
+  //       currentLocation = LatLng(position.latitude, position.longitude);
+  //       isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     print('Error retrieving location: $e');
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
             case Status.loading:
               return const Center(child: CircularProgressIndicator());
             case Status.success:
-              return _buildGoogleMap(
-                  state.locations); // Pass the locations to the map builder
+              return _buildGoogleMap(state.locations);
             case Status.error:
               return const Center(
                 child: Text('Error fetching location'),
@@ -108,21 +108,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 markerId: MarkerId(loc.id.toString()),
                 position: LatLng(loc.latitude!, loc.longitude!),
                 infoWindow: InfoWindow(title: loc.name),
-                onTap: () {
+                onTap: () async {
                   mapController?.animateCamera(
                     CameraUpdate.newLatLngZoom(
                       LatLng(loc.latitude!, loc.longitude!),
                       15.0,
-      // appBar: const AppBarWidget(),
                     ),
                   );
-
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => HomeScreen()),
-                  // );
-
-                  // You might also want to update some state or show additional UI
+                  // ignore: use_build_context_synchronously
+                  showLocationDetails(context, loc);
                 }),
     };
 

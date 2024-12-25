@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/stripe_constants.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
-import 'package:flutter_application/features/splash/presentation/pages/splash_screen.dart';
+import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
+import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
 import 'package:flutter_application/server_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';

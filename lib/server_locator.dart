@@ -38,11 +38,11 @@ Future<void> init() async {
   // Auth Feature
   // Bloc
   sl.registerFactory(() => AuthBloc(
-        sl<LoginUserUsecase>(),
-        sl<RefreshUserTokenUsecase>(),
-        sl<RegisterUserUsecase>(),
-        sl<ResetPassUserUsecase>(),
-      ));
+      sl<LoginUserUsecase>(),
+      sl<RefreshUserTokenUsecase>(),
+      sl<RegisterUserUsecase>(),
+      sl<ResetPassUserUsecase>(),
+      sl<AuthicatedUsecase>()));
 
   // Use cases
   sl.registerLazySingleton(
@@ -65,7 +65,6 @@ Future<void> init() async {
         localAuthDatasources: sl<LocalAuthDatasources>(),
       ));
   sl.registerLazySingleton(
-
       () => LocalAuthDatasources(localConfig: sl<LocalConfig>()));
 
   // Home Feature
