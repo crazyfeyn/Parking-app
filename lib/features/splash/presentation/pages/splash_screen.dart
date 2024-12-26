@@ -3,6 +3,7 @@ import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:flutter_application/features/auth/presentation/pages/login_screen.dart';
 import 'package:flutter_application/features/home/presentation/pages/home_screen.dart';
+import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -30,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
               PageRouteBuilder(
                 transitionDuration: const Duration(seconds: 1),
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                    const HomeScreen(),
+                    const MainScreen(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                   return FadeTransition(

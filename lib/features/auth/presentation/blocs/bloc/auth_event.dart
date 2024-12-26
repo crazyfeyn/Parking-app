@@ -8,5 +8,6 @@ class AuthEvent with _$AuthEvent {
   const factory AuthEvent.logOut() = _logOut;
   const factory AuthEvent.refresh() = _refreshToken;
   const factory AuthEvent.authicated() = _authicated;
+  const factory AuthEvent.doInitial() = _initial;
 
 }

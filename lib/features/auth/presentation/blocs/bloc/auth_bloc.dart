@@ -4,11 +4,11 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/auth/domain/usecases/authicated_usecase.dart';
+import 'package:flutter_application/features/auth/domain/usecases/log_out_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/login_user_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/refresh_user_token_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/register_user_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/reset_pass_user_usecase.dart';
-
 part 'auth_bloc.freezed.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -19,19 +19,43 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   RegisterUserUsecase registerUserUsecase;
   ResetPassUserUsecase resetPassUserUsecase;
   AuthicatedUsecase authicatedUsecase;
+  LogOutUsecase logOutUsecase;
   AuthBloc(
     this.loginUserUsecase,
     this.refreshUserTokenUsecase,
     this.registerUserUsecase,
     this.resetPassUserUsecase,
     this.authicatedUsecase,
+    this.logOutUsecase,
   ) : super(AuthState()) {
     on<_log>(_logIn);
+    on<_logOut>(_logOu);
+    on<_initial>(_doint);
     on<_reg>(_register);
     on<_resetPass>(_reset);
     on<_refreshToken>(_refresh);
     on<_authicated>(_auth);
   }
+
+  Future<void> _logOu(_logOut event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(status: Status.loading));
+    final recponce = await logOutUsecase(null);
+    recponce.fold((error) {
+      emit(
+        state.copyWith(status: Status.error),
+      );
+    }, (data) {
+      emit(
+        state.copyWith(status: Status.success),
+      );
+    });
+  }
+
+    Future<void> _doint(_initial event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(status: Status.initial));
+    
+  }
+
   Future<void> _logIn(_log event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: Status.loading));
     final recponce = await loginUserUsecase(
@@ -40,7 +64,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(
         state.copyWith(status: Status.error),
       );
-      
     }, (data) {
       emit(
         state.copyWith(status: Status.success),
@@ -85,6 +108,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _auth(_authicated event, Emitter<AuthState> emit) async {
     final recponce = await authicatedUsecase.call(null);
+    print('HELLO FROM BLOC');
+    print(recponce);
     if (recponce == true) {
       emit(state.copyWith(status: Status.success));
     } else {

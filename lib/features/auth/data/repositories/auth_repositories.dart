@@ -10,6 +10,7 @@ class AuthRepositoriesImpl extends AuthRepositories {
   AuthRepositoriesImpl({
     required this.authDatasources,
   });
+
   @override
   Future<Either<Failure, void>> logIn(String password, String email) {
     return _logIn(() => authDatasources.logIn(password, email));
@@ -37,8 +38,16 @@ class AuthRepositoriesImpl extends AuthRepositories {
 
   @override
   Future<Either<Failure, void>> logOut() {
-    // TODO: implement logOut
-    throw UnimplementedError();
+    return _logOut(() => authDatasources.logOut());
+  }
+
+  Future<Either<Failure, void>> _logOut(Future<void> Function() log) async {
+    try {
+      print('REPOODAAOAOAAO');
+      return Right(await log());
+    } catch (e) {
+      return Left(CacheFailure());
+    }
   }
 
   Future<Either<Failure, void>> _logIn(Future<void> Function() log) async {

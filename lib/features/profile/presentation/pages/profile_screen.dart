@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
+import 'package:flutter_application/core/widgets/custom_error_widget.dart';
+import 'package:flutter_application/core/widgets/custom_loader.dart';
+import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
+import 'package:flutter_application/features/auth/presentation/pages/login_screen.dart';
 import 'package:flutter_application/features/history/presentation/pages/history_screen.dart';
 import 'package:flutter_application/features/payment_screen/presentation/pages/select_payment_screen.dart';
 import 'package:flutter_application/features/profile/presentation/pages/contact_detail_screen.dart';
 import 'package:flutter_application/features/profile/presentation/pages/payments_screen.dart';
 import 'package:flutter_application/features/profile/presentation/pages/vehicles_screen.dart';
 import 'package:flutter_application/features/profile/presentation/widgets/profile_pinned.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -81,10 +86,44 @@ class ProfileScreen extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => VehiclesScreen(),
+                                builder: (context) => const VehiclesScreen(),
                               ));
                         },
                       ),
+                      BlocConsumer<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          if (state.status == Status.error) {
+                            return const CustomErrorWidget(); // Displays error
+                          }
+                          if (state.status == Status.loading) {
+                            return const CustomLoader(); // Shows a loader during logout or other actions
+                          }
+                          return _profileButtons(
+                            'vehicle',
+                            'CUSTOM LOGOUT',
+                            () {
+                              context
+                                  .read<AuthBloc>()
+                                  .add(const AuthEvent.logOut());
+                            },
+                          );
+                        },
+                        listener: (context, state) {
+                          if (state.status == Status.success) {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginScreen(),
+                              ),
+                              (route) => false,
+                            );
+                          } else if (state.status == Status.error) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('An error occurred!')),
+                            );
+                          }
+                        },
+                      )
                     ],
                   ),
                 ),

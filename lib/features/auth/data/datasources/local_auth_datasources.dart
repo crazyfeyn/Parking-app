@@ -14,12 +14,11 @@ class LocalAuthDatasources {
 
   Future<String> getToken() async {
     print('hello fro  local mdata');
-
     final recponce = await localConfig.getToken();
     print(recponce);
     print('REFRESSHSHSHHS');
     print(await localConfig.getRefreshToken());
-    if (recponce.isNotEmpty) {
+    if (recponce != null && recponce.isNotEmpty) {
       return recponce;
     }
     throw CacheFailure();
@@ -27,6 +26,14 @@ class LocalAuthDatasources {
 
   Future<void> saveRefreshToken(String token) async {
     await localConfig.saveRefreshToken(token);
+  }
+
+  Future<bool> authicated() async {
+    return localConfig.authenticated();
+  }
+
+  Future<void> logOut() async {
+    await localConfig.deleteTokens();
   }
 
   Future<String> getRefreshToken() async {

@@ -65,6 +65,11 @@ class AuthDatasources {
     throw ServerException();
   }
 
+  Future<void> logOut() async {
+    print('hello from local datsoruces');
+    return localAuthDatasources.logOut();
+  }
+
   Future<void> startTokenAutoRefresh() async {
     print('hlelelleel');
     _tokenRefreshTimer = Timer.periodic(
@@ -120,13 +125,8 @@ class AuthDatasources {
 
   Future<bool> authicated() async {
     print('hello fro mdata');
-    final recponce = await localAuthDatasources.getToken();
-    print(recponce);
-    if (recponce.isNotEmpty) {
-      return true;
-    } else {
-      return false;
-    }
+    return  localAuthDatasources.authicated();
+    
   }
 }
 

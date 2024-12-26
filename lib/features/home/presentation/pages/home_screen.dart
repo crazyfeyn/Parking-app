@@ -1,7 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/home/data/datasources/spots_service.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_application/features/home/presentation/widgets/booking_modal_bottom_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_application/features/home/presentation/widgets/filter_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/button_for_map_widget.dart';
@@ -20,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   GoogleMapController? mapController;
   LatLng? currentLocation;
-
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();

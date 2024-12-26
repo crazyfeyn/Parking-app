@@ -1,11 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_application/core/config/dio_config.dart';
 import 'package:flutter_application/core/config/local_config.dart';
-import 'package:flutter_application/core/config/dio_config.dart';
 import 'package:flutter_application/features/auth/data/datasources/auth_datasources.dart';
 import 'package:flutter_application/features/auth/data/datasources/local_auth_datasources.dart';
 import 'package:flutter_application/features/auth/data/repositories/auth_repositories.dart';
 import 'package:flutter_application/features/auth/domain/usecases/authicated_usecase.dart';
+import 'package:flutter_application/features/auth/domain/usecases/log_out_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/login_user_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/refresh_user_token_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/register_user_usecase.dart';
@@ -29,7 +28,7 @@ Future<void> init() async {
 
   //! Core
   sl.registerLazySingleton(() => Location());
-  sl.registerLazySingleton(() => DioConfig());
+  // sl.registerLazySingleton(() => DioConfig());
   sl.registerLazySingleton<LocalConfig>(
       () => LocalConfig(sharedPreferences: shared));
 
@@ -42,9 +41,14 @@ Future<void> init() async {
       sl<RefreshUserTokenUsecase>(),
       sl<RegisterUserUsecase>(),
       sl<ResetPassUserUsecase>(),
-      sl<AuthicatedUsecase>()));
+      sl<AuthicatedUsecase>(),
+      sl<LogOutUsecase>()));
 
   // Use cases
+  sl.registerFactory(
+      () => LogOutUsecase(authRepositoriesImpl: sl<AuthRepositoriesImpl>()));
+  sl.registerFactory(
+      () => AuthicatedUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
   sl.registerLazySingleton(
       () => LoginUserUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
   sl.registerLazySingleton(() =>
