@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/constants/app_constants.dart';
 
 class MileSliderWidget extends StatefulWidget {
   final double minValue;
@@ -34,7 +35,7 @@ class _MileSliderWidgetState extends State<MileSliderWidget> {
         const Text(
           'Miles',
           style: TextStyle(
-            color: Colors.black54,
+            color: AppConstants.blackColor,
             fontSize: 16,
           ),
         ),
