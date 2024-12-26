@@ -130,6 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
             target: location,
             zoom: 5,
           ),
+          zoomControlsEnabled: false,
           onMapCreated: (controller) {
             mapController = controller;
           },

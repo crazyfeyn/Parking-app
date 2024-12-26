@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 
-class StatePicker extends StatefulWidget {
+class AmenitiesPicker extends StatefulWidget {
   final Function(String?) onStateChanged;
   final String? initialValue;
 
-  const StatePicker({
+  const AmenitiesPicker({
     super.key,
     required this.onStateChanged,
     this.initialValue,
@@ -13,18 +13,63 @@ class StatePicker extends StatefulWidget {
 
   @override
   // ignore: library_private_types_in_public_api
-  _StatePickerState createState() => _StatePickerState();
+  _AmenitiesPickerState createState() => _AmenitiesPickerState();
 }
 
-class _StatePickerState extends State<StatePicker> {
+class _AmenitiesPickerState extends State<AmenitiesPicker> {
   String? selectedState;
 
-  final List<String> states = [
-    'Alabama',
-    'Alaska',
-    'Arizona',
-    'Arkansas',
-    'California',
+  List<String> cities = [
+    'New York City, New York',
+    'Los Angeles, California',
+    'Chicago, Illinois',
+    'Houston, Texas',
+    'Phoenix, Arizona',
+    'Philadelphia, Pennsylvania',
+    'San Antonio, Texas',
+    'San Diego, California',
+    'Dallas, Texas',
+    'San Jose, California',
+    'Austin, Texas',
+    'Jacksonville, Florida',
+    'Fort Worth, Texas',
+    'Columbus, Ohio',
+    'Charlotte, North Carolina',
+    'San Francisco, California',
+    'Indianapolis, Indiana',
+    'Seattle, Washington',
+    'Denver, Colorado',
+    'Washington, D.C.',
+    'Boston, Massachusetts',
+    'El Paso, Texas',
+    'Nashville, Tennessee',
+    'Detroit, Michigan',
+    'Memphis, Tennessee',
+    'Portland, Oregon',
+    'Oklahoma City, Oklahoma',
+    'Las Vegas, Nevada',
+    'Louisville, Kentucky',
+    'Baltimore, Maryland',
+    'Milwaukee, Wisconsin',
+    'Albuquerque, New Mexico',
+    'Tucson, Arizona',
+    'Fresno, California',
+    'Mesa, Arizona',
+    'Sacramento, California',
+    'Kansas City, Missouri',
+    'Long Beach, California',
+    'Atlanta, Georgia',
+    'Miami, Florida',
+    'Raleigh, North Carolina',
+    'Omaha, Nebraska',
+    'Cleveland, Ohio',
+    'Virginia Beach, Virginia',
+    'Omaha, Nebraska',
+    'Minneapolis, Minnesota',
+    'Tampa, Florida',
+    'Honolulu, Hawaii',
+    'New Orleans, Louisiana',
+    'St. Louis, Missouri'
   ];
 
   @override
@@ -43,18 +88,18 @@ class _StatePickerState extends State<StatePicker> {
       ),
       builder: (BuildContext context) {
         return ListView.builder(
-          itemCount: states.length,
+          itemCount: cities.length,
           itemBuilder: (context, index) {
             return ListTile(
               title: Text(
-                states[index],
+                cities[index],
                 style: const TextStyle(fontSize: 16),
               ),
               onTap: () {
                 setState(() {
-                  selectedState = states[index];
+                  selectedState = cities[index];
                 });
-                widget.onStateChanged(states[index]);
+                widget.onStateChanged(cities[index]);
                 Navigator.pop(context);
               },
             );
@@ -70,7 +115,7 @@ class _StatePickerState extends State<StatePicker> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'State',
+          'Amenities',
           style: TextStyle(
             fontSize: 16,
             color: AppConstants.blackColor,
@@ -92,7 +137,7 @@ class _StatePickerState extends State<StatePicker> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  selectedState ?? 'Pick state',
+                  selectedState ?? 'Pick city',
                   style: TextStyle(
                     color:
                         selectedState != null ? Colors.black : Colors.black54,

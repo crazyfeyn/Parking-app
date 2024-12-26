@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/constants/app_constants.dart';
 
 class CityPicker extends StatefulWidget {
   final Function(String?) onStateChanged;
@@ -117,7 +118,7 @@ class _CityPickerState extends State<CityPicker> {
           'City',
           style: TextStyle(
             fontSize: 16,
-            color: Colors.grey,
+            color: AppConstants.blackColor,
           ),
         ),
         const SizedBox(height: 8),
