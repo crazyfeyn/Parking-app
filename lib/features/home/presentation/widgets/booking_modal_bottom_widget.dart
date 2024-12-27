@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
-import 'package:flutter_application/features/booking/presentation/pages/booking_screen.dart';
 import 'package:flutter_application/features/booking_space/presentation/pages/booking_space.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
 

@@ -7,13 +7,12 @@ import 'package:flutter_application/core/widgets/text_widget.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:flutter_application/features/auth/presentation/pages/forget_password_screen.dart';
 import 'package:flutter_application/features/auth/presentation/pages/register_screen.dart';
-import 'package:flutter_application/features/home/presentation/pages/home_screen.dart';
 import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:flutter_application/features/auth/presentation/pages/login_screen.dart';
-import 'package:flutter_application/features/home/presentation/pages/home_screen.dart';
 import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -48,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
               PageRouteBuilder(
                 transitionDuration: const Duration(milliseconds: 600),
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                    LoginScreen(),
+                    const LoginScreen(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                   return FadeTransition(

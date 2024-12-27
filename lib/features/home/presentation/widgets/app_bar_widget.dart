@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
-import 'package:flutter_application/features/booking/presentation/pages/booking_screen.dart';
 import 'package:flutter_application/features/profile/presentation/pages/profile_screen.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
