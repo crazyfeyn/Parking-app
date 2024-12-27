@@ -5,17 +5,18 @@ import 'package:flutter_application/core/error/failure.dart';
 import 'package:flutter_application/features/profile/data/models/profile_model.dart';
 
 class ProfileDatasources {
-  ProfileModel? _cachedProfile;
+  ProfileModel? cachedProfile;
+  final DioConfig dioConfig;
 
-  final _dioConfig = DioConfig();
+  ProfileDatasources({required this.dioConfig, ProfileModel? cachedProfile});
 
   Future<ProfileModel> getProfile() async {
     try {
-      final response = await _dioConfig.client.get('/users/profile/');
+      final response = await dioConfig!.client.get('/users/profile/');
 
       if (response.statusCode == 200) {
-        _cachedProfile = ProfileModel.fromJson(response.data);
-        return _cachedProfile!;
+        cachedProfile = ProfileModel.fromJson(response.data);
+        return cachedProfile!;
       } else {
         throw DioException(
           requestOptions: RequestOptions(path: '/users/profile/'),
@@ -41,13 +42,13 @@ class ProfileDatasources {
         if (email != null) 'email': email,
       };
 
-      final response = await _dioConfig.client.patch(
+      final response = await dioConfig.client.patch(
         '/users/profile/',
         data: updateData,
       );
 
       if (response.statusCode == 200) {
-        _cachedProfile = _cachedProfile?.copyWith(
+        cachedProfile = cachedProfile?.copyWith(
           name: name,
           surname: surname,
           email: email,
@@ -68,7 +69,7 @@ class ProfileDatasources {
     required String newPassword,
   }) async {
     try {
-      await _dioConfig.client.post(
+      await dioConfig.client.post(
         '/users/change-password/',
         data: {
           'old_password': oldPassword,
@@ -82,7 +83,7 @@ class ProfileDatasources {
 
   Future<void> addPaymentMethod(Map<String, dynamic> paymentData) async {
     try {
-      await _dioConfig.client.post(
+      await dioConfig.client.post(
         '/users/add-payment-method/',
         data: paymentData,
       );
