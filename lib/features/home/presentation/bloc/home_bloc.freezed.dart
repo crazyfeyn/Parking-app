@@ -292,6 +292,9 @@ mixin _$HomeState {
   LatLng? get currentLocation => throw _privateConstructorUsedError;
   List<LocationModel>? get locations => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
+  String? get searchQuery => throw _privateConstructorUsedError;
+  ServicePreferences get servicePreferences =>
+      throw _privateConstructorUsedError;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -309,7 +312,9 @@ abstract class $HomeStateCopyWith<$Res> {
       {Status status,
       LatLng? currentLocation,
       List<LocationModel>? locations,
-      String? errorMessage});
+      String? errorMessage,
+      String? searchQuery,
+      ServicePreferences servicePreferences});
 }
 
 /// @nodoc
@@ -331,6 +336,8 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? currentLocation = freezed,
     Object? locations = freezed,
     Object? errorMessage = freezed,
+    Object? searchQuery = freezed,
+    Object? servicePreferences = freezed,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -349,6 +356,14 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String?,
+      searchQuery: freezed == searchQuery
+          ? _value.searchQuery
+          : searchQuery // ignore: cast_nullable_to_non_nullable
+              as String?,
+      servicePreferences: freezed == servicePreferences
+          ? _value.servicePreferences
+          : servicePreferences // ignore: cast_nullable_to_non_nullable
+              as ServicePreferences,
     ) as $Val);
   }
 }
@@ -365,7 +380,9 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       {Status status,
       LatLng? currentLocation,
       List<LocationModel>? locations,
-      String? errorMessage});
+      String? errorMessage,
+      String? searchQuery,
+      ServicePreferences servicePreferences});
 }
 
 /// @nodoc
@@ -385,6 +402,8 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? currentLocation = freezed,
     Object? locations = freezed,
     Object? errorMessage = freezed,
+    Object? searchQuery = freezed,
+    Object? servicePreferences = freezed,
   }) {
     return _then(_$HomeStateImpl(
       status: null == status
@@ -403,6 +422,14 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String?,
+      searchQuery: freezed == searchQuery
+          ? _value.searchQuery
+          : searchQuery // ignore: cast_nullable_to_non_nullable
+              as String?,
+      servicePreferences: freezed == servicePreferences
+          ? _value.servicePreferences
+          : servicePreferences // ignore: cast_nullable_to_non_nullable
+              as ServicePreferences,
     ));
   }
 }
@@ -414,7 +441,9 @@ class _$HomeStateImpl implements _HomeState {
       {this.status = Status.initial,
       this.currentLocation,
       final List<LocationModel>? locations,
-      this.errorMessage})
+      this.errorMessage,
+      this.searchQuery,
+      this.servicePreferences = const ServicePreferences()})
       : _locations = locations;
 
   @override
@@ -434,10 +463,15 @@ class _$HomeStateImpl implements _HomeState {
 
   @override
   final String? errorMessage;
+  @override
+  final String? searchQuery;
+  @override
+  @JsonKey()
+  final ServicePreferences servicePreferences;
 
   @override
   String toString() {
-    return 'HomeState(status: $status, currentLocation: $currentLocation, locations: $locations, errorMessage: $errorMessage)';
+    return 'HomeState(status: $status, currentLocation: $currentLocation, locations: $locations, errorMessage: $errorMessage, searchQuery: $searchQuery, servicePreferences: $servicePreferences)';
   }
 
   @override
@@ -451,12 +485,22 @@ class _$HomeStateImpl implements _HomeState {
             const DeepCollectionEquality()
                 .equals(other._locations, _locations) &&
             (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage));
+                other.errorMessage == errorMessage) &&
+            (identical(other.searchQuery, searchQuery) ||
+                other.searchQuery == searchQuery) &&
+            const DeepCollectionEquality()
+                .equals(other.servicePreferences, servicePreferences));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, currentLocation,
-      const DeepCollectionEquality().hash(_locations), errorMessage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      status,
+      currentLocation,
+      const DeepCollectionEquality().hash(_locations),
+      errorMessage,
+      searchQuery,
+      const DeepCollectionEquality().hash(servicePreferences));
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -472,7 +516,9 @@ abstract class _HomeState implements HomeState {
       {final Status status,
       final LatLng? currentLocation,
       final List<LocationModel>? locations,
-      final String? errorMessage}) = _$HomeStateImpl;
+      final String? errorMessage,
+      final String? searchQuery,
+      final ServicePreferences servicePreferences}) = _$HomeStateImpl;
 
   @override
   Status get status;
@@ -482,6 +528,10 @@ abstract class _HomeState implements HomeState {
   List<LocationModel>? get locations;
   @override
   String? get errorMessage;
+  @override
+  String? get searchQuery;
+  @override
+  ServicePreferences get servicePreferences;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
