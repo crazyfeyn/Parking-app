@@ -7,5 +7,7 @@ class HomeState with _$HomeState {
     LatLng? currentLocation,
     List<LocationModel>? locations,
     String? errorMessage,
+    String? searchQuery,
+    @Default(ServicePreferences()) ServicePreferences servicePreferences,
   }) = _HomeState;
 }

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
+import 'package:flutter_application/features/home/data/models/service_preferences_model.dart';
 import 'package:flutter_application/features/home/domain/usecases/current_location_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/fetch_locations_usecase.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
