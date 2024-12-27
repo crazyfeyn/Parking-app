@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 
-// Moved to separate file: parking_filter_model.dart
 class ParkingFilterModel {
   String? state;
   String? city;
