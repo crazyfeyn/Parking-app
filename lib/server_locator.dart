@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_application/core/config/dio_config.dart';
 import 'package:flutter_application/core/config/local_config.dart';
 import 'package:flutter_application/features/auth/data/datasources/auth_datasources.dart';
 import 'package:flutter_application/features/auth/data/datasources/local_auth_datasources.dart';
@@ -16,6 +17,14 @@ import 'package:flutter_application/features/home/domain/repositories/location_r
 import 'package:flutter_application/features/home/domain/usecases/current_location_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/fetch_locations_usecase.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
+import 'package:flutter_application/features/profile/data/datasources/profile_datasources.dart';
+import 'package:flutter_application/features/profile/data/repositories/profile_repositories.dart';
+import 'package:flutter_application/features/profile/domain/repositories/profile_repositories.dart';
+import 'package:flutter_application/features/profile/domain/usecases/add_payment_method_usecase.dart';
+import 'package:flutter_application/features/profile/domain/usecases/change_password_usecase.dart';
+import 'package:flutter_application/features/profile/domain/usecases/get_profile_usecase.dart';
+import 'package:flutter_application/features/profile/domain/usecases/update_profile_usecase.dart';
+import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:location/location.dart';
@@ -28,7 +37,7 @@ Future<void> init() async {
 
   //! Core
   sl.registerLazySingleton(() => Location());
-  // sl.registerLazySingleton(() => DioConfig());
+  sl.registerLazySingleton(() => DioConfig());
   sl.registerLazySingleton<LocalConfig>(
       () => LocalConfig(sharedPreferences: shared));
 
@@ -93,4 +102,39 @@ Future<void> init() async {
 
   // Data sources
   sl.registerLazySingleton(() => HomeDatasources());
+
+  // Profile Feature
+  // Bloc
+  sl.registerFactory(() => ProfileBloc(
+        addPaymentMethodUsecase: sl<AddPaymentMethodUsecase>(),
+        changePasswordUsecase: sl<ChangePasswordUsecase>(),
+        getProfileUsecase: sl<GetProfileUsecase>(),
+        updateProfileUsecase: sl<UpdateProfileUsecase>(),
+      ));
+
+  // Use cases
+  sl.registerLazySingleton(() => AddPaymentMethodUsecase(
+        profileRepositories: sl<ProfileRepositories>(),
+      ));
+  sl.registerLazySingleton(() => ChangePasswordUsecase(
+        profileRepositories: sl<ProfileRepositories>(),
+      ));
+  sl.registerLazySingleton(() => GetProfileUsecase(
+        profileRepositories: sl<ProfileRepositories>(),
+      ));
+  sl.registerLazySingleton(() => UpdateProfileUsecase(
+        profileRepositories: sl<ProfileRepositories>(),
+      ));
+
+  // Repository
+  sl.registerLazySingleton<ProfileRepositories>(() => ProfileRepositoriesImpl(
+        profileDatasources: sl<ProfileDatasources>(),
+      ));
+
+  // Data sources
+  //! cachedProfile uchun shareddan current userni olib berib yuborish kerak
+  sl.registerLazySingleton(() => ProfileDatasources(
+        dioConfig: DioConfig(),
+        // cachedProfile: sl<LocalConfig>(),
+      ));
 }
