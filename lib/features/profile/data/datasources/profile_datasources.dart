@@ -11,9 +11,9 @@ class ProfileDatasources {
   ProfileDatasources({required this.dioConfig, ProfileModel? cachedProfile});
 
   Future<ProfileModel> getProfile() async {
+    print('HELLLOOO DATASOSORROCOOEOOEOEOEOE');
     try {
-      final response = await dioConfig!.client.get('/users/profile/');
-
+      final response = await dioConfig.client.get('/users/profile/');
       if (response.statusCode == 200) {
         cachedProfile = ProfileModel.fromJson(response.data);
         return cachedProfile!;

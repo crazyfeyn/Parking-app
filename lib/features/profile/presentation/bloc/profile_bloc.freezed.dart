@@ -747,73 +747,14 @@ abstract class _addPaymentMethod implements ProfileEvent {
 
 /// @nodoc
 mixin _$ProfileState {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ProfileModel profile) profileLoaded,
-    required TResult Function() profileUpdated,
-    required TResult Function() passwordChanged,
-    required TResult Function() paymentMethodAdded,
-    required TResult Function(String message) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileModel profile)? profileLoaded,
-    TResult? Function()? profileUpdated,
-    TResult? Function()? passwordChanged,
-    TResult? Function()? paymentMethodAdded,
-    TResult? Function(String message)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileModel profile)? profileLoaded,
-    TResult Function()? profileUpdated,
-    TResult Function()? passwordChanged,
-    TResult Function()? paymentMethodAdded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_ProfileLoaded value) profileLoaded,
-    required TResult Function(_ProfileUpdated value) profileUpdated,
-    required TResult Function(_PasswordChanged value) passwordChanged,
-    required TResult Function(_PaymentMethodAdded value) paymentMethodAdded,
-    required TResult Function(_Error value) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_ProfileLoaded value)? profileLoaded,
-    TResult? Function(_ProfileUpdated value)? profileUpdated,
-    TResult? Function(_PasswordChanged value)? passwordChanged,
-    TResult? Function(_PaymentMethodAdded value)? paymentMethodAdded,
-    TResult? Function(_Error value)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_ProfileLoaded value)? profileLoaded,
-    TResult Function(_ProfileUpdated value)? profileUpdated,
-    TResult Function(_PasswordChanged value)? passwordChanged,
-    TResult Function(_PaymentMethodAdded value)? paymentMethodAdded,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) =>
+  Status get status => throw _privateConstructorUsedError;
+  ProfileModel? get profile => throw _privateConstructorUsedError;
+  String? get message => throw _privateConstructorUsedError;
+
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $ProfileStateCopyWith<ProfileState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -822,6 +763,8 @@ abstract class $ProfileStateCopyWith<$Res> {
   factory $ProfileStateCopyWith(
           ProfileState value, $Res Function(ProfileState) then) =
       _$ProfileStateCopyWithImpl<$Res, ProfileState>;
+  @useResult
+  $Res call({Status status, ProfileModel? profile, String? message});
 }
 
 /// @nodoc
@@ -836,869 +779,47 @@ class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
 
   /// Create a copy of ProfileState
   /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$InitialImplCopyWith<$Res> {
-  factory _$$InitialImplCopyWith(
-          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
-      __$$InitialImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$InitialImplCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$InitialImpl>
-    implements _$$InitialImplCopyWith<$Res> {
-  __$$InitialImplCopyWithImpl(
-      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ProfileState
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$InitialImpl implements _Initial {
-  const _$InitialImpl();
-
-  @override
-  String toString() {
-    return 'ProfileState.initial()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitialImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ProfileModel profile) profileLoaded,
-    required TResult Function() profileUpdated,
-    required TResult Function() passwordChanged,
-    required TResult Function() paymentMethodAdded,
-    required TResult Function(String message) error,
-  }) {
-    return initial();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileModel profile)? profileLoaded,
-    TResult? Function()? profileUpdated,
-    TResult? Function()? passwordChanged,
-    TResult? Function()? paymentMethodAdded,
-    TResult? Function(String message)? error,
-  }) {
-    return initial?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileModel profile)? profileLoaded,
-    TResult Function()? profileUpdated,
-    TResult Function()? passwordChanged,
-    TResult Function()? paymentMethodAdded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_ProfileLoaded value) profileLoaded,
-    required TResult Function(_ProfileUpdated value) profileUpdated,
-    required TResult Function(_PasswordChanged value) passwordChanged,
-    required TResult Function(_PaymentMethodAdded value) paymentMethodAdded,
-    required TResult Function(_Error value) error,
-  }) {
-    return initial(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_ProfileLoaded value)? profileLoaded,
-    TResult? Function(_ProfileUpdated value)? profileUpdated,
-    TResult? Function(_PasswordChanged value)? passwordChanged,
-    TResult? Function(_PaymentMethodAdded value)? paymentMethodAdded,
-    TResult? Function(_Error value)? error,
-  }) {
-    return initial?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_ProfileLoaded value)? profileLoaded,
-    TResult Function(_ProfileUpdated value)? profileUpdated,
-    TResult Function(_PasswordChanged value)? passwordChanged,
-    TResult Function(_PaymentMethodAdded value)? paymentMethodAdded,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Initial implements ProfileState {
-  const factory _Initial() = _$InitialImpl;
-}
-
-/// @nodoc
-abstract class _$$LoadingImplCopyWith<$Res> {
-  factory _$$LoadingImplCopyWith(
-          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
-      __$$LoadingImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$LoadingImplCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$LoadingImpl>
-    implements _$$LoadingImplCopyWith<$Res> {
-  __$$LoadingImplCopyWithImpl(
-      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ProfileState
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$LoadingImpl implements _Loading {
-  const _$LoadingImpl();
-
-  @override
-  String toString() {
-    return 'ProfileState.loading()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ProfileModel profile) profileLoaded,
-    required TResult Function() profileUpdated,
-    required TResult Function() passwordChanged,
-    required TResult Function() paymentMethodAdded,
-    required TResult Function(String message) error,
-  }) {
-    return loading();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileModel profile)? profileLoaded,
-    TResult? Function()? profileUpdated,
-    TResult? Function()? passwordChanged,
-    TResult? Function()? paymentMethodAdded,
-    TResult? Function(String message)? error,
-  }) {
-    return loading?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileModel profile)? profileLoaded,
-    TResult Function()? profileUpdated,
-    TResult Function()? passwordChanged,
-    TResult Function()? paymentMethodAdded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_ProfileLoaded value) profileLoaded,
-    required TResult Function(_ProfileUpdated value) profileUpdated,
-    required TResult Function(_PasswordChanged value) passwordChanged,
-    required TResult Function(_PaymentMethodAdded value) paymentMethodAdded,
-    required TResult Function(_Error value) error,
-  }) {
-    return loading(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_ProfileLoaded value)? profileLoaded,
-    TResult? Function(_ProfileUpdated value)? profileUpdated,
-    TResult? Function(_PasswordChanged value)? passwordChanged,
-    TResult? Function(_PaymentMethodAdded value)? paymentMethodAdded,
-    TResult? Function(_Error value)? error,
-  }) {
-    return loading?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_ProfileLoaded value)? profileLoaded,
-    TResult Function(_ProfileUpdated value)? profileUpdated,
-    TResult Function(_PasswordChanged value)? passwordChanged,
-    TResult Function(_PaymentMethodAdded value)? paymentMethodAdded,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Loading implements ProfileState {
-  const factory _Loading() = _$LoadingImpl;
-}
-
-/// @nodoc
-abstract class _$$ProfileLoadedImplCopyWith<$Res> {
-  factory _$$ProfileLoadedImplCopyWith(
-          _$ProfileLoadedImpl value, $Res Function(_$ProfileLoadedImpl) then) =
-      __$$ProfileLoadedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({ProfileModel profile});
-}
-
-/// @nodoc
-class __$$ProfileLoadedImplCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$ProfileLoadedImpl>
-    implements _$$ProfileLoadedImplCopyWith<$Res> {
-  __$$ProfileLoadedImplCopyWithImpl(
-      _$ProfileLoadedImpl _value, $Res Function(_$ProfileLoadedImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ProfileState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? profile = null,
+    Object? status = null,
+    Object? profile = freezed,
+    Object? message = freezed,
   }) {
-    return _then(_$ProfileLoadedImpl(
-      profile: null == profile
+    return _then(_value.copyWith(
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as Status,
+      profile: freezed == profile
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
-              as ProfileModel,
-    ));
+              as ProfileModel?,
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
   }
 }
 
 /// @nodoc
-
-class _$ProfileLoadedImpl implements _ProfileLoaded {
-  const _$ProfileLoadedImpl({required this.profile});
-
+abstract class _$$ProfileStateImplCopyWith<$Res>
+    implements $ProfileStateCopyWith<$Res> {
+  factory _$$ProfileStateImplCopyWith(
+          _$ProfileStateImpl value, $Res Function(_$ProfileStateImpl) then) =
+      __$$ProfileStateImplCopyWithImpl<$Res>;
   @override
-  final ProfileModel profile;
-
-  @override
-  String toString() {
-    return 'ProfileState.profileLoaded(profile: $profile)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ProfileLoadedImpl &&
-            (identical(other.profile, profile) || other.profile == profile));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, profile);
-
-  /// Create a copy of ProfileState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ProfileLoadedImplCopyWith<_$ProfileLoadedImpl> get copyWith =>
-      __$$ProfileLoadedImplCopyWithImpl<_$ProfileLoadedImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ProfileModel profile) profileLoaded,
-    required TResult Function() profileUpdated,
-    required TResult Function() passwordChanged,
-    required TResult Function() paymentMethodAdded,
-    required TResult Function(String message) error,
-  }) {
-    return profileLoaded(profile);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileModel profile)? profileLoaded,
-    TResult? Function()? profileUpdated,
-    TResult? Function()? passwordChanged,
-    TResult? Function()? paymentMethodAdded,
-    TResult? Function(String message)? error,
-  }) {
-    return profileLoaded?.call(profile);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileModel profile)? profileLoaded,
-    TResult Function()? profileUpdated,
-    TResult Function()? passwordChanged,
-    TResult Function()? paymentMethodAdded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (profileLoaded != null) {
-      return profileLoaded(profile);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_ProfileLoaded value) profileLoaded,
-    required TResult Function(_ProfileUpdated value) profileUpdated,
-    required TResult Function(_PasswordChanged value) passwordChanged,
-    required TResult Function(_PaymentMethodAdded value) paymentMethodAdded,
-    required TResult Function(_Error value) error,
-  }) {
-    return profileLoaded(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_ProfileLoaded value)? profileLoaded,
-    TResult? Function(_ProfileUpdated value)? profileUpdated,
-    TResult? Function(_PasswordChanged value)? passwordChanged,
-    TResult? Function(_PaymentMethodAdded value)? paymentMethodAdded,
-    TResult? Function(_Error value)? error,
-  }) {
-    return profileLoaded?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_ProfileLoaded value)? profileLoaded,
-    TResult Function(_ProfileUpdated value)? profileUpdated,
-    TResult Function(_PasswordChanged value)? passwordChanged,
-    TResult Function(_PaymentMethodAdded value)? paymentMethodAdded,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (profileLoaded != null) {
-      return profileLoaded(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _ProfileLoaded implements ProfileState {
-  const factory _ProfileLoaded({required final ProfileModel profile}) =
-      _$ProfileLoadedImpl;
-
-  ProfileModel get profile;
-
-  /// Create a copy of ProfileState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ProfileLoadedImplCopyWith<_$ProfileLoadedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$ProfileUpdatedImplCopyWith<$Res> {
-  factory _$$ProfileUpdatedImplCopyWith(_$ProfileUpdatedImpl value,
-          $Res Function(_$ProfileUpdatedImpl) then) =
-      __$$ProfileUpdatedImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$ProfileUpdatedImplCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$ProfileUpdatedImpl>
-    implements _$$ProfileUpdatedImplCopyWith<$Res> {
-  __$$ProfileUpdatedImplCopyWithImpl(
-      _$ProfileUpdatedImpl _value, $Res Function(_$ProfileUpdatedImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ProfileState
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$ProfileUpdatedImpl implements _ProfileUpdated {
-  const _$ProfileUpdatedImpl();
-
-  @override
-  String toString() {
-    return 'ProfileState.profileUpdated()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ProfileUpdatedImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ProfileModel profile) profileLoaded,
-    required TResult Function() profileUpdated,
-    required TResult Function() passwordChanged,
-    required TResult Function() paymentMethodAdded,
-    required TResult Function(String message) error,
-  }) {
-    return profileUpdated();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileModel profile)? profileLoaded,
-    TResult? Function()? profileUpdated,
-    TResult? Function()? passwordChanged,
-    TResult? Function()? paymentMethodAdded,
-    TResult? Function(String message)? error,
-  }) {
-    return profileUpdated?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileModel profile)? profileLoaded,
-    TResult Function()? profileUpdated,
-    TResult Function()? passwordChanged,
-    TResult Function()? paymentMethodAdded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (profileUpdated != null) {
-      return profileUpdated();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_ProfileLoaded value) profileLoaded,
-    required TResult Function(_ProfileUpdated value) profileUpdated,
-    required TResult Function(_PasswordChanged value) passwordChanged,
-    required TResult Function(_PaymentMethodAdded value) paymentMethodAdded,
-    required TResult Function(_Error value) error,
-  }) {
-    return profileUpdated(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_ProfileLoaded value)? profileLoaded,
-    TResult? Function(_ProfileUpdated value)? profileUpdated,
-    TResult? Function(_PasswordChanged value)? passwordChanged,
-    TResult? Function(_PaymentMethodAdded value)? paymentMethodAdded,
-    TResult? Function(_Error value)? error,
-  }) {
-    return profileUpdated?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_ProfileLoaded value)? profileLoaded,
-    TResult Function(_ProfileUpdated value)? profileUpdated,
-    TResult Function(_PasswordChanged value)? passwordChanged,
-    TResult Function(_PaymentMethodAdded value)? paymentMethodAdded,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (profileUpdated != null) {
-      return profileUpdated(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _ProfileUpdated implements ProfileState {
-  const factory _ProfileUpdated() = _$ProfileUpdatedImpl;
-}
-
-/// @nodoc
-abstract class _$$PasswordChangedImplCopyWith<$Res> {
-  factory _$$PasswordChangedImplCopyWith(_$PasswordChangedImpl value,
-          $Res Function(_$PasswordChangedImpl) then) =
-      __$$PasswordChangedImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$PasswordChangedImplCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$PasswordChangedImpl>
-    implements _$$PasswordChangedImplCopyWith<$Res> {
-  __$$PasswordChangedImplCopyWithImpl(
-      _$PasswordChangedImpl _value, $Res Function(_$PasswordChangedImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ProfileState
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$PasswordChangedImpl implements _PasswordChanged {
-  const _$PasswordChangedImpl();
-
-  @override
-  String toString() {
-    return 'ProfileState.passwordChanged()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$PasswordChangedImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ProfileModel profile) profileLoaded,
-    required TResult Function() profileUpdated,
-    required TResult Function() passwordChanged,
-    required TResult Function() paymentMethodAdded,
-    required TResult Function(String message) error,
-  }) {
-    return passwordChanged();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileModel profile)? profileLoaded,
-    TResult? Function()? profileUpdated,
-    TResult? Function()? passwordChanged,
-    TResult? Function()? paymentMethodAdded,
-    TResult? Function(String message)? error,
-  }) {
-    return passwordChanged?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileModel profile)? profileLoaded,
-    TResult Function()? profileUpdated,
-    TResult Function()? passwordChanged,
-    TResult Function()? paymentMethodAdded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (passwordChanged != null) {
-      return passwordChanged();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_ProfileLoaded value) profileLoaded,
-    required TResult Function(_ProfileUpdated value) profileUpdated,
-    required TResult Function(_PasswordChanged value) passwordChanged,
-    required TResult Function(_PaymentMethodAdded value) paymentMethodAdded,
-    required TResult Function(_Error value) error,
-  }) {
-    return passwordChanged(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_ProfileLoaded value)? profileLoaded,
-    TResult? Function(_ProfileUpdated value)? profileUpdated,
-    TResult? Function(_PasswordChanged value)? passwordChanged,
-    TResult? Function(_PaymentMethodAdded value)? paymentMethodAdded,
-    TResult? Function(_Error value)? error,
-  }) {
-    return passwordChanged?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_ProfileLoaded value)? profileLoaded,
-    TResult Function(_ProfileUpdated value)? profileUpdated,
-    TResult Function(_PasswordChanged value)? passwordChanged,
-    TResult Function(_PaymentMethodAdded value)? paymentMethodAdded,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (passwordChanged != null) {
-      return passwordChanged(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _PasswordChanged implements ProfileState {
-  const factory _PasswordChanged() = _$PasswordChangedImpl;
-}
-
-/// @nodoc
-abstract class _$$PaymentMethodAddedImplCopyWith<$Res> {
-  factory _$$PaymentMethodAddedImplCopyWith(_$PaymentMethodAddedImpl value,
-          $Res Function(_$PaymentMethodAddedImpl) then) =
-      __$$PaymentMethodAddedImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$PaymentMethodAddedImplCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$PaymentMethodAddedImpl>
-    implements _$$PaymentMethodAddedImplCopyWith<$Res> {
-  __$$PaymentMethodAddedImplCopyWithImpl(_$PaymentMethodAddedImpl _value,
-      $Res Function(_$PaymentMethodAddedImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ProfileState
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$PaymentMethodAddedImpl implements _PaymentMethodAdded {
-  const _$PaymentMethodAddedImpl();
-
-  @override
-  String toString() {
-    return 'ProfileState.paymentMethodAdded()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$PaymentMethodAddedImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ProfileModel profile) profileLoaded,
-    required TResult Function() profileUpdated,
-    required TResult Function() passwordChanged,
-    required TResult Function() paymentMethodAdded,
-    required TResult Function(String message) error,
-  }) {
-    return paymentMethodAdded();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileModel profile)? profileLoaded,
-    TResult? Function()? profileUpdated,
-    TResult? Function()? passwordChanged,
-    TResult? Function()? paymentMethodAdded,
-    TResult? Function(String message)? error,
-  }) {
-    return paymentMethodAdded?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileModel profile)? profileLoaded,
-    TResult Function()? profileUpdated,
-    TResult Function()? passwordChanged,
-    TResult Function()? paymentMethodAdded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (paymentMethodAdded != null) {
-      return paymentMethodAdded();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_ProfileLoaded value) profileLoaded,
-    required TResult Function(_ProfileUpdated value) profileUpdated,
-    required TResult Function(_PasswordChanged value) passwordChanged,
-    required TResult Function(_PaymentMethodAdded value) paymentMethodAdded,
-    required TResult Function(_Error value) error,
-  }) {
-    return paymentMethodAdded(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_ProfileLoaded value)? profileLoaded,
-    TResult? Function(_ProfileUpdated value)? profileUpdated,
-    TResult? Function(_PasswordChanged value)? passwordChanged,
-    TResult? Function(_PaymentMethodAdded value)? paymentMethodAdded,
-    TResult? Function(_Error value)? error,
-  }) {
-    return paymentMethodAdded?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_ProfileLoaded value)? profileLoaded,
-    TResult Function(_ProfileUpdated value)? profileUpdated,
-    TResult Function(_PasswordChanged value)? passwordChanged,
-    TResult Function(_PaymentMethodAdded value)? paymentMethodAdded,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (paymentMethodAdded != null) {
-      return paymentMethodAdded(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _PaymentMethodAdded implements ProfileState {
-  const factory _PaymentMethodAdded() = _$PaymentMethodAddedImpl;
-}
-
-/// @nodoc
-abstract class _$$ErrorImplCopyWith<$Res> {
-  factory _$$ErrorImplCopyWith(
-          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
-      __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String message});
+  $Res call({Status status, ProfileModel? profile, String? message});
 }
 
 /// @nodoc
-class __$$ErrorImplCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$ErrorImpl>
-    implements _$$ErrorImplCopyWith<$Res> {
-  __$$ErrorImplCopyWithImpl(
-      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
+class __$$ProfileStateImplCopyWithImpl<$Res>
+    extends _$ProfileStateCopyWithImpl<$Res, _$ProfileStateImpl>
+    implements _$$ProfileStateImplCopyWith<$Res> {
+  __$$ProfileStateImplCopyWithImpl(
+      _$ProfileStateImpl _value, $Res Function(_$ProfileStateImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of ProfileState
@@ -1706,150 +827,85 @@ class __$$ErrorImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? message = null,
+    Object? status = null,
+    Object? profile = freezed,
+    Object? message = freezed,
   }) {
-    return _then(_$ErrorImpl(
-      message: null == message
+    return _then(_$ProfileStateImpl(
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as Status,
+      profile: freezed == profile
+          ? _value.profile
+          : profile // ignore: cast_nullable_to_non_nullable
+              as ProfileModel?,
+      message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$ErrorImpl implements _Error {
-  const _$ErrorImpl({required this.message});
+class _$ProfileStateImpl implements _ProfileState {
+  _$ProfileStateImpl(
+      {this.status = Status.initial, this.profile, this.message});
 
   @override
-  final String message;
+  @JsonKey()
+  final Status status;
+  @override
+  final ProfileModel? profile;
+  @override
+  final String? message;
 
   @override
   String toString() {
-    return 'ProfileState.error(message: $message)';
+    return 'ProfileState(status: $status, profile: $profile, message: $message)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ErrorImpl &&
+            other is _$ProfileStateImpl &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.profile, profile) || other.profile == profile) &&
             (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message);
+  int get hashCode => Object.hash(runtimeType, status, profile, message);
 
   /// Create a copy of ProfileState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
-      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ProfileModel profile) profileLoaded,
-    required TResult Function() profileUpdated,
-    required TResult Function() passwordChanged,
-    required TResult Function() paymentMethodAdded,
-    required TResult Function(String message) error,
-  }) {
-    return error(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileModel profile)? profileLoaded,
-    TResult? Function()? profileUpdated,
-    TResult? Function()? passwordChanged,
-    TResult? Function()? paymentMethodAdded,
-    TResult? Function(String message)? error,
-  }) {
-    return error?.call(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileModel profile)? profileLoaded,
-    TResult Function()? profileUpdated,
-    TResult Function()? passwordChanged,
-    TResult Function()? paymentMethodAdded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_ProfileLoaded value) profileLoaded,
-    required TResult Function(_ProfileUpdated value) profileUpdated,
-    required TResult Function(_PasswordChanged value) passwordChanged,
-    required TResult Function(_PaymentMethodAdded value) paymentMethodAdded,
-    required TResult Function(_Error value) error,
-  }) {
-    return error(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_ProfileLoaded value)? profileLoaded,
-    TResult? Function(_ProfileUpdated value)? profileUpdated,
-    TResult? Function(_PasswordChanged value)? passwordChanged,
-    TResult? Function(_PaymentMethodAdded value)? paymentMethodAdded,
-    TResult? Function(_Error value)? error,
-  }) {
-    return error?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_ProfileLoaded value)? profileLoaded,
-    TResult Function(_ProfileUpdated value)? profileUpdated,
-    TResult Function(_PasswordChanged value)? passwordChanged,
-    TResult Function(_PaymentMethodAdded value)? paymentMethodAdded,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
-  }
+  _$$ProfileStateImplCopyWith<_$ProfileStateImpl> get copyWith =>
+      __$$ProfileStateImplCopyWithImpl<_$ProfileStateImpl>(this, _$identity);
 }
 
-abstract class _Error implements ProfileState {
-  const factory _Error({required final String message}) = _$ErrorImpl;
+abstract class _ProfileState implements ProfileState {
+  factory _ProfileState(
+      {final Status status,
+      final ProfileModel? profile,
+      final String? message}) = _$ProfileStateImpl;
 
-  String get message;
+  @override
+  Status get status;
+  @override
+  ProfileModel? get profile;
+  @override
+  String? get message;
 
   /// Create a copy of ProfileState
   /// with the given fields replaced by the non-null parameter values.
+  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+  _$$ProfileStateImplCopyWith<_$ProfileStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

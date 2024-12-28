@@ -22,7 +22,6 @@ class LocalConfig {
 
   Future<bool> authenticated() async {
     print('Checking authentication status in local config...');
-
     final token = sharedPreferences.getString(AppConstants.userToken);
     print(await getRefreshToken());
     print(token);

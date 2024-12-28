@@ -34,12 +34,12 @@ final sl = GetIt.instance;
 Future<void> init() async {
   //! External
   final shared = await SharedPreferences.getInstance();
-
-  //! Core
-  sl.registerLazySingleton(() => Location());
-  sl.registerLazySingleton(() => DioConfig());
   sl.registerLazySingleton<LocalConfig>(
       () => LocalConfig(sharedPreferences: shared));
+  final dio = DioConfig(sl<LocalConfig>()).client;
+  //! Core
+  sl.registerLazySingleton(() => Location());
+  sl.registerLazySingleton(() => DioConfig(sl<LocalConfig>()));
 
   //! Features
 
@@ -101,7 +101,7 @@ Future<void> init() async {
       ));
 
   // Data sources
-  sl.registerLazySingleton(() => HomeDatasources());
+  sl.registerLazySingleton(() => HomeDatasources(dio: dio));
 
   // Profile Feature
   // Bloc
@@ -134,7 +134,7 @@ Future<void> init() async {
   // Data sources
   //! cachedProfile uchun shareddan current userni olib berib yuborish kerak
   sl.registerLazySingleton(() => ProfileDatasources(
-        dioConfig: DioConfig(),
+        dioConfig: DioConfig(sl<LocalConfig>()),
         // cachedProfile: sl<LocalConfig>(),
       ));
 }

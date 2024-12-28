@@ -7,6 +7,7 @@ import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_b
 import 'package:flutter_application/features/auth/presentation/pages/login_screen.dart';
 import 'package:flutter_application/features/history/presentation/pages/history_screen.dart';
 import 'package:flutter_application/features/payment_screen/presentation/pages/select_payment_screen.dart';
+import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_application/features/profile/presentation/pages/contact_detail_screen.dart';
 import 'package:flutter_application/features/profile/presentation/pages/payments_screen.dart';
 import 'package:flutter_application/features/profile/presentation/pages/vehicles_screen.dart';
@@ -14,8 +15,19 @@ import 'package:flutter_application/features/profile/presentation/widgets/profil
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
+  }
 
   @override
   Widget build(BuildContext context) {

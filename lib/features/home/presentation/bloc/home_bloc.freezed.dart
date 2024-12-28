@@ -337,7 +337,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? locations = freezed,
     Object? errorMessage = freezed,
     Object? searchQuery = freezed,
-    Object? servicePreferences = freezed,
+    Object? servicePreferences = null,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -360,7 +360,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.searchQuery
           : searchQuery // ignore: cast_nullable_to_non_nullable
               as String?,
-      servicePreferences: freezed == servicePreferences
+      servicePreferences: null == servicePreferences
           ? _value.servicePreferences
           : servicePreferences // ignore: cast_nullable_to_non_nullable
               as ServicePreferences,
@@ -403,7 +403,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? locations = freezed,
     Object? errorMessage = freezed,
     Object? searchQuery = freezed,
-    Object? servicePreferences = freezed,
+    Object? servicePreferences = null,
   }) {
     return _then(_$HomeStateImpl(
       status: null == status
@@ -426,7 +426,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.searchQuery
           : searchQuery // ignore: cast_nullable_to_non_nullable
               as String?,
-      servicePreferences: freezed == servicePreferences
+      servicePreferences: null == servicePreferences
           ? _value.servicePreferences
           : servicePreferences // ignore: cast_nullable_to_non_nullable
               as ServicePreferences,
@@ -488,8 +488,8 @@ class _$HomeStateImpl implements _HomeState {
                 other.errorMessage == errorMessage) &&
             (identical(other.searchQuery, searchQuery) ||
                 other.searchQuery == searchQuery) &&
-            const DeepCollectionEquality()
-                .equals(other.servicePreferences, servicePreferences));
+            (identical(other.servicePreferences, servicePreferences) ||
+                other.servicePreferences == servicePreferences));
   }
 
   @override
@@ -500,7 +500,7 @@ class _$HomeStateImpl implements _HomeState {
       const DeepCollectionEquality().hash(_locations),
       errorMessage,
       searchQuery,
-      const DeepCollectionEquality().hash(servicePreferences));
+      servicePreferences);
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.

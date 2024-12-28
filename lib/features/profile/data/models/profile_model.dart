@@ -3,7 +3,6 @@ class ProfileModel {
   final String name;
   final String email;
   final String phoneNumber;
-
   ProfileModel({
     required this.surname,
     required this.name,

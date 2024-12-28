@@ -1,11 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dio/dio.dart';
-import 'package:flutter_application/core/config/dio_config.dart';
+import 'package:location/location.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/error/exception.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
-import 'package:location/location.dart';
 
 class HomeDatasources {
+  final Dio dio;
+  HomeDatasources({
+    required this.dio,
+  });
   Future<LocationData> getCurrentLocation() async {
     final Location _location = Location();
     try {
@@ -41,8 +45,8 @@ class HomeDatasources {
 
   Future<List<LocationModel>> fetchAllLocations() async {
     try {
-      final dioConfig = DioConfig();
-      final response = await dioConfig.client.get(
+     
+      final response = await dio.get(
         '${AppConstants.baseseconUrl}locations/list',
       );
 
