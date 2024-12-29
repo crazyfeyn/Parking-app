@@ -5,14 +5,14 @@ import 'package:flutter_application/features/profile/data/models/profile_model.d
 
 class ProfileDatasources {
   ProfileModel? cachedProfile;
-  final DioConfig dioConfig;
+  final Dio dio;
 
-  ProfileDatasources({required this.dioConfig, this.cachedProfile});
+  ProfileDatasources({required this.dio, this.cachedProfile});
 
   /// Fetches the user's profile from the server
   Future<ProfileModel> getProfile() async {
     try {
-      final response = await dioConfig.client.get('/users/profile/');
+      final response = await dio.get('/users/profile/');
       if (response.statusCode == 200) {
         cachedProfile = ProfileModel.fromJson(response.data);
         return cachedProfile!;
@@ -39,7 +39,7 @@ class ProfileDatasources {
         if (email != null) 'email': email,
       };
 
-      final response = await dioConfig.client.patch(
+      final response = await dio.patch(
         '/users/profile/',
         data: updateData,
       );
@@ -66,7 +66,7 @@ class ProfileDatasources {
     required String newPassword,
   }) async {
     try {
-      final response = await dioConfig.client.post(
+      final response = await dio.post(
         '/users/change-password/',
         data: {
           'old_password': oldPassword,
@@ -87,7 +87,7 @@ class ProfileDatasources {
   /// Adds a payment method for the user
   Future<void> addPaymentMethod(Map<String, dynamic> paymentData) async {
     try {
-      final response = await dioConfig.client.post(
+      final response = await dio.post(
         '/users/add-payment-method/',
         data: paymentData,
       );
