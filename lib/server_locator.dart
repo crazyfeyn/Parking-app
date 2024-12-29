@@ -16,6 +16,7 @@ import 'package:flutter_application/features/home/data/repositories/home_reposit
 import 'package:flutter_application/features/home/domain/repositories/location_repositories.dart';
 import 'package:flutter_application/features/home/domain/usecases/current_location_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/fetch_locations_usecase.dart';
+import 'package:flutter_application/features/home/domain/usecases/get_vehicle_list_usecase.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/profile/data/datasources/profile_datasources.dart';
 import 'package:flutter_application/features/profile/data/repositories/profile_repositories.dart';
@@ -80,11 +81,16 @@ Future<void> init() async {
   sl.registerLazySingleton(
       () => LocalAuthDatasources(localConfig: sl<LocalConfig>()));
 
+  sl.registerLazySingleton(() => GetVehicleListUsecase(
+        homeRepositories: sl<HomeRepositories>(),
+      ));
+
   // Home Feature
   // Bloc
   sl.registerFactory(() => HomeBloc(
         sl<CurrentLocationUsecase>(),
         sl<FetchLocationsUsecase>(),
+        sl<GetVehicleListUsecase>(),
       ));
 
   // Use cases
