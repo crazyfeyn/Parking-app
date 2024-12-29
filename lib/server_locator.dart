@@ -88,8 +88,13 @@ Future<void> init() async {
   sl.registerLazySingleton(
       () => LocalAuthDatasources(localConfig: sl<LocalConfig>()));
 
+  sl.registerLazySingleton(() => GetVehicleListUsecase(
+        homeRepositories: sl<HomeRepositories>(),
+      ));
+
   // Home Feature
   // Bloc
+
   sl.registerFactory(
     () => HomeBloc(
       sl<CurrentLocationUsecase>(),
@@ -111,6 +116,7 @@ Future<void> init() async {
     ),
   );
   // Repository
+
   sl.registerLazySingleton<HomeRepositories>(
     () => HomeRepositoriesImpl(
       homeDatasources: sl<HomeDatasources>(),
@@ -146,7 +152,7 @@ Future<void> init() async {
   // Data sources
   //! cachedProfile uchun shareddan current userni olib berib yuborish kerak
   sl.registerLazySingleton(() => ProfileDatasources(
-        dio: dio,
+        dio: sl<Dio>(),
         cachedProfile: null, //! cached profile ga etibor qarat
       ));
 }

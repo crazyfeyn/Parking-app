@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class PaymentMethodPicker extends StatefulWidget {
-  final Function(String?) onStateChanged;
+  final Function onStateChanged;
   final String? initialValue;
 
   const PaymentMethodPicker({

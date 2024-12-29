@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class BookingTypePicker extends StatefulWidget {
-  final Function(String?) onStateChanged;
+  final Function onStateChanged;
   final String? initialValue;
 
   const BookingTypePicker({
@@ -20,9 +20,9 @@ class _BookingTypePickerState extends State<BookingTypePicker> {
   String? selectedBookingType;
 
   List<String> bookingTypes = [
-    'New York City, New York',
-    'Los Angeles, California',
-    'Chicago, Illinois',
+    'daily',
+    'weekly',
+    'monthly',
   ];
 
   @override
