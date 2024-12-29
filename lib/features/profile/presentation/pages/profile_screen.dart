@@ -6,6 +6,7 @@ import 'package:flutter_application/core/widgets/custom_error_widget.dart';
 import 'package:flutter_application/core/widgets/custom_loader.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:flutter_application/features/auth/presentation/pages/login_screen.dart';
+import 'package:flutter_application/features/auth/presentation/pages/reset_password_screen.dart';
 import 'package:flutter_application/features/history/presentation/pages/history_screen.dart';
 import 'package:flutter_application/features/payment_screen/presentation/pages/select_payment_screen.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
@@ -44,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Container(
               padding: const EdgeInsets.all(AppDimens.PADDING_16),
               width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.330,
+              height: MediaQuery.of(context).size.height * 0.400,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppDimens.BORDER_RADIUS_30),
                 color: Colors.white,
@@ -96,6 +97,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => const VehiclesScreen(),
+                          ));
+                    },
+                  ),
+                  _profileButtons(
+                    'vehicle',
+                    'CUSTOM CHANGE PASSWORD',
+                    () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>  ResetPasswordScreen(),
                           ));
                     },
                   ),

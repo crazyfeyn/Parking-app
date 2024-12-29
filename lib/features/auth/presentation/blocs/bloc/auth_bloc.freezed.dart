@@ -20,6 +20,7 @@ mixin _$AuthEvent {
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
     required TResult Function(String password, String email) register,
+    required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
     required TResult Function() refresh,
@@ -31,6 +32,7 @@ mixin _$AuthEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
     TResult? Function(String password, String email)? register,
+    TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
     TResult? Function()? refresh,
@@ -42,6 +44,7 @@ mixin _$AuthEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
     TResult Function(String password, String email)? register,
+    TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,
     TResult Function()? refresh,
@@ -54,6 +57,7 @@ mixin _$AuthEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(_log value) logIn,
     required TResult Function(_reg value) register,
+    required TResult Function(_changePass value) change,
     required TResult Function(_resetPass value) reset,
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
@@ -65,6 +69,7 @@ mixin _$AuthEvent {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_log value)? logIn,
     TResult? Function(_reg value)? register,
+    TResult? Function(_changePass value)? change,
     TResult? Function(_resetPass value)? reset,
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
@@ -76,6 +81,7 @@ mixin _$AuthEvent {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_log value)? logIn,
     TResult Function(_reg value)? register,
+    TResult Function(_changePass value)? change,
     TResult Function(_resetPass value)? reset,
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
@@ -183,6 +189,7 @@ class _$logImpl implements _log {
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
     required TResult Function(String password, String email) register,
+    required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
     required TResult Function() refresh,
@@ -197,6 +204,7 @@ class _$logImpl implements _log {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
     TResult? Function(String password, String email)? register,
+    TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
     TResult? Function()? refresh,
@@ -211,6 +219,7 @@ class _$logImpl implements _log {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
     TResult Function(String password, String email)? register,
+    TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,
     TResult Function()? refresh,
@@ -229,6 +238,7 @@ class _$logImpl implements _log {
   TResult map<TResult extends Object?>({
     required TResult Function(_log value) logIn,
     required TResult Function(_reg value) register,
+    required TResult Function(_changePass value) change,
     required TResult Function(_resetPass value) reset,
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
@@ -243,6 +253,7 @@ class _$logImpl implements _log {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_log value)? logIn,
     TResult? Function(_reg value)? register,
+    TResult? Function(_changePass value)? change,
     TResult? Function(_resetPass value)? reset,
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
@@ -257,6 +268,7 @@ class _$logImpl implements _log {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_log value)? logIn,
     TResult Function(_reg value)? register,
+    TResult Function(_changePass value)? change,
     TResult Function(_resetPass value)? reset,
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
@@ -361,6 +373,7 @@ class _$regImpl implements _reg {
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
     required TResult Function(String password, String email) register,
+    required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
     required TResult Function() refresh,
@@ -375,6 +388,7 @@ class _$regImpl implements _reg {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
     TResult? Function(String password, String email)? register,
+    TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
     TResult? Function()? refresh,
@@ -389,6 +403,7 @@ class _$regImpl implements _reg {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
     TResult Function(String password, String email)? register,
+    TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,
     TResult Function()? refresh,
@@ -407,6 +422,7 @@ class _$regImpl implements _reg {
   TResult map<TResult extends Object?>({
     required TResult Function(_log value) logIn,
     required TResult Function(_reg value) register,
+    required TResult Function(_changePass value) change,
     required TResult Function(_resetPass value) reset,
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
@@ -421,6 +437,7 @@ class _$regImpl implements _reg {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_log value)? logIn,
     TResult? Function(_reg value)? register,
+    TResult? Function(_changePass value)? change,
     TResult? Function(_resetPass value)? reset,
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
@@ -435,6 +452,7 @@ class _$regImpl implements _reg {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_log value)? logIn,
     TResult Function(_reg value)? register,
+    TResult Function(_changePass value)? change,
     TResult Function(_resetPass value)? reset,
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
@@ -459,6 +477,192 @@ abstract class _reg implements AuthEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$regImplCopyWith<_$regImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$changePassImplCopyWith<$Res> {
+  factory _$$changePassImplCopyWith(
+          _$changePassImpl value, $Res Function(_$changePassImpl) then) =
+      __$$changePassImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String oldPass, String newPass});
+}
+
+/// @nodoc
+class __$$changePassImplCopyWithImpl<$Res>
+    extends _$AuthEventCopyWithImpl<$Res, _$changePassImpl>
+    implements _$$changePassImplCopyWith<$Res> {
+  __$$changePassImplCopyWithImpl(
+      _$changePassImpl _value, $Res Function(_$changePassImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? oldPass = null,
+    Object? newPass = null,
+  }) {
+    return _then(_$changePassImpl(
+      null == oldPass
+          ? _value.oldPass
+          : oldPass // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == newPass
+          ? _value.newPass
+          : newPass // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$changePassImpl implements _changePass {
+  const _$changePassImpl(this.oldPass, this.newPass);
+
+  @override
+  final String oldPass;
+  @override
+  final String newPass;
+
+  @override
+  String toString() {
+    return 'AuthEvent.change(oldPass: $oldPass, newPass: $newPass)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$changePassImpl &&
+            (identical(other.oldPass, oldPass) || other.oldPass == oldPass) &&
+            (identical(other.newPass, newPass) || other.newPass == newPass));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, oldPass, newPass);
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$changePassImplCopyWith<_$changePassImpl> get copyWith =>
+      __$$changePassImplCopyWithImpl<_$changePassImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String password, String email) logIn,
+    required TResult Function(String password, String email) register,
+    required TResult Function(String oldPass, String newPass) change,
+    required TResult Function(String email) reset,
+    required TResult Function() logOut,
+    required TResult Function() refresh,
+    required TResult Function() authicated,
+    required TResult Function() doInitial,
+  }) {
+    return change(oldPass, newPass);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String password, String email)? logIn,
+    TResult? Function(String password, String email)? register,
+    TResult? Function(String oldPass, String newPass)? change,
+    TResult? Function(String email)? reset,
+    TResult? Function()? logOut,
+    TResult? Function()? refresh,
+    TResult? Function()? authicated,
+    TResult? Function()? doInitial,
+  }) {
+    return change?.call(oldPass, newPass);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String password, String email)? logIn,
+    TResult Function(String password, String email)? register,
+    TResult Function(String oldPass, String newPass)? change,
+    TResult Function(String email)? reset,
+    TResult Function()? logOut,
+    TResult Function()? refresh,
+    TResult Function()? authicated,
+    TResult Function()? doInitial,
+    required TResult orElse(),
+  }) {
+    if (change != null) {
+      return change(oldPass, newPass);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_log value) logIn,
+    required TResult Function(_reg value) register,
+    required TResult Function(_changePass value) change,
+    required TResult Function(_resetPass value) reset,
+    required TResult Function(_logOut value) logOut,
+    required TResult Function(_refreshToken value) refresh,
+    required TResult Function(_authicated value) authicated,
+    required TResult Function(_initial value) doInitial,
+  }) {
+    return change(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_log value)? logIn,
+    TResult? Function(_reg value)? register,
+    TResult? Function(_changePass value)? change,
+    TResult? Function(_resetPass value)? reset,
+    TResult? Function(_logOut value)? logOut,
+    TResult? Function(_refreshToken value)? refresh,
+    TResult? Function(_authicated value)? authicated,
+    TResult? Function(_initial value)? doInitial,
+  }) {
+    return change?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_log value)? logIn,
+    TResult Function(_reg value)? register,
+    TResult Function(_changePass value)? change,
+    TResult Function(_resetPass value)? reset,
+    TResult Function(_logOut value)? logOut,
+    TResult Function(_refreshToken value)? refresh,
+    TResult Function(_authicated value)? authicated,
+    TResult Function(_initial value)? doInitial,
+    required TResult orElse(),
+  }) {
+    if (change != null) {
+      return change(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _changePass implements AuthEvent {
+  const factory _changePass(final String oldPass, final String newPass) =
+      _$changePassImpl;
+
+  String get oldPass;
+  String get newPass;
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$changePassImplCopyWith<_$changePassImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -532,6 +736,7 @@ class _$resetPassImpl implements _resetPass {
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
     required TResult Function(String password, String email) register,
+    required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
     required TResult Function() refresh,
@@ -546,6 +751,7 @@ class _$resetPassImpl implements _resetPass {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
     TResult? Function(String password, String email)? register,
+    TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
     TResult? Function()? refresh,
@@ -560,6 +766,7 @@ class _$resetPassImpl implements _resetPass {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
     TResult Function(String password, String email)? register,
+    TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,
     TResult Function()? refresh,
@@ -578,6 +785,7 @@ class _$resetPassImpl implements _resetPass {
   TResult map<TResult extends Object?>({
     required TResult Function(_log value) logIn,
     required TResult Function(_reg value) register,
+    required TResult Function(_changePass value) change,
     required TResult Function(_resetPass value) reset,
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
@@ -592,6 +800,7 @@ class _$resetPassImpl implements _resetPass {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_log value)? logIn,
     TResult? Function(_reg value)? register,
+    TResult? Function(_changePass value)? change,
     TResult? Function(_resetPass value)? reset,
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
@@ -606,6 +815,7 @@ class _$resetPassImpl implements _resetPass {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_log value)? logIn,
     TResult Function(_reg value)? register,
+    TResult Function(_changePass value)? change,
     TResult Function(_resetPass value)? reset,
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
@@ -675,6 +885,7 @@ class _$logOutImpl implements _logOut {
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
     required TResult Function(String password, String email) register,
+    required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
     required TResult Function() refresh,
@@ -689,6 +900,7 @@ class _$logOutImpl implements _logOut {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
     TResult? Function(String password, String email)? register,
+    TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
     TResult? Function()? refresh,
@@ -703,6 +915,7 @@ class _$logOutImpl implements _logOut {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
     TResult Function(String password, String email)? register,
+    TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,
     TResult Function()? refresh,
@@ -721,6 +934,7 @@ class _$logOutImpl implements _logOut {
   TResult map<TResult extends Object?>({
     required TResult Function(_log value) logIn,
     required TResult Function(_reg value) register,
+    required TResult Function(_changePass value) change,
     required TResult Function(_resetPass value) reset,
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
@@ -735,6 +949,7 @@ class _$logOutImpl implements _logOut {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_log value)? logIn,
     TResult? Function(_reg value)? register,
+    TResult? Function(_changePass value)? change,
     TResult? Function(_resetPass value)? reset,
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
@@ -749,6 +964,7 @@ class _$logOutImpl implements _logOut {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_log value)? logIn,
     TResult Function(_reg value)? register,
+    TResult Function(_changePass value)? change,
     TResult Function(_resetPass value)? reset,
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
@@ -810,6 +1026,7 @@ class _$refreshTokenImpl implements _refreshToken {
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
     required TResult Function(String password, String email) register,
+    required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
     required TResult Function() refresh,
@@ -824,6 +1041,7 @@ class _$refreshTokenImpl implements _refreshToken {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
     TResult? Function(String password, String email)? register,
+    TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
     TResult? Function()? refresh,
@@ -838,6 +1056,7 @@ class _$refreshTokenImpl implements _refreshToken {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
     TResult Function(String password, String email)? register,
+    TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,
     TResult Function()? refresh,
@@ -856,6 +1075,7 @@ class _$refreshTokenImpl implements _refreshToken {
   TResult map<TResult extends Object?>({
     required TResult Function(_log value) logIn,
     required TResult Function(_reg value) register,
+    required TResult Function(_changePass value) change,
     required TResult Function(_resetPass value) reset,
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
@@ -870,6 +1090,7 @@ class _$refreshTokenImpl implements _refreshToken {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_log value)? logIn,
     TResult? Function(_reg value)? register,
+    TResult? Function(_changePass value)? change,
     TResult? Function(_resetPass value)? reset,
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
@@ -884,6 +1105,7 @@ class _$refreshTokenImpl implements _refreshToken {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_log value)? logIn,
     TResult Function(_reg value)? register,
+    TResult Function(_changePass value)? change,
     TResult Function(_resetPass value)? reset,
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
@@ -945,6 +1167,7 @@ class _$authicatedImpl implements _authicated {
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
     required TResult Function(String password, String email) register,
+    required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
     required TResult Function() refresh,
@@ -959,6 +1182,7 @@ class _$authicatedImpl implements _authicated {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
     TResult? Function(String password, String email)? register,
+    TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
     TResult? Function()? refresh,
@@ -973,6 +1197,7 @@ class _$authicatedImpl implements _authicated {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
     TResult Function(String password, String email)? register,
+    TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,
     TResult Function()? refresh,
@@ -991,6 +1216,7 @@ class _$authicatedImpl implements _authicated {
   TResult map<TResult extends Object?>({
     required TResult Function(_log value) logIn,
     required TResult Function(_reg value) register,
+    required TResult Function(_changePass value) change,
     required TResult Function(_resetPass value) reset,
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
@@ -1005,6 +1231,7 @@ class _$authicatedImpl implements _authicated {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_log value)? logIn,
     TResult? Function(_reg value)? register,
+    TResult? Function(_changePass value)? change,
     TResult? Function(_resetPass value)? reset,
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
@@ -1019,6 +1246,7 @@ class _$authicatedImpl implements _authicated {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_log value)? logIn,
     TResult Function(_reg value)? register,
+    TResult Function(_changePass value)? change,
     TResult Function(_resetPass value)? reset,
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
@@ -1080,6 +1308,7 @@ class _$initialImpl implements _initial {
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
     required TResult Function(String password, String email) register,
+    required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
     required TResult Function() refresh,
@@ -1094,6 +1323,7 @@ class _$initialImpl implements _initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
     TResult? Function(String password, String email)? register,
+    TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
     TResult? Function()? refresh,
@@ -1108,6 +1338,7 @@ class _$initialImpl implements _initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
     TResult Function(String password, String email)? register,
+    TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,
     TResult Function()? refresh,
@@ -1126,6 +1357,7 @@ class _$initialImpl implements _initial {
   TResult map<TResult extends Object?>({
     required TResult Function(_log value) logIn,
     required TResult Function(_reg value) register,
+    required TResult Function(_changePass value) change,
     required TResult Function(_resetPass value) reset,
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
@@ -1140,6 +1372,7 @@ class _$initialImpl implements _initial {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_log value)? logIn,
     TResult? Function(_reg value)? register,
+    TResult? Function(_changePass value)? change,
     TResult? Function(_resetPass value)? reset,
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
@@ -1154,6 +1387,7 @@ class _$initialImpl implements _initial {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_log value)? logIn,
     TResult Function(_reg value)? register,
+    TResult Function(_changePass value)? change,
     TResult Function(_resetPass value)? reset,
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,

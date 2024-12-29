@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:bloc/bloc.dart';
+import 'package:flutter_application/features/auth/domain/usecases/change_password_usecase.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:flutter_application/core/constants/app_constants.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_application/features/auth/domain/usecases/login_user_use
 import 'package:flutter_application/features/auth/domain/usecases/refresh_user_token_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/register_user_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/reset_pass_user_usecase.dart';
+
 part 'auth_bloc.freezed.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -20,6 +22,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ResetPassUserUsecase resetPassUserUsecase;
   AuthicatedUsecase authicatedUsecase;
   LogOutUsecase logOutUsecase;
+  ChangePasswordUsecase changePasswordUsecase;
   AuthBloc(
     this.loginUserUsecase,
     this.refreshUserTokenUsecase,
@@ -27,6 +30,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this.resetPassUserUsecase,
     this.authicatedUsecase,
     this.logOutUsecase,
+    this.changePasswordUsecase,
   ) : super(AuthState()) {
     on<_log>(_logIn);
     on<_logOut>(_logOu);
@@ -35,6 +39,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<_resetPass>(_reset);
     on<_refreshToken>(_refresh);
     on<_authicated>(_auth);
+    on<_changePass>(_change);
+  }
+
+  Future<void> _change(_changePass event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(status: Status.loading));
+    final recponce = await changePasswordUsecase(ChangePassParams(oldPass: event.oldPass, newPass: event.newPass)
+        );
+    recponce.fold((error) {
+      emit(
+        state.copyWith(status: Status.error),
+      );
+    }, (data) {
+      emit(
+        state.copyWith(status: Status.success),
+      );
+    });
   }
 
   Future<void> _logOu(_logOut event, Emitter<AuthState> emit) async {
@@ -51,9 +71,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
   }
 
-    Future<void> _doint(_initial event, Emitter<AuthState> emit) async {
+  Future<void> _doint(_initial event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: Status.initial));
-    
   }
 
   Future<void> _logIn(_log event, Emitter<AuthState> emit) async {

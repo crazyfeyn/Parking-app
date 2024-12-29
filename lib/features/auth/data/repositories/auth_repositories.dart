@@ -41,6 +41,19 @@ class AuthRepositoriesImpl extends AuthRepositories {
     return _logOut(() => authDatasources.logOut());
   }
 
+  @override
+  Future<Either<Failure, void>> changePass(String oldPass, String newPass) {
+    return _change(() => authDatasources.changePass(oldPass, newPass));
+  }
+
+  Future<Either<Failure, void>> _change(Future<void> Function() change) async {
+    try {
+      return Right(await change());
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
   Future<Either<Failure, void>> _logOut(Future<void> Function() log) async {
     try {
       print('REPOODAAOAOAAO');

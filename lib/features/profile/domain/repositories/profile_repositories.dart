@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_application/core/error/failure.dart';
-import 'package:flutter_application/features/profile/data/models/profile_model.dart';
 import 'package:flutter_application/features/profile/domain/entity/profile_entity.dart';
 
 abstract class ProfileRepositories {

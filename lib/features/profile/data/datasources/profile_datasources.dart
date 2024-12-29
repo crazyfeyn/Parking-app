@@ -8,7 +8,6 @@ class ProfileDatasources {
 
   ProfileDatasources({required this.dio, this.cachedProfile});
 
-  /// Fetches the user's profile from the server
   Future<ProfileModel> getProfile() async {
     try {
       final response = await dio.get('/users/profile/');

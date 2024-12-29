@@ -5,6 +5,7 @@ import 'package:flutter_application/features/auth/data/datasources/auth_datasour
 import 'package:flutter_application/features/auth/data/datasources/local_auth_datasources.dart';
 import 'package:flutter_application/features/auth/data/repositories/auth_repositories.dart';
 import 'package:flutter_application/features/auth/domain/usecases/authicated_usecase.dart';
+import 'package:flutter_application/features/auth/domain/usecases/change_password_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/log_out_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/login_user_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/refresh_user_token_usecase.dart';
@@ -16,12 +17,12 @@ import 'package:flutter_application/features/home/data/repositories/home_reposit
 import 'package:flutter_application/features/home/domain/repositories/location_repositories.dart';
 import 'package:flutter_application/features/home/domain/usecases/current_location_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/fetch_locations_usecase.dart';
+import 'package:flutter_application/features/home/domain/usecases/get_vehicle_list_usecase.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/profile/data/datasources/profile_datasources.dart';
 import 'package:flutter_application/features/profile/data/repositories/profile_repositories.dart';
 import 'package:flutter_application/features/profile/domain/repositories/profile_repositories.dart';
 import 'package:flutter_application/features/profile/domain/usecases/add_payment_method_usecase.dart';
-import 'package:flutter_application/features/profile/domain/usecases/change_password_usecase.dart';
 import 'package:flutter_application/features/profile/domain/usecases/get_profile_usecase.dart';
 import 'package:flutter_application/features/profile/domain/usecases/update_profile_usecase.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
@@ -50,15 +51,17 @@ Future<void> init() async {
   // Bloc
   sl.registerFactory(
     () => AuthBloc(
-      sl<LoginUserUsecase>(),
-      sl<RefreshUserTokenUsecase>(),
-      sl<RegisterUserUsecase>(),
-      sl<ResetPassUserUsecase>(),
-      sl<AuthicatedUsecase>(),
-      sl<LogOutUsecase>(),
-    ),
+        sl<LoginUserUsecase>(),
+        sl<RefreshUserTokenUsecase>(),
+        sl<RegisterUserUsecase>(),
+        sl<ResetPassUserUsecase>(),
+        sl<AuthicatedUsecase>(),
+        sl<LogOutUsecase>(),
+        sl<ChangePasswordUsecase>()),
   );
   // Use cases
+  sl.registerFactory(() =>
+      ChangePasswordUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
   sl.registerFactory(
       () => LogOutUsecase(authRepositoriesImpl: sl<AuthRepositoriesImpl>()));
   sl.registerFactory(
@@ -91,10 +94,14 @@ Future<void> init() async {
     () => HomeBloc(
       sl<CurrentLocationUsecase>(),
       sl<FetchLocationsUsecase>(),
+      sl<GetVehicleListUsecase>(),
     ),
   );
 
   // Use cases
+  sl.registerFactory(() => GetVehicleListUsecase(
+        homeRepositories: sl<HomeRepositories>(),
+      ));
   sl.registerLazySingleton(() => CurrentLocationUsecase(
         homeRepositories: sl<HomeRepositories>(),
       ));
@@ -116,16 +123,12 @@ Future<void> init() async {
   // Bloc
   sl.registerFactory(() => ProfileBloc(
         addPaymentMethodUsecase: sl<AddPaymentMethodUsecase>(),
-        changePasswordUsecase: sl<ChangePasswordUsecase>(),
         getProfileUsecase: sl<GetProfileUsecase>(),
         updateProfileUsecase: sl<UpdateProfileUsecase>(),
       ));
 
   // Use cases
   sl.registerLazySingleton(() => AddPaymentMethodUsecase(
-        profileRepositories: sl<ProfileRepositories>(),
-      ));
-  sl.registerLazySingleton(() => ChangePasswordUsecase(
         profileRepositories: sl<ProfileRepositories>(),
       ));
   sl.registerLazySingleton(() => GetProfileUsecase(
