@@ -748,7 +748,7 @@ abstract class _addPaymentMethod implements ProfileEvent {
 /// @nodoc
 mixin _$ProfileState {
   Status get status => throw _privateConstructorUsedError;
-  ProfileModel? get profile => throw _privateConstructorUsedError;
+  ProfileEntity? get profile => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
 
   /// Create a copy of ProfileState
@@ -764,7 +764,7 @@ abstract class $ProfileStateCopyWith<$Res> {
           ProfileState value, $Res Function(ProfileState) then) =
       _$ProfileStateCopyWithImpl<$Res, ProfileState>;
   @useResult
-  $Res call({Status status, ProfileModel? profile, String? message});
+  $Res call({Status status, ProfileEntity? profile, String? message});
 }
 
 /// @nodoc
@@ -794,7 +794,7 @@ class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
       profile: freezed == profile
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
-              as ProfileModel?,
+              as ProfileEntity?,
       message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -811,7 +811,7 @@ abstract class _$$ProfileStateImplCopyWith<$Res>
       __$$ProfileStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Status status, ProfileModel? profile, String? message});
+  $Res call({Status status, ProfileEntity? profile, String? message});
 }
 
 /// @nodoc
@@ -839,7 +839,7 @@ class __$$ProfileStateImplCopyWithImpl<$Res>
       profile: freezed == profile
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
-              as ProfileModel?,
+              as ProfileEntity?,
       message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -858,7 +858,7 @@ class _$ProfileStateImpl implements _ProfileState {
   @JsonKey()
   final Status status;
   @override
-  final ProfileModel? profile;
+  final ProfileEntity? profile;
   @override
   final String? message;
 
@@ -892,13 +892,13 @@ class _$ProfileStateImpl implements _ProfileState {
 abstract class _ProfileState implements ProfileState {
   factory _ProfileState(
       {final Status status,
-      final ProfileModel? profile,
+      final ProfileEntity? profile,
       final String? message}) = _$ProfileStateImpl;
 
   @override
   Status get status;
   @override
-  ProfileModel? get profile;
+  ProfileEntity? get profile;
   @override
   String? get message;
 

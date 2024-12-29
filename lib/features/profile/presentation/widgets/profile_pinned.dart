@@ -11,32 +11,49 @@ class ProfilePinned extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileBloc, ProfileState>(
-      listener: (context, state) {
-         if (state.status == Status.error) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Login Error'),
-              content: const Text('Unknown error occurred'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Retry'),
+      listener: (context, state) {},
+      builder: (context, state) {
+        print(state);
+        if (state.status == Status.error) {
+          return Container(
+            padding: const EdgeInsets.all(AppDimens.PADDING_20),
+            margin: const EdgeInsets.only(bottom: AppDimens.MARGIN_12),
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(AppDimens.BORDER_RADIUS_30),
+              ),
+              color: Colors.white,
+            ),
+            child: ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: CircleAvatar(
+                backgroundColor: Colors.grey.shade400,
+                child: const Icon(
+                  Icons.person,
+                  color: Colors.black,
                 ),
-              ],
+              ),
+              title: const Text(
+                'User2',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: AppConstants.blackColor,
+                ),
+              ),
+              subtitle: const Text(
+                'No Position',
+              ),
             ),
           );
         }
-      },
-      builder: (context, state) {
-        print(state);
-       
         if (state.status == Status.loading) {
           return _buildLoadingState();
         }
         if (state.status == Status.success) {
           final profile = state.profile;
-          profile == null
+          return profile == null
               ? const Center(
                   child: Text('CAME NULL'),
                 )
@@ -64,9 +81,9 @@ class ProfilePinned extends StatelessWidget {
                         ),
                       ),
                       10.ws(),
-                      const Text(
-                        'Jessika hola',
-                        style: TextStyle(
+                      Text(
+                        profile.id.toString(),
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                           color: AppConstants.blackColor,
@@ -86,6 +103,27 @@ class ProfilePinned extends StatelessWidget {
             ),
             color: Colors.white,
           ),
+          child: ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: CircleAvatar(
+              backgroundColor: Colors.grey.shade400,
+              child: const Icon(
+                Icons.person,
+                color: Colors.black,
+              ),
+            ),
+            title: const Text(
+              'User',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: AppConstants.blackColor,
+              ),
+            ),
+            subtitle: const Text(
+              'No Position',
+            ),
+          ),
         );
       },
     );
@@ -93,23 +131,9 @@ class ProfilePinned extends StatelessWidget {
 
   Widget _buildLoadingState() {
     return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(
-            color: Colors.red,
-            strokeWidth: 3,
-          ),
-          SizedBox(height: 20),
-          Text(
-            'Logging in, please wait...',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey,
-            ),
-          ),
-        ],
+      child: CircularProgressIndicator(
+        color: Colors.red,
+        strokeWidth: 3,
       ),
     );
   }

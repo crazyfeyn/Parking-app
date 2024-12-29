@@ -39,19 +39,25 @@ Future<void> init() async {
   final dio = DioConfig(sl<LocalConfig>()).client;
   //! Core
   sl.registerLazySingleton(() => Location());
-  sl.registerLazySingleton(() => DioConfig(sl<LocalConfig>(),),);
+  sl.registerLazySingleton(
+    () => DioConfig(
+      sl<LocalConfig>(),
+    ),
+  );
   //! Features
 
   // Auth Feature
   // Bloc
-  sl.registerFactory(() => AuthBloc(
+  sl.registerFactory(
+    () => AuthBloc(
       sl<LoginUserUsecase>(),
       sl<RefreshUserTokenUsecase>(),
       sl<RegisterUserUsecase>(),
       sl<ResetPassUserUsecase>(),
       sl<AuthicatedUsecase>(),
-      sl<LogOutUsecase>()));
-
+      sl<LogOutUsecase>(),
+    ),
+  );
   // Use cases
   sl.registerFactory(
       () => LogOutUsecase(authRepositoriesImpl: sl<AuthRepositoriesImpl>()));
@@ -81,31 +87,31 @@ Future<void> init() async {
 
   // Home Feature
   // Bloc
-  sl.registerFactory(() => HomeBloc(
-        sl<CurrentLocationUsecase>(),
-        sl<FetchLocationsUsecase>(),
-      ));
+  sl.registerFactory(
+    () => HomeBloc(
+      sl<CurrentLocationUsecase>(),
+      sl<FetchLocationsUsecase>(),
+    ),
+  );
 
   // Use cases
   sl.registerLazySingleton(() => CurrentLocationUsecase(
         homeRepositories: sl<HomeRepositories>(),
       ));
-  sl.registerLazySingleton(() => FetchLocationsUsecase(
-        homeRepositories: sl<HomeRepositories>(),
-      ));
-
-  // home Datasource
-  sl.registerLazySingleton(() => HomeDatasources(dio: dio));
-
+  sl.registerLazySingleton(
+    () => FetchLocationsUsecase(
+      homeRepositories: sl<HomeRepositories>(),
+    ),
+  );
   // Repository
-  sl.registerLazySingleton<HomeRepositories>(() => HomeRepositoriesImpl(
-        homeDatasources: sl<HomeDatasources>(),
-      ));
-
+  sl.registerLazySingleton<HomeRepositories>(
+    () => HomeRepositoriesImpl(
+      homeDatasources: sl<HomeDatasources>(),
+    ),
+  );
 
   // Data sources
   sl.registerLazySingleton(() => HomeDatasources(dio: dio));
-
 
   // Bloc
   sl.registerFactory(() => ProfileBloc(

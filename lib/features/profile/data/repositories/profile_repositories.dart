@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_application/core/error/failure.dart';
 import 'package:flutter_application/features/profile/data/datasources/profile_datasources.dart';
 import 'package:flutter_application/features/profile/data/models/profile_model.dart';
+import 'package:flutter_application/features/profile/domain/entity/profile_entity.dart';
 import 'package:flutter_application/features/profile/domain/repositories/profile_repositories.dart';
 
 class ProfileRepositoriesImpl extends ProfileRepositories {
@@ -10,10 +11,10 @@ class ProfileRepositoriesImpl extends ProfileRepositories {
   ProfileRepositoriesImpl({required this.profileDatasources});
 
   @override
-  Future<Either<Failure, ProfileModel>> getProfile() async {
+  Future<Either<Failure, ProfileEntity>> getProfile() async {
     try {
       final profile = await profileDatasources.getProfile();
-      return Right(profile);
+      return Right(profile.toEntity());
     } catch (e) {
       return Left(ServerFailure());
     }

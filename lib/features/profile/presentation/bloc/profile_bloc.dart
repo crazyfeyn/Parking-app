@@ -1,6 +1,6 @@
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/error/failure.dart';
-import 'package:flutter_application/features/profile/data/models/profile_model.dart';
+import 'package:flutter_application/features/profile/domain/entity/profile_entity.dart';
 import 'package:flutter_application/features/profile/domain/usecases/add_payment_method_usecase.dart';
 import 'package:flutter_application/features/profile/domain/usecases/change_password_usecase.dart';
 import 'package:flutter_application/features/profile/domain/usecases/get_profile_usecase.dart';
@@ -38,7 +38,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     result.fold(
       (failure) => emit(state.copyWith(
           status: Status.error, message: _failureMessage(failure))),
-      (profile) => emit(state.copyWith(profile: profile)),
+      (profile) => emit(
+        state.copyWith(profile: profile, status: Status.success),
+      ),
     );
   }
 
@@ -64,8 +66,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       _changePassword event, Emitter<ProfileState> emit) async {
     emit(state.copyWith(status: Status.loading));
     if (event.newPassword.length < 8) {
-      emit(state.copyWith(
-          status: Status.error, message: 'ERRRORORO'));
+      emit(state.copyWith(status: Status.error, message: 'ERRRORORO'));
       return;
     }
 
@@ -85,7 +86,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Future<void> _onAddPaymentMethod(
       _addPaymentMethod event, Emitter<ProfileState> emit) async {
     emit(state.copyWith(status: Status.loading));
-
 
     final result = await addPaymentMethodUsecase(event.paymentMethod);
     result.fold(

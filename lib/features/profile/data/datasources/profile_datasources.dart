@@ -44,11 +44,11 @@ class ProfileDatasources {
       );
 
       if (response.statusCode == 200) {
-        cachedProfile = cachedProfile?.copyWith(
-          name: name,
-          surname: surname,
-          email: email,
-        );
+        // cachedProfile = cachedProfile?.copyWith(
+        //   name: name,
+        //   surname: surname,
+        //   email: email,
+        // );
       } else {
         throw ServerException();
       }

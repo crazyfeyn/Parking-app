@@ -4,6 +4,7 @@ import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:flutter_application/features/auth/presentation/pages/login_screen.dart';
 import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
+import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,6 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     context.read<AuthBloc>().add(const AuthEvent.authicated());
+    context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
   }
 
   @override

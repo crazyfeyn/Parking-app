@@ -4,7 +4,7 @@ part of 'profile_bloc.dart';
 class ProfileState with _$ProfileState{
   factory ProfileState({
     @Default(Status.initial) Status status,
-    ProfileModel? profile,
+    ProfileEntity? profile,
     String? message,
   })=_ProfileState;
 }
