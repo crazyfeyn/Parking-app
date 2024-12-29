@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
+import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class VehicleTypePicker extends StatefulWidget {
-  final Function(String?) onStateChanged;
+  final Function onStateChanged;
   final String? initialValue;
 
   const VehicleTypePicker({
     super.key,
     required this.onStateChanged,
     this.initialValue,
+    required LocationModel locationModel,
   });
 
   @override

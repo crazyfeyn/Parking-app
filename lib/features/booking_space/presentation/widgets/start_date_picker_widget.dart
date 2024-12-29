@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class StartDatePickerWidget extends StatefulWidget {
-  const StartDatePickerWidget({super.key});
+  const StartDatePickerWidget({super.key, required Function onDateSelected});
 
   @override
   State<StartDatePickerWidget> createState() => _StartDatePickerWidgetState();
