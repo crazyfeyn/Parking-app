@@ -1,4 +1,4 @@
-class Vehicle {
+class VehicleModel {
   final int id; // Read-only property
   final String type;
   final String unitNumber;
@@ -7,7 +7,7 @@ class Vehicle {
   final String model;
   final String plateNumber;
 
-  Vehicle({
+  VehicleModel({
     this.id = 0, // Default value
     required this.type,
     required this.unitNumber,
@@ -17,9 +17,9 @@ class Vehicle {
     required this.plateNumber,
   });
 
-  // Factory constructor to create a Vehicle instance from JSON
-  factory Vehicle.fromJson(Map<String, dynamic> json) {
-    return Vehicle(
+  // Factory constructor to create a VehicleModel instance from JSON
+  factory VehicleModel.fromJson(Map<String, dynamic> json) {
+    return VehicleModel(
       id: json['id'] ?? 0,
       type: json['type'] as String,
       unitNumber: json['unit_number'] as String,
@@ -30,7 +30,7 @@ class Vehicle {
     );
   }
 
-  // Method to convert a Vehicle instance to JSON
+  // Method to convert a VehicleModel instance to JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -48,7 +48,7 @@ class Vehicle {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Vehicle &&
+    return other is VehicleModel &&
         other.id == id &&
         other.type == type &&
         other.unitNumber == unitNumber &&
@@ -70,7 +70,7 @@ class Vehicle {
   }
 
   // CopyWith method to create a modified copy of the instance
-  Vehicle copyWith({
+  VehicleModel copyWith({
     int? id,
     String? type,
     String? unitNumber,
@@ -79,7 +79,7 @@ class Vehicle {
     String? model,
     String? plateNumber,
   }) {
-    return Vehicle(
+    return VehicleModel(
       id: id ?? this.id,
       type: type ?? this.type,
       unitNumber: unitNumber ?? this.unitNumber,

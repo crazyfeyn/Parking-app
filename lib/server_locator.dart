@@ -95,13 +95,13 @@ Future<void> init() async {
         homeRepositories: sl<HomeRepositories>(),
       ));
 
+  // home Datasource
+  sl.registerLazySingleton(() => HomeDatasources(dio: dio));
+
   // Repository
   sl.registerLazySingleton<HomeRepositories>(() => HomeRepositoriesImpl(
         homeDatasources: sl<HomeDatasources>(),
       ));
-
-  // Data sources
-  sl.registerLazySingleton(() => HomeDatasources(dio: dio));
 
   // Profile Feature
   // Bloc

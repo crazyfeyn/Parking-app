@@ -20,18 +20,21 @@ mixin _$HomeEvent {
   TResult when<TResult extends Object?>({
     required TResult Function() fetchAllLocations,
     required TResult Function() getCurrentLocation,
+    required TResult Function() getVehicleList,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchAllLocations,
     TResult? Function()? getCurrentLocation,
+    TResult? Function()? getVehicleList,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchAllLocations,
     TResult Function()? getCurrentLocation,
+    TResult Function()? getVehicleList,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -39,18 +42,21 @@ mixin _$HomeEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(_fetchAllLocations value) fetchAllLocations,
     required TResult Function(_getCurrentLocation value) getCurrentLocation,
+    required TResult Function(_getVehicleList value) getVehicleList,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_fetchAllLocations value)? fetchAllLocations,
     TResult? Function(_getCurrentLocation value)? getCurrentLocation,
+    TResult? Function(_getVehicleList value)? getVehicleList,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_fetchAllLocations value)? fetchAllLocations,
     TResult Function(_getCurrentLocation value)? getCurrentLocation,
+    TResult Function(_getVehicleList value)? getVehicleList,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -119,6 +125,7 @@ class _$fetchAllLocationsImpl implements _fetchAllLocations {
   TResult when<TResult extends Object?>({
     required TResult Function() fetchAllLocations,
     required TResult Function() getCurrentLocation,
+    required TResult Function() getVehicleList,
   }) {
     return fetchAllLocations();
   }
@@ -128,6 +135,7 @@ class _$fetchAllLocationsImpl implements _fetchAllLocations {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchAllLocations,
     TResult? Function()? getCurrentLocation,
+    TResult? Function()? getVehicleList,
   }) {
     return fetchAllLocations?.call();
   }
@@ -137,6 +145,7 @@ class _$fetchAllLocationsImpl implements _fetchAllLocations {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchAllLocations,
     TResult Function()? getCurrentLocation,
+    TResult Function()? getVehicleList,
     required TResult orElse(),
   }) {
     if (fetchAllLocations != null) {
@@ -150,6 +159,7 @@ class _$fetchAllLocationsImpl implements _fetchAllLocations {
   TResult map<TResult extends Object?>({
     required TResult Function(_fetchAllLocations value) fetchAllLocations,
     required TResult Function(_getCurrentLocation value) getCurrentLocation,
+    required TResult Function(_getVehicleList value) getVehicleList,
   }) {
     return fetchAllLocations(this);
   }
@@ -159,6 +169,7 @@ class _$fetchAllLocationsImpl implements _fetchAllLocations {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_fetchAllLocations value)? fetchAllLocations,
     TResult? Function(_getCurrentLocation value)? getCurrentLocation,
+    TResult? Function(_getVehicleList value)? getVehicleList,
   }) {
     return fetchAllLocations?.call(this);
   }
@@ -168,6 +179,7 @@ class _$fetchAllLocationsImpl implements _fetchAllLocations {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_fetchAllLocations value)? fetchAllLocations,
     TResult Function(_getCurrentLocation value)? getCurrentLocation,
+    TResult Function(_getVehicleList value)? getVehicleList,
     required TResult orElse(),
   }) {
     if (fetchAllLocations != null) {
@@ -224,6 +236,7 @@ class _$getCurrentLocationImpl implements _getCurrentLocation {
   TResult when<TResult extends Object?>({
     required TResult Function() fetchAllLocations,
     required TResult Function() getCurrentLocation,
+    required TResult Function() getVehicleList,
   }) {
     return getCurrentLocation();
   }
@@ -233,6 +246,7 @@ class _$getCurrentLocationImpl implements _getCurrentLocation {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchAllLocations,
     TResult? Function()? getCurrentLocation,
+    TResult? Function()? getVehicleList,
   }) {
     return getCurrentLocation?.call();
   }
@@ -242,6 +256,7 @@ class _$getCurrentLocationImpl implements _getCurrentLocation {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchAllLocations,
     TResult Function()? getCurrentLocation,
+    TResult Function()? getVehicleList,
     required TResult orElse(),
   }) {
     if (getCurrentLocation != null) {
@@ -255,6 +270,7 @@ class _$getCurrentLocationImpl implements _getCurrentLocation {
   TResult map<TResult extends Object?>({
     required TResult Function(_fetchAllLocations value) fetchAllLocations,
     required TResult Function(_getCurrentLocation value) getCurrentLocation,
+    required TResult Function(_getVehicleList value) getVehicleList,
   }) {
     return getCurrentLocation(this);
   }
@@ -264,6 +280,7 @@ class _$getCurrentLocationImpl implements _getCurrentLocation {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_fetchAllLocations value)? fetchAllLocations,
     TResult? Function(_getCurrentLocation value)? getCurrentLocation,
+    TResult? Function(_getVehicleList value)? getVehicleList,
   }) {
     return getCurrentLocation?.call(this);
   }
@@ -273,6 +290,7 @@ class _$getCurrentLocationImpl implements _getCurrentLocation {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_fetchAllLocations value)? fetchAllLocations,
     TResult Function(_getCurrentLocation value)? getCurrentLocation,
+    TResult Function(_getVehicleList value)? getVehicleList,
     required TResult orElse(),
   }) {
     if (getCurrentLocation != null) {
@@ -287,6 +305,117 @@ abstract class _getCurrentLocation implements HomeEvent {
 }
 
 /// @nodoc
+abstract class _$$getVehicleListImplCopyWith<$Res> {
+  factory _$$getVehicleListImplCopyWith(_$getVehicleListImpl value,
+          $Res Function(_$getVehicleListImpl) then) =
+      __$$getVehicleListImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$getVehicleListImplCopyWithImpl<$Res>
+    extends _$HomeEventCopyWithImpl<$Res, _$getVehicleListImpl>
+    implements _$$getVehicleListImplCopyWith<$Res> {
+  __$$getVehicleListImplCopyWithImpl(
+      _$getVehicleListImpl _value, $Res Function(_$getVehicleListImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of HomeEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$getVehicleListImpl implements _getVehicleList {
+  const _$getVehicleListImpl();
+
+  @override
+  String toString() {
+    return 'HomeEvent.getVehicleList()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$getVehicleListImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() fetchAllLocations,
+    required TResult Function() getCurrentLocation,
+    required TResult Function() getVehicleList,
+  }) {
+    return getVehicleList();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? fetchAllLocations,
+    TResult? Function()? getCurrentLocation,
+    TResult? Function()? getVehicleList,
+  }) {
+    return getVehicleList?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? fetchAllLocations,
+    TResult Function()? getCurrentLocation,
+    TResult Function()? getVehicleList,
+    required TResult orElse(),
+  }) {
+    if (getVehicleList != null) {
+      return getVehicleList();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_fetchAllLocations value) fetchAllLocations,
+    required TResult Function(_getCurrentLocation value) getCurrentLocation,
+    required TResult Function(_getVehicleList value) getVehicleList,
+  }) {
+    return getVehicleList(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_fetchAllLocations value)? fetchAllLocations,
+    TResult? Function(_getCurrentLocation value)? getCurrentLocation,
+    TResult? Function(_getVehicleList value)? getVehicleList,
+  }) {
+    return getVehicleList?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_fetchAllLocations value)? fetchAllLocations,
+    TResult Function(_getCurrentLocation value)? getCurrentLocation,
+    TResult Function(_getVehicleList value)? getVehicleList,
+    required TResult orElse(),
+  }) {
+    if (getVehicleList != null) {
+      return getVehicleList(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _getVehicleList implements HomeEvent {
+  const factory _getVehicleList() = _$getVehicleListImpl;
+}
+
+/// @nodoc
 mixin _$HomeState {
   Status get status => throw _privateConstructorUsedError;
   LatLng? get currentLocation => throw _privateConstructorUsedError;
@@ -295,6 +424,7 @@ mixin _$HomeState {
   String? get searchQuery => throw _privateConstructorUsedError;
   ServicePreferences get servicePreferences =>
       throw _privateConstructorUsedError;
+  List<VehicleModel>? get vehicleList => throw _privateConstructorUsedError;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -314,7 +444,8 @@ abstract class $HomeStateCopyWith<$Res> {
       List<LocationModel>? locations,
       String? errorMessage,
       String? searchQuery,
-      ServicePreferences servicePreferences});
+      ServicePreferences servicePreferences,
+      List<VehicleModel>? vehicleList});
 }
 
 /// @nodoc
@@ -338,6 +469,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? errorMessage = freezed,
     Object? searchQuery = freezed,
     Object? servicePreferences = null,
+    Object? vehicleList = freezed,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -364,6 +496,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.servicePreferences
           : servicePreferences // ignore: cast_nullable_to_non_nullable
               as ServicePreferences,
+      vehicleList: freezed == vehicleList
+          ? _value.vehicleList
+          : vehicleList // ignore: cast_nullable_to_non_nullable
+              as List<VehicleModel>?,
     ) as $Val);
   }
 }
@@ -382,7 +518,8 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       List<LocationModel>? locations,
       String? errorMessage,
       String? searchQuery,
-      ServicePreferences servicePreferences});
+      ServicePreferences servicePreferences,
+      List<VehicleModel>? vehicleList});
 }
 
 /// @nodoc
@@ -404,6 +541,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? errorMessage = freezed,
     Object? searchQuery = freezed,
     Object? servicePreferences = null,
+    Object? vehicleList = freezed,
   }) {
     return _then(_$HomeStateImpl(
       status: null == status
@@ -430,6 +568,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.servicePreferences
           : servicePreferences // ignore: cast_nullable_to_non_nullable
               as ServicePreferences,
+      vehicleList: freezed == vehicleList
+          ? _value._vehicleList
+          : vehicleList // ignore: cast_nullable_to_non_nullable
+              as List<VehicleModel>?,
     ));
   }
 }
@@ -443,8 +585,10 @@ class _$HomeStateImpl implements _HomeState {
       final List<LocationModel>? locations,
       this.errorMessage,
       this.searchQuery,
-      this.servicePreferences = const ServicePreferences()})
-      : _locations = locations;
+      this.servicePreferences = const ServicePreferences(),
+      final List<VehicleModel>? vehicleList})
+      : _locations = locations,
+        _vehicleList = vehicleList;
 
   @override
   @JsonKey()
@@ -468,10 +612,19 @@ class _$HomeStateImpl implements _HomeState {
   @override
   @JsonKey()
   final ServicePreferences servicePreferences;
+  final List<VehicleModel>? _vehicleList;
+  @override
+  List<VehicleModel>? get vehicleList {
+    final value = _vehicleList;
+    if (value == null) return null;
+    if (_vehicleList is EqualUnmodifiableListView) return _vehicleList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'HomeState(status: $status, currentLocation: $currentLocation, locations: $locations, errorMessage: $errorMessage, searchQuery: $searchQuery, servicePreferences: $servicePreferences)';
+    return 'HomeState(status: $status, currentLocation: $currentLocation, locations: $locations, errorMessage: $errorMessage, searchQuery: $searchQuery, servicePreferences: $servicePreferences, vehicleList: $vehicleList)';
   }
 
   @override
@@ -489,7 +642,9 @@ class _$HomeStateImpl implements _HomeState {
             (identical(other.searchQuery, searchQuery) ||
                 other.searchQuery == searchQuery) &&
             (identical(other.servicePreferences, servicePreferences) ||
-                other.servicePreferences == servicePreferences));
+                other.servicePreferences == servicePreferences) &&
+            const DeepCollectionEquality()
+                .equals(other._vehicleList, _vehicleList));
   }
 
   @override
@@ -500,7 +655,8 @@ class _$HomeStateImpl implements _HomeState {
       const DeepCollectionEquality().hash(_locations),
       errorMessage,
       searchQuery,
-      servicePreferences);
+      servicePreferences,
+      const DeepCollectionEquality().hash(_vehicleList));
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -518,7 +674,8 @@ abstract class _HomeState implements HomeState {
       final List<LocationModel>? locations,
       final String? errorMessage,
       final String? searchQuery,
-      final ServicePreferences servicePreferences}) = _$HomeStateImpl;
+      final ServicePreferences servicePreferences,
+      final List<VehicleModel>? vehicleList}) = _$HomeStateImpl;
 
   @override
   Status get status;
@@ -532,6 +689,8 @@ abstract class _HomeState implements HomeState {
   String? get searchQuery;
   @override
   ServicePreferences get servicePreferences;
+  @override
+  List<VehicleModel>? get vehicleList;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.

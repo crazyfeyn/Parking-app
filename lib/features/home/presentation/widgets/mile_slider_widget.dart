@@ -6,13 +6,13 @@ class MileSliderWidget extends StatefulWidget {
   final double maxValue;
   final Function(double) onChanged;
   final double initialValue;
-  MileSliderWidget({
-    Key? key,
+  const MileSliderWidget({
+    super.key,
     this.minValue = 0,
     this.maxValue = 10,
     required this.onChanged,
     this.initialValue = 7.5,
-  }) : super(key: key);
+  });
 
   @override
   State<MileSliderWidget> createState() => _MileSliderWidgetState();

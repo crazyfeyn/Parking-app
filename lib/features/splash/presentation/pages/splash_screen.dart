@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
@@ -30,7 +31,8 @@ class _SplashScreenState extends State<SplashScreen> {
               PageRouteBuilder(
                 transitionDuration: const Duration(seconds: 1),
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                    const MainScreen(),
+                     MainScreen(
+                ),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                   return FadeTransition(

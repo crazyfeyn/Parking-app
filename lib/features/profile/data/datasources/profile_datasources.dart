@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_application/core/config/dio_config.dart';
 import 'package:flutter_application/core/error/exception.dart';
 import 'package:flutter_application/features/profile/data/models/profile_model.dart';
 
@@ -84,7 +83,6 @@ class ProfileDatasources {
     }
   }
 
-  /// Adds a payment method for the user
   Future<void> addPaymentMethod(Map<String, dynamic> paymentData) async {
     try {
       final response = await dio.post(
@@ -94,6 +92,8 @@ class ProfileDatasources {
 
       if (response.statusCode != 200) {
         throw ServerException();
+      } else {
+        print('success');
       }
     } on DioException catch (e) {
       throw ServerException();
