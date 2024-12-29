@@ -4,7 +4,7 @@ class ProfileModel {
   final String email;
   final String phoneNumber;
   final bool ownsParking;
-
+  
   ProfileModel({
     required this.surname,
     required this.name,

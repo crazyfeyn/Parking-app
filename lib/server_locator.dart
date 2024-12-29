@@ -39,8 +39,7 @@ Future<void> init() async {
   final dio = DioConfig(sl<LocalConfig>()).client;
   //! Core
   sl.registerLazySingleton(() => Location());
-  sl.registerLazySingleton(() => DioConfig(sl<LocalConfig>()));
-
+  sl.registerLazySingleton(() => DioConfig(sl<LocalConfig>(),),);
   //! Features
 
   // Auth Feature
@@ -103,7 +102,11 @@ Future<void> init() async {
         homeDatasources: sl<HomeDatasources>(),
       ));
 
-  // Profile Feature
+
+  // Data sources
+  sl.registerLazySingleton(() => HomeDatasources(dio: dio));
+
+
   // Bloc
   sl.registerFactory(() => ProfileBloc(
         addPaymentMethodUsecase: sl<AddPaymentMethodUsecase>(),
@@ -134,7 +137,7 @@ Future<void> init() async {
   // Data sources
   //! cachedProfile uchun shareddan current userni olib berib yuborish kerak
   sl.registerLazySingleton(() => ProfileDatasources(
-        dio: sl<Dio>(),
+        dio: dio,
         cachedProfile: null, //! cached profile ga etibor qarat
       ));
 }
