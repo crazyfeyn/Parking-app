@@ -9,5 +9,6 @@ class HomeState with _$HomeState {
     String? errorMessage,
     String? searchQuery,
     @Default(ServicePreferences()) ServicePreferences servicePreferences,
+    List<VehicleModel>? vehicleList,
   }) = _HomeState;
 }

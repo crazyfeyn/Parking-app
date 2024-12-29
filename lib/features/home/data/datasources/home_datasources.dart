@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dio/dio.dart';
+import 'package:flutter_application/features/profile/data/models/vehicle_model.dart';
 import 'package:location/location.dart';
-import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/error/exception.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
 
@@ -11,19 +11,19 @@ class HomeDatasources {
     required this.dio,
   });
   Future<LocationData> getCurrentLocation() async {
-    final Location _location = Location();
+    final Location location = Location();
     try {
-      final isServiceEnabled = await _location.serviceEnabled();
+      final isServiceEnabled = await location.serviceEnabled();
       if (!isServiceEnabled) {
-        final serviceRequested = await _location.requestService();
+        final serviceRequested = await location.requestService();
         if (!serviceRequested) {
           throw LocationException();
         }
       }
 
-      final permissionStatus = await _location.hasPermission();
+      final permissionStatus = await location.hasPermission();
       if (permissionStatus == PermissionStatus.denied) {
-        final permissionRequested = await _location.requestPermission();
+        final permissionRequested = await location.requestPermission();
         if (permissionRequested != PermissionStatus.granted) {
           throw Exception('Location permissions are denied.');
         }
@@ -31,7 +31,7 @@ class HomeDatasources {
         throw Exception('Location permissions are permanently denied.');
       }
 
-      final currentLocation = await _location.getLocation();
+      final currentLocation = await location.getLocation();
       if (currentLocation.latitude == null ||
           currentLocation.longitude == null) {
         throw Exception('Failed to retrieve location.');
@@ -45,9 +45,8 @@ class HomeDatasources {
 
   Future<List<LocationModel>> fetchAllLocations() async {
     try {
-     
       final response = await dio.get(
-        '${AppConstants.baseseconUrl}locations/list',
+        '/locations/list',
       );
 
       // Check if the response is successful
@@ -140,6 +139,22 @@ class HomeDatasources {
     } catch (e) {
       print('General error: $e');
       return [];
+    }
+  }
+
+  Future<List<VehicleModel>> fetchVehicleList() async {
+    try {
+      final response = await dio.get('/bookings/vehicle-list/');
+      if (response.statusCode == 200) {
+        final List data = response.data;
+        return data.map((json) => VehicleModel.fromJson(json)).toList();
+      } else {
+        throw ServerException();
+      }
+    } on DioException {
+      throw ServerException();
+    } catch (e) {
+      throw ServerException();
     }
   }
 }

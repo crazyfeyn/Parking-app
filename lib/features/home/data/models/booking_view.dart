@@ -33,7 +33,6 @@ class BookingView {
     this.extendedFor,
   });
 
-  /// Converts JSON to a BookingView instance
   factory BookingView.fromJson(Map<String, dynamic> json) {
     return BookingView(
       id: json['id'],
@@ -54,7 +53,6 @@ class BookingView {
     );
   }
 
-  /// Converts BookingView instance to JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -85,7 +83,6 @@ class BookingStatus {
     required this.name,
   });
 
-  /// Converts JSON to a BookingStatus instance
   factory BookingStatus.fromJson(Map<String, dynamic> json) {
     return BookingStatus(
       id: json['id'],
@@ -93,7 +90,6 @@ class BookingStatus {
     );
   }
 
-  /// Converts BookingStatus instance to JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,
