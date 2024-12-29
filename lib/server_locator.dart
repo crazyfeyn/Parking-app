@@ -5,6 +5,7 @@ import 'package:flutter_application/features/auth/data/datasources/auth_datasour
 import 'package:flutter_application/features/auth/data/datasources/local_auth_datasources.dart';
 import 'package:flutter_application/features/auth/data/repositories/auth_repositories.dart';
 import 'package:flutter_application/features/auth/domain/usecases/authicated_usecase.dart';
+import 'package:flutter_application/features/auth/domain/usecases/change_password_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/log_out_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/login_user_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/refresh_user_token_usecase.dart';
@@ -22,7 +23,6 @@ import 'package:flutter_application/features/profile/data/datasources/profile_da
 import 'package:flutter_application/features/profile/data/repositories/profile_repositories.dart';
 import 'package:flutter_application/features/profile/domain/repositories/profile_repositories.dart';
 import 'package:flutter_application/features/profile/domain/usecases/add_payment_method_usecase.dart';
-import 'package:flutter_application/features/profile/domain/usecases/change_password_usecase.dart';
 import 'package:flutter_application/features/profile/domain/usecases/get_profile_usecase.dart';
 import 'package:flutter_application/features/profile/domain/usecases/update_profile_usecase.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
@@ -40,21 +40,28 @@ Future<void> init() async {
   final dio = DioConfig(sl<LocalConfig>()).client;
   //! Core
   sl.registerLazySingleton(() => Location());
-  sl.registerLazySingleton(() => DioConfig(sl<LocalConfig>()));
-
+  sl.registerLazySingleton(
+    () => DioConfig(
+      sl<LocalConfig>(),
+    ),
+  );
   //! Features
 
   // Auth Feature
   // Bloc
-  sl.registerFactory(() => AuthBloc(
-      sl<LoginUserUsecase>(),
-      sl<RefreshUserTokenUsecase>(),
-      sl<RegisterUserUsecase>(),
-      sl<ResetPassUserUsecase>(),
-      sl<AuthicatedUsecase>(),
-      sl<LogOutUsecase>()));
-
+  sl.registerFactory(
+    () => AuthBloc(
+        sl<LoginUserUsecase>(),
+        sl<RefreshUserTokenUsecase>(),
+        sl<RegisterUserUsecase>(),
+        sl<ResetPassUserUsecase>(),
+        sl<AuthicatedUsecase>(),
+        sl<LogOutUsecase>(),
+        sl<ChangePasswordUsecase>()),
+  );
   // Use cases
+  sl.registerFactory(() =>
+      ChangePasswordUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
   sl.registerFactory(
       () => LogOutUsecase(authRepositoriesImpl: sl<AuthRepositoriesImpl>()));
   sl.registerFactory(
@@ -87,42 +94,47 @@ Future<void> init() async {
 
   // Home Feature
   // Bloc
-  sl.registerFactory(() => HomeBloc(
-        sl<CurrentLocationUsecase>(),
-        sl<FetchLocationsUsecase>(),
-        sl<GetVehicleListUsecase>(),
-      ));
+
+  sl.registerFactory(
+    () => HomeBloc(
+      sl<CurrentLocationUsecase>(),
+      sl<FetchLocationsUsecase>(),
+      sl<GetVehicleListUsecase>(),
+    ),
+  );
 
   // Use cases
+  sl.registerFactory(() => GetVehicleListUsecase(
+        homeRepositories: sl<HomeRepositories>(),
+      ));
   sl.registerLazySingleton(() => CurrentLocationUsecase(
         homeRepositories: sl<HomeRepositories>(),
       ));
-  sl.registerLazySingleton(() => FetchLocationsUsecase(
-        homeRepositories: sl<HomeRepositories>(),
-      ));
+  sl.registerLazySingleton(
+    () => FetchLocationsUsecase(
+      homeRepositories: sl<HomeRepositories>(),
+    ),
+  );
+  // Repository
 
-  // home Datasource
+  sl.registerLazySingleton<HomeRepositories>(
+    () => HomeRepositoriesImpl(
+      homeDatasources: sl<HomeDatasources>(),
+    ),
+  );
+
+  // Data sources
   sl.registerLazySingleton(() => HomeDatasources(dio: dio));
 
-  // Repository
-  sl.registerLazySingleton<HomeRepositories>(() => HomeRepositoriesImpl(
-        homeDatasources: sl<HomeDatasources>(),
-      ));
-
-  // Profile Feature
   // Bloc
   sl.registerFactory(() => ProfileBloc(
         addPaymentMethodUsecase: sl<AddPaymentMethodUsecase>(),
-        changePasswordUsecase: sl<ChangePasswordUsecase>(),
         getProfileUsecase: sl<GetProfileUsecase>(),
         updateProfileUsecase: sl<UpdateProfileUsecase>(),
       ));
 
   // Use cases
   sl.registerLazySingleton(() => AddPaymentMethodUsecase(
-        profileRepositories: sl<ProfileRepositories>(),
-      ));
-  sl.registerLazySingleton(() => ChangePasswordUsecase(
         profileRepositories: sl<ProfileRepositories>(),
       ));
   sl.registerLazySingleton(() => GetProfileUsecase(

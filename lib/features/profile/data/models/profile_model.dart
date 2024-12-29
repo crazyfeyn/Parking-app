@@ -1,74 +1,31 @@
-class ProfileModel {
-  final String surname;
-  final String name;
-  final String email;
-  final String phoneNumber;
-  final bool ownsParking;
-  
-  ProfileModel({
-    required this.surname,
-    required this.name,
-    required this.email,
-    required this.phoneNumber,
-    required this.ownsParking,
-  });
+// ignore_for_file: non_constant_identifier_names
+import 'package:flutter_application/features/profile/domain/entity/profile_entity.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  factory ProfileModel.fromJson(Map<String, dynamic> json) {
-    return ProfileModel(
-      surname: json['surname'] as String,
-      name: json['name'] as String,
-      email: json['email'] as String,
-      phoneNumber: json['phoneNumber'] as String,
-      ownsParking: json['owns_parking'] as bool,
-    );
-  }
+part 'profile_model.freezed.dart';
+part 'profile_model.g.dart';
 
-  Map<String, dynamic> toJson() {
-    return {
-      'surname': surname,
-      'name': name,
-      'email': email,
-      'phoneNumber': phoneNumber,
-      'owns_parking': ownsParking,
-    };
-  }
+@freezed
+class ProfileModel with _$ProfileModel {
+  factory ProfileModel({
+    required int id,
+    required String email,
+    required String first_name,
+    required String last_name,
+    required bool owns_parking,
+  }) = _ProfileModel;
 
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
+  factory ProfileModel.fromJson(Map<String, dynamic> json) =>
+      _$ProfileModelImpl.fromJson(json);
+}
 
-    return other is ProfileModel &&
-        other.surname == surname &&
-        other.name == name &&
-        other.email == email &&
-        other.phoneNumber == phoneNumber &&
-        other.ownsParking == ownsParking;
-  }
-
-  @override
-  int get hashCode {
-    return Object.hash(
-      surname,
-      name,
-      email,
-      phoneNumber,
-      ownsParking,
-    );
-  }
-
-  ProfileModel copyWith({
-    String? surname,
-    String? name,
-    String? email,
-    String? phoneNumber,
-    bool? ownsParking,
-  }) {
-    return ProfileModel(
-      surname: surname ?? this.surname,
-      name: name ?? this.name,
-      email: email ?? this.email,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      ownsParking: ownsParking ?? this.ownsParking,
-    );
+extension ProfileMapper on ProfileModel {
+  ProfileEntity toEntity() {
+    return ProfileEntity(
+        id: id,
+        email: email,
+        first_name: first_name,
+        last_name: last_name,
+        owns_parking: owns_parking);
   }
 }

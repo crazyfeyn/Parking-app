@@ -50,6 +50,26 @@ class AuthDatasources {
     }
   }
 
+  Future<void> changePass(String oldPassword, String newPassword) async {
+    print('${AppConstants.baseseconUrl}users/register/');
+    final response = await dio.post(
+      '${AppConstants.baseseconUrl}users/change-password/',
+      data: {
+        'old_password': oldPassword,
+        'new_password': newPassword,
+      },
+    );
+
+    print("Response data: ${response.data}");
+    print("Response status code: ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw ServerException();
+    }
+  }
+
   Future<void> resetPass(String email) async {
     print(email);
     final recponce = await dio.post(

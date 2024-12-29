@@ -8,7 +8,6 @@ class ProfileDatasources {
 
   ProfileDatasources({required this.dio, this.cachedProfile});
 
-  /// Fetches the user's profile from the server
   Future<ProfileModel> getProfile() async {
     try {
       final response = await dio.get('/users/profile/');
@@ -44,11 +43,11 @@ class ProfileDatasources {
       );
 
       if (response.statusCode == 200) {
-        cachedProfile = cachedProfile?.copyWith(
-          name: name,
-          surname: surname,
-          email: email,
-        );
+        // cachedProfile = cachedProfile?.copyWith(
+        //   name: name,
+        //   surname: surname,
+        //   email: email,
+        // );
       } else {
         throw ServerException();
       }
