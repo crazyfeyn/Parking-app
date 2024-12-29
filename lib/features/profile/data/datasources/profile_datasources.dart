@@ -1,35 +1,32 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_application/core/config/dio_config.dart';
 import 'package:flutter_application/core/error/exception.dart';
-import 'package:flutter_application/core/error/failure.dart';
 import 'package:flutter_application/features/profile/data/models/profile_model.dart';
 
 class ProfileDatasources {
   ProfileModel? cachedProfile;
-  final DioConfig dioConfig;
+  final Dio dio;
 
-  ProfileDatasources({required this.dioConfig, ProfileModel? cachedProfile});
+  ProfileDatasources({required this.dio, this.cachedProfile});
 
+  /// Fetches the user's profile from the server
   Future<ProfileModel> getProfile() async {
-    print('HELLLOOO DATASOSORROCOOEOOEOEOEOE');
     try {
-      final response = await dioConfig.client.get('/users/profile/');
+      final response = await dio.get('/users/profile/');
       if (response.statusCode == 200) {
         cachedProfile = ProfileModel.fromJson(response.data);
         return cachedProfile!;
       } else {
-        throw DioException(
-          requestOptions: RequestOptions(path: '/users/profile/'),
-          error: 'Failed to fetch profile',
-        );
+        throw ServerException();
       }
-    } on DioException {
+    } on DioException catch (e) {
       throw ServerException();
-    } catch (e) {
-      throw ServerFailure();
+    } catch (_) {
+      throw ServerException();
     }
   }
 
+  /// Updates the user's profile
   Future<void> updateProfile({
     String? name,
     String? surname,
@@ -42,7 +39,7 @@ class ProfileDatasources {
         if (email != null) 'email': email,
       };
 
-      final response = await dioConfig.client.patch(
+      final response = await dio.patch(
         '/users/profile/',
         data: updateData,
       );
@@ -54,40 +51,53 @@ class ProfileDatasources {
           email: email,
         );
       } else {
-        throw DioException(
-          requestOptions: RequestOptions(path: '/users/profile/'),
-          error: 'Failed to update profile',
-        );
+        throw ServerException();
       }
-    } catch (e) {
+    } on DioException catch (e) {
+      throw ServerException();
+    } catch (_) {
       throw ServerException();
     }
   }
 
+  /// Changes the user's password
   Future<void> changePassword({
     required String oldPassword,
     required String newPassword,
   }) async {
     try {
-      await dioConfig.client.post(
+      final response = await dio.post(
         '/users/change-password/',
         data: {
           'old_password': oldPassword,
           'new_password': newPassword,
         },
       );
-    } catch (e) {
+
+      if (response.statusCode != 200) {
+        throw ServerException();
+      }
+    } on DioException catch (e) {
+      throw ServerException();
+    } catch (_) {
       throw ServerException();
     }
   }
 
+  /// Adds a payment method for the user
   Future<void> addPaymentMethod(Map<String, dynamic> paymentData) async {
     try {
-      await dioConfig.client.post(
+      final response = await dio.post(
         '/users/add-payment-method/',
         data: paymentData,
       );
-    } catch (e) {
+
+      if (response.statusCode != 200) {
+        throw ServerException();
+      }
+    } on DioException catch (e) {
+      throw ServerException();
+    } catch (_) {
       throw ServerException();
     }
   }

@@ -134,7 +134,7 @@ Future<void> init() async {
   // Data sources
   //! cachedProfile uchun shareddan current userni olib berib yuborish kerak
   sl.registerLazySingleton(() => ProfileDatasources(
-        dioConfig: DioConfig(sl<LocalConfig>()),
-        // cachedProfile: sl<LocalConfig>(),
+        dio: sl<Dio>(),
+        cachedProfile: null, //! cached profile ga etibor qarat
       ));
 }
