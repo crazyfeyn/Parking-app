@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/features/booking_space/presentation/pages/add_new_vehicle_screen.dart';
+import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
+import 'package:flutter_application/features/home/data/models/location_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
-import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class VehicleTypePicker extends StatefulWidget {
   final Function onStateChanged;
   final String? initialValue;
+  final BookingProvider provider;
 
   const VehicleTypePicker({
     super.key,
     required this.onStateChanged,
     this.initialValue,
     required LocationModel locationModel,
+    required this.provider,
   });
 
   @override
@@ -21,21 +28,16 @@ class VehicleTypePicker extends StatefulWidget {
 }
 
 class _VehicleTypePickerState extends State<VehicleTypePicker> {
-  String? selectedVehicleTypes;
-
-  List<String> vehicleTypes = [
-    'New York City, New York',
-    'Los Angeles, California',
-    'Chicago, Illinois',
-  ];
+  String? selectedVehicleType;
 
   @override
   void initState() {
     super.initState();
-    selectedVehicleTypes = widget.initialValue;
+    selectedVehicleType = widget.initialValue;
+    context.read<HomeBloc>().add(const HomeEvent.getVehicleList());
   }
 
-  void _showStatesPicker() async {
+  void _showVehiclePicker(List<String> vehicleTypes) async {
     await showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -49,12 +51,14 @@ class _VehicleTypePickerState extends State<VehicleTypePicker> {
           itemBuilder: (context, index) {
             return ListTile(
               title: Text(
-                vehicleTypes[index],
+                vehicleTypes.isNotEmpty
+                    ? vehicleTypes[index]
+                    : 'There is not vehicle list in your list',
                 style: const TextStyle(fontSize: 16),
               ),
               onTap: () {
                 setState(() {
-                  selectedVehicleTypes = vehicleTypes[index];
+                  selectedVehicleType = vehicleTypes[index];
                 });
                 widget.onStateChanged(vehicleTypes[index]);
                 Navigator.pop(context);
@@ -68,52 +72,79 @@ class _VehicleTypePickerState extends State<VehicleTypePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Vehicle',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.status == Status.error) {
+          return Center(
+            child: Text(
+              'Error: ${state.errorMessage}',
+              style: const TextStyle(color: Colors.red),
             ),
-            const SizedBox(height: 8),
-            ZoomTapAnimation(
-              onTap: _showStatesPicker,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
+          );
+        }
+
+        final vehicleTypes =
+            state.vehicleList?.map((vehicle) => vehicle.model).toList() ?? [];
+
+        return Column(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Vehicle',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                  ),
                 ),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      selectedVehicleTypes ?? 'Select vehicle',
-                      style: TextStyle(
-                        color: selectedVehicleTypes != null
-                            ? Colors.black
-                            : Colors.black54,
-                        fontSize: 16,
-                      ),
+                const SizedBox(height: 8),
+                ZoomTapAnimation(
+                  onTap: () => _showVehiclePicker(vehicleTypes),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
                     ),
-                    const Icon(Icons.arrow_drop_down, color: Colors.black54),
-                  ],
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          selectedVehicleType ?? 'Select vehicle',
+                          style: TextStyle(
+                            color: selectedVehicleType != null
+                                ? Colors.black
+                                : Colors.black54,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const Icon(Icons.arrow_drop_down,
+                            color: Colors.black54),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            12.hs(),
+            ButtonWidget(
+              text: '(+) Add vehicle',
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddNewVehicleScreen(
+                    provider: widget.provider,
+                  ),
                 ),
               ),
             ),
           ],
-        ),
-        12.hs(),
-        ButtonWidget(text: '(+) Add viehicle'),
-      ],
+        );
+      },
     );
   }
 }

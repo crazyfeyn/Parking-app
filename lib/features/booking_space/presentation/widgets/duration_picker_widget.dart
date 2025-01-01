@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/profile/data/models/vehicle_model.dart';
 
 class DurationPickerWidget extends StatefulWidget {
   final Function(String) onDurationChanged;

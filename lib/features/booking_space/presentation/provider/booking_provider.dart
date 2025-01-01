@@ -1,33 +1,56 @@
-// booking_provider.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
+import 'package:flutter_application/features/booking_space/data/models/booking_model.dart';
 
 class BookingProvider extends ChangeNotifier {
   DateTime? _selectedDate;
   String? _selectedBookingType;
   String? _selectedDuration;
-  String? _selectedVehicleType;
+  String? _selectedVehicle;
   String? _selectedPaymentMethod;
   final LocationModel locationModel;
+  String? _vehicleType;
+  String? _unitNumber;
+  int? _year;
+  String? make;
+  String? _model;
+  String? _plateNumber;
+  int? user;
 
   BookingProvider({required this.locationModel});
 
-  // Getters
   DateTime? get selectedDate => _selectedDate;
   String? get selectedBookingType => _selectedBookingType;
   String? get selectedDuration => _selectedDuration;
-  String? get selectedVehicleType => _selectedVehicleType;
+  String? get selectedVehicleType => _selectedVehicle;
   String? get selectedPaymentMethod => _selectedPaymentMethod;
+
+  String? get vehicleType => _vehicleType;
+  String? get unitNumber => _unitNumber;
+  int? get year => _year;
+  String? get model => _model;
+  String? get plateNumber => _plateNumber;
+  int? get userId => user;
 
   bool get isFormValid =>
       _selectedDate != null &&
       _selectedBookingType != null &&
-      _selectedDuration != null &&
-      _selectedVehicleType != null &&
+      _selectedDuration != '' &&
+      _selectedVehicle != null &&
       _selectedPaymentMethod != null &&
       locationModel.availableSpots! > 0;
 
-  // Setters
+  bool get isFormValidVehicle {
+    return _vehicleType != null &&
+        _unitNumber != null &&
+        _year != null &&
+        make != null &&
+        _model != null &&
+        _plateNumber != null &&
+        user != null;
+  }
+
   void setDate(DateTime date) {
     _selectedDate = date;
     notifyListeners();
@@ -43,8 +66,8 @@ class BookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setVehicleType(String type) {
-    _selectedVehicleType = type;
+  void setVehicle(String vehicle) {
+    _selectedVehicle = vehicle;
     notifyListeners();
   }
 
@@ -53,19 +76,70 @@ class BookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setVehicleType(String type) {
+    _vehicleType = type;
+    notifyListeners();
+  }
+
+  void setUnitNumber(String unit) {
+    _unitNumber = unit;
+    notifyListeners();
+  }
+
+  void setYear(int year) {
+    _year = year;
+    notifyListeners();
+  }
+
+  void setMake(String carMake) {
+    make = carMake;
+    notifyListeners();
+  }
+
+  void setModel(String carModel) {
+    _model = carModel;
+    notifyListeners();
+  }
+
+  void setPlateNumber(String plate) {
+    _plateNumber = plate;
+    notifyListeners();
+  }
+
+  void setUser(int userId) {
+    user = userId;
+    notifyListeners();
+  }
+
   void handleBooking() {
     if (!isFormValid) return;
 
-    final bookingData = {
-      'location_id': locationModel.id,
-      'start_date': _selectedDate?.toIso8601String(),
-      'booking_type': _selectedBookingType,
-      'duration': _selectedDuration,
-      'vehicle_type': _selectedVehicleType,
-      'payment_method': _selectedPaymentMethod,
-    };
+    final booking = BookingModel(
+      locationId: locationModel.id,
+      startDate: _selectedDate!,
+      bookingType: _selectedBookingType!,
+      duration: _selectedDuration!,
+      vehicleType: _selectedVehicle!,
+      paymentMethod: _selectedPaymentMethod!,
+    );
 
-    // Here you would make your API call
-    print('Booking data: $bookingData');
+    print('Booking data: ${booking.toMap()}');
+  }
+
+  void handleVehicleCreation(int userId) {
+    if (!isFormValid) {
+      return;
+    }
+
+    final vehicle = VehicleModel(
+        type: _vehicleType!,
+        unitNumber: _unitNumber!,
+        year: _year!,
+        make: make!,
+        model: _model!,
+        plateNumber: _plateNumber!,
+        user: userId);
+
+    print('Vehicle data: ${vehicle.toJson()}');
   }
 }

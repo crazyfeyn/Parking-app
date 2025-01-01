@@ -1,33 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-class PaymentMethodPicker extends StatefulWidget {
+class GeneralModalFieldWidget extends StatefulWidget {
   final Function onStateChanged;
   final String? initialValue;
+  final List dataList;
+  final String labelText;
+  final String aboveText;
 
-  const PaymentMethodPicker({
+  const GeneralModalFieldWidget({
     super.key,
     required this.onStateChanged,
     this.initialValue,
+    required this.dataList,
+    required this.labelText,
+    required this.aboveText,
   });
 
   @override
   // ignore: library_private_types_in_public_api
-  _PaymentMethodPickerState createState() => _PaymentMethodPickerState();
+  _GeneralModalFieldWidgetState createState() =>
+      _GeneralModalFieldWidgetState();
 }
 
-class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
-  String? selectedPaymentMethods;
-
-  List<String> paymentMethods = [
-    'Cash',
-    'By card',
-  ];
+class _GeneralModalFieldWidgetState extends State<GeneralModalFieldWidget> {
+  String? selectedBookingType;
 
   @override
   void initState() {
     super.initState();
-    selectedPaymentMethods = widget.initialValue;
+    selectedBookingType = widget.initialValue;
   }
 
   void _showStatesPicker() async {
@@ -40,18 +42,18 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
       ),
       builder: (BuildContext context) {
         return ListView.builder(
-          itemCount: paymentMethods.length,
+          itemCount: widget.dataList.length,
           itemBuilder: (context, index) {
             return ListTile(
               title: Text(
-                paymentMethods[index],
+                widget.dataList[index],
                 style: const TextStyle(fontSize: 16),
               ),
               onTap: () {
                 setState(() {
-                  selectedPaymentMethods = paymentMethods[index];
+                  selectedBookingType = widget.dataList[index];
                 });
-                widget.onStateChanged(paymentMethods[index]);
+                widget.onStateChanged(widget.dataList[index]);
                 Navigator.pop(context);
               },
             );
@@ -66,9 +68,9 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Payment methods',
-          style: TextStyle(
+        Text(
+          widget.labelText,
+          style: const TextStyle(
             fontSize: 16,
             color: Colors.grey,
           ),
@@ -89,9 +91,9 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  selectedPaymentMethods ?? 'Select payment methods',
+                  selectedBookingType ?? widget.aboveText,
                   style: TextStyle(
-                    color: selectedPaymentMethods != null
+                    color: selectedBookingType != null
                         ? Colors.black
                         : Colors.black54,
                     fontSize: 16,

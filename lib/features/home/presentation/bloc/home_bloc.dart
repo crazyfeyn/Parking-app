@@ -1,11 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_application/features/home/data/models/service_preferences_model.dart';
+import 'package:flutter_application/features/home/domain/usecases/create_vehicle_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/current_location_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/fetch_locations_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/get_vehicle_list_usecase.dart';
-import 'package:flutter_application/features/profile/data/models/vehicle_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -17,13 +18,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final CurrentLocationUsecase currentLocationUsecase;
   final FetchLocationsUsecase fetchLocationsUsecase;
   final GetVehicleListUsecase getVehicleListUsecase;
+  final CreateVehicleUsecase createVehicleUsecase;
 
   HomeBloc(this.currentLocationUsecase, this.fetchLocationsUsecase,
-      this.getVehicleListUsecase)
+      this.getVehicleListUsecase, this.createVehicleUsecase)
       : super(const HomeState()) {
     on<_fetchAllLocations>(_fetchAllLocationsFunc);
     on<_getCurrentLocation>(_getCurrentLocationFunc);
     on<_getVehicleList>(_getVehicleListFunc);
+    on<_createVehicle>(_createVehicleFunc);
   }
 
   Future<void> _fetchAllLocationsFunc(
@@ -47,7 +50,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(
           state.copyWith(status: Status.error, errorMessage: error.toString()));
     }, (locationData) {
-      // Assuming locationData is of type LocationData, and it contains latitude and longitude
       if (locationData != null) {
         final currentLocation =
             LatLng(locationData.latitude, locationData.longitude);
@@ -71,5 +73,28 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }, (vehicleList) {
       emit(state.copyWith(status: Status.success, vehicleList: vehicleList));
     });
+  }
+
+  Future<void> _createVehicleFunc(
+      _createVehicle event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(status: Status.loading));
+
+    try {
+      await createVehicleUsecase.call(event.vehicleModel);
+
+      emit(
+        state.copyWith(
+          status: Status.success,
+          createdVehicle: event.vehicleModel,
+        ),
+      );
+    } catch (error) {
+      emit(
+        state.copyWith(
+          status: Status.error,
+          errorMessage: error.toString(),
+        ),
+      );
+    }
   }
 }

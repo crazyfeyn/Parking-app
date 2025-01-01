@@ -21,6 +21,7 @@ mixin _$HomeEvent {
     required TResult Function() fetchAllLocations,
     required TResult Function() getCurrentLocation,
     required TResult Function() getVehicleList,
+    required TResult Function(VehicleModel vehicleModel) createVehicle,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -28,6 +29,7 @@ mixin _$HomeEvent {
     TResult? Function()? fetchAllLocations,
     TResult? Function()? getCurrentLocation,
     TResult? Function()? getVehicleList,
+    TResult? Function(VehicleModel vehicleModel)? createVehicle,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -35,6 +37,7 @@ mixin _$HomeEvent {
     TResult Function()? fetchAllLocations,
     TResult Function()? getCurrentLocation,
     TResult Function()? getVehicleList,
+    TResult Function(VehicleModel vehicleModel)? createVehicle,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -43,6 +46,7 @@ mixin _$HomeEvent {
     required TResult Function(_fetchAllLocations value) fetchAllLocations,
     required TResult Function(_getCurrentLocation value) getCurrentLocation,
     required TResult Function(_getVehicleList value) getVehicleList,
+    required TResult Function(_createVehicle value) createVehicle,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,6 +54,7 @@ mixin _$HomeEvent {
     TResult? Function(_fetchAllLocations value)? fetchAllLocations,
     TResult? Function(_getCurrentLocation value)? getCurrentLocation,
     TResult? Function(_getVehicleList value)? getVehicleList,
+    TResult? Function(_createVehicle value)? createVehicle,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,6 +62,7 @@ mixin _$HomeEvent {
     TResult Function(_fetchAllLocations value)? fetchAllLocations,
     TResult Function(_getCurrentLocation value)? getCurrentLocation,
     TResult Function(_getVehicleList value)? getVehicleList,
+    TResult Function(_createVehicle value)? createVehicle,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -126,6 +132,7 @@ class _$fetchAllLocationsImpl implements _fetchAllLocations {
     required TResult Function() fetchAllLocations,
     required TResult Function() getCurrentLocation,
     required TResult Function() getVehicleList,
+    required TResult Function(VehicleModel vehicleModel) createVehicle,
   }) {
     return fetchAllLocations();
   }
@@ -136,6 +143,7 @@ class _$fetchAllLocationsImpl implements _fetchAllLocations {
     TResult? Function()? fetchAllLocations,
     TResult? Function()? getCurrentLocation,
     TResult? Function()? getVehicleList,
+    TResult? Function(VehicleModel vehicleModel)? createVehicle,
   }) {
     return fetchAllLocations?.call();
   }
@@ -146,6 +154,7 @@ class _$fetchAllLocationsImpl implements _fetchAllLocations {
     TResult Function()? fetchAllLocations,
     TResult Function()? getCurrentLocation,
     TResult Function()? getVehicleList,
+    TResult Function(VehicleModel vehicleModel)? createVehicle,
     required TResult orElse(),
   }) {
     if (fetchAllLocations != null) {
@@ -160,6 +169,7 @@ class _$fetchAllLocationsImpl implements _fetchAllLocations {
     required TResult Function(_fetchAllLocations value) fetchAllLocations,
     required TResult Function(_getCurrentLocation value) getCurrentLocation,
     required TResult Function(_getVehicleList value) getVehicleList,
+    required TResult Function(_createVehicle value) createVehicle,
   }) {
     return fetchAllLocations(this);
   }
@@ -170,6 +180,7 @@ class _$fetchAllLocationsImpl implements _fetchAllLocations {
     TResult? Function(_fetchAllLocations value)? fetchAllLocations,
     TResult? Function(_getCurrentLocation value)? getCurrentLocation,
     TResult? Function(_getVehicleList value)? getVehicleList,
+    TResult? Function(_createVehicle value)? createVehicle,
   }) {
     return fetchAllLocations?.call(this);
   }
@@ -180,6 +191,7 @@ class _$fetchAllLocationsImpl implements _fetchAllLocations {
     TResult Function(_fetchAllLocations value)? fetchAllLocations,
     TResult Function(_getCurrentLocation value)? getCurrentLocation,
     TResult Function(_getVehicleList value)? getVehicleList,
+    TResult Function(_createVehicle value)? createVehicle,
     required TResult orElse(),
   }) {
     if (fetchAllLocations != null) {
@@ -237,6 +249,7 @@ class _$getCurrentLocationImpl implements _getCurrentLocation {
     required TResult Function() fetchAllLocations,
     required TResult Function() getCurrentLocation,
     required TResult Function() getVehicleList,
+    required TResult Function(VehicleModel vehicleModel) createVehicle,
   }) {
     return getCurrentLocation();
   }
@@ -247,6 +260,7 @@ class _$getCurrentLocationImpl implements _getCurrentLocation {
     TResult? Function()? fetchAllLocations,
     TResult? Function()? getCurrentLocation,
     TResult? Function()? getVehicleList,
+    TResult? Function(VehicleModel vehicleModel)? createVehicle,
   }) {
     return getCurrentLocation?.call();
   }
@@ -257,6 +271,7 @@ class _$getCurrentLocationImpl implements _getCurrentLocation {
     TResult Function()? fetchAllLocations,
     TResult Function()? getCurrentLocation,
     TResult Function()? getVehicleList,
+    TResult Function(VehicleModel vehicleModel)? createVehicle,
     required TResult orElse(),
   }) {
     if (getCurrentLocation != null) {
@@ -271,6 +286,7 @@ class _$getCurrentLocationImpl implements _getCurrentLocation {
     required TResult Function(_fetchAllLocations value) fetchAllLocations,
     required TResult Function(_getCurrentLocation value) getCurrentLocation,
     required TResult Function(_getVehicleList value) getVehicleList,
+    required TResult Function(_createVehicle value) createVehicle,
   }) {
     return getCurrentLocation(this);
   }
@@ -281,6 +297,7 @@ class _$getCurrentLocationImpl implements _getCurrentLocation {
     TResult? Function(_fetchAllLocations value)? fetchAllLocations,
     TResult? Function(_getCurrentLocation value)? getCurrentLocation,
     TResult? Function(_getVehicleList value)? getVehicleList,
+    TResult? Function(_createVehicle value)? createVehicle,
   }) {
     return getCurrentLocation?.call(this);
   }
@@ -291,6 +308,7 @@ class _$getCurrentLocationImpl implements _getCurrentLocation {
     TResult Function(_fetchAllLocations value)? fetchAllLocations,
     TResult Function(_getCurrentLocation value)? getCurrentLocation,
     TResult Function(_getVehicleList value)? getVehicleList,
+    TResult Function(_createVehicle value)? createVehicle,
     required TResult orElse(),
   }) {
     if (getCurrentLocation != null) {
@@ -348,6 +366,7 @@ class _$getVehicleListImpl implements _getVehicleList {
     required TResult Function() fetchAllLocations,
     required TResult Function() getCurrentLocation,
     required TResult Function() getVehicleList,
+    required TResult Function(VehicleModel vehicleModel) createVehicle,
   }) {
     return getVehicleList();
   }
@@ -358,6 +377,7 @@ class _$getVehicleListImpl implements _getVehicleList {
     TResult? Function()? fetchAllLocations,
     TResult? Function()? getCurrentLocation,
     TResult? Function()? getVehicleList,
+    TResult? Function(VehicleModel vehicleModel)? createVehicle,
   }) {
     return getVehicleList?.call();
   }
@@ -368,6 +388,7 @@ class _$getVehicleListImpl implements _getVehicleList {
     TResult Function()? fetchAllLocations,
     TResult Function()? getCurrentLocation,
     TResult Function()? getVehicleList,
+    TResult Function(VehicleModel vehicleModel)? createVehicle,
     required TResult orElse(),
   }) {
     if (getVehicleList != null) {
@@ -382,6 +403,7 @@ class _$getVehicleListImpl implements _getVehicleList {
     required TResult Function(_fetchAllLocations value) fetchAllLocations,
     required TResult Function(_getCurrentLocation value) getCurrentLocation,
     required TResult Function(_getVehicleList value) getVehicleList,
+    required TResult Function(_createVehicle value) createVehicle,
   }) {
     return getVehicleList(this);
   }
@@ -392,6 +414,7 @@ class _$getVehicleListImpl implements _getVehicleList {
     TResult? Function(_fetchAllLocations value)? fetchAllLocations,
     TResult? Function(_getCurrentLocation value)? getCurrentLocation,
     TResult? Function(_getVehicleList value)? getVehicleList,
+    TResult? Function(_createVehicle value)? createVehicle,
   }) {
     return getVehicleList?.call(this);
   }
@@ -402,6 +425,7 @@ class _$getVehicleListImpl implements _getVehicleList {
     TResult Function(_fetchAllLocations value)? fetchAllLocations,
     TResult Function(_getCurrentLocation value)? getCurrentLocation,
     TResult Function(_getVehicleList value)? getVehicleList,
+    TResult Function(_createVehicle value)? createVehicle,
     required TResult orElse(),
   }) {
     if (getVehicleList != null) {
@@ -416,6 +440,160 @@ abstract class _getVehicleList implements HomeEvent {
 }
 
 /// @nodoc
+abstract class _$$createVehicleImplCopyWith<$Res> {
+  factory _$$createVehicleImplCopyWith(
+          _$createVehicleImpl value, $Res Function(_$createVehicleImpl) then) =
+      __$$createVehicleImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({VehicleModel vehicleModel});
+}
+
+/// @nodoc
+class __$$createVehicleImplCopyWithImpl<$Res>
+    extends _$HomeEventCopyWithImpl<$Res, _$createVehicleImpl>
+    implements _$$createVehicleImplCopyWith<$Res> {
+  __$$createVehicleImplCopyWithImpl(
+      _$createVehicleImpl _value, $Res Function(_$createVehicleImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of HomeEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? vehicleModel = null,
+  }) {
+    return _then(_$createVehicleImpl(
+      null == vehicleModel
+          ? _value.vehicleModel
+          : vehicleModel // ignore: cast_nullable_to_non_nullable
+              as VehicleModel,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$createVehicleImpl implements _createVehicle {
+  const _$createVehicleImpl(this.vehicleModel);
+
+  @override
+  final VehicleModel vehicleModel;
+
+  @override
+  String toString() {
+    return 'HomeEvent.createVehicle(vehicleModel: $vehicleModel)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$createVehicleImpl &&
+            (identical(other.vehicleModel, vehicleModel) ||
+                other.vehicleModel == vehicleModel));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, vehicleModel);
+
+  /// Create a copy of HomeEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$createVehicleImplCopyWith<_$createVehicleImpl> get copyWith =>
+      __$$createVehicleImplCopyWithImpl<_$createVehicleImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() fetchAllLocations,
+    required TResult Function() getCurrentLocation,
+    required TResult Function() getVehicleList,
+    required TResult Function(VehicleModel vehicleModel) createVehicle,
+  }) {
+    return createVehicle(vehicleModel);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? fetchAllLocations,
+    TResult? Function()? getCurrentLocation,
+    TResult? Function()? getVehicleList,
+    TResult? Function(VehicleModel vehicleModel)? createVehicle,
+  }) {
+    return createVehicle?.call(vehicleModel);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? fetchAllLocations,
+    TResult Function()? getCurrentLocation,
+    TResult Function()? getVehicleList,
+    TResult Function(VehicleModel vehicleModel)? createVehicle,
+    required TResult orElse(),
+  }) {
+    if (createVehicle != null) {
+      return createVehicle(vehicleModel);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_fetchAllLocations value) fetchAllLocations,
+    required TResult Function(_getCurrentLocation value) getCurrentLocation,
+    required TResult Function(_getVehicleList value) getVehicleList,
+    required TResult Function(_createVehicle value) createVehicle,
+  }) {
+    return createVehicle(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_fetchAllLocations value)? fetchAllLocations,
+    TResult? Function(_getCurrentLocation value)? getCurrentLocation,
+    TResult? Function(_getVehicleList value)? getVehicleList,
+    TResult? Function(_createVehicle value)? createVehicle,
+  }) {
+    return createVehicle?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_fetchAllLocations value)? fetchAllLocations,
+    TResult Function(_getCurrentLocation value)? getCurrentLocation,
+    TResult Function(_getVehicleList value)? getVehicleList,
+    TResult Function(_createVehicle value)? createVehicle,
+    required TResult orElse(),
+  }) {
+    if (createVehicle != null) {
+      return createVehicle(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _createVehicle implements HomeEvent {
+  const factory _createVehicle(final VehicleModel vehicleModel) =
+      _$createVehicleImpl;
+
+  VehicleModel get vehicleModel;
+
+  /// Create a copy of HomeEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$createVehicleImplCopyWith<_$createVehicleImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$HomeState {
   Status get status => throw _privateConstructorUsedError;
   LatLng? get currentLocation => throw _privateConstructorUsedError;
@@ -425,6 +603,7 @@ mixin _$HomeState {
   ServicePreferences get servicePreferences =>
       throw _privateConstructorUsedError;
   List<VehicleModel>? get vehicleList => throw _privateConstructorUsedError;
+  VehicleModel? get createdVehicle => throw _privateConstructorUsedError;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -445,7 +624,8 @@ abstract class $HomeStateCopyWith<$Res> {
       String? errorMessage,
       String? searchQuery,
       ServicePreferences servicePreferences,
-      List<VehicleModel>? vehicleList});
+      List<VehicleModel>? vehicleList,
+      VehicleModel? createdVehicle});
 }
 
 /// @nodoc
@@ -470,6 +650,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? searchQuery = freezed,
     Object? servicePreferences = null,
     Object? vehicleList = freezed,
+    Object? createdVehicle = freezed,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -500,6 +681,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.vehicleList
           : vehicleList // ignore: cast_nullable_to_non_nullable
               as List<VehicleModel>?,
+      createdVehicle: freezed == createdVehicle
+          ? _value.createdVehicle
+          : createdVehicle // ignore: cast_nullable_to_non_nullable
+              as VehicleModel?,
     ) as $Val);
   }
 }
@@ -519,7 +704,8 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       String? errorMessage,
       String? searchQuery,
       ServicePreferences servicePreferences,
-      List<VehicleModel>? vehicleList});
+      List<VehicleModel>? vehicleList,
+      VehicleModel? createdVehicle});
 }
 
 /// @nodoc
@@ -542,6 +728,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? searchQuery = freezed,
     Object? servicePreferences = null,
     Object? vehicleList = freezed,
+    Object? createdVehicle = freezed,
   }) {
     return _then(_$HomeStateImpl(
       status: null == status
@@ -572,6 +759,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value._vehicleList
           : vehicleList // ignore: cast_nullable_to_non_nullable
               as List<VehicleModel>?,
+      createdVehicle: freezed == createdVehicle
+          ? _value.createdVehicle
+          : createdVehicle // ignore: cast_nullable_to_non_nullable
+              as VehicleModel?,
     ));
   }
 }
@@ -586,7 +777,8 @@ class _$HomeStateImpl implements _HomeState {
       this.errorMessage,
       this.searchQuery,
       this.servicePreferences = const ServicePreferences(),
-      final List<VehicleModel>? vehicleList})
+      final List<VehicleModel>? vehicleList,
+      this.createdVehicle})
       : _locations = locations,
         _vehicleList = vehicleList;
 
@@ -623,8 +815,11 @@ class _$HomeStateImpl implements _HomeState {
   }
 
   @override
+  final VehicleModel? createdVehicle;
+
+  @override
   String toString() {
-    return 'HomeState(status: $status, currentLocation: $currentLocation, locations: $locations, errorMessage: $errorMessage, searchQuery: $searchQuery, servicePreferences: $servicePreferences, vehicleList: $vehicleList)';
+    return 'HomeState(status: $status, currentLocation: $currentLocation, locations: $locations, errorMessage: $errorMessage, searchQuery: $searchQuery, servicePreferences: $servicePreferences, vehicleList: $vehicleList, createdVehicle: $createdVehicle)';
   }
 
   @override
@@ -644,7 +839,9 @@ class _$HomeStateImpl implements _HomeState {
             (identical(other.servicePreferences, servicePreferences) ||
                 other.servicePreferences == servicePreferences) &&
             const DeepCollectionEquality()
-                .equals(other._vehicleList, _vehicleList));
+                .equals(other._vehicleList, _vehicleList) &&
+            (identical(other.createdVehicle, createdVehicle) ||
+                other.createdVehicle == createdVehicle));
   }
 
   @override
@@ -656,7 +853,8 @@ class _$HomeStateImpl implements _HomeState {
       errorMessage,
       searchQuery,
       servicePreferences,
-      const DeepCollectionEquality().hash(_vehicleList));
+      const DeepCollectionEquality().hash(_vehicleList),
+      createdVehicle);
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -675,7 +873,8 @@ abstract class _HomeState implements HomeState {
       final String? errorMessage,
       final String? searchQuery,
       final ServicePreferences servicePreferences,
-      final List<VehicleModel>? vehicleList}) = _$HomeStateImpl;
+      final List<VehicleModel>? vehicleList,
+      final VehicleModel? createdVehicle}) = _$HomeStateImpl;
 
   @override
   Status get status;
@@ -691,6 +890,8 @@ abstract class _HomeState implements HomeState {
   ServicePreferences get servicePreferences;
   @override
   List<VehicleModel>? get vehicleList;
+  @override
+  VehicleModel? get createdVehicle;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.

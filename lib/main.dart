@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/stripe_constants.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
+import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
-import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_application/features/splash/presentation/pages/splash_screen.dart';
 import 'package:flutter_application/server_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:provider/provider.dart';
 import 'server_locator.dart' as di;
 
 void main(List<String> args) async {
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
           create: (context) {
             return sl<ProfileBloc>();
           },
-        )
+        ),
+        Provider<BookingProvider>(create: (_) => sl<BookingProvider>()),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
