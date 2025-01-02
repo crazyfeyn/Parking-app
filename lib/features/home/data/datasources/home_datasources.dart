@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dio/dio.dart';
-import 'package:flutter_application/features/profile/data/models/vehicle_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
 import 'package:location/location.dart';
 import 'package:flutter_application/core/error/exception.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
@@ -37,9 +38,9 @@ class HomeDatasources {
         throw Exception('Failed to retrieve location.');
       }
 
-      return currentLocation; // Return the location data
+      return currentLocation;
     } catch (e) {
-      throw ServerException(); // Catch any exceptions
+      throw ServerException();
     }
   }
 
@@ -49,13 +50,10 @@ class HomeDatasources {
         '/locations/list',
       );
 
-      // Check if the response is successful
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data as List<dynamic>;
 
-        // Check if the data is empty
         if (data.isEmpty) {
-          print('No data received from API.');
           return [];
         }
 
@@ -130,14 +128,11 @@ class HomeDatasources {
 
         return locations;
       } else {
-        print('Failed to fetch data. Status code: ${response.statusCode}');
         return [];
       }
-    } on DioException catch (e) {
-      print('Dio error: ${e.message}');
+    } on DioException {
       return [];
     } catch (e) {
-      print('General error: $e');
       return [];
     }
   }
@@ -148,6 +143,35 @@ class HomeDatasources {
       if (response.statusCode == 200) {
         final List data = response.data;
         return data.map((json) => VehicleModel.fromJson(json)).toList();
+      } else {
+        throw ServerException();
+      }
+    } on DioException {
+      throw ServerException();
+    } catch (e) {
+      throw ServerException();
+    }
+  }
+
+  Future<void> createVehicle({required VehicleModel vehicleModel}) async {
+    try {
+      final vehicleData = {
+        'unit_number': vehicleModel.unitNumber,
+        'year': vehicleModel.year,
+        'make': vehicleModel.make,
+        'model': vehicleModel.model,
+        'plate_number': vehicleModel.plateNumber,
+        'user': vehicleModel.user,
+        'type': vehicleModel.type,
+        'id': UniqueKey().hashCode,
+      };
+
+      final response = await dio.post(
+        '/bookings/vehicle-create/',
+        data: vehicleData,
+      );
+
+      if (response.statusCode == 201) {
       } else {
         throw ServerException();
       }

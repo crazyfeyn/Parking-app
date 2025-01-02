@@ -1,29 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-class BookingTypePicker extends StatefulWidget {
+class GeneralModalFieldWidget extends StatefulWidget {
   final Function onStateChanged;
   final String? initialValue;
+  final List dataList;
+  final String labelText;
+  final String aboveText;
 
-  const BookingTypePicker({
+  const GeneralModalFieldWidget({
     super.key,
     required this.onStateChanged,
     this.initialValue,
+    required this.dataList,
+    required this.labelText,
+    required this.aboveText,
   });
 
   @override
-  // ignore: library_private_types_in_public_api
-  _BookingTypePickerState createState() => _BookingTypePickerState();
+  _GeneralModalFieldWidgetState createState() =>
+      _GeneralModalFieldWidgetState();
 }
 
-class _BookingTypePickerState extends State<BookingTypePicker> {
+class _GeneralModalFieldWidgetState extends State<GeneralModalFieldWidget> {
   String? selectedBookingType;
 
-  List<String> bookingTypes = [
-    'daily',
-    'weekly',
-    'monthly',
-  ];
+  void clearSelection() {
+    setState(() {
+      selectedBookingType = null;
+      widget.onStateChanged(null);
+    });
+  }
 
   @override
   void initState() {
@@ -41,21 +48,18 @@ class _BookingTypePickerState extends State<BookingTypePicker> {
       ),
       builder: (BuildContext context) {
         return ListView.builder(
-          itemCount: bookingTypes.length,
+          itemCount: widget.dataList.length,
           itemBuilder: (context, index) {
             return ListTile(
               title: Text(
-                bookingTypes[index],
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
+                widget.dataList[index],
+                style: const TextStyle(fontSize: 16),
               ),
               onTap: () {
                 setState(() {
-                  selectedBookingType = bookingTypes[index];
+                  selectedBookingType = widget.dataList[index];
                 });
-                widget.onStateChanged(bookingTypes[index]);
+                widget.onStateChanged(widget.dataList[index]);
                 Navigator.pop(context);
               },
             );
@@ -70,9 +74,9 @@ class _BookingTypePickerState extends State<BookingTypePicker> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Booking type',
-          style: TextStyle(
+        Text(
+          widget.labelText,
+          style: const TextStyle(
             fontSize: 16,
             color: Colors.grey,
           ),
@@ -93,13 +97,12 @@ class _BookingTypePickerState extends State<BookingTypePicker> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  selectedBookingType ?? 'Select booking type',
+                  selectedBookingType ?? widget.aboveText,
                   style: TextStyle(
                     color: selectedBookingType != null
                         ? Colors.black
                         : Colors.black54,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15,
+                    fontSize: 16,
                   ),
                 ),
                 const Icon(Icons.arrow_drop_down, color: Colors.black54),

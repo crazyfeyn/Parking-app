@@ -1,23 +1,24 @@
 class VehicleModel {
-  final int id; // Read-only property
+  final int id;
   final String type;
   final String unitNumber;
   final int year;
   final String make;
   final String model;
   final String plateNumber;
+  final int user;
 
   VehicleModel({
-    this.id = 0, // Default value
+    this.id = 0,
     required this.type,
     required this.unitNumber,
     required this.year,
     required this.make,
     required this.model,
     required this.plateNumber,
+    required this.user,
   });
 
-  // Factory constructor to create a VehicleModel instance from JSON
   factory VehicleModel.fromJson(Map<String, dynamic> json) {
     return VehicleModel(
       id: json['id'] ?? 0,
@@ -27,10 +28,10 @@ class VehicleModel {
       make: json['make'] as String,
       model: json['model'] as String,
       plateNumber: json['plate_number'] as String,
+      user: json['user'] as int,
     );
   }
 
-  // Method to convert a VehicleModel instance to JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -43,7 +44,6 @@ class VehicleModel {
     };
   }
 
-  // Equality operator and hashCode
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
@@ -69,7 +69,6 @@ class VehicleModel {
         plateNumber.hashCode;
   }
 
-  // CopyWith method to create a modified copy of the instance
   VehicleModel copyWith({
     int? id,
     String? type,
@@ -80,13 +79,13 @@ class VehicleModel {
     String? plateNumber,
   }) {
     return VehicleModel(
-      id: id ?? this.id,
-      type: type ?? this.type,
-      unitNumber: unitNumber ?? this.unitNumber,
-      year: year ?? this.year,
-      make: make ?? this.make,
-      model: model ?? this.model,
-      plateNumber: plateNumber ?? this.plateNumber,
-    );
+        id: id ?? this.id,
+        type: type ?? this.type,
+        unitNumber: unitNumber ?? this.unitNumber,
+        year: year ?? this.year,
+        make: make ?? this.make,
+        model: model ?? this.model,
+        plateNumber: plateNumber ?? this.plateNumber,
+        user: user);
   }
 }

@@ -10,5 +10,6 @@ class HomeState with _$HomeState {
     String? searchQuery,
     @Default(ServicePreferences()) ServicePreferences servicePreferences,
     List<VehicleModel>? vehicleList,
+    VehicleModel? createdVehicle,
   }) = _HomeState;
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
@@ -64,7 +65,8 @@ class BookingSpaceContent extends StatelessWidget {
                   14.hs(),
                   VehicleTypePicker(
                     locationModel: provider.locationModel,
-                    onStateChanged: provider.setVehicleType,
+                    onStateChanged: provider.setVehicle,
+                    provider: provider,
                   ),
                   14.hs(),
                   PaymentMethodPicker(
@@ -100,8 +102,8 @@ class BookingButton extends StatelessWidget {
             AppDimens.BORDER_RADIUS_15,
           ),
           color: provider.isFormValid
-              ? Colors.green
-              : Colors.grey.withOpacity(0.5),
+              ? AppConstants.mainColor
+              : const Color(0xFFF2F2F2),
         ),
         child: Text(
           'Book now',

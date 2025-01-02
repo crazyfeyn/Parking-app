@@ -12,9 +12,12 @@ import 'package:flutter_application/features/auth/domain/usecases/refresh_user_t
 import 'package:flutter_application/features/auth/domain/usecases/register_user_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/reset_pass_user_usecase.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
+import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
 import 'package:flutter_application/features/home/data/datasources/home_datasources.dart';
+import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_application/features/home/data/repositories/home_repositories.dart';
-import 'package:flutter_application/features/home/domain/repositories/location_repositories.dart';
+import 'package:flutter_application/features/home/domain/repositories/home_repositories.dart';
+import 'package:flutter_application/features/home/domain/usecases/create_vehicle_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/current_location_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/fetch_locations_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/get_vehicle_list_usecase.dart';
@@ -33,126 +36,168 @@ import 'package:location/location.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  //! External
-  final shared = await SharedPreferences.getInstance();
+  //! External Dependencies
+  // SharedPreferences
+  final sharedPreferences = await SharedPreferences.getInstance();
+  sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+
+  // LocalConfig
   sl.registerLazySingleton<LocalConfig>(
-      () => LocalConfig(sharedPreferences: shared));
-  final dio = DioConfig(sl<LocalConfig>()).client;
-  //! Core
-  sl.registerLazySingleton(() => Location());
-  sl.registerLazySingleton(
-    () => DioConfig(
-      sl<LocalConfig>(),
-    ),
-  );
-  //! Features
+      () => LocalConfig(sharedPreferences: sl<SharedPreferences>()));
 
-  // Auth Feature
-  // Bloc
-  sl.registerFactory(
-    () => AuthBloc(
-        sl<LoginUserUsecase>(),
-        sl<RefreshUserTokenUsecase>(),
-        sl<RegisterUserUsecase>(),
-        sl<ResetPassUserUsecase>(),
-        sl<AuthicatedUsecase>(),
-        sl<LogOutUsecase>(),
-        sl<ChangePasswordUsecase>()),
-  );
-  // Use cases
-  sl.registerFactory(() =>
-      ChangePasswordUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
-  sl.registerFactory(
-      () => LogOutUsecase(authRepositoriesImpl: sl<AuthRepositoriesImpl>()));
-  sl.registerFactory(
-      () => AuthicatedUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
-  sl.registerLazySingleton(
-      () => LoginUserUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
-  sl.registerLazySingleton(() =>
-      RefreshUserTokenUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
-  sl.registerLazySingleton(
-      () => RegisterUserUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
-  sl.registerLazySingleton(
-      () => ResetPassUserUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
+  // Dio
+  sl.registerLazySingleton<Dio>(() => DioConfig(sl<LocalConfig>()).client);
 
-  // Repository
-  sl.registerLazySingleton<AuthRepositoriesImpl>(
-    () => AuthRepositoriesImpl(authDatasources: sl<AuthDatasources>()),
+  // DioConfig
+  sl.registerLazySingleton<DioConfig>(
+    () => DioConfig(sl<LocalConfig>()),
   );
 
-  // Data sources
-  sl.registerLazySingleton(() => AuthDatasources(
-        dio: Dio(),
-        localAuthDatasources: sl<LocalAuthDatasources>(),
-      ));
-  sl.registerLazySingleton(
-      () => LocalAuthDatasources(localConfig: sl<LocalConfig>()));
+  //! Core Services
+  sl.registerLazySingleton<Location>(() => Location());
 
-  sl.registerLazySingleton(() => GetVehicleListUsecase(
-        homeRepositories: sl<HomeRepositories>(),
-      ));
-
-  // Home Feature
-  // Bloc
-
-  sl.registerFactory(
-    () => HomeBloc(
-      sl<CurrentLocationUsecase>(),
-      sl<FetchLocationsUsecase>(),
-      sl<GetVehicleListUsecase>(),
+  // Use Cases
+  sl.registerLazySingleton<CurrentLocationUsecase>(
+    () => CurrentLocationUsecase(
+      homeRepositories: sl<HomeRepositories>(),
     ),
   );
 
-  // Use cases
-  sl.registerFactory(() => GetVehicleListUsecase(
-        homeRepositories: sl<HomeRepositories>(),
-      ));
-  sl.registerLazySingleton(() => CurrentLocationUsecase(
-        homeRepositories: sl<HomeRepositories>(),
-      ));
-  sl.registerLazySingleton(
+  sl.registerLazySingleton<FetchLocationsUsecase>(
     () => FetchLocationsUsecase(
       homeRepositories: sl<HomeRepositories>(),
     ),
   );
-  // Repository
 
+  sl.registerLazySingleton<GetVehicleListUsecase>(
+    () => GetVehicleListUsecase(
+      homeRepositories: sl<HomeRepositories>(),
+    ),
+  );
+  sl.registerLazySingleton<CreateVehicleUsecase>(
+    () => CreateVehicleUsecase(
+      homeRepositories: sl<HomeRepositories>(),
+    ),
+  );
+
+  // Bloc
+  sl.registerFactory<HomeBloc>(
+    () => HomeBloc(
+      sl<CurrentLocationUsecase>(),
+      sl<FetchLocationsUsecase>(),
+      sl<GetVehicleListUsecase>(),
+      sl<CreateVehicleUsecase>(),
+    ),
+  );
+
+  //! Features Registration
+
+  //? Auth Feature
+  // Data Sources
+  sl.registerLazySingleton<LocalAuthDatasources>(
+      () => LocalAuthDatasources(localConfig: sl<LocalConfig>()));
+
+  sl.registerLazySingleton<AuthDatasources>(() => AuthDatasources(
+        dio: sl<Dio>(),
+        localAuthDatasources: sl<LocalAuthDatasources>(),
+      ));
+
+  // Repositories
+  sl.registerLazySingleton<AuthRepositoriesImpl>(
+    () => AuthRepositoriesImpl(authDatasources: sl<AuthDatasources>()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton<LoginUserUsecase>(
+      () => LoginUserUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
+
+  sl.registerLazySingleton<RefreshUserTokenUsecase>(() =>
+      RefreshUserTokenUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
+
+  sl.registerLazySingleton<RegisterUserUsecase>(
+      () => RegisterUserUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
+
+  sl.registerLazySingleton<ResetPassUserUsecase>(
+      () => ResetPassUserUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
+
+  sl.registerLazySingleton<AuthicatedUsecase>(
+      () => AuthicatedUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
+
+  sl.registerLazySingleton<LogOutUsecase>(
+      () => LogOutUsecase(authRepositoriesImpl: sl<AuthRepositoriesImpl>()));
+
+  sl.registerLazySingleton<ChangePasswordUsecase>(() =>
+      ChangePasswordUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
+
+  // Bloc
+  sl.registerFactory<AuthBloc>(
+    () => AuthBloc(
+      sl<LoginUserUsecase>(),
+      sl<RefreshUserTokenUsecase>(),
+      sl<RegisterUserUsecase>(),
+      sl<ResetPassUserUsecase>(),
+      sl<AuthicatedUsecase>(),
+      sl<LogOutUsecase>(),
+      sl<ChangePasswordUsecase>(),
+    ),
+  );
+
+  //? Home Feature
+  // Data Sources
+  sl.registerLazySingleton<HomeDatasources>(
+      () => HomeDatasources(dio: sl<Dio>()));
+
+  // Repositories
   sl.registerLazySingleton<HomeRepositories>(
     () => HomeRepositoriesImpl(
       homeDatasources: sl<HomeDatasources>(),
     ),
   );
 
-  // Data sources
-  sl.registerLazySingleton(() => HomeDatasources(dio: dio));
+  //? Profile Feature
+  // Data Sources
+  sl.registerLazySingleton<ProfileDatasources>(() => ProfileDatasources(
+        dio: sl<Dio>(),
+        cachedProfile: null,
+      ));
+
+  // Repositories
+  sl.registerLazySingleton<ProfileRepositories>(
+    () => ProfileRepositoriesImpl(
+      profileDatasources: sl<ProfileDatasources>(),
+    ),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton<AddPaymentMethodUsecase>(
+    () => AddPaymentMethodUsecase(
+      profileRepositories: sl<ProfileRepositories>(),
+    ),
+  );
+
+  sl.registerLazySingleton<GetProfileUsecase>(
+    () => GetProfileUsecase(
+      profileRepositories: sl<ProfileRepositories>(),
+    ),
+  );
+
+  sl.registerLazySingleton<UpdateProfileUsecase>(
+    () => UpdateProfileUsecase(
+      profileRepositories: sl<ProfileRepositories>(),
+    ),
+  );
 
   // Bloc
-  sl.registerFactory(() => ProfileBloc(
-        addPaymentMethodUsecase: sl<AddPaymentMethodUsecase>(),
-        getProfileUsecase: sl<GetProfileUsecase>(),
-        updateProfileUsecase: sl<UpdateProfileUsecase>(),
-      ));
+  sl.registerFactory<ProfileBloc>(
+    () => ProfileBloc(
+      addPaymentMethodUsecase: sl<AddPaymentMethodUsecase>(),
+      getProfileUsecase: sl<GetProfileUsecase>(),
+      updateProfileUsecase: sl<UpdateProfileUsecase>(),
+    ),
+  );
 
-  // Use cases
-  sl.registerLazySingleton(() => AddPaymentMethodUsecase(
-        profileRepositories: sl<ProfileRepositories>(),
-      ));
-  sl.registerLazySingleton(() => GetProfileUsecase(
-        profileRepositories: sl<ProfileRepositories>(),
-      ));
-  sl.registerLazySingleton(() => UpdateProfileUsecase(
-        profileRepositories: sl<ProfileRepositories>(),
-      ));
-
-  // Repository
-  sl.registerLazySingleton<ProfileRepositories>(() => ProfileRepositoriesImpl(
-        profileDatasources: sl<ProfileDatasources>(),
-      ));
-
-  // Data sources
-  //! cachedProfile uchun shareddan current userni olib berib yuborish kerak
-  sl.registerLazySingleton(() => ProfileDatasources(
-        dio: sl<Dio>(),
-        cachedProfile: null, //! cached profile ga etibor qarat
-      ));
+  // Booking provider
+  sl.registerFactoryParam<BookingProvider, LocationModel, void>(
+    (locationModel, _) => BookingProvider(locationModel: locationModel),
+  );
 }
