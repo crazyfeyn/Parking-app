@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
 import 'package:location/location.dart';
 import 'package:flutter_application/core/error/exception.dart';
@@ -161,6 +162,8 @@ class HomeDatasources {
         'model': vehicleModel.model,
         'plate_number': vehicleModel.plateNumber,
         'user': vehicleModel.user,
+        'type': vehicleModel.type,
+        'id': UniqueKey().hashCode,
       };
 
       final response = await dio.post(

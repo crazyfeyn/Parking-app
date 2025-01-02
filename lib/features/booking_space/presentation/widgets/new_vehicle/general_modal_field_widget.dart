@@ -18,13 +18,19 @@ class GeneralModalFieldWidget extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _GeneralModalFieldWidgetState createState() =>
       _GeneralModalFieldWidgetState();
 }
 
 class _GeneralModalFieldWidgetState extends State<GeneralModalFieldWidget> {
   String? selectedBookingType;
+
+  void clearSelection() {
+    setState(() {
+      selectedBookingType = null;
+      widget.onStateChanged(null);
+    });
+  }
 
   @override
   void initState() {

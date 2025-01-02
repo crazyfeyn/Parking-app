@@ -16,6 +16,7 @@ class BookingProvider extends ChangeNotifier {
   String? make;
   String? _model;
   String? _plateNumber;
+  //!LOOOOOOOOOK idni haqiqiysini bervor
   int? user;
 
   BookingProvider({required this.locationModel});
@@ -42,6 +43,7 @@ class BookingProvider extends ChangeNotifier {
       locationModel.availableSpots! > 0;
 
   bool get isFormValidVehicle {
+    user = 22;
     return _vehicleType != null &&
         _unitNumber != null &&
         _year != null &&
@@ -76,7 +78,7 @@ class BookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setVehicleType(String type) {
+  void setVehicleType(String? type) {
     _vehicleType = type;
     notifyListeners();
   }
@@ -142,4 +144,8 @@ class BookingProvider extends ChangeNotifier {
 
     print('Vehicle data: ${vehicle.toJson()}');
   }
+
+  createVehicle() {}
+
+  void clearForm() {}
 }

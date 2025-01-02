@@ -82,6 +82,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       await createVehicleUsecase.call(event.vehicleModel);
 
+      add(const _getVehicleList());
+
       emit(
         state.copyWith(
           status: Status.success,

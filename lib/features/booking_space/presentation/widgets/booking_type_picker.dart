@@ -46,7 +46,10 @@ class _BookingTypePickerState extends State<BookingTypePicker> {
             return ListTile(
               title: Text(
                 bookingTypes[index],
-                style: const TextStyle(fontSize: 16),
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               onTap: () {
                 setState(() {
@@ -95,7 +98,8 @@ class _BookingTypePickerState extends State<BookingTypePicker> {
                     color: selectedBookingType != null
                         ? Colors.black
                         : Colors.black54,
-                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15,
                   ),
                 ),
                 const Icon(Icons.arrow_drop_down, color: Colors.black54),

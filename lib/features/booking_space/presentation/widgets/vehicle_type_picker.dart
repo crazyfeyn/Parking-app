@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/booking_space/presentation/pages/add_new_vehicle_screen.dart';
 import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
@@ -54,7 +53,10 @@ class _VehicleTypePickerState extends State<VehicleTypePicker> {
                 vehicleTypes.isNotEmpty
                     ? vehicleTypes[index]
                     : 'There is not vehicle list in your list',
-                style: const TextStyle(fontSize: 16),
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               onTap: () {
                 setState(() {
@@ -72,34 +74,28 @@ class _VehicleTypePickerState extends State<VehicleTypePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        if (state.status == Status.error) {
-          return Center(
-            child: Text(
-              'Error: ${state.errorMessage}',
-              style: const TextStyle(color: Colors.red),
-            ),
-          );
-        }
-
-        final vehicleTypes =
-            state.vehicleList?.map((vehicle) => vehicle.model).toList() ?? [];
-
-        return Column(
+    return Column(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Vehicle',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                ZoomTapAnimation(
+            const Text(
+              'Vehicle',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 8),
+            BlocSelector<HomeBloc, HomeState, List<String>>(
+              selector: (state) {
+                return state.vehicleList
+                        ?.map((vehicle) => vehicle.model)
+                        .toList() ??
+                    [];
+              },
+              builder: (context, vehicleTypes) {
+                return ZoomTapAnimation(
                   onTap: () => _showVehiclePicker(vehicleTypes),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
@@ -119,7 +115,8 @@ class _VehicleTypePickerState extends State<VehicleTypePicker> {
                             color: selectedVehicleType != null
                                 ? Colors.black
                                 : Colors.black54,
-                            fontSize: 16,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         const Icon(Icons.arrow_drop_down,
@@ -127,24 +124,24 @@ class _VehicleTypePickerState extends State<VehicleTypePicker> {
                       ],
                     ),
                   ),
-                ),
-              ],
-            ),
-            12.hs(),
-            ButtonWidget(
-              text: '(+) Add vehicle',
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddNewVehicleScreen(
-                    provider: widget.provider,
-                  ),
-                ),
-              ),
+                );
+              },
             ),
           ],
-        );
-      },
+        ),
+        12.hs(),
+        ButtonWidget(
+          text: '(+) Add vehicle',
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddNewVehicleScreen(
+                provider: widget.provider,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

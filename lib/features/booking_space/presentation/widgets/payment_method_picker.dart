@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/config/stripe_service.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 class PaymentMethodPicker extends StatefulWidget {
-  final Function onStateChanged;
+  final Function(String) onStateChanged;
   final String? initialValue;
 
   const PaymentMethodPicker({
@@ -12,7 +14,6 @@ class PaymentMethodPicker extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _PaymentMethodPickerState createState() => _PaymentMethodPickerState();
 }
 
@@ -24,10 +25,30 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
     'By card',
   ];
 
+  final StripeService _stripeService = StripeService.instance;
+
   @override
   void initState() {
     super.initState();
     selectedPaymentMethods = widget.initialValue;
+  }
+
+  Future<void> _handleCardPayment() async {
+    try {
+      // Use your StripeService to handle the payment
+      await _stripeService.makePayment();
+
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Payment successful!')),
+      );
+    } catch (e) {
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Payment failed: $e')),
+      );
+      print('Error: $e'); // Print the error for debugging
+    }
   }
 
   void _showStatesPicker() async {
@@ -45,12 +66,21 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
             return ListTile(
               title: Text(
                 paymentMethods[index],
-                style: const TextStyle(fontSize: 16),
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-              onTap: () {
+              onTap: () async {
                 setState(() {
                   selectedPaymentMethods = paymentMethods[index];
                 });
+
+                // Handle "By card" selection
+                if (paymentMethods[index] == 'By card') {
+                  await _handleCardPayment();
+                }
+
                 widget.onStateChanged(paymentMethods[index]);
                 Navigator.pop(context);
               },
@@ -94,7 +124,8 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
                     color: selectedPaymentMethods != null
                         ? Colors.black
                         : Colors.black54,
-                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15,
                   ),
                 ),
                 const Icon(Icons.arrow_drop_down, color: Colors.black54),

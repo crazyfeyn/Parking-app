@@ -6,6 +6,7 @@ class GeneralFormFieldWidget extends StatefulWidget {
   final String labelText;
   final String initialExample;
   final String aboveText;
+  final TextInputType keyboardType;
 
   const GeneralFormFieldWidget({
     super.key,
@@ -14,15 +15,20 @@ class GeneralFormFieldWidget extends StatefulWidget {
     required this.labelText,
     required this.initialExample,
     required this.aboveText,
+    this.keyboardType = TextInputType.text, // Add default keyboard type
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _GeneralFormFieldWidgetState createState() => _GeneralFormFieldWidgetState();
 }
 
 class _GeneralFormFieldWidgetState extends State<GeneralFormFieldWidget> {
   final TextEditingController _textController = TextEditingController();
+
+  void clearField() {
+    _textController.clear();
+    widget.onValueChanged('');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +45,7 @@ class _GeneralFormFieldWidgetState extends State<GeneralFormFieldWidget> {
         const SizedBox(height: 8),
         TextFormField(
           controller: _textController,
-          keyboardType: TextInputType.number,
+          keyboardType: widget.keyboardType,
           decoration: InputDecoration(
             hintText: widget.aboveText,
             filled: true,
