@@ -19,7 +19,9 @@ mixin _$AuthEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
-    required TResult Function(String password, String email) register,
+    required TResult Function(
+            String password, String email, String name, String surname)
+        register,
     required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
@@ -31,7 +33,9 @@ mixin _$AuthEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
-    TResult? Function(String password, String email)? register,
+    TResult? Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
@@ -43,7 +47,9 @@ mixin _$AuthEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
-    TResult Function(String password, String email)? register,
+    TResult Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,
@@ -188,7 +194,9 @@ class _$logImpl implements _log {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
-    required TResult Function(String password, String email) register,
+    required TResult Function(
+            String password, String email, String name, String surname)
+        register,
     required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
@@ -203,7 +211,9 @@ class _$logImpl implements _log {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
-    TResult? Function(String password, String email)? register,
+    TResult? Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
@@ -218,7 +228,9 @@ class _$logImpl implements _log {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
-    TResult Function(String password, String email)? register,
+    TResult Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,
@@ -301,7 +313,7 @@ abstract class _$$regImplCopyWith<$Res> {
   factory _$$regImplCopyWith(_$regImpl value, $Res Function(_$regImpl) then) =
       __$$regImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String password, String email});
+  $Res call({String password, String email, String name, String surname});
 }
 
 /// @nodoc
@@ -318,6 +330,8 @@ class __$$regImplCopyWithImpl<$Res>
   $Res call({
     Object? password = null,
     Object? email = null,
+    Object? name = null,
+    Object? surname = null,
   }) {
     return _then(_$regImpl(
       null == password
@@ -328,6 +342,14 @@ class __$$regImplCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
+      null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == surname
+          ? _value.surname
+          : surname // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -335,16 +357,20 @@ class __$$regImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$regImpl implements _reg {
-  const _$regImpl(this.password, this.email);
+  const _$regImpl(this.password, this.email, this.name, this.surname);
 
   @override
   final String password;
   @override
   final String email;
+  @override
+  final String name;
+  @override
+  final String surname;
 
   @override
   String toString() {
-    return 'AuthEvent.register(password: $password, email: $email)';
+    return 'AuthEvent.register(password: $password, email: $email, name: $name, surname: $surname)';
   }
 
   @override
@@ -354,11 +380,13 @@ class _$regImpl implements _reg {
             other is _$regImpl &&
             (identical(other.password, password) ||
                 other.password == password) &&
-            (identical(other.email, email) || other.email == email));
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.surname, surname) || other.surname == surname));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, password, email);
+  int get hashCode => Object.hash(runtimeType, password, email, name, surname);
 
   /// Create a copy of AuthEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -372,7 +400,9 @@ class _$regImpl implements _reg {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
-    required TResult Function(String password, String email) register,
+    required TResult Function(
+            String password, String email, String name, String surname)
+        register,
     required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
@@ -380,14 +410,16 @@ class _$regImpl implements _reg {
     required TResult Function() authicated,
     required TResult Function() doInitial,
   }) {
-    return register(password, email);
+    return register(password, email, name, surname);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
-    TResult? Function(String password, String email)? register,
+    TResult? Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
@@ -395,14 +427,16 @@ class _$regImpl implements _reg {
     TResult? Function()? authicated,
     TResult? Function()? doInitial,
   }) {
-    return register?.call(password, email);
+    return register?.call(password, email, name, surname);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
-    TResult Function(String password, String email)? register,
+    TResult Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,
@@ -412,7 +446,7 @@ class _$regImpl implements _reg {
     required TResult orElse(),
   }) {
     if (register != null) {
-      return register(password, email);
+      return register(password, email, name, surname);
     }
     return orElse();
   }
@@ -468,10 +502,13 @@ class _$regImpl implements _reg {
 }
 
 abstract class _reg implements AuthEvent {
-  const factory _reg(final String password, final String email) = _$regImpl;
+  const factory _reg(final String password, final String email,
+      final String name, final String surname) = _$regImpl;
 
   String get password;
   String get email;
+  String get name;
+  String get surname;
 
   /// Create a copy of AuthEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -557,7 +594,9 @@ class _$changePassImpl implements _changePass {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
-    required TResult Function(String password, String email) register,
+    required TResult Function(
+            String password, String email, String name, String surname)
+        register,
     required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
@@ -572,7 +611,9 @@ class _$changePassImpl implements _changePass {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
-    TResult? Function(String password, String email)? register,
+    TResult? Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
@@ -587,7 +628,9 @@ class _$changePassImpl implements _changePass {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
-    TResult Function(String password, String email)? register,
+    TResult Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,
@@ -735,7 +778,9 @@ class _$resetPassImpl implements _resetPass {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
-    required TResult Function(String password, String email) register,
+    required TResult Function(
+            String password, String email, String name, String surname)
+        register,
     required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
@@ -750,7 +795,9 @@ class _$resetPassImpl implements _resetPass {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
-    TResult? Function(String password, String email)? register,
+    TResult? Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
@@ -765,7 +812,9 @@ class _$resetPassImpl implements _resetPass {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
-    TResult Function(String password, String email)? register,
+    TResult Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,
@@ -884,7 +933,9 @@ class _$logOutImpl implements _logOut {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
-    required TResult Function(String password, String email) register,
+    required TResult Function(
+            String password, String email, String name, String surname)
+        register,
     required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
@@ -899,7 +950,9 @@ class _$logOutImpl implements _logOut {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
-    TResult? Function(String password, String email)? register,
+    TResult? Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
@@ -914,7 +967,9 @@ class _$logOutImpl implements _logOut {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
-    TResult Function(String password, String email)? register,
+    TResult Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,
@@ -1025,7 +1080,9 @@ class _$refreshTokenImpl implements _refreshToken {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
-    required TResult Function(String password, String email) register,
+    required TResult Function(
+            String password, String email, String name, String surname)
+        register,
     required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
@@ -1040,7 +1097,9 @@ class _$refreshTokenImpl implements _refreshToken {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
-    TResult? Function(String password, String email)? register,
+    TResult? Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
@@ -1055,7 +1114,9 @@ class _$refreshTokenImpl implements _refreshToken {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
-    TResult Function(String password, String email)? register,
+    TResult Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,
@@ -1166,7 +1227,9 @@ class _$authicatedImpl implements _authicated {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
-    required TResult Function(String password, String email) register,
+    required TResult Function(
+            String password, String email, String name, String surname)
+        register,
     required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
@@ -1181,7 +1244,9 @@ class _$authicatedImpl implements _authicated {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
-    TResult? Function(String password, String email)? register,
+    TResult? Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
@@ -1196,7 +1261,9 @@ class _$authicatedImpl implements _authicated {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
-    TResult Function(String password, String email)? register,
+    TResult Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,
@@ -1307,7 +1374,9 @@ class _$initialImpl implements _initial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String password, String email) logIn,
-    required TResult Function(String password, String email) register,
+    required TResult Function(
+            String password, String email, String name, String surname)
+        register,
     required TResult Function(String oldPass, String newPass) change,
     required TResult Function(String email) reset,
     required TResult Function() logOut,
@@ -1322,7 +1391,9 @@ class _$initialImpl implements _initial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String password, String email)? logIn,
-    TResult? Function(String password, String email)? register,
+    TResult? Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult? Function(String oldPass, String newPass)? change,
     TResult? Function(String email)? reset,
     TResult? Function()? logOut,
@@ -1337,7 +1408,9 @@ class _$initialImpl implements _initial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String password, String email)? logIn,
-    TResult Function(String password, String email)? register,
+    TResult Function(
+            String password, String email, String name, String surname)?
+        register,
     TResult Function(String oldPass, String newPass)? change,
     TResult Function(String email)? reset,
     TResult Function()? logOut,

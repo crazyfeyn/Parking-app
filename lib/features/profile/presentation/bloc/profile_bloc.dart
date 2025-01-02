@@ -54,11 +54,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     result.fold(
       (failure) => emit(state.copyWith(
           status: Status.error, message: _failureMessage(failure))),
-      (_) => emit(state.copyWith(status: Status.success)),
+      (_) {
+        print('successs');
+        emit(state.copyWith(status: Status.success));
+      },
     );
   }
 
-  
   Future<void> _onAddPaymentMethod(
       _addPaymentMethod event, Emitter<ProfileState> emit) async {
     emit(state.copyWith(status: Status.loading));

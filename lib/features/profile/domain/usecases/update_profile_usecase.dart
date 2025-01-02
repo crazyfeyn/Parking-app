@@ -19,9 +19,9 @@ class UpdateProfileUsecase extends Usecase<void, UpdateProfileParams> {
 }
 
 class UpdateProfileParams {
-  final String? name;
-  final String? surname;
-  final String? email;
+  final String name;
+  final String surname;
+  final String email;
 
-  UpdateProfileParams({this.name, this.surname, this.email});
+  UpdateProfileParams({required this.name,required this.surname,required this.email});
 }

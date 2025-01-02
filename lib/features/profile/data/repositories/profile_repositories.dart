@@ -45,11 +45,11 @@ class ProfileRepositoriesImpl extends ProfileRepositories {
 
   @override
   Future<Either<Failure, void>> updateProfile(
-      {required String? name,
-      required String? surname,
-      required String? email}) async {
+      {required String name,
+      required String surname,
+      required String email}) async {
     try {
-      await profileDatasources.updateProfile();
+      await profileDatasources.updateProfile(name: name,surname: surname,email: email);
       return const Right(null);
     } catch (e) {
       return Left(ServerFailure());

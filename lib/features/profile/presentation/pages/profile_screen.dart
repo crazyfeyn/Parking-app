@@ -13,6 +13,7 @@ import 'package:flutter_application/features/profile/presentation/bloc/profile_b
 import 'package:flutter_application/features/profile/presentation/pages/contact_detail_screen.dart';
 import 'package:flutter_application/features/profile/presentation/pages/payments_screen.dart';
 import 'package:flutter_application/features/profile/presentation/pages/vehicles_screen.dart';
+import 'package:flutter_application/features/profile/presentation/widgets/leave_widget.dart';
 import 'package:flutter_application/features/profile/presentation/widgets/profile_pinned.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -34,204 +35,216 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-            child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const ProfilePinned(),
-            Container(
-              padding: const EdgeInsets.all(AppDimens.PADDING_16),
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.400,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppDimens.BORDER_RADIUS_30),
-                color: Colors.white,
-              ),
-              child: Column(
-                children: [
-                  _profileButtons(
-                    'phone',
-                    'Contact details',
-                    () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ContactDetailScreen(),
-                          ));
-                    },
-                  ),
-                  _profileButtons(
-                    'card',
-                    'Payment methods',
-                    () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const PaymentsScreen(),
-                          ));
-                    },
-                  ),
-                  _profileButtons(
-                      'listing',
-                      'Your listings',
-                      () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HistoryScreen()))),
-                  _profileButtons(
-                      'card',
-                      'My cards',
-                      () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const SelectPaymentScreen()))),
-                  _profileButtons(
-                    'vehicle',
-                    'Your vehicles',
-                    () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const VehiclesScreen(),
-                          ));
-                    },
-                  ),
-                  _profileButtons(
-                    'vehicle',
-                    'CUSTOM CHANGE PASSWORD',
-                    () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>  ResetPasswordScreen(),
-                          ));
-                    },
-                  ),
-                ],
-              ),
-            ),
-            8.hs(),
-            BlocConsumer<AuthBloc, AuthState>(
-              listener: (context, state) {
-                if (state.status == Status.success) {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginScreen(),
+      body: BlocBuilder<ProfileBloc, ProfileState>(
+       
+        builder: (context, state) {
+          if (state.status == Status.error) {
+            return Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(AppDimens.PADDING_20),
+                  margin: const EdgeInsets.only(bottom: AppDimens.MARGIN_12),
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(AppDimens.BORDER_RADIUS_30),
                     ),
-                    (route) => false,
-                  );
-                } else if (state.status == Status.error) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('An error occurred!')),
-                  );
-                }
-              },
-              builder: (context, state) {
-                if (state.status == Status.error) {
-                  return const CustomErrorWidget();
-                }
-                if (state.status == Status.loading) {
-                  return const CustomLoader();
-                }
-                return GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text(
-                          'Do you want to leave?',
-                          style: TextStyle(fontWeight: FontWeight.w500),
+                    color: Colors.white,
+                  ),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.grey.shade400,
+                      child: const Icon(
+                        Icons.person,
+                        color: Colors.black,
+                      ),
+                    ),
+                    title: const Text(
+                      'User2',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: AppConstants.blackColor,
+                      ),
+                    ),
+                    subtitle: const Text(
+                      'No Position',
+                    ),
+                  ),
+                ),
+                const CustomErrorWidget(),
+              ],
+            );
+          }
+          if (state.status == Status.loading) {
+            return _buildLoadingState();
+          }
+          if (state.status == Status.success) {
+            final profile = state.profile;
+            return profile == null
+                ? const Center(
+                    child: Text('CAME NULL'),
+                  )
+                : SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ProfilePinned(
+                              profile: profile,
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.all(AppDimens.PADDING_16),
+                              width: double.infinity,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.400,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    AppDimens.BORDER_RADIUS_30),
+                                color: Colors.white,
+                              ),
+                              child: Column(
+                                children: [
+                                  _profileButtons(
+                                    'phone',
+                                    'Contact details',
+                                    () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ContactDetailScreen(
+                                              profileEntity: profile,
+                                            ),
+                                          ));
+                                    },
+                                  ),
+                                  _profileButtons(
+                                    'card',
+                                    'Payment methods',
+                                    () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const PaymentsScreen(),
+                                          ));
+                                    },
+                                  ),
+                                  _profileButtons(
+                                      'listing',
+                                      'Your listings',
+                                      () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const HistoryScreen()))),
+                                  _profileButtons(
+                                      'card',
+                                      'My cards',
+                                      () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const SelectPaymentScreen()))),
+                                  _profileButtons(
+                                    'vehicle',
+                                    'Your vehicles',
+                                    () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const VehiclesScreen(),
+                                          ));
+                                    },
+                                  ),
+                                  _profileButtons(
+                                    'vehicle',
+                                    'CUSTOM CHANGE PASSWORD',
+                                    () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ResetPasswordScreen(),
+                                          ));
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            8.hs(),
+                            BlocConsumer<AuthBloc, AuthState>(
+                              listener: (context, state) {
+                                if (state.status == Status.success) {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const LoginScreen(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                } else if (state.status == Status.error) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('An error occurred!')),
+                                  );
+                                }
+                              },
+                              builder: (context, state) {
+                                if (state.status == Status.error) {
+                                  return const CustomErrorWidget();
+                                }
+                                if (state.status == Status.loading) {
+                                  return const CustomLoader();
+                                }
+                                return GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => const LeaveWidget(),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 8),
+                                    width: double.infinity,
+                                    alignment: Alignment.center,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.07,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          AppDimens.BORDER_RADIUS_30),
+                                      color: Colors.white,
+                                    ),
+                                    child: ListTile(
+                                      contentPadding: EdgeInsets.zero,
+                                      leading: Image.asset(
+                                        'assets/icons/log_icon.png',
+                                        color: AppConstants.mainColor,
+                                        height: 20,
+                                      ),
+                                      title: const Text('Log out'),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
                         ),
-                        actionsAlignment: MainAxisAlignment.spaceBetween,
-                        actions: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.05,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: const Color(0xFFEA0707),
-                                    ),
-                                    child: const Text(
-                                      'No',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              12.ws(),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    context
-                                        .read<AuthBloc>()
-                                        .add(const AuthEvent.logOut());
-                                  },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.05,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: const Color(0xFF2357ED),
-                                    ),
-                                    child: const Text(
-                                      'Yes',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
                       ),
-                    );
-                  },
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(AppDimens.BORDER_RADIUS_30),
-                      color: Colors.white,
                     ),
-                    child: ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: Image.asset(
-                        'assets/icons/log_icon.png',
-                        color: AppConstants.mainColor,
-                        height: 20,
-                      ),
-                      title: const Text('Log out'),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+                  );
+          }
+          return Container();
+        },
       ),
-    )));
+    );
   }
 
   Widget _profileButtons(String path, String title, Function()? onTap) {
@@ -255,4 +268,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+}
+
+Widget _buildLoadingState() {
+  return const Center(
+    child: CircularProgressIndicator(
+      color: Colors.red,
+      strokeWidth: 3,
+    ),
+  );
 }

@@ -1,10 +1,16 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/features/profile/domain/entity/profile_entity.dart';
+import 'package:flutter_application/features/profile/presentation/pages/update_profile_screen.dart';
 import 'package:flutter_application/features/profile/presentation/widgets/custom_profile_app_bar_widget.dart';
 import 'package:flutter_application/features/profile/presentation/widgets/info_text_widget.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class ContactDetailScreen extends StatelessWidget {
-  const ContactDetailScreen({super.key});
+  final ProfileEntity profileEntity;
+  const ContactDetailScreen({super.key, required this.profileEntity});
 
   @override
   Widget build(BuildContext context) {
@@ -37,22 +43,25 @@ class ContactDetailScreen extends StatelessWidget {
                     const SizedBox(
                       height: 12,
                     ),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
                           // Wrap in Expanded to prevent overflow
                           child: InfoTextWidget(
-                            title: 'Shermatova',
-                            subTitle: 'Surname',
+                            title: "Surname",
+                            subTitle: profileEntity.last_name.isEmpty
+                                ? "USER"
+                                : profileEntity.last_name,
                           ),
                         ),
-                        SizedBox(width: 16), // Add spacing between widgets
+                        SizedBox(width: 16),
                         Expanded(
-                          // Wrap in Expanded to prevent overflow
                           child: InfoTextWidget(
-                            title: 'Lobar',
-                            subTitle: 'Name',
+                            title: "Name",
+                            subTitle: profileEntity.first_name.isEmpty
+                                ? "USER"
+                                : profileEntity.first_name,
                           ),
                         ),
                       ],
@@ -60,33 +69,44 @@ class ContactDetailScreen extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    const InfoTextWidget(
-                      title: 'artikboyevnalim@gmail.com',
-                      subTitle: 'Email adress',
+                    InfoTextWidget(
+                      title: 'Email adress',
+                      subTitle: profileEntity.email,
                     ),
                     const SizedBox(
                       height: 8,
                     ),
                     Row(
                       children: [
-                        Expanded(
-                          // Wrap in Expanded to prevent overflow
+                        const Expanded(
+                          
                           child: InfoTextWidget(
-                            title: '+ 1 (55)998 77 89',
-                            subTitle: 'Phone number',
+                            title: 'Phone number',
+                            subTitle: 'ADD QILISH KERE API YODEEE',
                           ),
                         ),
                         const SizedBox(
-                            width: 12), // Add spacing before edit button
-                        Container(
-                          width: 38,
-                          height: 38,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF2357ED).withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
+                            width: 12),
+                        ZoomTapAnimation(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => UpdateProfileScreen(
+                                    profileEntity: profileEntity,
+                                  ),
+                                ));
+                          },
+                          child: Container(
+                            width: 38,
+                            height: 38,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF2357ED).withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(Icons.edit),
                           ),
-                          child: const Icon(Icons.edit),
                         ),
                       ],
                     )

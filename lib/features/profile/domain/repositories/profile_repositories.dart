@@ -5,9 +5,9 @@ import 'package:flutter_application/features/profile/domain/entity/profile_entit
 abstract class ProfileRepositories {
   Future<Either<Failure, ProfileEntity>> getProfile();
   Future<Either<Failure, void>> updateProfile({
-    required String? name,
-    required String? surname,
-    required String? email,
+    required String name,
+    required String surname,
+    required String email,
   });
   Future<Either<Failure, void>> changePassword(
       String oldPassword, String newPassword);

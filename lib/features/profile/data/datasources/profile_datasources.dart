@@ -26,23 +26,28 @@ class ProfileDatasources {
 
   /// Updates the user's profile
   Future<void> updateProfile({
-    String? name,
-    String? surname,
-    String? email,
+  required  String name,
+    required  String surname,
+   required  String email,
   }) async {
+    print('QWERTYUIOIUYTREWQWERTYUIUYTREWERTYU');
     try {
       final updateData = {
-        if (name != null) 'name': name,
-        if (surname != null) 'surname': surname,
-        if (email != null) 'email': email,
+       'first_name': name,
+      'last_name': surname,
+     'email': email,
       };
+      print('UPDATED DATA');
+      print(updateData);
 
       final response = await dio.patch(
         '/users/profile/',
         data: updateData,
       );
-
-      if (response.statusCode == 200) {
+      print(response.statusCode);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('qwertyuiuytrewhello20202020202');
+        return;
         // cachedProfile = cachedProfile?.copyWith(
         //   name: name,
         //   surname: surname,

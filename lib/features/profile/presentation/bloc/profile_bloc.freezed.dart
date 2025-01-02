@@ -19,7 +19,7 @@ mixin _$ProfileEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() getProfile,
-    required TResult Function(String? name, String? surname, String? email)
+    required TResult Function(String name, String surname, String email)
         updateProfile,
     required TResult Function(String currentPassword, String newPassword)
         changePassword,
@@ -30,8 +30,7 @@ mixin _$ProfileEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? getProfile,
-    TResult? Function(String? name, String? surname, String? email)?
-        updateProfile,
+    TResult? Function(String name, String surname, String email)? updateProfile,
     TResult? Function(String currentPassword, String newPassword)?
         changePassword,
     TResult? Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
@@ -40,8 +39,7 @@ mixin _$ProfileEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? getProfile,
-    TResult Function(String? name, String? surname, String? email)?
-        updateProfile,
+    TResult Function(String name, String surname, String email)? updateProfile,
     TResult Function(String currentPassword, String newPassword)?
         changePassword,
     TResult Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
@@ -138,7 +136,7 @@ class _$getProfileImpl implements _getProfile {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() getProfile,
-    required TResult Function(String? name, String? surname, String? email)
+    required TResult Function(String name, String surname, String email)
         updateProfile,
     required TResult Function(String currentPassword, String newPassword)
         changePassword,
@@ -152,8 +150,7 @@ class _$getProfileImpl implements _getProfile {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? getProfile,
-    TResult? Function(String? name, String? surname, String? email)?
-        updateProfile,
+    TResult? Function(String name, String surname, String email)? updateProfile,
     TResult? Function(String currentPassword, String newPassword)?
         changePassword,
     TResult? Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
@@ -165,8 +162,7 @@ class _$getProfileImpl implements _getProfile {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? getProfile,
-    TResult Function(String? name, String? surname, String? email)?
-        updateProfile,
+    TResult Function(String name, String surname, String email)? updateProfile,
     TResult Function(String currentPassword, String newPassword)?
         changePassword,
     TResult Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
@@ -226,7 +222,7 @@ abstract class _$$updateProfileImplCopyWith<$Res> {
           _$updateProfileImpl value, $Res Function(_$updateProfileImpl) then) =
       __$$updateProfileImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String? name, String? surname, String? email});
+  $Res call({String name, String surname, String email});
 }
 
 /// @nodoc
@@ -242,23 +238,23 @@ class __$$updateProfileImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? surname = freezed,
-    Object? email = freezed,
+    Object? name = null,
+    Object? surname = null,
+    Object? email = null,
   }) {
     return _then(_$updateProfileImpl(
-      name: freezed == name
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      surname: freezed == surname
+              as String,
+      surname: null == surname
           ? _value.surname
           : surname // ignore: cast_nullable_to_non_nullable
-              as String?,
-      email: freezed == email
+              as String,
+      email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ));
   }
 }
@@ -266,14 +262,15 @@ class __$$updateProfileImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$updateProfileImpl implements _updateProfile {
-  const _$updateProfileImpl({this.name, this.surname, this.email});
+  const _$updateProfileImpl(
+      {required this.name, required this.surname, required this.email});
 
   @override
-  final String? name;
+  final String name;
   @override
-  final String? surname;
+  final String surname;
   @override
-  final String? email;
+  final String email;
 
   @override
   String toString() {
@@ -305,7 +302,7 @@ class _$updateProfileImpl implements _updateProfile {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() getProfile,
-    required TResult Function(String? name, String? surname, String? email)
+    required TResult Function(String name, String surname, String email)
         updateProfile,
     required TResult Function(String currentPassword, String newPassword)
         changePassword,
@@ -319,8 +316,7 @@ class _$updateProfileImpl implements _updateProfile {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? getProfile,
-    TResult? Function(String? name, String? surname, String? email)?
-        updateProfile,
+    TResult? Function(String name, String surname, String email)? updateProfile,
     TResult? Function(String currentPassword, String newPassword)?
         changePassword,
     TResult? Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
@@ -332,8 +328,7 @@ class _$updateProfileImpl implements _updateProfile {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? getProfile,
-    TResult Function(String? name, String? surname, String? email)?
-        updateProfile,
+    TResult Function(String name, String surname, String email)? updateProfile,
     TResult Function(String currentPassword, String newPassword)?
         changePassword,
     TResult Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
@@ -385,13 +380,13 @@ class _$updateProfileImpl implements _updateProfile {
 
 abstract class _updateProfile implements ProfileEvent {
   const factory _updateProfile(
-      {final String? name,
-      final String? surname,
-      final String? email}) = _$updateProfileImpl;
+      {required final String name,
+      required final String surname,
+      required final String email}) = _$updateProfileImpl;
 
-  String? get name;
-  String? get surname;
-  String? get email;
+  String get name;
+  String get surname;
+  String get email;
 
   /// Create a copy of ProfileEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -481,7 +476,7 @@ class _$changePasswordImpl implements _changePassword {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() getProfile,
-    required TResult Function(String? name, String? surname, String? email)
+    required TResult Function(String name, String surname, String email)
         updateProfile,
     required TResult Function(String currentPassword, String newPassword)
         changePassword,
@@ -495,8 +490,7 @@ class _$changePasswordImpl implements _changePassword {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? getProfile,
-    TResult? Function(String? name, String? surname, String? email)?
-        updateProfile,
+    TResult? Function(String name, String surname, String email)? updateProfile,
     TResult? Function(String currentPassword, String newPassword)?
         changePassword,
     TResult? Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
@@ -508,8 +502,7 @@ class _$changePasswordImpl implements _changePassword {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? getProfile,
-    TResult Function(String? name, String? surname, String? email)?
-        updateProfile,
+    TResult Function(String name, String surname, String email)? updateProfile,
     TResult Function(String currentPassword, String newPassword)?
         changePassword,
     TResult Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
@@ -653,7 +646,7 @@ class _$addPaymentMethodImpl implements _addPaymentMethod {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() getProfile,
-    required TResult Function(String? name, String? surname, String? email)
+    required TResult Function(String name, String surname, String email)
         updateProfile,
     required TResult Function(String currentPassword, String newPassword)
         changePassword,
@@ -667,8 +660,7 @@ class _$addPaymentMethodImpl implements _addPaymentMethod {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? getProfile,
-    TResult? Function(String? name, String? surname, String? email)?
-        updateProfile,
+    TResult? Function(String name, String surname, String email)? updateProfile,
     TResult? Function(String currentPassword, String newPassword)?
         changePassword,
     TResult? Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
@@ -680,8 +672,7 @@ class _$addPaymentMethodImpl implements _addPaymentMethod {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? getProfile,
-    TResult Function(String? name, String? surname, String? email)?
-        updateProfile,
+    TResult Function(String name, String surname, String email)? updateProfile,
     TResult Function(String currentPassword, String newPassword)?
         changePassword,
     TResult Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,

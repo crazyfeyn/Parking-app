@@ -12,15 +12,20 @@ class RegisterUserUsecase extends Usecase<void, RegisterParams> {
   });
   @override
   Future<Either<Failure, void>> call(RegisterParams params) {
-    return authRepositories.register(params.password, params.email);
+    return authRepositories.register(params.password, params.email,params.name,params.surname);
   }
 }
 
 class RegisterParams {
   String email;
   String password;
+  String name;
+  String surname;
+
   RegisterParams({
     required this.email,
     required this.password,
+    required this.name,
+    required this.surname,
   });
 }

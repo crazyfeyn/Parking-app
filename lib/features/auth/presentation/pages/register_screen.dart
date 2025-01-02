@@ -23,9 +23,9 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppConstants.whiteColor,
-        body: SafeArea(
-            child: BlocConsumer<AuthBloc, AuthState>(
+      backgroundColor: AppConstants.whiteColor,
+      body: SafeArea(
+        child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state.status == Status.success) {
               Navigator.pushReplacement(
@@ -108,7 +108,10 @@ class RegisterScreen extends StatelessWidget {
                           text: 'Register',
                           onTap: () {
                             context.read<AuthBloc>().add(AuthEvent.register(
-                                passController.text, emailController.text));
+                                passController.text,
+                                emailController.text,
+                                nameController.text,
+                                lastNameController.text));
                           },
                         ),
                         20.hs(),
@@ -140,6 +143,8 @@ class RegisterScreen extends StatelessWidget {
               ),
             );
           },
-        )));
+        ),
+      ),
+    );
   }
 }

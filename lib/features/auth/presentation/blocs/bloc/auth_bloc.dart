@@ -94,7 +94,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(status: Status.loading));
 
     final recponce = await registerUserUsecase(
-        RegisterParams(email: event.email, password: event.password));
+        RegisterParams(email: event.email, password: event.password,name: event.name,surname: event.surname));
     recponce.fold((error) {
       emit(
         state.copyWith(status: Status.error),

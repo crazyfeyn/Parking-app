@@ -4,9 +4,9 @@ part of 'profile_bloc.dart';
 class ProfileEvent with _$ProfileEvent {
   const factory ProfileEvent.getProfile() = _getProfile;
   const factory ProfileEvent.updateProfile({
-    String? name,
-    String? surname,
-    String? email,
+   required String name,
+  required  String surname,
+   required String email,
   }) = _updateProfile;
   const factory ProfileEvent.changePassword({
     required String currentPassword,

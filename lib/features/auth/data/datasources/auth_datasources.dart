@@ -33,11 +33,17 @@ class AuthDatasources {
     throw ServerException();
   }
 
-  Future<void> register(String password, String email) async {
+  Future<void> register(
+      String password, String email, String name, String surname) async {
     print('${AppConstants.baseseconUrl}users/register/');
     final response = await dio.post(
       '${AppConstants.baseseconUrl}users/register/',
-      data: {"email": email, "password": password},
+      data: {
+        "email": email,
+        "password": password,
+        "first_name": name,
+        "last_name": surname
+      },
     );
 
     print("Response data: ${response.data}");
