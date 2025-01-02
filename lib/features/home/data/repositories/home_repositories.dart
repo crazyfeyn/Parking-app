@@ -12,9 +12,9 @@ class HomeRepositoriesImpl extends HomeRepositories {
   HomeRepositoriesImpl({required this.homeDatasources});
 
   @override
-  Future<Either<Failure, List<LocationModel>>> fetchAllLocations() async {
+  Future<Either<Failure, List<LocationModel>>> fetchAllLocations(String title) async {
     try {
-      final locations = await homeDatasources.fetchAllLocations();
+      final locations = await homeDatasources.fetchAllLocations(title);
       return Right(locations);
     } catch (e) {
       print('Error fetching locations: $e');

@@ -6,7 +6,7 @@ import 'package:location/location.dart';
 
 abstract class HomeRepositories {
   Future<Either<Failure, LocationData>> getCurrentLocation();
-  Future<Either<Failure, List<LocationModel>>> fetchAllLocations();
+  Future<Either<Failure, List<LocationModel>>> fetchAllLocations(String title);
   Future<Either<Failure, List<VehicleModel>>> fetchVehicleList();
   Future<Either<Failure, void>> createVehicle(VehicleModel vehicleModel);
 }

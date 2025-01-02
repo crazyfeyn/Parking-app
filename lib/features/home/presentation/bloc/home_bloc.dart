@@ -32,7 +32,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> _fetchAllLocationsFunc(
       _fetchAllLocations event, Emitter<HomeState> emit) async {
     emit(state.copyWith(status: Status.loading));
-    final response = await fetchLocationsUsecase.call(());
+    final response = await fetchLocationsUsecase(event.title);
     response.fold((error) {
       emit(
           state.copyWith(status: Status.error, errorMessage: error.toString()));

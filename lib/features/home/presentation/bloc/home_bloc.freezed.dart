@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$HomeEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() fetchAllLocations,
+    required TResult Function(String title) fetchAllLocations,
     required TResult Function() getCurrentLocation,
     required TResult Function() getVehicleList,
     required TResult Function(VehicleModel vehicleModel) createVehicle,
@@ -26,7 +26,7 @@ mixin _$HomeEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? fetchAllLocations,
+    TResult? Function(String title)? fetchAllLocations,
     TResult? Function()? getCurrentLocation,
     TResult? Function()? getVehicleList,
     TResult? Function(VehicleModel vehicleModel)? createVehicle,
@@ -34,7 +34,7 @@ mixin _$HomeEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? fetchAllLocations,
+    TResult Function(String title)? fetchAllLocations,
     TResult Function()? getCurrentLocation,
     TResult Function()? getVehicleList,
     TResult Function(VehicleModel vehicleModel)? createVehicle,
@@ -93,6 +93,8 @@ abstract class _$$fetchAllLocationsImplCopyWith<$Res> {
   factory _$$fetchAllLocationsImplCopyWith(_$fetchAllLocationsImpl value,
           $Res Function(_$fetchAllLocationsImpl) then) =
       __$$fetchAllLocationsImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String title});
 }
 
 /// @nodoc
@@ -105,60 +107,86 @@ class __$$fetchAllLocationsImplCopyWithImpl<$Res>
 
   /// Create a copy of HomeEvent
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? title = null,
+  }) {
+    return _then(_$fetchAllLocationsImpl(
+      null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$fetchAllLocationsImpl implements _fetchAllLocations {
-  const _$fetchAllLocationsImpl();
+  const _$fetchAllLocationsImpl(this.title);
+
+  @override
+  final String title;
 
   @override
   String toString() {
-    return 'HomeEvent.fetchAllLocations()';
+    return 'HomeEvent.fetchAllLocations(title: $title)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$fetchAllLocationsImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$fetchAllLocationsImpl &&
+            (identical(other.title, title) || other.title == title));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, title);
+
+  /// Create a copy of HomeEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$fetchAllLocationsImplCopyWith<_$fetchAllLocationsImpl> get copyWith =>
+      __$$fetchAllLocationsImplCopyWithImpl<_$fetchAllLocationsImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() fetchAllLocations,
+    required TResult Function(String title) fetchAllLocations,
     required TResult Function() getCurrentLocation,
     required TResult Function() getVehicleList,
     required TResult Function(VehicleModel vehicleModel) createVehicle,
   }) {
-    return fetchAllLocations();
+    return fetchAllLocations(title);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? fetchAllLocations,
+    TResult? Function(String title)? fetchAllLocations,
     TResult? Function()? getCurrentLocation,
     TResult? Function()? getVehicleList,
     TResult? Function(VehicleModel vehicleModel)? createVehicle,
   }) {
-    return fetchAllLocations?.call();
+    return fetchAllLocations?.call(title);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? fetchAllLocations,
+    TResult Function(String title)? fetchAllLocations,
     TResult Function()? getCurrentLocation,
     TResult Function()? getVehicleList,
     TResult Function(VehicleModel vehicleModel)? createVehicle,
     required TResult orElse(),
   }) {
     if (fetchAllLocations != null) {
-      return fetchAllLocations();
+      return fetchAllLocations(title);
     }
     return orElse();
   }
@@ -202,7 +230,16 @@ class _$fetchAllLocationsImpl implements _fetchAllLocations {
 }
 
 abstract class _fetchAllLocations implements HomeEvent {
-  const factory _fetchAllLocations() = _$fetchAllLocationsImpl;
+  const factory _fetchAllLocations(final String title) =
+      _$fetchAllLocationsImpl;
+
+  String get title;
+
+  /// Create a copy of HomeEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$fetchAllLocationsImplCopyWith<_$fetchAllLocationsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -246,7 +283,7 @@ class _$getCurrentLocationImpl implements _getCurrentLocation {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() fetchAllLocations,
+    required TResult Function(String title) fetchAllLocations,
     required TResult Function() getCurrentLocation,
     required TResult Function() getVehicleList,
     required TResult Function(VehicleModel vehicleModel) createVehicle,
@@ -257,7 +294,7 @@ class _$getCurrentLocationImpl implements _getCurrentLocation {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? fetchAllLocations,
+    TResult? Function(String title)? fetchAllLocations,
     TResult? Function()? getCurrentLocation,
     TResult? Function()? getVehicleList,
     TResult? Function(VehicleModel vehicleModel)? createVehicle,
@@ -268,7 +305,7 @@ class _$getCurrentLocationImpl implements _getCurrentLocation {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? fetchAllLocations,
+    TResult Function(String title)? fetchAllLocations,
     TResult Function()? getCurrentLocation,
     TResult Function()? getVehicleList,
     TResult Function(VehicleModel vehicleModel)? createVehicle,
@@ -363,7 +400,7 @@ class _$getVehicleListImpl implements _getVehicleList {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() fetchAllLocations,
+    required TResult Function(String title) fetchAllLocations,
     required TResult Function() getCurrentLocation,
     required TResult Function() getVehicleList,
     required TResult Function(VehicleModel vehicleModel) createVehicle,
@@ -374,7 +411,7 @@ class _$getVehicleListImpl implements _getVehicleList {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? fetchAllLocations,
+    TResult? Function(String title)? fetchAllLocations,
     TResult? Function()? getCurrentLocation,
     TResult? Function()? getVehicleList,
     TResult? Function(VehicleModel vehicleModel)? createVehicle,
@@ -385,7 +422,7 @@ class _$getVehicleListImpl implements _getVehicleList {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? fetchAllLocations,
+    TResult Function(String title)? fetchAllLocations,
     TResult Function()? getCurrentLocation,
     TResult Function()? getVehicleList,
     TResult Function(VehicleModel vehicleModel)? createVehicle,
@@ -508,7 +545,7 @@ class _$createVehicleImpl implements _createVehicle {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() fetchAllLocations,
+    required TResult Function(String title) fetchAllLocations,
     required TResult Function() getCurrentLocation,
     required TResult Function() getVehicleList,
     required TResult Function(VehicleModel vehicleModel) createVehicle,
@@ -519,7 +556,7 @@ class _$createVehicleImpl implements _createVehicle {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? fetchAllLocations,
+    TResult? Function(String title)? fetchAllLocations,
     TResult? Function()? getCurrentLocation,
     TResult? Function()? getVehicleList,
     TResult? Function(VehicleModel vehicleModel)? createVehicle,
@@ -530,7 +567,7 @@ class _$createVehicleImpl implements _createVehicle {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? fetchAllLocations,
+    TResult Function(String title)? fetchAllLocations,
     TResult Function()? getCurrentLocation,
     TResult Function()? getVehicleList,
     TResult Function(VehicleModel vehicleModel)? createVehicle,

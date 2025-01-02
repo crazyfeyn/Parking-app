@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     // Fetch current location and all locations when screen initializes
     context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
-    context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
+    // context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
   }
 
   @override
