@@ -18,7 +18,7 @@ class BackButtonCircleWidget extends StatelessWidget {
         },
         child: const CircleAvatar(
           backgroundColor: AppConstants.grayColor,
-          radius: 52,
+          radius: 40,
           child: Icon(Icons.arrow_back_ios_new_rounded),
         ),
       ),
