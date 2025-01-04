@@ -45,7 +45,7 @@ class LocationModel {
   final double? latitude;
   final bool? bankAccountAdded;
   final int? availableSpots;
-  final LocationStatus? status; // Made nullable
+  final LocationStatus? status;
 
   LocationModel({
     required this.id,
@@ -94,8 +94,69 @@ class LocationModel {
     this.latitude,
     this.bankAccountAdded,
     this.availableSpots,
-    this.status, // Nullable
+    this.status,
   });
+
+  // Factory constructor to parse JSON
+  factory LocationModel.fromJson(Map<String, dynamic> json) {
+    return LocationModel(
+      id: json['id'],
+      name: json['name'],
+      description: json['description'],
+      address: json['address'],
+      city: json['city'],
+      state: json['state'],
+      zipCode: json['zip_code'],
+      phNumber: json['ph_number'],
+      schedule: json['schedule'],
+      weeklyRate: (json['weekly_rate'] ?? 0).toDouble(),
+      dailyRate: (json['daily_rate'] ?? 0).toDouble(),
+      monthlyRate: (json['monthly_rate'] ?? 0).toDouble(),
+      twentyFourHours: json['twenty_four_hours'],
+      limitedEntryExitTimes: json['limited_entry_exit_times'],
+      lowboysAllowed: json['lowboys_allowed'],
+      bobtailOnly: json['bobtail_only'],
+      containersOnly: json['containers_only'],
+      oversizedAllowed: json['oversized_allowed'],
+      hazmatAllowed: json['hazmat_allowed'],
+      doubleStackAllowed: json['double_stack_allowed'],
+      securityAtGate: json['security_at_gate'],
+      roamingSecurity: json['roaming_security'],
+      landingGearSupportRequired: json['landing_gear_support_required'],
+      laundryMachines: json['laundry_machines'],
+      freeShowers: json['free_showers'],
+      paidShowers: json['paid_showers'],
+      repairShop: json['repair_shop'],
+      paidContainerStackingServices: json['paid_container_stacking_services'],
+      trailerSnowScraper: json['trailer_snow_scraper'],
+      truckWash: json['truck_wash'],
+      food: json['food'],
+      noTowedVehicles: json['no_towed_vehicles'],
+      email: json['email'],
+      truckAllowed: json['truck_allowed'],
+      trailerAllowed: json['trailer_allowed'],
+      truckTrailerAllowed: json['truck_trailer_allowed'],
+      cameras: json['cameras'],
+      fenced: json['fenced'],
+      asphalt: json['asphalt'],
+      lights: json['lights'],
+      repairsAllowed: json['repairs_allowed'],
+      images: json['images'] != null
+          ? (json['images'] as List)
+              .map((image) => LocationImage.fromJson(image))
+              .toList()
+          : null,
+      longitude:
+          (json['longitude'] != null) ? double.parse(json['longitude']) : null,
+      latitude:
+          (json['latitude'] != null) ? double.parse(json['latitude']) : null,
+      bankAccountAdded: json['bank_account_details'] != null,
+      availableSpots: json['available_spots'],
+      status: json['status'] != null
+          ? LocationStatus.fromJson(json['status'])
+          : null,
+    );
+  }
 }
 
 class LocationImage {
@@ -106,6 +167,14 @@ class LocationImage {
     required this.id,
     required this.image,
   });
+
+  // Factory constructor to parse JSON
+  factory LocationImage.fromJson(Map<String, dynamic> json) {
+    return LocationImage(
+      id: json['id'],
+      image: json['image'],
+    );
+  }
 }
 
 class LocationStatus {
@@ -116,4 +185,12 @@ class LocationStatus {
     required this.id,
     required this.name,
   });
+
+  // Factory constructor to parse JSON
+  factory LocationStatus.fromJson(Map<String, dynamic> json) {
+    return LocationStatus(
+      id: json['id'],
+      name: json['name'],
+    );
+  }
 }

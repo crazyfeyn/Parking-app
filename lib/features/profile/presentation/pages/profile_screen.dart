@@ -36,7 +36,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<ProfileBloc, ProfileState>(
-       
         builder: (context, state) {
           if (state.status == Status.error) {
             return Column(
@@ -68,9 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         color: AppConstants.blackColor,
                       ),
                     ),
-                    subtitle: const Text(
-                      'No Position',
-                    ),
+                    subtitle: const Text('No Position'),
                   ),
                 ),
                 const CustomErrorWidget(),
@@ -93,34 +90,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ProfilePinned(
-                              profile: profile,
-                            ),
+                            ProfilePinned(profile: profile),
                             Container(
                               padding:
                                   const EdgeInsets.all(AppDimens.PADDING_16),
                               width: double.infinity,
-                              height:
-                                  MediaQuery.of(context).size.height * 0.400,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
                                     AppDimens.BORDER_RADIUS_30),
                                 color: Colors.white,
                               ),
                               child: Column(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   _profileButtons(
                                     'phone',
                                     'Contact details',
                                     () {
                                       Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ContactDetailScreen(
-                                              profileEntity: profile,
-                                            ),
-                                          ));
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ContactDetailScreen(
+                                            profileEntity: profile,
+                                          ),
+                                        ),
+                                      );
                                     },
                                   ),
                                   _profileButtons(
@@ -128,39 +123,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     'Payment methods',
                                     () {
                                       Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const PaymentsScreen(),
-                                          ));
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const PaymentsScreen(),
+                                        ),
+                                      );
                                     },
                                   ),
                                   _profileButtons(
-                                      'listing',
-                                      'Your listings',
-                                      () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const HistoryScreen()))),
+                                    'listing',
+                                    'Your listings',
+                                    () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const HistoryScreen(),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                   _profileButtons(
-                                      'card',
-                                      'My cards',
-                                      () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const SelectPaymentScreen()))),
+                                    'card',
+                                    'My cards',
+                                    () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SelectPaymentScreen(),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                   _profileButtons(
                                     'vehicle',
                                     'Your vehicles',
                                     () {
                                       Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const VehiclesScreen(),
-                                          ));
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const VehiclesScreen(),
+                                        ),
+                                      );
                                     },
                                   ),
                                   _profileButtons(
@@ -168,11 +175,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     'CUSTOM CHANGE PASSWORD',
                                     () {
                                       Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ResetPasswordScreen(),
-                                          ));
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ResetPasswordScreen(),
+                                        ),
+                                      );
                                     },
                                   ),
                                 ],
@@ -215,8 +223,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         horizontal: 16, vertical: 8),
                                     width: double.infinity,
                                     alignment: Alignment.center,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.07,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(
                                           AppDimens.BORDER_RADIUS_30),
