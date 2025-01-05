@@ -20,6 +20,7 @@ import 'package:flutter_application/features/home/domain/repositories/home_repos
 import 'package:flutter_application/features/home/domain/usecases/create_vehicle_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/current_location_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/fetch_locations_usecase.dart';
+import 'package:flutter_application/features/home/domain/usecases/fetch_search_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/get_vehicle_list_usecase.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/profile/data/datasources/profile_datasources.dart';
@@ -79,6 +80,11 @@ Future<void> init() async {
       homeRepositories: sl<HomeRepositories>(),
     ),
   );
+  sl.registerLazySingleton<FetchSearchUsecase>(
+    () => FetchSearchUsecase(
+      homeRepositories: sl<HomeRepositories>(),
+    ),
+  );
 
   // Bloc
   sl.registerFactory<HomeBloc>(
@@ -87,6 +93,7 @@ Future<void> init() async {
       sl<FetchLocationsUsecase>(),
       sl<GetVehicleListUsecase>(),
       sl<CreateVehicleUsecase>(),
+      sl<FetchSearchUsecase>(),
     ),
   );
 

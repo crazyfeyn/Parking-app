@@ -19,6 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     context.read<AuthBloc>().add(const AuthEvent.authicated());
+  
     context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
   }
 
@@ -33,8 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
               PageRouteBuilder(
                 transitionDuration: const Duration(seconds: 1),
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                     MainScreen(
-                ),
+                    MainScreen(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                   return FadeTransition(

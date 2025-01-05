@@ -6,6 +6,7 @@ import 'package:flutter_application/features/home/data/models/service_preference
 import 'package:flutter_application/features/home/domain/usecases/create_vehicle_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/current_location_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/fetch_locations_usecase.dart';
+import 'package:flutter_application/features/home/domain/usecases/fetch_search_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/get_vehicle_list_usecase.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -19,20 +20,38 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final FetchLocationsUsecase fetchLocationsUsecase;
   final GetVehicleListUsecase getVehicleListUsecase;
   final CreateVehicleUsecase createVehicleUsecase;
+  final FetchSearchUsecase fetchSearchUsecase;
 
-  HomeBloc(this.currentLocationUsecase, this.fetchLocationsUsecase,
-      this.getVehicleListUsecase, this.createVehicleUsecase)
+  HomeBloc(
+      this.currentLocationUsecase,
+      this.fetchLocationsUsecase,
+      this.getVehicleListUsecase,
+      this.createVehicleUsecase,
+      this.fetchSearchUsecase)
       : super(const HomeState()) {
     on<_fetchAllLocations>(_fetchAllLocationsFunc);
+    on<_fetchSearchAllLocations>(_fetchSearchAllLocationsFunc);
     on<_getCurrentLocation>(_getCurrentLocationFunc);
     on<_getVehicleList>(_getVehicleListFunc);
     on<_createVehicle>(_createVehicleFunc);
   }
 
+  Future<void> _fetchSearchAllLocationsFunc(
+      _fetchSearchAllLocations event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(status: Status.loading));
+    final response = await fetchSearchUsecase(event.title);
+    response.fold((error) {
+      emit(
+          state.copyWith(status: Status.error, errorMessage: error.toString()));
+    }, (data) {
+      emit(state.copyWith(status: Status.success, locations: data));
+    });
+  }
+
   Future<void> _fetchAllLocationsFunc(
       _fetchAllLocations event, Emitter<HomeState> emit) async {
     emit(state.copyWith(status: Status.loading));
-    final response = await fetchLocationsUsecase(event.title);
+    final response = await fetchLocationsUsecase(null);
     response.fold((error) {
       emit(
           state.copyWith(status: Status.error, errorMessage: error.toString()));

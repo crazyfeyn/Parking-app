@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
-import 'package:flutter_application/core/widgets/text_widget.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/home/presentation/widgets/search_option_screen.dart';
-import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class SearchWidget extends StatelessWidget {
   SearchWidget({super.key});
@@ -44,7 +41,7 @@ class SearchWidget extends StatelessWidget {
               onFieldSubmitted: (newValue) {
                 context
                     .read<HomeBloc>()
-                    .add(HomeEvent.fetchAllLocations(searchController.text));
+                    .add(HomeEvent.fetchSearchLocations(searchController.text));
                 openGotNext(context);
               },
               decoration: InputDecoration(

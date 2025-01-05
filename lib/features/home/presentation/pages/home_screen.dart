@@ -11,7 +11,9 @@ import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({
+    super.key,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

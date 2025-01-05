@@ -3,7 +3,7 @@ import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
 import 'package:flutter_application/core/widgets/text_widget.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
-import 'package:flutter_application/features/profile/presentation/pages/profile_screen.dart';
+import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
 import 'package:flutter_application/features/profile/presentation/widgets/custom_profile_app_bar_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,16 +23,18 @@ class ResetPasswordScreen extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text('Succesed changed'),
-                  content: const Text('Unknown error occurred'),
+                  title: const Text('Successfully changed'),
+                  content: const Text(
+                      'Your password has been changed successfully.'),
                   actions: [
                     TextButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ProfileScreen(),
-                            ));
+                        Navigator.pop(context);
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => const MainScreen()),
+                          (route) => false,
+                        );
                       },
                       child: const Text('Ok'),
                     ),
@@ -45,7 +47,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 context: context,
                 builder: (context) => AlertDialog(
                   title: const Text('Change Error'),
-                  content: const Text('Unknown error occurred'),
+                  content: const Text('Your Old password dont correct'),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
@@ -102,7 +104,7 @@ class ResetPasswordScreen extends StatelessWidget {
           ),
           SizedBox(height: 20),
           Text(
-            'Logging in, please wait...',
+            'Changing in, please wait...',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
