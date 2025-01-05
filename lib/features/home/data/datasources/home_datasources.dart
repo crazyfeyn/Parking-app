@@ -45,7 +45,6 @@ class HomeDatasources {
   }
 
   Future<List<LocationModel>> fetchAllLocations(String title) async {
-    print('TITITITIITLE:$title');
     final response = await dio.get(
       '/locations/list/',
       queryParameters: {
@@ -53,10 +52,10 @@ class HomeDatasources {
       },
     );
     print('RECOINCE FROM HOME LIST');
-    print(response.data);
+    print(response.data['results']);
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = response.data as List<dynamic>;
+      final List<dynamic> data = response.data['results'] as List<dynamic>;
 
       if (data.isEmpty) {
         return [];
@@ -107,8 +106,8 @@ class HomeDatasources {
           asphalt: json['asphalt'] ?? false,
           lights: json['lights'] ?? false,
           repairsAllowed: json['repairs_allowed'] ?? false,
-          images: (json['images'] as List<dynamic>?)
-              ?.map((imageJson) => LocationImage(
+          images: (json['images'] as List<dynamic>?)!
+              .map((imageJson) => LocationImage(
                     id: imageJson['id'],
                     image: imageJson['image'] ?? '',
                   ))
@@ -139,7 +138,7 @@ class HomeDatasources {
     try {
       final response = await dio.get('/bookings/vehicle-list/');
       if (response.statusCode == 200) {
-        final List data = response.data;
+        final List data = response.data['results'];
         return data.map((json) => VehicleModel.fromJson(json)).toList();
       } else {
         throw ServerException();

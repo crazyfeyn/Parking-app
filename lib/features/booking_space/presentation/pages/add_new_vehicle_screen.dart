@@ -77,6 +77,8 @@ class AddNewVehicleScreen extends StatelessWidget {
                       labelText: '',
                       initialExample: 'Unit number',
                       aboveText: '123',
+                      keyboardType:
+                          TextInputType.number, // Number input for unit number
                     ),
                     const SizedBox(height: 16),
                     GeneralFormFieldWidget(
@@ -85,6 +87,8 @@ class AddNewVehicleScreen extends StatelessWidget {
                       labelText: '',
                       initialExample: 'Year',
                       aboveText: '1987',
+                      keyboardType:
+                          TextInputType.number, // Number input for year
                     ),
                     const SizedBox(height: 16),
                     GeneralFormFieldWidget(
@@ -92,6 +96,7 @@ class AddNewVehicleScreen extends StatelessWidget {
                       labelText: 'Make',
                       aboveText: 'Make',
                       initialExample: '',
+                      keyboardType: TextInputType.text, // Text input for make
                     ),
                     const SizedBox(height: 16),
                     GeneralFormFieldWidget(
@@ -99,6 +104,7 @@ class AddNewVehicleScreen extends StatelessWidget {
                       labelText: 'Model',
                       aboveText: 'enter model',
                       initialExample: '',
+                      keyboardType: TextInputType.text, // Text input for model
                     ),
                     const SizedBox(height: 16),
                     GeneralFormFieldWidget(
@@ -106,6 +112,8 @@ class AddNewVehicleScreen extends StatelessWidget {
                       labelText: '',
                       aboveText: 'enter plate number',
                       initialExample: '',
+                      keyboardType:
+                          TextInputType.text, // Text input for plate number
                     ),
                     const SizedBox(height: 24),
                     BlocBuilder<ProfileBloc, ProfileState>(

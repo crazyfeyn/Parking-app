@@ -15,7 +15,7 @@ class GeneralFormFieldWidget extends StatefulWidget {
     required this.labelText,
     required this.initialExample,
     required this.aboveText,
-    this.keyboardType = TextInputType.text, // Add default keyboard type
+    this.keyboardType = TextInputType.text,
   });
 
   @override

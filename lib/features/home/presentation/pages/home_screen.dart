@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/home/data/models/location_model.dart';
-import 'package:flutter_application/features/home/presentation/widgets/booking_modal_bottom_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_application/features/home/presentation/widgets/filter_widget.dart';
+import 'package:flutter_application/features/home/data/models/location_model.dart';
+import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
+import 'package:flutter_application/features/home/presentation/widgets/booking_modal_bottom_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/button_for_map_widget.dart';
+import 'package:flutter_application/features/home/presentation/widgets/filter_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/search_home_widget.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
-import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({
-    super.key,
-  });
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -22,19 +20,31 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   GoogleMapController? mapController;
   LatLng? currentLocation;
-  bool isLoading = false;
+  bool isDataFetched = false; // Flag to avoid re-fetching data
+
   @override
   void initState() {
     super.initState();
-    // Fetch current location and all locations when screen initializes
-    context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
-    // context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
+    // Fetch data only if it hasn't been fetched before
+    if (!isDataFetched) {
+      context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
+      context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations(''));
+      isDataFetched = true;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<HomeBloc, HomeState>(
+      body: BlocConsumer<HomeBloc, HomeState>(
+        listener: (context, state) {
+          // Update current location when it changes
+          if (state.currentLocation != null) {
+            setState(() {
+              currentLocation = state.currentLocation;
+            });
+          }
+        },
         builder: (context, state) {
           switch (state.status) {
             case Status.loading:
@@ -42,8 +52,26 @@ class _HomeScreenState extends State<HomeScreen> {
             case Status.success:
               return _buildGoogleMap(state.locations);
             case Status.error:
-              return const Center(
-                child: Text('Error fetching location'),
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Error: ${state.errorMessage}'),
+                    20.hs(),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Retry fetching data
+                        context
+                            .read<HomeBloc>()
+                            .add(const HomeEvent.getCurrentLocation());
+                        context
+                            .read<HomeBloc>()
+                            .add(const HomeEvent.fetchAllLocations(''));
+                      },
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
               );
             case Status.initial:
               return const Center(child: Text('Getting started...'));
@@ -57,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // Default to a fallback location if current location is null
     final location = currentLocation ?? const LatLng(33.592806, -84.388716);
 
-    // Create markers for all fetched locations, ensuring each has a unique MarkerId
+    // Create markers for all fetched locations
     Set<Marker> markers = {
       if (currentLocation != null)
         Marker(
@@ -69,19 +97,22 @@ class _HomeScreenState extends State<HomeScreen> {
         for (var loc in locations)
           if (loc.latitude != null && loc.longitude != null)
             Marker(
-                markerId: MarkerId(loc.id.toString()),
-                position: LatLng(loc.latitude!, loc.longitude!),
-                infoWindow: InfoWindow(title: loc.name),
-                onTap: () async {
-                  mapController?.animateCamera(
-                    CameraUpdate.newLatLngZoom(
-                      LatLng(loc.latitude!, loc.longitude!),
-                      15.0,
-                    ),
-                  );
-                  // ignore: use_build_context_synchronously
-                  showLocationDetails(context, loc);
-                }),
+              markerId: MarkerId(loc.id.toString()),
+              position: LatLng(loc.latitude!, loc.longitude!),
+              infoWindow: InfoWindow(title: loc.name),
+              onTap: () async {
+                // Zoom into the selected location
+                mapController?.animateCamera(
+                  CameraUpdate.newLatLngZoom(
+                    LatLng(loc.latitude!, loc.longitude!),
+                    15.0,
+                  ),
+                );
+                // Show booking modal bottom sheet
+                // ignore: use_build_context_synchronously
+                showLocationDetails(context, loc);
+              },
+            ),
     };
 
     return Stack(
@@ -137,6 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
           bottom: 15,
           child: ButtonForMapWidget(
             onTap: () {
+              // Refresh current location
               context
                   .read<HomeBloc>()
                   .add(const HomeEvent.getCurrentLocation());
@@ -147,4 +179,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
+
+  // void showLocationDetails(BuildContext context, LocationModel location) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     isScrollControlled: true,
+  //     builder: (context) {
+  //       return BookingModalBottomWidget(locationModel: location);
+  //     },
+  //   );
+  // }
 }

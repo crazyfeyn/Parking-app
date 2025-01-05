@@ -45,6 +45,7 @@ class BookingProvider extends ChangeNotifier {
   bool get isFormValidVehicle {
     user = 22;
     return _vehicleType != null &&
+        _vehicleType!.isNotEmpty &&
         _unitNumber != null &&
         _year != null &&
         make != null &&

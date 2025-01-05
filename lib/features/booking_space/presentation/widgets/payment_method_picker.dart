@@ -47,7 +47,7 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Payment failed: $e')),
       );
-      print('Error: $e'); // Print the error for debugging
+      print('Error: $e');
     }
   }
 

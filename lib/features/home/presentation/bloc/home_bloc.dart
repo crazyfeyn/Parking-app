@@ -65,7 +65,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> _getVehicleListFunc(
       _getVehicleList event, Emitter<HomeState> emit) async {
     emit(state.copyWith(status: Status.loading));
-
     final response = await getVehicleListUsecase.call(());
     response.fold((error) {
       emit(
