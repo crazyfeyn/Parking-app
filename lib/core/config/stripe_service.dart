@@ -16,6 +16,7 @@ class StripeService {
           paymentSheetParameters: SetupPaymentSheetParameters(
             paymentIntentClientSecret: clientSecret,
             merchantDisplayName: 'John Cena',
+            //! change name with actual user name
           ),
         );
         await _processPayment();
@@ -42,8 +43,7 @@ class StripeService {
         options: Options(
           contentType: Headers.formUrlEncodedContentType,
           headers: {
-            "Authorization":
-                "Bearer ${StripeConstants.stripeSecretKey}", // Fixed format
+            "Authorization": "Bearer ${StripeConstants.stripeSecretKey}",
           },
         ),
       );

@@ -23,15 +23,26 @@ class AddVehicleButton extends StatelessWidget {
             make: provider.make!,
             model: provider.model!,
             plateNumber: provider.plateNumber!,
-            user: 22, // Replace with actual user ID
+            user: 34, // Replace with actual user ID
           );
 
+          // Dispatch the create vehicle event
           context.read<HomeBloc>().add(HomeEvent.createVehicle(vehicleModel));
 
-          context.read<HomeBloc>().add(const HomeEvent.getVehicleList());
+          // Listen to state changes
+          context
+              .read<HomeBloc>()
+              .stream
+              .firstWhere((state) => state.status == Status.success)
+              .then((_) {
+            // Dispatch the event to get the updated list of vehicles
+            context.read<HomeBloc>().add(const HomeEvent.getVehicleList());
 
-          Navigator.pop(context);
+            // Navigate back to the previous screen
+            Navigator.pop(context);
+          });
         } else {
+          // Show error message if the form is invalid
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Please fill all fields')),
           );
