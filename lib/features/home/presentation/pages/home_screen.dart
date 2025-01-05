@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // Fetch data only if it hasn't been fetched before
     if (!isDataFetched) {
       context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
-      context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations(''));
+      context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
       isDataFetched = true;
     }
   }
@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             .add(const HomeEvent.getCurrentLocation());
                         context
                             .read<HomeBloc>()
-                            .add(const HomeEvent.fetchAllLocations(''));
+                            .add(const HomeEvent.fetchAllLocations());
                       },
                       child: const Text('Retry'),
                     ),
