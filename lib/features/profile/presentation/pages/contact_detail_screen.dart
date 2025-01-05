@@ -49,19 +49,19 @@ class ContactDetailScreen extends StatelessWidget {
                         Expanded(
                           // Wrap in Expanded to prevent overflow
                           child: InfoTextWidget(
-                            title: "Surname",
-                            subTitle: profileEntity.last_name.isEmpty
+                            title: profileEntity.last_name.isEmpty
                                 ? "USER"
                                 : profileEntity.last_name,
+                            subTitle: "Surname",
                           ),
                         ),
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                         Expanded(
                           child: InfoTextWidget(
-                            title: "Name",
-                            subTitle: profileEntity.first_name.isEmpty
+                            title: profileEntity.first_name.isEmpty
                                 ? "USER"
                                 : profileEntity.first_name,
+                            subTitle: "Name",
                           ),
                         ),
                       ],
@@ -70,8 +70,8 @@ class ContactDetailScreen extends StatelessWidget {
                       height: 20,
                     ),
                     InfoTextWidget(
-                      title: 'Email adress',
-                      subTitle: profileEntity.email,
+                      title: profileEntity.email,
+                      subTitle: 'Email adress',
                     ),
                     const SizedBox(
                       height: 8,
@@ -79,14 +79,12 @@ class ContactDetailScreen extends StatelessWidget {
                     Row(
                       children: [
                         const Expanded(
-                          
                           child: InfoTextWidget(
                             title: 'Phone number',
                             subTitle: 'ADD QILISH KERE API YODEEE',
                           ),
                         ),
-                        const SizedBox(
-                            width: 12),
+                        const SizedBox(width: 12),
                         ZoomTapAnimation(
                           onTap: () {
                             Navigator.push(

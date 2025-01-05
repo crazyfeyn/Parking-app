@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
@@ -27,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
     // Fetch data only if it hasn't been fetched before
     if (!isDataFetched) {
       context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());

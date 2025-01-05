@@ -42,7 +42,7 @@ class SearchOptionScreen extends StatelessWidget {
                       child: Text('SMTH GET WRONG'),
                     )
                   : locations.isEmpty
-                      ? Center(
+                      ? const Center(
                           child: Text('Locations not found'),
                         )
                       : ListView.separated(
@@ -65,15 +65,20 @@ class SearchOptionScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     location.name,
-                                    style:
-                                        TextStyle(color: Colors.grey.shade700),
+                                    style: TextStyle(
+                                      color: Colors.grey.shade700,
+                                    ),
                                   ),
                                   Row(
                                     children: [
-                                      Text(
-                                        location.description,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w600),
+                                      Expanded(
+                                        flex: 5,
+                                        child: Text(
+                                          overflow: TextOverflow.ellipsis,
+                                          location.description,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w600),
+                                        ),
                                       ),
                                       const Spacer(),
                                       const CircleAvatar(

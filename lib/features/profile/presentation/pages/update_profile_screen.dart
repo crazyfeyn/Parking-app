@@ -75,11 +75,27 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             BlocConsumer<ProfileBloc, ProfileState>(
               listener: (context, state) {
                 if (state.status == Status.success) {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MainScreen(),
-                      ));
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Successfully changed'),
+                      content: const Text(
+                          'Your password has been changed successfully.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => const MainScreen()),
+                              (route) => false,
+                            );
+                          },
+                          child: const Text('Ok'),
+                        ),
+                      ],
+                    ),
+                  );
                 }
                 if (state.status == Status.error) {
                   showErrorDialog(context, 'Unknown error occurred');

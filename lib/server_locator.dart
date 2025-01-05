@@ -24,6 +24,7 @@ import 'package:flutter_application/features/home/domain/usecases/fetch_search_u
 import 'package:flutter_application/features/home/domain/usecases/get_vehicle_list_usecase.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/profile/data/datasources/profile_datasources.dart';
+import 'package:flutter_application/features/profile/data/datasources/profile_local_data_sources.dart';
 import 'package:flutter_application/features/profile/data/repositories/profile_repositories.dart';
 import 'package:flutter_application/features/profile/domain/repositories/profile_repositories.dart';
 import 'package:flutter_application/features/profile/domain/usecases/add_payment_method_usecase.dart';
@@ -171,9 +172,11 @@ Future<void> init() async {
   // Repositories
   sl.registerLazySingleton<ProfileRepositories>(
     () => ProfileRepositoriesImpl(
-      profileDatasources: sl<ProfileDatasources>(),
-    ),
+        profileDatasources: sl<ProfileDatasources>(),
+        profileLocalDataSources: sl<ProfileLocalDataSources>()),
   );
+  sl.registerFactory(
+      () => ProfileLocalDataSources(localConfig: sl<LocalConfig>()));
 
   // Use Cases
   sl.registerLazySingleton<AddPaymentMethodUsecase>(

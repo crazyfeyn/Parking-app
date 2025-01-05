@@ -32,6 +32,17 @@ class LocalConfig {
     await sharedPreferences.setString(AppConstants.userRefresh, token);
   }
 
+  Future<void> saveUserIdToken(int token) async {
+    await sharedPreferences.setInt(AppConstants.sharedUserId, token);
+  }
+
+  Future<int> getUserIdToken() async {
+    return sharedPreferences.getInt(
+          AppConstants.sharedUserId,
+        ) ??
+        0;
+  }
+
   Future<String> getRefreshToken() async {
     final token = sharedPreferences.getString(
       AppConstants.userRefresh,
