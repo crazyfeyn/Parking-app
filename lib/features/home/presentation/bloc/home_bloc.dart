@@ -106,6 +106,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         state.copyWith(
           status: Status.success,
           createdVehicle: event.vehicleModel,
+          
         ),
       );
     } catch (error) {
