@@ -23,5 +23,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
       _getBookingList event, Emitter<HistoryState> emit) async {}
 
   Future<void> getCurrentBookingListFunc(
-      _getCurrentBookingList event, Emitter<HistoryState> emit) async {}
+      // ignore: library_private_types_in_public_api
+      _getCurrentBookingList event,
+      Emitter<HistoryState> emit) async {}
 }

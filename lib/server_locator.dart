@@ -13,6 +13,12 @@ import 'package:flutter_application/features/auth/domain/usecases/register_user_
 import 'package:flutter_application/features/auth/domain/usecases/reset_pass_user_usecase.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
+import 'package:flutter_application/features/history/data/datasources/history_datasources.dart';
+import 'package:flutter_application/features/history/data/respositories/history_repositories.dart';
+import 'package:flutter_application/features/history/domain/repositories/history_repositories.dart';
+import 'package:flutter_application/features/history/domain/usecases/get_booking_list_usecase.dart';
+import 'package:flutter_application/features/history/domain/usecases/get_current_booking_list_usecase.dart';
+import 'package:flutter_application/features/history/presentation/bloc/history_bloc.dart';
 import 'package:flutter_application/features/home/data/datasources/home_datasources.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_application/features/home/data/repositories/home_repositories.dart';
@@ -209,5 +215,33 @@ Future<void> init() async {
   // Booking provider
   sl.registerFactoryParam<BookingProvider, LocationModel, void>(
     (locationModel, _) => BookingProvider(locationModel: locationModel),
+  );
+
+  //! Features History
+  // history datasource
+  sl.registerLazySingleton<HistoryDatasources>(
+      () => HistoryDatasources(dio: sl<Dio>()));
+
+  // Repositories
+  sl.registerLazySingleton<HistoryRepositories>(
+    () => HistoryRepositoriesImpl(historyDatasources: sl<HistoryDatasources>()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton<GetBookingListUsecase>(
+    () => GetBookingListUsecase(historyRepositories: sl<HistoryRepositories>()),
+  );
+
+  sl.registerLazySingleton<GetCurrentBookingListUsecase>(
+    () => GetCurrentBookingListUsecase(
+        historyRepositories: sl<HistoryRepositories>()),
+  );
+
+  // Bloc
+  sl.registerFactory<HistoryBloc>(
+    () => HistoryBloc(
+      sl<GetBookingListUsecase>(),
+      sl<GetCurrentBookingListUsecase>(),
+    ),
   );
 }
