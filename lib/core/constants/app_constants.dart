@@ -31,4 +31,4 @@ class AppConstants {
   );
 }
 
-enum Status { loading, error, success, initial }
+enum Status { loading, error, success, initial,errorNetwork }

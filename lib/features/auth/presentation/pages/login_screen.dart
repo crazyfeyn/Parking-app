@@ -21,7 +21,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final passController = TextEditingController();
   final emailController = TextEditingController();
-  bool isPasswordVisible = false; // Toggles password visibility
+  bool isPasswordVisible = false;
 
   @override
   void initState() {
@@ -34,9 +34,15 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: AppConstants.whiteColor,
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
           child: BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
+              print(state);
+              if (state.status == Status.errorNetwork) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text('No Internet check your connection')));
+              }
               if (state.status == Status.success) {
                 Navigator.pushReplacement(
                   context,
@@ -51,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   context: context,
                   builder: (context) => AlertDialog(
                     title: const Text('Login Error'),
-                    content: const Text('Unknown error occurred'),
+                    content: const Text('Password or email is not correct'),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
@@ -67,7 +73,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 return _buildLoadingState();
               }
 
-              return _buildLoginForm();
+              return SingleChildScrollView(
+                child: _buildLoginForm(),
+              );
             },
           ),
         ),
@@ -105,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               TextField(
                 controller: passController,
-                obscureText: !isPasswordVisible, // Toggles text visibility
+                obscureText: !isPasswordVisible,
                 decoration: InputDecoration(
                   labelText: 'Password',
                   suffixIcon: IconButton(
@@ -228,5 +236,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
 }

@@ -51,6 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         builder: (context, state) {
           switch (state.status) {
+            case Status.errorNetwork:
+              return SizedBox();
             case Status.loading:
               return const Center(child: CircularProgressIndicator());
             case Status.success:

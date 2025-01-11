@@ -1,5 +1,8 @@
 PODS:
   - Flutter (1.0.0)
+  - flutter_logs (0.0.1):
+    - Flutter
+    - ZIPFoundation
   - geocoding_ios (1.0.5):
     - Flutter
   - geolocator_apple (1.2.0):
@@ -56,9 +59,11 @@ PODS:
     - StripeUICore (= 23.30.0)
   - StripeUICore (23.30.0):
     - StripeCore (= 23.30.0)
+  - ZIPFoundation (0.9.19)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - flutter_logs (from `.symlinks/plugins/flutter_logs/ios`)
   - geocoding_ios (from `.symlinks/plugins/geocoding_ios/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
@@ -78,10 +83,13 @@ SPEC REPOS:
     - StripePaymentSheet
     - StripePaymentsUI
     - StripeUICore
+    - ZIPFoundation
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  flutter_logs:
+    :path: ".symlinks/plugins/flutter_logs/ios"
   geocoding_ios:
     :path: ".symlinks/plugins/geocoding_ios/ios"
   geolocator_apple:
@@ -97,6 +105,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_logs: 5d0dca26963e0f30b11a995a764744ef77d5d428
   geocoding_ios: d7460f56e80e118d57678efe5c2cdc888739ff18
   geolocator_apple: 9bcea1918ff7f0062d98345d238ae12718acfbc1
   Google-Maps-iOS-Utils: 66d6de12be1ce6d3742a54661e7a79cb317a9321
@@ -113,7 +122,8 @@ SPEC CHECKSUMS:
   StripePaymentSheet: eac031f76d7fbb4f52df9b9c39be5be671ca4c07
   StripePaymentsUI: 7d7cffb2ecfc0d6b5ac3a4488c02893a5ff6cc77
   StripeUICore: bb102d453b1e1a10a37f810bc0a9aa0675fb17fd
+  ZIPFoundation: b8c29ea7ae353b309bc810586181fd073cb3312c
 
 PODFILE CHECKSUM: 1959d098c91d8a792531a723c4a9d7e9f6a01e38
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2
