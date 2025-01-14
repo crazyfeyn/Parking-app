@@ -52,13 +52,7 @@ class _MileSliderWidgetState extends State<MileSliderWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '${widget.minValue.toInt()}km',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 14,
-                    ),
-                  ),
+                  const Text(''),
                   Text(
                     '${widget.maxValue.toInt()}km',
                     style: TextStyle(

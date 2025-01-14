@@ -4,7 +4,7 @@ import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/city_picker.dart';
 import 'package:flutter_application/features/home/presentation/widgets/mile_slider_widget.dart';
-import 'package:flutter_application/features/home/presentation/widgets/services_serction_widget.dart';
+import 'package:flutter_application/features/home/presentation/widgets/services_section_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/state_picker.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import 'package:flutter_application/features/home/data/models/filter_model.dart'
