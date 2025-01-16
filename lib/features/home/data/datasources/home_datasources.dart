@@ -395,10 +395,12 @@ class HomeDatasources {
       if (noTowedVehicles != null) {
         queryParameters['no_towed_vehicles'] = noTowedVehicles;
       }
+      print('-----------');
+      print(queryParameters);
 
       // Make the API request with query parameters
       final response = await dio.get(
-        '/bookings/list/',
+        '/locations/list/',
         queryParameters: queryParameters,
       );
 

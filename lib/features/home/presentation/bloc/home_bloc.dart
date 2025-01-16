@@ -10,6 +10,7 @@ import 'package:flutter_application/features/home/domain/usecases/current_locati
 import 'package:flutter_application/features/home/domain/usecases/fetch_locations_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/fetch_payment_method_list.dart';
 import 'package:flutter_application/features/home/domain/usecases/fetch_search_usecase.dart';
+import 'package:flutter_application/features/home/domain/usecases/filter_locations_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/get_vehicle_list_usecase.dart';
 import 'package:flutter_application/features/payment_screen/presentation/data/models/list_payment_methods.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -26,21 +27,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final CreateVehicleUsecase createVehicleUsecase;
   final FetchSearchUsecase fetchSearchUsecase;
   final FetchPaymentMethodListUsecase fetchPaymentMethodListUsecase;
+  final FilterLocationsUsecase filterLocationsUsecase;
 
   HomeBloc(
-      this.currentLocationUsecase,
-      this.fetchLocationsUsecase,
-      this.getVehicleListUsecase,
-      this.createVehicleUsecase,
-      this.fetchSearchUsecase,
-      this.fetchPaymentMethodListUsecase)
-      : super(const HomeState()) {
+    this.currentLocationUsecase,
+    this.fetchLocationsUsecase,
+    this.getVehicleListUsecase,
+    this.createVehicleUsecase,
+    this.fetchSearchUsecase,
+    this.fetchPaymentMethodListUsecase,
+    this.filterLocationsUsecase,
+  ) : super(const HomeState()) {
     on<_fetchAllLocations>(_fetchAllLocationsFunc);
     on<_fetchSearchAllLocations>(_fetchSearchAllLocationsFunc);
     on<_getCurrentLocation>(_getCurrentLocationFunc);
     on<_getVehicleList>(_getVehicleListFunc);
     on<_createVehicle>(_createVehicleFunc);
     on<_fetchPaymentMethodList>(_fetchPaymentMethodListFunc);
+    on<_filterLocation>(_filterLocationsFunc);
   }
 
   Future<void> _fetchSearchAllLocationsFunc(
@@ -133,7 +137,29 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(
           state.copyWith(status: Status.error, errorMessage: error.toString()));
     }, (paymentMethodList) {
-      emit(state.copyWith(status: Status.success, listPaymentMethod: paymentMethodList));
+      emit(state.copyWith(
+          status: Status.success, listPaymentMethod: paymentMethodList));
     });
+  }
+
+  Future<void> _filterLocationsFunc(
+      _filterLocation event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(status: Status.loading));
+
+    // Convert FilterModel to FilterLocationsParams
+    final filterParams = event.filterModel.toFilterLocationsParams();
+
+    // Call the use case with the correct parameter type
+    final response = await filterLocationsUsecase.call(filterParams);
+
+    response.fold(
+      (error) {
+        emit(state.copyWith(
+            status: Status.error, errorMessage: error.toString()));
+      },
+      (locations) {
+        emit(state.copyWith(status: Status.success, filterLocations: locations));
+      },
+    );
   }
 }

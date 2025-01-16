@@ -6,6 +6,7 @@ class HomeState with _$HomeState {
     @Default(Status.initial) Status status,
     LatLng? currentLocation,
     List<LocationModel>? locations,
+    List<LocationModel>? filterLocations,
     String? errorMessage,
     String? searchQuery,
     @Default(ServicePreferences()) ServicePreferences servicePreferences,
