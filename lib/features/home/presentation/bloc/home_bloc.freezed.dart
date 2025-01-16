@@ -1254,6 +1254,8 @@ mixin _$HomeState {
   List<LocationModel>? get locations => throw _privateConstructorUsedError;
   List<LocationModel>? get filterLocations =>
       throw _privateConstructorUsedError;
+  List<LocationModel>? get searchLocations =>
+      throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
   String? get searchQuery => throw _privateConstructorUsedError;
   ServicePreferences get servicePreferences =>
@@ -1280,6 +1282,7 @@ abstract class $HomeStateCopyWith<$Res> {
       LatLng? currentLocation,
       List<LocationModel>? locations,
       List<LocationModel>? filterLocations,
+      List<LocationModel>? searchLocations,
       String? errorMessage,
       String? searchQuery,
       ServicePreferences servicePreferences,
@@ -1307,6 +1310,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? currentLocation = freezed,
     Object? locations = freezed,
     Object? filterLocations = freezed,
+    Object? searchLocations = freezed,
     Object? errorMessage = freezed,
     Object? searchQuery = freezed,
     Object? servicePreferences = null,
@@ -1330,6 +1334,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
       filterLocations: freezed == filterLocations
           ? _value.filterLocations
           : filterLocations // ignore: cast_nullable_to_non_nullable
+              as List<LocationModel>?,
+      searchLocations: freezed == searchLocations
+          ? _value.searchLocations
+          : searchLocations // ignore: cast_nullable_to_non_nullable
               as List<LocationModel>?,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
@@ -1372,6 +1380,7 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       LatLng? currentLocation,
       List<LocationModel>? locations,
       List<LocationModel>? filterLocations,
+      List<LocationModel>? searchLocations,
       String? errorMessage,
       String? searchQuery,
       ServicePreferences servicePreferences,
@@ -1397,6 +1406,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? currentLocation = freezed,
     Object? locations = freezed,
     Object? filterLocations = freezed,
+    Object? searchLocations = freezed,
     Object? errorMessage = freezed,
     Object? searchQuery = freezed,
     Object? servicePreferences = null,
@@ -1420,6 +1430,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
       filterLocations: freezed == filterLocations
           ? _value._filterLocations
           : filterLocations // ignore: cast_nullable_to_non_nullable
+              as List<LocationModel>?,
+      searchLocations: freezed == searchLocations
+          ? _value._searchLocations
+          : searchLocations // ignore: cast_nullable_to_non_nullable
               as List<LocationModel>?,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
@@ -1457,6 +1471,7 @@ class _$HomeStateImpl with DiagnosticableTreeMixin implements _HomeState {
       this.currentLocation,
       final List<LocationModel>? locations,
       final List<LocationModel>? filterLocations,
+      final List<LocationModel>? searchLocations,
       this.errorMessage,
       this.searchQuery,
       this.servicePreferences = const ServicePreferences(),
@@ -1465,6 +1480,7 @@ class _$HomeStateImpl with DiagnosticableTreeMixin implements _HomeState {
       final List<ListPaymentMethods>? listPaymentMethod})
       : _locations = locations,
         _filterLocations = filterLocations,
+        _searchLocations = searchLocations,
         _vehicleList = vehicleList,
         _listPaymentMethod = listPaymentMethod;
 
@@ -1489,6 +1505,16 @@ class _$HomeStateImpl with DiagnosticableTreeMixin implements _HomeState {
     final value = _filterLocations;
     if (value == null) return null;
     if (_filterLocations is EqualUnmodifiableListView) return _filterLocations;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<LocationModel>? _searchLocations;
+  @override
+  List<LocationModel>? get searchLocations {
+    final value = _searchLocations;
+    if (value == null) return null;
+    if (_searchLocations is EqualUnmodifiableListView) return _searchLocations;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
@@ -1525,7 +1551,7 @@ class _$HomeStateImpl with DiagnosticableTreeMixin implements _HomeState {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'HomeState(status: $status, currentLocation: $currentLocation, locations: $locations, filterLocations: $filterLocations, errorMessage: $errorMessage, searchQuery: $searchQuery, servicePreferences: $servicePreferences, vehicleList: $vehicleList, createdVehicle: $createdVehicle, listPaymentMethod: $listPaymentMethod)';
+    return 'HomeState(status: $status, currentLocation: $currentLocation, locations: $locations, filterLocations: $filterLocations, searchLocations: $searchLocations, errorMessage: $errorMessage, searchQuery: $searchQuery, servicePreferences: $servicePreferences, vehicleList: $vehicleList, createdVehicle: $createdVehicle, listPaymentMethod: $listPaymentMethod)';
   }
 
   @override
@@ -1537,6 +1563,7 @@ class _$HomeStateImpl with DiagnosticableTreeMixin implements _HomeState {
       ..add(DiagnosticsProperty('currentLocation', currentLocation))
       ..add(DiagnosticsProperty('locations', locations))
       ..add(DiagnosticsProperty('filterLocations', filterLocations))
+      ..add(DiagnosticsProperty('searchLocations', searchLocations))
       ..add(DiagnosticsProperty('errorMessage', errorMessage))
       ..add(DiagnosticsProperty('searchQuery', searchQuery))
       ..add(DiagnosticsProperty('servicePreferences', servicePreferences))
@@ -1557,6 +1584,8 @@ class _$HomeStateImpl with DiagnosticableTreeMixin implements _HomeState {
                 .equals(other._locations, _locations) &&
             const DeepCollectionEquality()
                 .equals(other._filterLocations, _filterLocations) &&
+            const DeepCollectionEquality()
+                .equals(other._searchLocations, _searchLocations) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
             (identical(other.searchQuery, searchQuery) ||
@@ -1578,6 +1607,7 @@ class _$HomeStateImpl with DiagnosticableTreeMixin implements _HomeState {
       currentLocation,
       const DeepCollectionEquality().hash(_locations),
       const DeepCollectionEquality().hash(_filterLocations),
+      const DeepCollectionEquality().hash(_searchLocations),
       errorMessage,
       searchQuery,
       servicePreferences,
@@ -1600,6 +1630,7 @@ abstract class _HomeState implements HomeState {
       final LatLng? currentLocation,
       final List<LocationModel>? locations,
       final List<LocationModel>? filterLocations,
+      final List<LocationModel>? searchLocations,
       final String? errorMessage,
       final String? searchQuery,
       final ServicePreferences servicePreferences,
@@ -1615,6 +1646,8 @@ abstract class _HomeState implements HomeState {
   List<LocationModel>? get locations;
   @override
   List<LocationModel>? get filterLocations;
+  @override
+  List<LocationModel>? get searchLocations;
   @override
   String? get errorMessage;
   @override

@@ -55,7 +55,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(
           state.copyWith(status: Status.error, errorMessage: error.toString()));
     }, (data) {
-      emit(state.copyWith(status: Status.success, locations: data));
+      emit(state.copyWith(status: Status.success, searchLocations: data));
     });
   }
 
@@ -158,7 +158,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             status: Status.error, errorMessage: error.toString()));
       },
       (locations) {
-        emit(state.copyWith(status: Status.success, filterLocations: locations));
+        emit(
+            state.copyWith(status: Status.success, filterLocations: locations));
       },
     );
   }

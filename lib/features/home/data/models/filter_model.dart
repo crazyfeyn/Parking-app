@@ -108,49 +108,62 @@ class FilterModel {
     // Initialize the maps based on the passed values
     if (truckAllowed != null) allowedServices['Truck'] = truckAllowed!;
     if (trailerAllowed != null) allowedServices['Trailer'] = trailerAllowed!;
-    if (truckTrailerAllowed != null)
+    if (truckTrailerAllowed != null) {
       allowedServices['Truck & Trailer'] = truckTrailerAllowed!;
+    }
     if (repairsAllowed != null) allowedServices['Repairs'] = repairsAllowed!;
     if (lowboysAllowed != null) allowedServices['Lowboys'] = lowboysAllowed!;
-    if (oversizedAllowed != null)
+    if (oversizedAllowed != null) {
       allowedServices['Oversized'] = oversizedAllowed!;
+    }
 
     if (hazmatAllowed != null) oneServiceAllowed['Hazmat'] = hazmatAllowed!;
-    if (doubleStackAllowed != null)
+    if (doubleStackAllowed != null) {
       oneServiceAllowed['Double Stack'] = doubleStackAllowed!;
+    }
     if (bobtailOnly != null) oneServiceAllowed['Bobtail Only'] = bobtailOnly!;
-    if (containersOnly != null)
+    if (containersOnly != null) {
       oneServiceAllowed['Containers Only'] = containersOnly!;
+    }
 
     if (cameras != null) additionalServices['Cameras'] = cameras!;
     if (fenced != null) additionalServices['Fenced'] = fenced!;
     if (asphalt != null) additionalServices['Asphalt'] = asphalt!;
     if (lights != null) additionalServices['Lights'] = lights!;
-    if (twentyFourHours != null)
+    if (twentyFourHours != null) {
       additionalServices['24 Hours'] = twentyFourHours!;
-    if (limitedEntryExitTimes != null)
+    }
+    if (limitedEntryExitTimes != null) {
       additionalServices['Limited Entry/Exit Times'] = limitedEntryExitTimes!;
-    if (securityAtGate != null)
+    }
+    if (securityAtGate != null) {
       additionalServices['Security at Gate'] = securityAtGate!;
-    if (roamingSecurity != null)
+    }
+    if (roamingSecurity != null) {
       additionalServices['Roaming Security'] = roamingSecurity!;
-    if (landingGearSupportRequired != null)
+    }
+    if (landingGearSupportRequired != null) {
       additionalServices['Landing Gear Support Required'] =
           landingGearSupportRequired!;
-    if (laundryMachines != null)
+    }
+    if (laundryMachines != null) {
       additionalServices['Laundry Machines'] = laundryMachines!;
+    }
     if (freeShowers != null) additionalServices['Free Showers'] = freeShowers!;
     if (paidShowers != null) additionalServices['Paid Showers'] = paidShowers!;
     if (repairShop != null) additionalServices['Repair Shop'] = repairShop!;
-    if (paidContainerStackingServices != null)
+    if (paidContainerStackingServices != null) {
       additionalServices['Paid Container Stacking Services'] =
           paidContainerStackingServices!;
-    if (trailerSnowScraper != null)
+    }
+    if (trailerSnowScraper != null) {
       additionalServices['Trailer Snow Scraper'] = trailerSnowScraper!;
+    }
     if (truckWash != null) additionalServices['Truck Wash'] = truckWash!;
     if (food != null) additionalServices['Food'] = food!;
-    if (noTowedVehicles != null)
+    if (noTowedVehicles != null) {
       additionalServices['No Towed Vehicles'] = noTowedVehicles!;
+    }
   }
 
   Map<String, dynamic> toQueryParameters() {

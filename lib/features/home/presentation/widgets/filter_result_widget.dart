@@ -8,8 +8,8 @@ import 'package:flutter_application/features/home/presentation/widgets/per_price
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-class SearchOptionScreen extends StatelessWidget {
-  const SearchOptionScreen({super.key});
+class FilterResultWidget extends StatelessWidget {
+  const FilterResultWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class SearchOptionScreen extends StatelessWidget {
             );
           }
           if (state.status == Status.success) {
-            final locations = state.searchLocations;
+            final locations = state.filterLocations;
             return locations == null
                 ? const Center(
                     child: Text('Something went wrong'),
