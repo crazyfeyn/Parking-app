@@ -3,12 +3,21 @@ import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class CardWidget extends StatelessWidget {
-  const CardWidget({super.key});
+  final String cardNumber;
+  final String cardHolderName;
+
+  const CardWidget({
+    super.key,
+    required this.cardNumber,
+    required this.cardHolderName,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ZoomTapAnimation(
-      onTap: () {},
+      onTap: () {
+        // Handle card tap
+      },
       child: Container(
         padding: const EdgeInsets.all(AppDimens.PADDING_12),
         margin: const EdgeInsets.only(bottom: AppDimens.MARGIN_16),
@@ -22,34 +31,35 @@ class CardWidget extends StatelessWidget {
             Container(
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
-                  color: const Color(0xFFFFFFFF),
-                  borderRadius: BorderRadius.circular(50)),
+                color: const Color(0xFFFFFFFF),
+                borderRadius: BorderRadius.circular(50),
+              ),
               child: Image.asset(
                 'assets/cards/master_card.png',
                 height: 77,
                 width: 77,
               ),
             ),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '3056****5904',
-                  style: TextStyle(
+                  cardNumber,
+                  style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 20,
                   ),
                 ),
                 Text(
-                  'Keneyshka Jessika',
-                  style: TextStyle(
+                  cardHolderName,
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.grey,
                   ),
-                )
+                ),
               ],
             ),
-            const SizedBox()
+            const SizedBox(),
           ],
         ),
       ),

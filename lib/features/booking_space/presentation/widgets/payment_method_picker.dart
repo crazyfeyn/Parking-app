@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/config/stripe_service.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 
 class PaymentMethodPicker extends StatefulWidget {
   final Function(String) onStateChanged;
@@ -14,6 +13,7 @@ class PaymentMethodPicker extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _PaymentMethodPickerState createState() => _PaymentMethodPickerState();
 }
 
@@ -39,6 +39,7 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
       await _stripeService.makePayment();
 
       // Show success message
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Payment successful!')),
       );
@@ -82,6 +83,7 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
                 }
 
                 widget.onStateChanged(paymentMethods[index]);
+                // ignore: use_build_context_synchronously
                 Navigator.pop(context);
               },
             );

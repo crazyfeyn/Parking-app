@@ -17,7 +17,7 @@ class ProfileDatasources {
       } else {
         throw ServerException();
       }
-    } on DioException catch (e) {
+    } on DioException {
       throw ServerException();
     } catch (_) {
       throw ServerException();
@@ -26,16 +26,16 @@ class ProfileDatasources {
 
   /// Updates the user's profile
   Future<void> updateProfile({
-  required  String name,
-    required  String surname,
-   required  String email,
+    required String name,
+    required String surname,
+    required String email,
   }) async {
     print('QWERTYUIOIUYTREWQWERTYUIUYTREWERTYU');
     try {
       final updateData = {
-       'first_name': name,
-      'last_name': surname,
-     'email': email,
+        'first_name': name,
+        'last_name': surname,
+        'email': email,
       };
       print('UPDATED DATA');
       print(updateData);
@@ -56,7 +56,7 @@ class ProfileDatasources {
       } else {
         throw ServerException();
       }
-    } on DioException catch (e) {
+    } on DioException {
       throw ServerException();
     } catch (_) {
       throw ServerException();
@@ -80,7 +80,7 @@ class ProfileDatasources {
       if (response.statusCode != 200) {
         throw ServerException();
       }
-    } on DioException catch (e) {
+    } on DioException {
       throw ServerException();
     } catch (_) {
       throw ServerException();
@@ -99,7 +99,7 @@ class ProfileDatasources {
       } else {
         print('success');
       }
-    } on DioException catch (e) {
+    } on DioException {
       throw ServerException();
     } catch (_) {
       throw ServerException();

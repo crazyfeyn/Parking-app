@@ -10,8 +10,6 @@ class PaymentsScreen extends StatefulWidget {
 }
 
 class _PaymentsScreenState extends State<PaymentsScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,13 +26,14 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.white,
               ),
-              child: const Column(
+              child: const SingleChildScrollView(
+                  child: Column(
                 children: [
                   PaymentWidget(title: 'Add payment method', iconPath: 'add'),
                   PaymentWidget(title: 'Cash', iconPath: 'cash'),
                   PaymentWidget(title: 'Visa ----1290', iconPath: 'card'),
                 ],
-              ),
+              )),
             )
           ],
         ),

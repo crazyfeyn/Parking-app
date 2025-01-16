@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return Center(
                 child: ErrorRefreshWidget(
                   onRefresh: () {
-                    _fetchData(); // Retry fetching data
+                    _fetchData();
                   },
                 ),
               );

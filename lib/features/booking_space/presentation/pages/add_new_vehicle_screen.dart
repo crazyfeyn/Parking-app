@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/widgets/white_back_widget.dart';
-import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
 import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
+import 'package:flutter_application/features/booking_space/presentation/widgets/new_vehicle/add_vehicle_button.dart';
 import 'package:flutter_application/features/booking_space/presentation/widgets/new_vehicle/general_form_field_widget.dart';
 import 'package:flutter_application/features/booking_space/presentation/widgets/new_vehicle/general_modal_field_widget.dart';
-import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -26,8 +25,8 @@ class AddNewVehicleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: SingleChildScrollView(
+    return Scaffold(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -62,7 +61,10 @@ class AddNewVehicleScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               WhiteBackWidget(
-                widget: Column(
+                widget: ListView(
+                  shrinkWrap:
+                      true, // Ensure the ListView takes only the space it needs
+                  physics: const NeverScrollableScrollPhysics(), // Di
                   children: [
                     GeneralModalFieldWidget(
                       onStateChanged: provider.setVehicleType,
@@ -77,8 +79,7 @@ class AddNewVehicleScreen extends StatelessWidget {
                       labelText: '',
                       initialExample: 'Unit number',
                       aboveText: '123',
-                      keyboardType:
-                          TextInputType.number, // Number input for unit number
+                      keyboardType: TextInputType.number,
                     ),
                     const SizedBox(height: 16),
                     GeneralFormFieldWidget(
@@ -87,8 +88,7 @@ class AddNewVehicleScreen extends StatelessWidget {
                       labelText: '',
                       initialExample: 'Year',
                       aboveText: '1987',
-                      keyboardType:
-                          TextInputType.number, // Number input for year
+                      keyboardType: TextInputType.number,
                     ),
                     const SizedBox(height: 16),
                     GeneralFormFieldWidget(
@@ -96,7 +96,7 @@ class AddNewVehicleScreen extends StatelessWidget {
                       labelText: 'Make',
                       aboveText: 'Make',
                       initialExample: '',
-                      keyboardType: TextInputType.text, // Text input for make
+                      keyboardType: TextInputType.text,
                     ),
                     const SizedBox(height: 16),
                     GeneralFormFieldWidget(
@@ -104,7 +104,7 @@ class AddNewVehicleScreen extends StatelessWidget {
                       labelText: 'Model',
                       aboveText: 'enter model',
                       initialExample: '',
-                      keyboardType: TextInputType.text, // Text input for model
+                      keyboardType: TextInputType.text,
                     ),
                     const SizedBox(height: 16),
                     GeneralFormFieldWidget(
@@ -112,8 +112,7 @@ class AddNewVehicleScreen extends StatelessWidget {
                       labelText: '',
                       aboveText: 'enter plate number',
                       initialExample: '',
-                      keyboardType:
-                          TextInputType.text, // Text input for plate number
+                      keyboardType: TextInputType.text,
                     ),
                     const SizedBox(height: 24),
                     BlocBuilder<ProfileBloc, ProfileState>(
@@ -137,60 +136,8 @@ class AddNewVehicleScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class AddVehicleButton extends StatelessWidget {
-  final int userId;
-  final BookingProvider provider;
-  final VoidCallback onSuccess;
-
-  const AddVehicleButton({
-    required this.provider,
-    required this.userId,
-    required this.onSuccess,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ZoomTapAnimation(
-      onTap: () {
-        if (provider.isFormValidVehicle) {
-          final vehicleModel = VehicleModel(
-            type: provider.vehicleType!,
-            unitNumber: provider.unitNumber!,
-            year: provider.year!,
-            make: provider.make!,
-            model: provider.model!,
-            plateNumber: provider.plateNumber!,
-            user: userId,
-          );
-
-          context.read<HomeBloc>().add(HomeEvent.createVehicle(vehicleModel));
-          onSuccess();
-          Navigator.of(context).pop();
-        }
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppConstants.mainColor,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        alignment: Alignment.center,
-        child: const Text(
-          'Add vehicle',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
           ),
         ),
       ),

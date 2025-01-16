@@ -1,13 +1,17 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
+import 'package:flutter_application/features/home/data/models/filter_model.dart';
 import 'package:flutter_application/features/home/data/models/service_preferences_model.dart';
 import 'package:flutter_application/features/home/domain/usecases/create_vehicle_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/current_location_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/fetch_locations_usecase.dart';
+import 'package:flutter_application/features/home/domain/usecases/fetch_payment_method_list.dart';
 import 'package:flutter_application/features/home/domain/usecases/fetch_search_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/get_vehicle_list_usecase.dart';
+import 'package:flutter_application/features/payment_screen/presentation/data/models/list_payment_methods.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -21,19 +25,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetVehicleListUsecase getVehicleListUsecase;
   final CreateVehicleUsecase createVehicleUsecase;
   final FetchSearchUsecase fetchSearchUsecase;
+  final FetchPaymentMethodListUsecase fetchPaymentMethodListUsecase;
 
   HomeBloc(
       this.currentLocationUsecase,
       this.fetchLocationsUsecase,
       this.getVehicleListUsecase,
       this.createVehicleUsecase,
-      this.fetchSearchUsecase)
+      this.fetchSearchUsecase,
+      this.fetchPaymentMethodListUsecase)
       : super(const HomeState()) {
     on<_fetchAllLocations>(_fetchAllLocationsFunc);
     on<_fetchSearchAllLocations>(_fetchSearchAllLocationsFunc);
     on<_getCurrentLocation>(_getCurrentLocationFunc);
     on<_getVehicleList>(_getVehicleListFunc);
     on<_createVehicle>(_createVehicleFunc);
+    on<_fetchPaymentMethodList>(_fetchPaymentMethodListFunc);
   }
 
   Future<void> _fetchSearchAllLocationsFunc(
@@ -106,7 +113,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         state.copyWith(
           status: Status.success,
           createdVehicle: event.vehicleModel,
-          
         ),
       );
     } catch (error) {
@@ -117,5 +123,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
     }
+  }
+
+  Future<void> _fetchPaymentMethodListFunc(
+      _fetchPaymentMethodList event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(status: Status.loading));
+    final response = await fetchPaymentMethodListUsecase.call(());
+    response.fold((error) {
+      emit(
+          state.copyWith(status: Status.error, errorMessage: error.toString()));
+    }, (paymentMethodList) {
+      emit(state.copyWith(status: Status.success, listPaymentMethod: paymentMethodList));
+    });
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 
 class ErrorRefreshWidget extends StatelessWidget {
   final VoidCallback onRefresh;
@@ -21,9 +19,7 @@ class ErrorRefreshWidget extends StatelessWidget {
           children: [
             Expanded(
               child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context); // Close the dialog
-                },
+                onTap: () {},
                 child: Container(
                   alignment: Alignment.center,
                   height: MediaQuery.of(context).size.height * 0.05,
@@ -45,7 +41,6 @@ class ErrorRefreshWidget extends StatelessWidget {
               child: GestureDetector(
                 onTap: () {
                   onRefresh(); // Trigger the refresh callback
-                  Navigator.pop(context); // Close the dialog
                 },
                 child: Container(
                   alignment: Alignment.center,

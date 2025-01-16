@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/home/data/models/filter_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
+import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/home/presentation/widgets/city_picker.dart';
 import 'package:flutter_application/features/home/presentation/widgets/mile_slider_widget.dart';
-import 'package:flutter_application/features/home/presentation/widgets/services_section_widget.dart';
+import 'package:flutter_application/features/home/presentation/widgets/services_serction_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/state_picker.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
-import 'package:flutter_application/features/home/data/models/filter_model.dart'
+import 'package:flutter_application/features/home/data/models/parking_filter_model.dart'
     as data_models;
 
-// Main FilterWidget
 class FilterWidget extends StatelessWidget {
   const FilterWidget({super.key});
 
@@ -95,7 +97,13 @@ class FilterWidget extends StatelessWidget {
                             8.hs(),
                             ButtonWidget(
                               text: 'Filter',
-                              onTap: () => print('Filter $filterModel'),
+                              onTap: () {
+                                context.read<HomeBloc>().add(
+                                      HomeEvent.filterLocation(
+                                          filterModel as FilterModel),
+                                    );
+                                Navigator.pop(context);
+                              },
                             ),
                             32.hs(),
                           ],

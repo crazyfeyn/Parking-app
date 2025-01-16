@@ -8,8 +8,15 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class AddVehicleButton extends StatelessWidget {
   final BookingProvider provider;
+  final int userId; // Add userId parameter
+  final VoidCallback onSuccess; // Add onSuccess callback
 
-  const AddVehicleButton({super.key, required this.provider});
+  const AddVehicleButton({
+    super.key,
+    required this.provider,
+    required this.userId,
+    required this.onSuccess,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +30,7 @@ class AddVehicleButton extends StatelessWidget {
             make: provider.make!,
             model: provider.model!,
             plateNumber: provider.plateNumber!,
-            user: 34, // Replace with actual user ID
+            user: userId, // Use the userId parameter
           );
 
           // Dispatch the create vehicle event
@@ -37,6 +44,9 @@ class AddVehicleButton extends StatelessWidget {
               .then((_) {
             // Dispatch the event to get the updated list of vehicles
             context.read<HomeBloc>().add(const HomeEvent.getVehicleList());
+
+            // Call the onSuccess callback
+            onSuccess();
 
             // Navigate back to the previous screen
             Navigator.pop(context);

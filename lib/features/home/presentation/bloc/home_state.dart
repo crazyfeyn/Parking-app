@@ -11,5 +11,6 @@ class HomeState with _$HomeState {
     @Default(ServicePreferences()) ServicePreferences servicePreferences,
     List<VehicleModel>? vehicleList,
     VehicleModel? createdVehicle,
+    List<ListPaymentMethods>? listPaymentMethod,
   }) = _HomeState;
 }
