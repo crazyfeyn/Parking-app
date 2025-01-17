@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_application/features/booking_space/data/models/booking_model.dart';
+import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BookingProvider extends ChangeNotifier {
   DateTime? _selectedDate;
@@ -16,7 +19,6 @@ class BookingProvider extends ChangeNotifier {
   String? make;
   String? _model;
   String? _plateNumber;
-  //!LOOOOOOOOOK idni haqiqiysini bervor
   int? user;
 
   BookingProvider({required this.locationModel});
@@ -43,15 +45,13 @@ class BookingProvider extends ChangeNotifier {
       locationModel.availableSpots! > 0;
 
   bool get isFormValidVehicle {
-    user = 22;
     return _vehicleType != null &&
         _vehicleType!.isNotEmpty &&
         _unitNumber != null &&
         _year != null &&
         make != null &&
         _model != null &&
-        _plateNumber != null &&
-        user != null;
+        _plateNumber != null;
   }
 
   void setDate(DateTime date) {
@@ -133,6 +133,7 @@ class BookingProvider extends ChangeNotifier {
     if (!isFormValid) {
       return;
     }
+    print('-----User ID: $user');
 
     final vehicle = VehicleModel(
         type: _vehicleType!,
@@ -146,7 +147,18 @@ class BookingProvider extends ChangeNotifier {
     print('Vehicle data: ${vehicle.toJson()}');
   }
 
-  createVehicle() {}
-
   void clearForm() {}
+
+  void fetchUserProfile(BuildContext context) {
+    final profileBloc = context.read<ProfileBloc>();
+    profileBloc.add(const ProfileEvent.getProfile());
+
+    context.read<ProfileBloc>().stream.listen((state) {
+      if (state.status == Status.success && state.profile != null) {
+        setUser(state.profile!.id);
+      } else if (state.status == Status.error) {
+        print('--------Failed to fetch user profile: ${state.message}');
+      }
+    });
+  }
 }

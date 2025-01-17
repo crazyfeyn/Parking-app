@@ -1,12 +1,13 @@
 part of 'profile_bloc.dart';
-@freezed
 
-class ProfileState with _$ProfileState{
+@freezed
+class ProfileState with _$ProfileState {
   factory ProfileState({
     @Default(Status.initial) Status status,
     ProfileEntity? profile,
     String? message,
-  })=_ProfileState;
+    @Default('') String clientSecret,
+  }) = _ProfileState;
 }
 // class ProfileState with _$ProfileState {
 //   const factory ProfileState.initial() = _Initial;

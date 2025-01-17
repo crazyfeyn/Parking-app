@@ -98,6 +98,27 @@ class ProfileDatasources {
         throw ServerException();
       } else {
         print('success');
+        print('-----1111111--------');
+      }
+    } on DioException {
+      throw ServerException();
+    } catch (_) {
+      throw ServerException();
+    }
+  }
+
+  Future<String> generateClientSecretKey() async {
+    try {
+      final response = await dio.post(
+        '/payments/generate-client-secret-key-payment-intent/',
+      );
+      print('-----000000--------');
+      print(response.data['clientSecret']);
+
+      if (response.statusCode == 200) {
+        return response.data['clientSecret'];
+      } else {
+        throw ServerException();
       }
     } on DioException {
       throw ServerException();

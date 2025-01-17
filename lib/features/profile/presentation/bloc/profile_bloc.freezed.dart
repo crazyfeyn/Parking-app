@@ -25,6 +25,7 @@ mixin _$ProfileEvent {
         changePassword,
     required TResult Function(Map<String, dynamic> paymentMethod)
         addPaymentMethod,
+    required TResult Function() generateClientSecretKey,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -34,6 +35,7 @@ mixin _$ProfileEvent {
     TResult? Function(String currentPassword, String newPassword)?
         changePassword,
     TResult? Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
+    TResult? Function()? generateClientSecretKey,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -43,6 +45,7 @@ mixin _$ProfileEvent {
     TResult Function(String currentPassword, String newPassword)?
         changePassword,
     TResult Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
+    TResult Function()? generateClientSecretKey,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -52,6 +55,8 @@ mixin _$ProfileEvent {
     required TResult Function(_updateProfile value) updateProfile,
     required TResult Function(_changePassword value) changePassword,
     required TResult Function(_addPaymentMethod value) addPaymentMethod,
+    required TResult Function(_generateClientSecretKey value)
+        generateClientSecretKey,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -60,6 +65,7 @@ mixin _$ProfileEvent {
     TResult? Function(_updateProfile value)? updateProfile,
     TResult? Function(_changePassword value)? changePassword,
     TResult? Function(_addPaymentMethod value)? addPaymentMethod,
+    TResult? Function(_generateClientSecretKey value)? generateClientSecretKey,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -68,6 +74,7 @@ mixin _$ProfileEvent {
     TResult Function(_updateProfile value)? updateProfile,
     TResult Function(_changePassword value)? changePassword,
     TResult Function(_addPaymentMethod value)? addPaymentMethod,
+    TResult Function(_generateClientSecretKey value)? generateClientSecretKey,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -142,6 +149,7 @@ class _$getProfileImpl implements _getProfile {
         changePassword,
     required TResult Function(Map<String, dynamic> paymentMethod)
         addPaymentMethod,
+    required TResult Function() generateClientSecretKey,
   }) {
     return getProfile();
   }
@@ -154,6 +162,7 @@ class _$getProfileImpl implements _getProfile {
     TResult? Function(String currentPassword, String newPassword)?
         changePassword,
     TResult? Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
+    TResult? Function()? generateClientSecretKey,
   }) {
     return getProfile?.call();
   }
@@ -166,6 +175,7 @@ class _$getProfileImpl implements _getProfile {
     TResult Function(String currentPassword, String newPassword)?
         changePassword,
     TResult Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
+    TResult Function()? generateClientSecretKey,
     required TResult orElse(),
   }) {
     if (getProfile != null) {
@@ -181,6 +191,8 @@ class _$getProfileImpl implements _getProfile {
     required TResult Function(_updateProfile value) updateProfile,
     required TResult Function(_changePassword value) changePassword,
     required TResult Function(_addPaymentMethod value) addPaymentMethod,
+    required TResult Function(_generateClientSecretKey value)
+        generateClientSecretKey,
   }) {
     return getProfile(this);
   }
@@ -192,6 +204,7 @@ class _$getProfileImpl implements _getProfile {
     TResult? Function(_updateProfile value)? updateProfile,
     TResult? Function(_changePassword value)? changePassword,
     TResult? Function(_addPaymentMethod value)? addPaymentMethod,
+    TResult? Function(_generateClientSecretKey value)? generateClientSecretKey,
   }) {
     return getProfile?.call(this);
   }
@@ -203,6 +216,7 @@ class _$getProfileImpl implements _getProfile {
     TResult Function(_updateProfile value)? updateProfile,
     TResult Function(_changePassword value)? changePassword,
     TResult Function(_addPaymentMethod value)? addPaymentMethod,
+    TResult Function(_generateClientSecretKey value)? generateClientSecretKey,
     required TResult orElse(),
   }) {
     if (getProfile != null) {
@@ -308,6 +322,7 @@ class _$updateProfileImpl implements _updateProfile {
         changePassword,
     required TResult Function(Map<String, dynamic> paymentMethod)
         addPaymentMethod,
+    required TResult Function() generateClientSecretKey,
   }) {
     return updateProfile(name, surname, email);
   }
@@ -320,6 +335,7 @@ class _$updateProfileImpl implements _updateProfile {
     TResult? Function(String currentPassword, String newPassword)?
         changePassword,
     TResult? Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
+    TResult? Function()? generateClientSecretKey,
   }) {
     return updateProfile?.call(name, surname, email);
   }
@@ -332,6 +348,7 @@ class _$updateProfileImpl implements _updateProfile {
     TResult Function(String currentPassword, String newPassword)?
         changePassword,
     TResult Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
+    TResult Function()? generateClientSecretKey,
     required TResult orElse(),
   }) {
     if (updateProfile != null) {
@@ -347,6 +364,8 @@ class _$updateProfileImpl implements _updateProfile {
     required TResult Function(_updateProfile value) updateProfile,
     required TResult Function(_changePassword value) changePassword,
     required TResult Function(_addPaymentMethod value) addPaymentMethod,
+    required TResult Function(_generateClientSecretKey value)
+        generateClientSecretKey,
   }) {
     return updateProfile(this);
   }
@@ -358,6 +377,7 @@ class _$updateProfileImpl implements _updateProfile {
     TResult? Function(_updateProfile value)? updateProfile,
     TResult? Function(_changePassword value)? changePassword,
     TResult? Function(_addPaymentMethod value)? addPaymentMethod,
+    TResult? Function(_generateClientSecretKey value)? generateClientSecretKey,
   }) {
     return updateProfile?.call(this);
   }
@@ -369,6 +389,7 @@ class _$updateProfileImpl implements _updateProfile {
     TResult Function(_updateProfile value)? updateProfile,
     TResult Function(_changePassword value)? changePassword,
     TResult Function(_addPaymentMethod value)? addPaymentMethod,
+    TResult Function(_generateClientSecretKey value)? generateClientSecretKey,
     required TResult orElse(),
   }) {
     if (updateProfile != null) {
@@ -482,6 +503,7 @@ class _$changePasswordImpl implements _changePassword {
         changePassword,
     required TResult Function(Map<String, dynamic> paymentMethod)
         addPaymentMethod,
+    required TResult Function() generateClientSecretKey,
   }) {
     return changePassword(currentPassword, newPassword);
   }
@@ -494,6 +516,7 @@ class _$changePasswordImpl implements _changePassword {
     TResult? Function(String currentPassword, String newPassword)?
         changePassword,
     TResult? Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
+    TResult? Function()? generateClientSecretKey,
   }) {
     return changePassword?.call(currentPassword, newPassword);
   }
@@ -506,6 +529,7 @@ class _$changePasswordImpl implements _changePassword {
     TResult Function(String currentPassword, String newPassword)?
         changePassword,
     TResult Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
+    TResult Function()? generateClientSecretKey,
     required TResult orElse(),
   }) {
     if (changePassword != null) {
@@ -521,6 +545,8 @@ class _$changePasswordImpl implements _changePassword {
     required TResult Function(_updateProfile value) updateProfile,
     required TResult Function(_changePassword value) changePassword,
     required TResult Function(_addPaymentMethod value) addPaymentMethod,
+    required TResult Function(_generateClientSecretKey value)
+        generateClientSecretKey,
   }) {
     return changePassword(this);
   }
@@ -532,6 +558,7 @@ class _$changePasswordImpl implements _changePassword {
     TResult? Function(_updateProfile value)? updateProfile,
     TResult? Function(_changePassword value)? changePassword,
     TResult? Function(_addPaymentMethod value)? addPaymentMethod,
+    TResult? Function(_generateClientSecretKey value)? generateClientSecretKey,
   }) {
     return changePassword?.call(this);
   }
@@ -543,6 +570,7 @@ class _$changePasswordImpl implements _changePassword {
     TResult Function(_updateProfile value)? updateProfile,
     TResult Function(_changePassword value)? changePassword,
     TResult Function(_addPaymentMethod value)? addPaymentMethod,
+    TResult Function(_generateClientSecretKey value)? generateClientSecretKey,
     required TResult orElse(),
   }) {
     if (changePassword != null) {
@@ -652,6 +680,7 @@ class _$addPaymentMethodImpl implements _addPaymentMethod {
         changePassword,
     required TResult Function(Map<String, dynamic> paymentMethod)
         addPaymentMethod,
+    required TResult Function() generateClientSecretKey,
   }) {
     return addPaymentMethod(paymentMethod);
   }
@@ -664,6 +693,7 @@ class _$addPaymentMethodImpl implements _addPaymentMethod {
     TResult? Function(String currentPassword, String newPassword)?
         changePassword,
     TResult? Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
+    TResult? Function()? generateClientSecretKey,
   }) {
     return addPaymentMethod?.call(paymentMethod);
   }
@@ -676,6 +706,7 @@ class _$addPaymentMethodImpl implements _addPaymentMethod {
     TResult Function(String currentPassword, String newPassword)?
         changePassword,
     TResult Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
+    TResult Function()? generateClientSecretKey,
     required TResult orElse(),
   }) {
     if (addPaymentMethod != null) {
@@ -691,6 +722,8 @@ class _$addPaymentMethodImpl implements _addPaymentMethod {
     required TResult Function(_updateProfile value) updateProfile,
     required TResult Function(_changePassword value) changePassword,
     required TResult Function(_addPaymentMethod value) addPaymentMethod,
+    required TResult Function(_generateClientSecretKey value)
+        generateClientSecretKey,
   }) {
     return addPaymentMethod(this);
   }
@@ -702,6 +735,7 @@ class _$addPaymentMethodImpl implements _addPaymentMethod {
     TResult? Function(_updateProfile value)? updateProfile,
     TResult? Function(_changePassword value)? changePassword,
     TResult? Function(_addPaymentMethod value)? addPaymentMethod,
+    TResult? Function(_generateClientSecretKey value)? generateClientSecretKey,
   }) {
     return addPaymentMethod?.call(this);
   }
@@ -713,6 +747,7 @@ class _$addPaymentMethodImpl implements _addPaymentMethod {
     TResult Function(_updateProfile value)? updateProfile,
     TResult Function(_changePassword value)? changePassword,
     TResult Function(_addPaymentMethod value)? addPaymentMethod,
+    TResult Function(_generateClientSecretKey value)? generateClientSecretKey,
     required TResult orElse(),
   }) {
     if (addPaymentMethod != null) {
@@ -737,10 +772,143 @@ abstract class _addPaymentMethod implements ProfileEvent {
 }
 
 /// @nodoc
+abstract class _$$generateClientSecretKeyImplCopyWith<$Res> {
+  factory _$$generateClientSecretKeyImplCopyWith(
+          _$generateClientSecretKeyImpl value,
+          $Res Function(_$generateClientSecretKeyImpl) then) =
+      __$$generateClientSecretKeyImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$generateClientSecretKeyImplCopyWithImpl<$Res>
+    extends _$ProfileEventCopyWithImpl<$Res, _$generateClientSecretKeyImpl>
+    implements _$$generateClientSecretKeyImplCopyWith<$Res> {
+  __$$generateClientSecretKeyImplCopyWithImpl(
+      _$generateClientSecretKeyImpl _value,
+      $Res Function(_$generateClientSecretKeyImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ProfileEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$generateClientSecretKeyImpl implements _generateClientSecretKey {
+  const _$generateClientSecretKeyImpl();
+
+  @override
+  String toString() {
+    return 'ProfileEvent.generateClientSecretKey()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$generateClientSecretKeyImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() getProfile,
+    required TResult Function(String name, String surname, String email)
+        updateProfile,
+    required TResult Function(String currentPassword, String newPassword)
+        changePassword,
+    required TResult Function(Map<String, dynamic> paymentMethod)
+        addPaymentMethod,
+    required TResult Function() generateClientSecretKey,
+  }) {
+    return generateClientSecretKey();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? getProfile,
+    TResult? Function(String name, String surname, String email)? updateProfile,
+    TResult? Function(String currentPassword, String newPassword)?
+        changePassword,
+    TResult? Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
+    TResult? Function()? generateClientSecretKey,
+  }) {
+    return generateClientSecretKey?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? getProfile,
+    TResult Function(String name, String surname, String email)? updateProfile,
+    TResult Function(String currentPassword, String newPassword)?
+        changePassword,
+    TResult Function(Map<String, dynamic> paymentMethod)? addPaymentMethod,
+    TResult Function()? generateClientSecretKey,
+    required TResult orElse(),
+  }) {
+    if (generateClientSecretKey != null) {
+      return generateClientSecretKey();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_getProfile value) getProfile,
+    required TResult Function(_updateProfile value) updateProfile,
+    required TResult Function(_changePassword value) changePassword,
+    required TResult Function(_addPaymentMethod value) addPaymentMethod,
+    required TResult Function(_generateClientSecretKey value)
+        generateClientSecretKey,
+  }) {
+    return generateClientSecretKey(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_getProfile value)? getProfile,
+    TResult? Function(_updateProfile value)? updateProfile,
+    TResult? Function(_changePassword value)? changePassword,
+    TResult? Function(_addPaymentMethod value)? addPaymentMethod,
+    TResult? Function(_generateClientSecretKey value)? generateClientSecretKey,
+  }) {
+    return generateClientSecretKey?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_getProfile value)? getProfile,
+    TResult Function(_updateProfile value)? updateProfile,
+    TResult Function(_changePassword value)? changePassword,
+    TResult Function(_addPaymentMethod value)? addPaymentMethod,
+    TResult Function(_generateClientSecretKey value)? generateClientSecretKey,
+    required TResult orElse(),
+  }) {
+    if (generateClientSecretKey != null) {
+      return generateClientSecretKey(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _generateClientSecretKey implements ProfileEvent {
+  const factory _generateClientSecretKey() = _$generateClientSecretKeyImpl;
+}
+
+/// @nodoc
 mixin _$ProfileState {
   Status get status => throw _privateConstructorUsedError;
   ProfileEntity? get profile => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
+  String get clientSecret => throw _privateConstructorUsedError;
 
   /// Create a copy of ProfileState
   /// with the given fields replaced by the non-null parameter values.
@@ -755,7 +923,11 @@ abstract class $ProfileStateCopyWith<$Res> {
           ProfileState value, $Res Function(ProfileState) then) =
       _$ProfileStateCopyWithImpl<$Res, ProfileState>;
   @useResult
-  $Res call({Status status, ProfileEntity? profile, String? message});
+  $Res call(
+      {Status status,
+      ProfileEntity? profile,
+      String? message,
+      String clientSecret});
 }
 
 /// @nodoc
@@ -776,6 +948,7 @@ class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
     Object? status = null,
     Object? profile = freezed,
     Object? message = freezed,
+    Object? clientSecret = null,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -790,6 +963,10 @@ class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String?,
+      clientSecret: null == clientSecret
+          ? _value.clientSecret
+          : clientSecret // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -802,7 +979,11 @@ abstract class _$$ProfileStateImplCopyWith<$Res>
       __$$ProfileStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Status status, ProfileEntity? profile, String? message});
+  $Res call(
+      {Status status,
+      ProfileEntity? profile,
+      String? message,
+      String clientSecret});
 }
 
 /// @nodoc
@@ -821,6 +1002,7 @@ class __$$ProfileStateImplCopyWithImpl<$Res>
     Object? status = null,
     Object? profile = freezed,
     Object? message = freezed,
+    Object? clientSecret = null,
   }) {
     return _then(_$ProfileStateImpl(
       status: null == status
@@ -835,6 +1017,10 @@ class __$$ProfileStateImplCopyWithImpl<$Res>
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String?,
+      clientSecret: null == clientSecret
+          ? _value.clientSecret
+          : clientSecret // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -843,7 +1029,10 @@ class __$$ProfileStateImplCopyWithImpl<$Res>
 
 class _$ProfileStateImpl implements _ProfileState {
   _$ProfileStateImpl(
-      {this.status = Status.initial, this.profile, this.message});
+      {this.status = Status.initial,
+      this.profile,
+      this.message,
+      this.clientSecret = ''});
 
   @override
   @JsonKey()
@@ -852,10 +1041,13 @@ class _$ProfileStateImpl implements _ProfileState {
   final ProfileEntity? profile;
   @override
   final String? message;
+  @override
+  @JsonKey()
+  final String clientSecret;
 
   @override
   String toString() {
-    return 'ProfileState(status: $status, profile: $profile, message: $message)';
+    return 'ProfileState(status: $status, profile: $profile, message: $message, clientSecret: $clientSecret)';
   }
 
   @override
@@ -865,11 +1057,14 @@ class _$ProfileStateImpl implements _ProfileState {
             other is _$ProfileStateImpl &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.profile, profile) || other.profile == profile) &&
-            (identical(other.message, message) || other.message == message));
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.clientSecret, clientSecret) ||
+                other.clientSecret == clientSecret));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, profile, message);
+  int get hashCode =>
+      Object.hash(runtimeType, status, profile, message, clientSecret);
 
   /// Create a copy of ProfileState
   /// with the given fields replaced by the non-null parameter values.
@@ -884,7 +1079,8 @@ abstract class _ProfileState implements ProfileState {
   factory _ProfileState(
       {final Status status,
       final ProfileEntity? profile,
-      final String? message}) = _$ProfileStateImpl;
+      final String? message,
+      final String clientSecret}) = _$ProfileStateImpl;
 
   @override
   Status get status;
@@ -892,6 +1088,8 @@ abstract class _ProfileState implements ProfileState {
   ProfileEntity? get profile;
   @override
   String? get message;
+  @override
+  String get clientSecret;
 
   /// Create a copy of ProfileState
   /// with the given fields replaced by the non-null parameter values.

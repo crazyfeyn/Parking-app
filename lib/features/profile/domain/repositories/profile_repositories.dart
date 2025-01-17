@@ -13,4 +13,5 @@ abstract class ProfileRepositories {
       String oldPassword, String newPassword);
   Future<Either<Failure, void>> addPaymentMethod(
       Map<String, dynamic> paymentData);
+  Future<Either<Failure, String>> generateClientSecretKey();
 }

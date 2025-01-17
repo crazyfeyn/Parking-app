@@ -4,9 +4,9 @@ part of 'profile_bloc.dart';
 class ProfileEvent with _$ProfileEvent {
   const factory ProfileEvent.getProfile() = _getProfile;
   const factory ProfileEvent.updateProfile({
-   required String name,
-  required  String surname,
-   required String email,
+    required String name,
+    required String surname,
+    required String email,
   }) = _updateProfile;
   const factory ProfileEvent.changePassword({
     required String currentPassword,
@@ -15,4 +15,6 @@ class ProfileEvent with _$ProfileEvent {
   const factory ProfileEvent.addPaymentMethod({
     required Map<String, dynamic> paymentMethod,
   }) = _addPaymentMethod;
+  const factory ProfileEvent.generateClientSecretKey() =
+      _generateClientSecretKey;
 }

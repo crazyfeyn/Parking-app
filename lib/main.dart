@@ -49,7 +49,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) {
           return sl<HistoryBloc>();
         }),
-        Provider<BookingProvider>(create: (_) => sl<BookingProvider>()),
+        Provider<BookingProvider>(
+          create: (context) {
+            final provider = sl<BookingProvider>();
+            return provider;
+          },
+        ),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

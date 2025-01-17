@@ -62,9 +62,8 @@ class AddNewVehicleScreen extends StatelessWidget {
               const SizedBox(height: 16),
               WhiteBackWidget(
                 widget: ListView(
-                  shrinkWrap:
-                      true, // Ensure the ListView takes only the space it needs
-                  physics: const NeverScrollableScrollPhysics(), // Di
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   children: [
                     GeneralModalFieldWidget(
                       onStateChanged: provider.setVehicleType,

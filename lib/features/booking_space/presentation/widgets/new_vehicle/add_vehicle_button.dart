@@ -8,8 +8,8 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class AddVehicleButton extends StatelessWidget {
   final BookingProvider provider;
-  final int userId; // Add userId parameter
-  final VoidCallback onSuccess; // Add onSuccess callback
+  final int userId;
+  final VoidCallback onSuccess;
 
   const AddVehicleButton({
     super.key,
@@ -30,10 +30,9 @@ class AddVehicleButton extends StatelessWidget {
             make: provider.make!,
             model: provider.model!,
             plateNumber: provider.plateNumber!,
-            user: userId, // Use the userId parameter
+            user: userId,
           );
 
-          // Dispatch the create vehicle event
           context.read<HomeBloc>().add(HomeEvent.createVehicle(vehicleModel));
 
           // Listen to state changes
@@ -42,19 +41,18 @@ class AddVehicleButton extends StatelessWidget {
               .stream
               .firstWhere((state) => state.status == Status.success)
               .then((_) {
-            // Dispatch the event to get the updated list of vehicles
+            // ignore: use_build_context_synchronously
             context.read<HomeBloc>().add(const HomeEvent.getVehicleList());
 
-            // Call the onSuccess callback
             onSuccess();
 
-            // Navigate back to the previous screen
+            // ignore: use_build_context_synchronously
             Navigator.pop(context);
           });
         } else {
           // Show error message if the form is invalid
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please fill all fields')),
+            const SnackBar(content: Text('Please fill all fieldss')),
           );
         }
       },

@@ -64,4 +64,14 @@ class ProfileRepositoriesImpl extends ProfileRepositories {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, String>> generateClientSecretKey() async {
+    try {
+      final clientSecret = await profileDatasources.generateClientSecretKey();
+      return Right(clientSecret);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
 }

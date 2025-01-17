@@ -1,3 +1,5 @@
+import 'package:flutter_application/core/config/stripe_service.dart';
+import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_application/core/config/dio_config.dart';
 import 'package:flutter_application/core/config/local_config.dart';
@@ -36,10 +38,10 @@ import 'package:flutter_application/features/profile/data/datasources/profile_lo
 import 'package:flutter_application/features/profile/data/repositories/profile_repositories.dart';
 import 'package:flutter_application/features/profile/domain/repositories/profile_repositories.dart';
 import 'package:flutter_application/features/profile/domain/usecases/add_payment_method_usecase.dart';
+import 'package:flutter_application/features/profile/domain/usecases/generate_client_secret_usecase.dart';
 import 'package:flutter_application/features/profile/domain/usecases/get_profile_usecase.dart';
 import 'package:flutter_application/features/profile/domain/usecases/update_profile_usecase.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:location/location.dart';
 
@@ -65,60 +67,6 @@ Future<void> init() async {
 
   //! Core Services
   sl.registerLazySingleton<Location>(() => Location());
-
-  // Use Cases
-  sl.registerLazySingleton<CurrentLocationUsecase>(
-    () => CurrentLocationUsecase(
-      homeRepositories: sl<HomeRepositories>(),
-    ),
-  );
-
-  sl.registerLazySingleton<FetchLocationsUsecase>(
-    () => FetchLocationsUsecase(
-      homeRepositories: sl<HomeRepositories>(),
-    ),
-  );
-
-  sl.registerLazySingleton<GetVehicleListUsecase>(
-    () => GetVehicleListUsecase(
-      homeRepositories: sl<HomeRepositories>(),
-    ),
-  );
-  sl.registerLazySingleton<CreateVehicleUsecase>(
-    () => CreateVehicleUsecase(
-      homeRepositories: sl<HomeRepositories>(),
-    ),
-  );
-  sl.registerLazySingleton<FetchSearchUsecase>(
-    () => FetchSearchUsecase(
-      homeRepositories: sl<HomeRepositories>(),
-    ),
-  );
-
-  sl.registerLazySingleton<FetchPaymentMethodListUsecase>(
-    () => FetchPaymentMethodListUsecase(
-      homeRepositories: sl<HomeRepositories>(),
-    ),
-  );
-
-  sl.registerLazySingleton<FilterLocationsUsecase>(
-    () => FilterLocationsUsecase(
-      homeRepositories: sl<HomeRepositories>(),
-    ),
-  );
-
-  // Bloc
-  sl.registerFactory<HomeBloc>(
-    () => HomeBloc(
-      sl<CurrentLocationUsecase>(),
-      sl<FetchLocationsUsecase>(),
-      sl<GetVehicleListUsecase>(),
-      sl<CreateVehicleUsecase>(),
-      sl<FetchSearchUsecase>(),
-      sl<FetchPaymentMethodListUsecase>(),
-      sl<FilterLocationsUsecase>(),
-    ),
-  );
 
   //! Features Registration
 
@@ -184,6 +132,62 @@ Future<void> init() async {
     ),
   );
 
+  // Use Cases
+  sl.registerLazySingleton<CurrentLocationUsecase>(
+    () => CurrentLocationUsecase(
+      homeRepositories: sl<HomeRepositories>(),
+    ),
+  );
+
+  sl.registerLazySingleton<FetchLocationsUsecase>(
+    () => FetchLocationsUsecase(
+      homeRepositories: sl<HomeRepositories>(),
+    ),
+  );
+
+  sl.registerLazySingleton<GetVehicleListUsecase>(
+    () => GetVehicleListUsecase(
+      homeRepositories: sl<HomeRepositories>(),
+    ),
+  );
+
+  sl.registerLazySingleton<CreateVehicleUsecase>(
+    () => CreateVehicleUsecase(
+      homeRepositories: sl<HomeRepositories>(),
+    ),
+  );
+
+  sl.registerLazySingleton<FetchSearchUsecase>(
+    () => FetchSearchUsecase(
+      homeRepositories: sl<HomeRepositories>(),
+    ),
+  );
+
+  sl.registerLazySingleton<FetchPaymentMethodListUsecase>(
+    () => FetchPaymentMethodListUsecase(
+      homeRepositories: sl<HomeRepositories>(),
+    ),
+  );
+
+  sl.registerLazySingleton<FilterLocationsUsecase>(
+    () => FilterLocationsUsecase(
+      homeRepositories: sl<HomeRepositories>(),
+    ),
+  );
+
+  // Bloc
+  sl.registerFactory<HomeBloc>(
+    () => HomeBloc(
+      sl<CurrentLocationUsecase>(),
+      sl<FetchLocationsUsecase>(),
+      sl<GetVehicleListUsecase>(),
+      sl<CreateVehicleUsecase>(),
+      sl<FetchSearchUsecase>(),
+      sl<FetchPaymentMethodListUsecase>(),
+      sl<FilterLocationsUsecase>(),
+    ),
+  );
+
   //? Profile Feature
   // Data Sources
   sl.registerLazySingleton<ProfileDatasources>(() => ProfileDatasources(
@@ -219,22 +223,24 @@ Future<void> init() async {
     ),
   );
 
+  sl.registerLazySingleton<GenerateClientSecretKeyUsecase>(
+    () => GenerateClientSecretKeyUsecase(
+      profileRepositories: sl<ProfileRepositories>(),
+    ),
+  );
+
   // Bloc
   sl.registerFactory<ProfileBloc>(
     () => ProfileBloc(
       addPaymentMethodUsecase: sl<AddPaymentMethodUsecase>(),
       getProfileUsecase: sl<GetProfileUsecase>(),
       updateProfileUsecase: sl<UpdateProfileUsecase>(),
+      generateClientSecretKeyUsecase: sl<GenerateClientSecretKeyUsecase>(),
     ),
   );
 
-  // Booking provider
-  sl.registerFactoryParam<BookingProvider, LocationModel, void>(
-    (locationModel, _) => BookingProvider(locationModel: locationModel),
-  );
-
-  //! Features History
-  // history datasource
+  //? History Feature
+  // Data Sources
   sl.registerLazySingleton<HistoryDatasources>(
       () => HistoryDatasources(dio: sl<Dio>()));
 
@@ -259,5 +265,14 @@ Future<void> init() async {
       sl<GetBookingListUsecase>(),
       sl<GetCurrentBookingListUsecase>(),
     ),
+  );
+
+  //? Booking Provider
+  sl.registerFactoryParam<BookingProvider, LocationModel, void>(
+    (locationModel, _) => BookingProvider(locationModel: locationModel),
+  );
+
+  sl.registerLazySingleton<StripeService>(
+    () => StripeService(sl<Dio>()),
   );
 }
