@@ -1,4 +1,3 @@
-import 'package:flutter_application/core/config/stripe_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_application/core/config/dio_config.dart';
@@ -42,10 +41,9 @@ import 'package:flutter_application/features/profile/domain/usecases/generate_cl
 import 'package:flutter_application/features/profile/domain/usecases/get_profile_usecase.dart';
 import 'package:flutter_application/features/profile/domain/usecases/update_profile_usecase.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:location/location.dart';
 
 final sl = GetIt.instance;
 
@@ -274,9 +272,5 @@ Future<void> init() async {
   //? Booking Provider
   sl.registerFactoryParam<BookingProvider, LocationModel, void>(
     (locationModel, _) => BookingProvider(locationModel: locationModel),
-  );
-
-  sl.registerLazySingleton<StripeService>(
-    () => StripeService(sl<Dio>()),
   );
 }
