@@ -119,61 +119,62 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               profileEntity: profile,
                                             ),
                                           ),
-                                        );
-                                      },
-                                    ),
-                                    _profileButtons(
-                                      'card',
-                                      'Payment methods',
-                                      () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const PaymentsScreen(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  _profileButtons(
+                                    'card',
+                                    'Payment methods',
+                                    () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const PaymentsScreen(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  _profileButtons(
+                                    'listing',
+                                    'Your listings',
+                                    () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const HistoryScreen(
+                                            pageNumber: 1,
                                           ),
-                                        );
-                                      },
-                                    ),
-                                    _profileButtons(
-                                      'listing',
-                                      'Your listings',
-                                      () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const HistoryScreen(),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    _profileButtons(
-                                      'card',
-                                      'My cards',
-                                      () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const SelectPaymentScreen(),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    _profileButtons(
-                                      'vehicle',
-                                      'Your vehicles',
-                                      () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const VehiclesScreen(),
-                                          ),
-                                        );
-                                      },
-                                    ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  _profileButtons(
+                                    'card',
+                                    'My cards',
+                                    () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SelectPaymentScreen(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  _profileButtons(
+                                    'vehicle',
+                                    'Your vehicles',
+                                    () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const VehiclesScreen(),
+                                        ),
+
                                     _profileButtons(
                                       'vehicle',
                                       'CUSTOM CHANGE PASSWORD',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/stripe_constants.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
+import 'package:flutter_application/features/history/presentation/bloc/history_bloc.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_application/features/splash/presentation/pages/splash_screen.dart';
@@ -13,6 +14,7 @@ import 'server_locator.dart' as di;
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = StripeConstants.stripePublishableKey;
   await di.init();
   await _setup();
   runApp(
@@ -45,7 +47,15 @@ class MyApp extends StatelessWidget {
             return sl<ProfileBloc>();
           },
         ),
-        Provider<BookingProvider>(create: (_) => sl<BookingProvider>()),
+        BlocProvider(create: (context) {
+          return sl<HistoryBloc>();
+        }),
+        Provider<BookingProvider>(
+          create: (context) {
+            final provider = sl<BookingProvider>();
+            return provider;
+          },
+        ),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

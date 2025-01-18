@@ -4,11 +4,11 @@ import 'package:flutter_application/core/usecases/usecase.dart';
 import 'package:flutter_application/features/history/domain/repositories/history_repositories.dart';
 
 class GetBookingListUsecase extends Usecase {
-  HistoryRepositories profileRepositories;
-  GetBookingListUsecase({required this.profileRepositories});
+  HistoryRepositories historyRepositories;
+  GetBookingListUsecase({required this.historyRepositories});
 
   @override
   Future<Either<Failure, dynamic>> call(params) {
-    return profileRepositories.getBookingList();
+    return historyRepositories.getBookingList();
   }
 }

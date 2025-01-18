@@ -33,9 +33,14 @@ class BookingSpaceScreen extends StatelessWidget {
   }
 }
 
-class BookingSpaceContent extends StatelessWidget {
+class BookingSpaceContent extends StatefulWidget {
   const BookingSpaceContent({super.key});
 
+  @override
+  State<BookingSpaceContent> createState() => _BookingSpaceContentState();
+}
+
+class _BookingSpaceContentState extends State<BookingSpaceContent> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<BookingProvider>();

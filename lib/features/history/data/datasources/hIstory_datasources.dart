@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:dio/dio.dart';
 import 'package:flutter_application/core/error/exception.dart';
 import 'package:flutter_application/features/home/data/models/booking_view.dart';
@@ -18,7 +19,7 @@ class HistoryDatasources {
       } else {
         throw ServerException();
       }
-    } on DioException catch (e) {
+    } on DioException {
       throw ServerException();
     } catch (_) {
       throw ServerException();
@@ -61,7 +62,7 @@ class HistoryDatasources {
         // Handle non-200 status codes
         throw ServerException();
       }
-    } on DioException catch (e) {
+    } on DioException {
       // Handle Dio-specific errors (e.g., network issues)
       throw ServerException();
     } catch (e) {

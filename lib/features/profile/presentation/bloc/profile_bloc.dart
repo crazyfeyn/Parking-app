@@ -2,6 +2,7 @@ import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/error/failure.dart';
 import 'package:flutter_application/features/profile/domain/entity/profile_entity.dart';
 import 'package:flutter_application/features/profile/domain/usecases/add_payment_method_usecase.dart';
+import 'package:flutter_application/features/profile/domain/usecases/generate_client_secret_usecase.dart';
 import 'package:flutter_application/features/profile/domain/usecases/get_profile_usecase.dart';
 import 'package:flutter_application/features/profile/domain/usecases/update_profile_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,15 +16,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final AddPaymentMethodUsecase addPaymentMethodUsecase;
   final GetProfileUsecase getProfileUsecase;
   final UpdateProfileUsecase updateProfileUsecase;
+  final GenerateClientSecretKeyUsecase generateClientSecretKeyUsecase;
 
   ProfileBloc({
     required this.addPaymentMethodUsecase,
     required this.getProfileUsecase,
     required this.updateProfileUsecase,
+    required this.generateClientSecretKeyUsecase,
   }) : super(ProfileState()) {
     on<_getProfile>(_onGetProfile);
     on<_updateProfile>(_onUpdateProfile);
     on<_addPaymentMethod>(_onAddPaymentMethod);
+    on<_generateClientSecretKey>(_onGenerateClientSecretKey);
   }
 
   Future<void> _onGetProfile(
@@ -82,5 +86,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       default:
         return "Something get wrong";
     }
+  }
+
+  Future<void> _onGenerateClientSecretKey(
+      _generateClientSecretKey event, Emitter<ProfileState> emit) async {
+    emit(state.copyWith(status: Status.loading));
+
+    final result = await generateClientSecretKeyUsecase(NoParams());
+    result.fold(
+      (failure) => emit(state.copyWith(message: _failureMessage(failure))),
+      (clientSecret) => emit(state.copyWith(clientSecret: clientSecret)),
+    );
   }
 }

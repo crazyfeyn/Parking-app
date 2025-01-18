@@ -4,8 +4,8 @@ import 'package:flutter_application/core/widgets/button_widget.dart';
 import 'package:flutter_application/features/booking_space/presentation/pages/booking_space_screen.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
 
-showLocationDetails(BuildContext context, LocationModel location) {
-  return showModalBottomSheet(
+void showLocationDetails(BuildContext context, LocationModel location) {
+  showModalBottomSheet(
     context: context,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
@@ -18,16 +18,38 @@ showLocationDetails(BuildContext context, LocationModel location) {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image Section
+              // Image Section with Loading Indicator
               if (location.images != null && location.images!.isNotEmpty)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12.0),
-                  child: Image.network(
-                    location.images!.first.image,
-                    height: 180,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
+                FutureBuilder(
+                  future: precacheImage(
+                      NetworkImage(location.images!.first.image), context),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SizedBox(
+                        height: 180,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return const SizedBox(
+                        height: 180,
+                        child: Center(
+                          child: Text('Failed to load image'),
+                        ),
+                      );
+                    } else {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: Image.network(
+                          location.images!.first.image,
+                          height: 180,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    }
+                  },
                 ),
               const SizedBox(height: 12.0),
               // Location Name
