@@ -38,26 +38,18 @@ class _LoginScreenState extends State<LoginScreen> {
           height: MediaQuery.of(context).size.height,
           child: BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
-              print(state);
               if (state.status == Status.errorNetwork) {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('No Internet check your connection')));
-              }
-              if (state.status == Status.success) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(),
-                  ),
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text('No Internet, check your connection.')),
                 );
-              }
-
-              if (state.status == Status.error) {
+              } else if (state.status == Status.error) {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: const Text('Login Error'),
-                    content: const Text('Password or email is not correct'),
+                    title: const Text('Error'),
+                    content: const Text(
+                        'Invalid email or password. Please try again.'),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
@@ -66,13 +58,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 );
+              } else if (state.status == Status.success) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(),
+                  ),
+                );
               }
             },
             builder: (context, state) {
               if (state.status == Status.loading) {
                 return _buildLoadingState();
               }
-
               return SingleChildScrollView(
                 child: _buildLoginForm(),
               );
@@ -166,7 +164,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ButtonWidget(
                 text: 'Login',
                 onTap: () {
-                  // Input validation before login
                   if (emailController.text.isEmpty ||
                       passController.text.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -176,8 +173,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                     return;
                   }
+
                   context.read<AuthBloc>().add(AuthEvent.logIn(
-                      passController.text, emailController.text));
+                        passController.text,
+                        emailController.text,
+                      ));
                 },
               ),
               20.hs(),

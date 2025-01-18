@@ -3,7 +3,6 @@ import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
-import 'package:flutter_application/core/widgets/custom_error_widget.dart';
 import 'package:flutter_application/core/widgets/text_widget.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:flutter_application/features/auth/presentation/pages/login_screen.dart';
@@ -20,7 +19,6 @@ class RegisterScreen extends StatelessWidget {
   final nameController = TextEditingController();
   final lastNameController = TextEditingController();
 
-  // ValueNotifiers to manage the visibility of password fields and validation
   final ValueNotifier<bool> _isPasswordVisible = ValueNotifier(false);
   final ValueNotifier<bool> _isConfirmPasswordVisible = ValueNotifier(false);
   final ValueNotifier<bool> _isPasswordMismatch = ValueNotifier(false);
@@ -40,11 +38,17 @@ class RegisterScreen extends StatelessWidget {
                 ),
               );
             }
+            // if (state.status == Status.error) {
+            //   showDialog(
+            //     context: context,
+            //     builder: (context) => const AlertDialog(
+            //       title: Text('Error when register'),
+            //       content: Text('Error when register, this email exist'),
+            //     ),
+            //   );
+            // }
           },
           builder: (context, state) {
-            if (state.status == Status.error) {
-              return const CustomErrorWidget();
-            }
             if (state.status == Status.loading) {
               return _buildLoadingState();
             }
@@ -151,15 +155,6 @@ class RegisterScreen extends StatelessWidget {
                               },
                             );
                           },
-                        ),
-                        SizedBox(
-                          height: 12,
-                        ),
-                        TextWidget(
-                          labelText: 'Phone',
-                          controller: phoneController,
-                          keyboardType: TextInputType.phone,
-                          maxLength: 10,
                         ),
                         const Spacer(),
                         ButtonWidget(

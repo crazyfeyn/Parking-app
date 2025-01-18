@@ -1482,6 +1482,8 @@ abstract class _initial implements AuthEvent {
 /// @nodoc
 mixin _$AuthState {
   Status get status => throw _privateConstructorUsedError;
+  Status2 get status2 => throw _privateConstructorUsedError;
+  Status3 get status3 => throw _privateConstructorUsedError;
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
@@ -1495,7 +1497,7 @@ abstract class $AuthStateCopyWith<$Res> {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) then) =
       _$AuthStateCopyWithImpl<$Res, AuthState>;
   @useResult
-  $Res call({Status status});
+  $Res call({Status status, Status2 status2, Status3 status3});
 }
 
 /// @nodoc
@@ -1514,12 +1516,22 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
   @override
   $Res call({
     Object? status = null,
+    Object? status2 = null,
+    Object? status3 = null,
   }) {
     return _then(_value.copyWith(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as Status,
+      status2: null == status2
+          ? _value.status2
+          : status2 // ignore: cast_nullable_to_non_nullable
+              as Status2,
+      status3: null == status3
+          ? _value.status3
+          : status3 // ignore: cast_nullable_to_non_nullable
+              as Status3,
     ) as $Val);
   }
 }
@@ -1532,7 +1544,7 @@ abstract class _$$AuthStateImplCopyWith<$Res>
       __$$AuthStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Status status});
+  $Res call({Status status, Status2 status2, Status3 status3});
 }
 
 /// @nodoc
@@ -1549,12 +1561,22 @@ class __$$AuthStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? status = null,
+    Object? status2 = null,
+    Object? status3 = null,
   }) {
     return _then(_$AuthStateImpl(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as Status,
+      status2: null == status2
+          ? _value.status2
+          : status2 // ignore: cast_nullable_to_non_nullable
+              as Status2,
+      status3: null == status3
+          ? _value.status3
+          : status3 // ignore: cast_nullable_to_non_nullable
+              as Status3,
     ));
   }
 }
@@ -1562,15 +1584,24 @@ class __$$AuthStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AuthStateImpl implements _AuthState {
-  _$AuthStateImpl({this.status = Status.initial});
+  _$AuthStateImpl(
+      {this.status = Status.initial,
+      this.status2 = Status2.initial,
+      this.status3 = Status3.initial});
 
   @override
   @JsonKey()
   final Status status;
+  @override
+  @JsonKey()
+  final Status2 status2;
+  @override
+  @JsonKey()
+  final Status3 status3;
 
   @override
   String toString() {
-    return 'AuthState(status: $status)';
+    return 'AuthState(status: $status, status2: $status2, status3: $status3)';
   }
 
   @override
@@ -1578,11 +1609,13 @@ class _$AuthStateImpl implements _AuthState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AuthStateImpl &&
-            (identical(other.status, status) || other.status == status));
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.status2, status2) || other.status2 == status2) &&
+            (identical(other.status3, status3) || other.status3 == status3));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status);
+  int get hashCode => Object.hash(runtimeType, status, status2, status3);
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
@@ -1594,10 +1627,17 @@ class _$AuthStateImpl implements _AuthState {
 }
 
 abstract class _AuthState implements AuthState {
-  factory _AuthState({final Status status}) = _$AuthStateImpl;
+  factory _AuthState(
+      {final Status status,
+      final Status2 status2,
+      final Status3 status3}) = _$AuthStateImpl;
 
   @override
   Status get status;
+  @override
+  Status2 get status2;
+  @override
+  Status3 get status3;
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.

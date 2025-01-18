@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
@@ -77,13 +78,14 @@ class AuthDatasources {
   }
 
   Future<void> resetPass(String email) async {
-    print(email);
+    log(email);
     final recponce = await dio.post(
-      '${AppConstants.baseseconUrl}users/reset-password/',
+      'https://parkmytrucks.com/api/users/reset-password/',
       data: {
         "email": email,
       },
     );
+    log('hellloooooo');
     print(recponce);
     if (recponce.statusCode == 200) {
       return;

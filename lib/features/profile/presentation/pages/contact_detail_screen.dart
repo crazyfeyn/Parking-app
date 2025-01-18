@@ -47,7 +47,6 @@ class ContactDetailScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          // Wrap in Expanded to prevent overflow
                           child: InfoTextWidget(
                             title: profileEntity.last_name.isEmpty
                                 ? "USER"
@@ -69,22 +68,13 @@ class ContactDetailScreen extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    InfoTextWidget(
-                      title: profileEntity.email,
-                      subTitle: 'Email adress',
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     Row(
                       children: [
-                        const Expanded(
-                          child: InfoTextWidget(
-                            title: 'Phone number',
-                            subTitle: 'ADD QILISH KERE API YODEEE',
-                          ),
+                        InfoTextWidget(
+                          title: profileEntity.email,
+                          subTitle: 'Email adress',
                         ),
-                        const SizedBox(width: 12),
+                        const Spacer(),
                         ZoomTapAnimation(
                           onTap: () {
                             Navigator.push(
@@ -107,7 +97,10 @@ class ContactDetailScreen extends StatelessWidget {
                           ),
                         ),
                       ],
-                    )
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
                   ],
                 ),
               ),

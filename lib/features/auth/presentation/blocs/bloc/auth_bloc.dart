@@ -11,7 +11,6 @@ import 'package:flutter_application/features/auth/domain/usecases/login_user_use
 import 'package:flutter_application/features/auth/domain/usecases/refresh_user_token_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/register_user_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/reset_pass_user_usecase.dart';
-
 part 'auth_bloc.freezed.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -83,26 +82,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _logIn(_log event, Emitter<AuthState> emit) async {
-    emit(state.copyWith(status: Status.loading));
-    final recponce = await loginUserUsecase(
-        LoginParams(email: event.email, password: event.password));
-    recponce.fold((error) {
+  emit(state.copyWith(status: Status.loading));
+  final response = await loginUserUsecase(
+    LoginParams(email: event.email, password: event.password),
+  );
 
-      if (error is NetworkFailure) {
-        emit(
-          state.copyWith(status: Status.errorNetwork),
-        );
-      } else {
-        emit(
-          state.copyWith(status: Status.error),
-        );
-      }
-    }, (data) {
-      emit(
-        state.copyWith(status: Status.success),
-      );
-    });
-  }
+  response.fold((error) {
+    emit(
+      state.copyWith(status: error is NetworkFailure ? Status.errorNetwork : Status.error),
+    );
+  }, (data) {
+    emit(state.copyWith(status: Status.success));
+  });
+
+  // Сбрасываем состояние после успеха/ошибки
+  emit(state.copyWith(status: Status.initial));
+}
 
   Future<void> _register(_reg event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: Status.loading));
@@ -130,22 +125,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _reset(_resetPass event, Emitter<AuthState> emit) async {
-    emit(state.copyWith(status: Status.loading));
+    emit(state.copyWith(status2: Status2.loading));
 
     final recponce = await resetPassUserUsecase(event.email);
     recponce.fold((error) {
       if (error is NetworkFailure) {
         emit(
-          state.copyWith(status: Status.errorNetwork),
+          state.copyWith(status2: Status2.errorNetwork),
         );
       } else {
         emit(
-          state.copyWith(status: Status.error),
+          state.copyWith(status2: Status2.error),
         );
       }
     }, (data) {
       emit(
-        state.copyWith(status: Status.success),
+        state.copyWith(status2: Status2.success),
       );
     });
   }

@@ -76,7 +76,7 @@ Future<void> init() async {
       () => LocalAuthDatasources(localConfig: sl<LocalConfig>()));
 
   sl.registerLazySingleton<AuthDatasources>(() => AuthDatasources(
-        dio: sl<Dio>(),
+        dio: Dio(),
         localAuthDatasources: sl<LocalAuthDatasources>(),
       ));
 

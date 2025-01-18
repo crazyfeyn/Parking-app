@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
-import 'package:flutter_application/core/widgets/back_button_widget.dart';
+import 'package:flutter_application/core/widgets/back_button_circle_widget.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
 import 'package:flutter_application/core/widgets/text_widget.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
@@ -16,11 +16,14 @@ class ForgetPasswordScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           leadingWidth: 70,
-          leading: const BackButtonWidget(),
+          leading: const BackButtonCircleWidget(),
           title: const Text("Forget password"),
         ),
         body: BlocConsumer<AuthBloc, AuthState>(
           builder: (context, state) {
+            if (state.status2 == Status2.loading) {
+              return _buildLoadingState();
+            }
             return Padding(
               padding: const EdgeInsets.all(AppDimens.PADDING_20),
               child: Column(
@@ -64,8 +67,7 @@ class ForgetPasswordScreen extends StatelessWidget {
             );
           },
           listener: (context, state) {
-            if (state.status == Status.error) {
-              // Show Snackbar
+            if (state.status2 == Status2.error) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('An unexpected error occurred.'),
@@ -75,8 +77,7 @@ class ForgetPasswordScreen extends StatelessWidget {
               );
             }
 
-            if (state.status == Status.success) {
-              // Show Dialog
+            if (state.status2 == Status2.success) {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -86,7 +87,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                     actions: [
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).pop(); // Close the dialog
+                          Navigator.of(context).pop();
                         },
                         child: const Text('OK'),
                       ),
@@ -97,5 +98,28 @@ class ForgetPasswordScreen extends StatelessWidget {
             }
           },
         ));
+  }
+
+  Widget _buildLoadingState() {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircularProgressIndicator(
+            color: Colors.red,
+            strokeWidth: 3,
+          ),
+          SizedBox(height: 20),
+          Text(
+            'Send link, please wait...',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -21,7 +21,7 @@ class BackButtonWidget extends StatelessWidget {
           color: Colors.grey.shade300,
         ),
         child: Image.asset(
-          'assets/icons/back.png',
+          'assets/icons/back_icon.png',
           width: 14,
         ),
       ),
