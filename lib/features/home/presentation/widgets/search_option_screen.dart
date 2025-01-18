@@ -4,7 +4,6 @@ import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/features/booking_space/presentation/pages/booking_space_screen.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
-import 'package:flutter_application/features/home/presentation/widgets/per_price_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -48,7 +47,7 @@ class SearchOptionScreen extends StatelessWidget {
                       )
                     : ListView.separated(
                         itemCount: locations.length,
-                        separatorBuilder: (context, index) => 8.hs(),
+                        separatorBuilder: (context, index) => 16.hs(),
                         itemBuilder: (context, index) {
                           final location = locations[index];
                           return ZoomTapAnimation(
@@ -67,38 +66,43 @@ class SearchOptionScreen extends StatelessWidget {
                               padding:
                                   const EdgeInsets.all(AppDimens.PADDING_16),
                               width: double.infinity,
-                              height: MediaQuery.of(context).size.height * 0.23,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
-                                    AppDimens.BORDER_RADIUS_16),
-                                color: Colors.grey.shade300,
+                                    AppDimens.BORDER_RADIUS_12),
+                                color: Colors.grey.shade200,
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    location.name,
-                                    style: TextStyle(
-                                      color: Colors.grey.shade700,
-                                    ),
-                                  ),
                                   Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Expanded(
-                                        flex: 5,
-                                        child: Text(
-                                          overflow: TextOverflow.ellipsis,
-                                          location.description,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w600),
-                                        ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Parking name:',
+                                            style: TextStyle(
+                                              fontSize: 11,
+                                              color: Colors.grey.shade700,
+                                            ),
+                                          ),
+                                          Text(
+                                            location.name,
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      const Spacer(),
-                                      const CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        radius: 16,
-                                        backgroundImage: AssetImage(
-                                            'assets/images/parking.png'),
+                                      Image.asset(
+                                        'assets/images/logo_1.png',
+                                        color: Colors.black,
+                                        height: 45,
+                                        width: 45,
                                       ),
                                     ],
                                   ),
@@ -107,22 +111,26 @@ class SearchOptionScreen extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Expanded(
+                                      SizedBox(
+                                        width: 115,
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              location.phNumber,
+                                              'Available spaces: ${location.availableSpots ?? 0}',
                                               style: TextStyle(
-                                                  color: Colors.grey.shade700),
+                                                fontSize: 10,
+                                                color: Colors.grey.shade700,
+                                              ),
                                             ),
-                                            8.hs(),
-                                            const Text(
-                                              '18 spaces are available now',
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ),
+                                            Text(
+                                              '${location.availableSpots} spaces are available now',
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            )
                                           ],
                                         ),
                                       ),
@@ -131,28 +139,33 @@ class SearchOptionScreen extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Available spaces',
+                                            'Free parking for all types of vehicles:',
                                             style: TextStyle(
-                                                color: Colors.grey.shade700),
+                                              fontSize: 10,
+                                              color: Colors.grey.shade700,
+                                            ),
                                           ),
                                           Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
                                             children: [
-                                              const PerPriceWidget(
-                                                  price: '20', per: 'day'),
-                                              10.ws(),
-                                              const PerPriceWidget(
-                                                  price: '120', per: 'week'),
-                                              10.ws(),
-                                              const PerPriceWidget(
-                                                  price: '250', per: 'monthly'),
+                                              _buildRateWidget(
+                                                  location.dailyRate.toString(),
+                                                  'Per day'),
+                                              17.ws(),
+                                              _buildRateWidget(
+                                                  location.weeklyRate
+                                                      .toString(),
+                                                  'Per week'),
+                                              17.ws(),
+                                              _buildRateWidget(
+                                                  location.monthlyRate
+                                                      .toString(),
+                                                  'Monthly'),
                                             ],
-                                          )
+                                          ),
                                         ],
                                       )
                                     ],
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
@@ -163,6 +176,27 @@ class SearchOptionScreen extends StatelessWidget {
           return Container();
         },
       ),
+    );
+  }
+
+  Widget _buildRateWidget(String price, String period) {
+    return Column(
+      children: [
+        Text(
+          price,
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          period,
+          style: TextStyle(
+            fontSize: 10,
+            color: Colors.grey.shade700,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_application/core/config/local_config.dart';
 import 'package:flutter_application/core/constants/stripe_constants.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 class StripeService {
-  StripeService(this.dio);
+  StripeService({required this.dio, required this.localConfig});
 
   final Dio dio;
+  final LocalConfig localConfig;
 
   /// Makes a payment using Stripe's payment sheet.
   Future<void> makePayment() async {

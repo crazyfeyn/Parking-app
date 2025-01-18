@@ -16,7 +16,7 @@ class SearchWidget extends StatelessWidget {
         ),
       ),
       builder: (context) {
-        return SearchOptionScreen();
+        return const SearchOptionScreen();
       },
     );
   }

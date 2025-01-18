@@ -1,3 +1,4 @@
+import 'package:flutter_application/core/config/stripe_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_application/core/config/dio_config.dart';
@@ -204,7 +205,10 @@ Future<void> init() async {
         profileLocalDataSources: sl<ProfileLocalDataSources>()),
   );
   sl.registerFactory(
-      () => ProfileLocalDataSources(localConfig: sl<LocalConfig>()));
+    () => ProfileLocalDataSources(
+      localConfig: sl<LocalConfig>(),
+    ),
+  );
 
   // Use Cases
   sl.registerLazySingleton<AddPaymentMethodUsecase>(
@@ -272,5 +276,13 @@ Future<void> init() async {
   //? Booking Provider
   sl.registerFactoryParam<BookingProvider, LocationModel, void>(
     (locationModel, _) => BookingProvider(locationModel: locationModel),
+  );
+
+  // Register StripeService
+  sl.registerLazySingleton<StripeService>(
+    () => StripeService(
+      dio: sl<Dio>(), // Pass any required dependencies
+      localConfig: sl<LocalConfig>(), // Example dependency
+    ),
   );
 }
