@@ -44,6 +44,8 @@ import 'package:flutter_application/features/profile/domain/usecases/update_prof
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
 
