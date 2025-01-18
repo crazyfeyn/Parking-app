@@ -40,10 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          // Show loading only during initial map load
           if (state.status == Status.initial) {
             return const Center(child: CircularProgressIndicator());
-
           }
 
           if (state.status == Status.error) {
@@ -54,7 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           }
 
-          // Show map as soon as possible, markers will be updated automatically
           return _buildGoogleMap(state);
         },
       ),

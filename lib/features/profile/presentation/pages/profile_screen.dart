@@ -26,11 +26,9 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  Future<void> _refreshData() async {
-    context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
-    await context.read<ProfileBloc>().stream.firstWhere(
-          (state) => state.status != Status.loading,
-        );
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -84,40 +82,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ? const Center(
                     child: Text('CAME NULL'),
                   )
-                : RefreshIndicator(
-                    onRefresh: _refreshData,
-                    child: SafeArea(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SingleChildScrollView(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ProfilePinned(profile: profile),
-                              Container(
-                                padding:
-                                    const EdgeInsets.all(AppDimens.PADDING_16),
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      AppDimens.BORDER_RADIUS_30),
-                                  color: Colors.white,
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    _profileButtons(
-                                      'phone',
-                                      'Contact details',
-                                      () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ContactDetailScreen(
-                                              profileEntity: profile,
-                                            ),
+                : SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ProfilePinned(profile: profile),
+                            Container(
+                              padding:
+                                  const EdgeInsets.all(AppDimens.PADDING_16),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    AppDimens.BORDER_RADIUS_30),
+                                color: Colors.white,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  _profileButtons(
+                                    'phone',
+                                    'Contact details',
+                                    () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ContactDetailScreen(
+                                            profileEntity: profile,
                                           ),
                                         ),
                                       );
@@ -174,82 +168,81 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           builder: (context) =>
                                               const VehiclesScreen(),
                                         ),
-
-                                    _profileButtons(
-                                      'vehicle',
-                                      'CUSTOM CHANGE PASSWORD',
-                                      () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ResetPasswordScreen(),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              8.hs(),
-                              BlocConsumer<AuthBloc, AuthState>(
-                                listener: (context, state) {
-                                  if (state.status == Status.success) {
-                                    Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LoginScreen(),
-                                      ),
-                                      (route) => false,
-                                    );
-                                  } else if (state.status == Status.error) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text('An error occurred!')),
-                                    );
-                                  }
-                                },
-                                builder: (context, state) {
-                                  if (state.status == Status.error) {
-                                    return const CustomErrorWidget();
-                                  }
-                                  if (state.status == Status.loading) {
-                                    return const CustomLoader();
-                                  }
-                                  return GestureDetector(
-                                    onTap: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) =>
-                                            const LeaveWidget(),
                                       );
                                     },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 8),
-                                      width: double.infinity,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            AppDimens.BORDER_RADIUS_30),
-                                        color: Colors.white,
-                                      ),
-                                      child: ListTile(
-                                        contentPadding: EdgeInsets.zero,
-                                        leading: Image.asset(
-                                          'assets/icons/log_icon.png',
-                                          color: AppConstants.mainColor,
-                                          height: 20,
+                                  ),
+                                  _profileButtons(
+                                    'vehicle',
+                                    'CUSTOM CHANGE PASSWORD',
+                                    () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ResetPasswordScreen(),
                                         ),
-                                        title: const Text('Log out'),
-                                      ),
-                                    ),
-                                  );
-                                },
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                            8.hs(),
+                            BlocConsumer<AuthBloc, AuthState>(
+                              listener: (context, state) {
+                                if (state.status == Status.success) {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const LoginScreen(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                } else if (state.status == Status.error) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('An error occurred!')),
+                                  );
+                                }
+                              },
+                              builder: (context, state) {
+                                if (state.status == Status.error) {
+                                  return const CustomErrorWidget();
+                                }
+                                if (state.status == Status.loading) {
+                                  return const CustomLoader();
+                                }
+                                return GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => const LeaveWidget(),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 8),
+                                    width: double.infinity,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          AppDimens.BORDER_RADIUS_30),
+                                      color: Colors.white,
+                                    ),
+                                    child: ListTile(
+                                      contentPadding: EdgeInsets.zero,
+                                      leading: Image.asset(
+                                        'assets/icons/log_icon.png',
+                                        color: AppConstants.mainColor,
+                                        height: 20,
+                                      ),
+                                      title: const Text('Log out'),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ),
