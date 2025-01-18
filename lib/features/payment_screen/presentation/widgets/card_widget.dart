@@ -4,12 +4,10 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class CardWidget extends StatelessWidget {
   final String cardNumber;
-  final String cardHolderName;
 
   const CardWidget({
     super.key,
     required this.cardNumber,
-    required this.cardHolderName,
   });
 
   @override
@@ -48,13 +46,6 @@ class CardWidget extends StatelessWidget {
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 20,
-                  ),
-                ),
-                Text(
-                  cardHolderName,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
                   ),
                 ),
               ],

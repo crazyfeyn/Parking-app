@@ -14,6 +14,7 @@ import 'server_locator.dart' as di;
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = StripeConstants.stripePublishableKey;
   await di.init();
   await _setup();
   runApp(

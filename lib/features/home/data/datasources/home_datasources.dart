@@ -14,18 +14,23 @@ class HomeDatasources {
   });
   Future<LocationData> getCurrentLocation() async {
     final Location location = Location();
+
     try {
       final isServiceEnabled = await location.serviceEnabled();
+
       if (!isServiceEnabled) {
         final serviceRequested = await location.requestService();
+
         if (!serviceRequested) {
           throw LocationException();
         }
       }
 
       final permissionStatus = await location.hasPermission();
+
       if (permissionStatus == PermissionStatus.denied) {
         final permissionRequested = await location.requestPermission();
+
         if (permissionRequested != PermissionStatus.granted) {
           throw Exception('Location permissions are denied.');
         }
@@ -34,6 +39,7 @@ class HomeDatasources {
       }
 
       final currentLocation = await location.getLocation();
+
       if (currentLocation.latitude == null ||
           currentLocation.longitude == null) {
         throw Exception('Failed to retrieve location.');
@@ -495,10 +501,11 @@ class HomeDatasources {
     final response = await dio.get('/payments/list-payment-methods/');
     if (response.statusCode == 200) {
       List data = response.data['result'];
+      print('--------');
+      print(response);
       return data.map((json) => ListPaymentMethods.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load payment methods');
     }
   }
-
 }

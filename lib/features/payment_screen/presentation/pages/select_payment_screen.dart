@@ -74,9 +74,8 @@ class SelectPaymentScreen extends StatelessWidget {
                     ),
                     for (final method in paymentMethods)
                       CardWidget(
-                        cardNumber: method.card,
-                        cardHolderName:
-                            'Keneyshka Jessika', // Replace with actual data
+                        cardNumber: method
+                            .card.last4, // Access the last4 property directly
                       ),
                   ],
                 ),

@@ -21,83 +21,74 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   GoogleMapController? mapController;
-  LatLng? currentLocation;
-  bool isDataFetched = false;
 
   @override
   void initState() {
     super.initState();
-    context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
-    if (!isDataFetched) {
-      _fetchData();
-    }
+    _initializeData();
   }
 
-  void _fetchData() {
+  void _initializeData() {
+    // Fetch all required data at once
+    context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
     context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
     context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
-    isDataFetched = true;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<HomeBloc, HomeState>(
-        listener: (context, state) {
-          if (state.currentLocation != null) {
-            setState(() {
-              currentLocation = state.currentLocation;
-            });
-          }
-        },
+      body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          switch (state.status) {
-            case Status.loading:
-              return const Center(child: CircularProgressIndicator());
-            case Status.success:
-              return _buildGoogleMap(state.locations);
-            case Status.error:
-              return Center(
-                child: ErrorRefreshWidget(
-                  onRefresh: () {
-                    _fetchData();
-                  },
-                ),
-              );
-            case Status.initial:
-              return const Center(child: Text('Getting started...'));
+          // Show loading only during initial map load
+          if (state.status == Status.initial) {
+            return const Center(child: CircularProgressIndicator());
           }
+
+          if (state.status == Status.error) {
+            return Center(
+              child: ErrorRefreshWidget(
+                onRefresh: _initializeData,
+              ),
+            );
+          }
+
+          // Show map as soon as possible, markers will be updated automatically
+          return _buildGoogleMap(state);
         },
       ),
     );
   }
 
-  Widget _buildGoogleMap(List<LocationModel>? locations) {
-    final location = currentLocation ?? const LatLng(33.592806, -84.388716);
+  Widget _buildGoogleMap(HomeState state) {
+    final location =
+        state.currentLocation ?? const LatLng(33.592806, -84.388716);
 
     Set<Marker> markers = {
-      if (currentLocation != null)
+      if (state.currentLocation != null)
         Marker(
           markerId: const MarkerId('currentLocation'),
-          position: location,
+          position: state.currentLocation!,
           infoWindow: const InfoWindow(title: 'Current Location'),
         ),
-      if (locations != null)
-        for (var loc in locations)
-          if (loc.latitude != null && loc.longitude != null)
-            Marker(
-              markerId: MarkerId(loc.id.toString()),
-              position: LatLng(loc.latitude!, loc.longitude!),
-              infoWindow: InfoWindow(title: loc.name),
-              onTap: () async {
-                mapController?.animateCamera(
-                  CameraUpdate.newLatLngZoom(
-                    LatLng(loc.latitude!, loc.longitude!),
-                    15.0,
-                  ),
-                );
-                showLocationDetails(context, loc);
-              },
+      if (state.locations != null)
+        ...state.locations!
+            .where((loc) => loc.latitude != null && loc.longitude != null)
+            .map(
+              (loc) => Marker(
+                markerId: MarkerId(loc.id.toString()),
+                position: LatLng(loc.latitude!, loc.longitude!),
+                infoWindow: InfoWindow(title: loc.name),
+                onTap: () {
+                  mapController?.animateCamera(
+                    CameraUpdate.newLatLngZoom(
+                      LatLng(loc.latitude!, loc.longitude!),
+                      15.0,
+                    ),
+                  );
+                  showLocationDetails(context, loc);
+                },
+              ),
             ),
     };
 
@@ -134,16 +125,14 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               ButtonForMapWidget(
-                onTap: () {
-                  mapController?.animateCamera(CameraUpdate.zoomIn());
-                },
+                onTap: () =>
+                    mapController?.animateCamera(CameraUpdate.zoomIn()),
                 child: const Icon(Icons.add, size: 30),
               ),
               10.hs(),
               ButtonForMapWidget(
-                onTap: () {
-                  mapController?.animateCamera(CameraUpdate.zoomOut());
-                },
+                onTap: () =>
+                    mapController?.animateCamera(CameraUpdate.zoomOut()),
                 child: const Icon(Icons.remove),
               ),
             ],
@@ -153,25 +142,13 @@ class _HomeScreenState extends State<HomeScreen> {
           left: 10,
           bottom: 15,
           child: ButtonForMapWidget(
-            onTap: () {
-              context
-                  .read<HomeBloc>()
-                  .add(const HomeEvent.getCurrentLocation());
-            },
+            onTap: () => context
+                .read<HomeBloc>()
+                .add(const HomeEvent.getCurrentLocation()),
             child: const Icon(Icons.location_on),
           ),
         ),
       ],
     );
   }
-
-  // void showLocationDetails(BuildContext context, LocationModel location) {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     isScrollControlled: true,
-  //     builder: (context) {
-  //       return BookingModalBottomWidget(locationModel: location);
-  //     },
-  //   );
-  // }
 }
