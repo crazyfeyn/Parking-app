@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:bloc/bloc.dart';
+import 'package:flutter_application/core/error/failure.dart';
 import 'package:flutter_application/features/auth/domain/usecases/change_password_usecase.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -44,12 +45,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _change(_changePass event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: Status.loading));
-    final recponce = await changePasswordUsecase(ChangePassParams(oldPass: event.oldPass, newPass: event.newPass)
-        );
+    final recponce = await changePasswordUsecase(
+        ChangePassParams(oldPass: event.oldPass, newPass: event.newPass));
     recponce.fold((error) {
-      emit(
-        state.copyWith(status: Status.error),
-      );
+      if (error is NetworkFailure) {
+        emit(
+          state.copyWith(status: Status.errorNetwork),
+        );
+      } else {
+        emit(
+          state.copyWith(status: Status.error),
+        );
+      }
     }, (data) {
       emit(
         state.copyWith(status: Status.success),
@@ -80,9 +87,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final recponce = await loginUserUsecase(
         LoginParams(email: event.email, password: event.password));
     recponce.fold((error) {
-      emit(
-        state.copyWith(status: Status.error),
-      );
+
+      if (error is NetworkFailure) {
+        emit(
+          state.copyWith(status: Status.errorNetwork),
+        );
+      } else {
+        emit(
+          state.copyWith(status: Status.error),
+        );
+      }
     }, (data) {
       emit(
         state.copyWith(status: Status.success),
@@ -93,12 +107,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _register(_reg event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: Status.loading));
 
-    final recponce = await registerUserUsecase(
-        RegisterParams(email: event.email, password: event.password,name: event.name,surname: event.surname));
+    final recponce = await registerUserUsecase(RegisterParams(
+        email: event.email,
+        password: event.password,
+        name: event.name,
+        surname: event.surname));
     recponce.fold((error) {
-      emit(
-        state.copyWith(status: Status.error),
-      );
+      if (error is NetworkFailure) {
+        emit(
+          state.copyWith(status: Status.errorNetwork),
+        );
+      } else {
+        emit(
+          state.copyWith(status: Status.error),
+        );
+      }
     }, (data) {
       emit(
         state.copyWith(status: Status.success),
@@ -111,9 +134,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     final recponce = await resetPassUserUsecase(event.email);
     recponce.fold((error) {
-      emit(
-        state.copyWith(status: Status.error),
-      );
+      if (error is NetworkFailure) {
+        emit(
+          state.copyWith(status: Status.errorNetwork),
+        );
+      } else {
+        emit(
+          state.copyWith(status: Status.error),
+        );
+      }
     }, (data) {
       emit(
         state.copyWith(status: Status.success),

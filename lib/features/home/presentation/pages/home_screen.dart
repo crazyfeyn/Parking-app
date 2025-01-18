@@ -43,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // Show loading only during initial map load
           if (state.status == Status.initial) {
             return const Center(child: CircularProgressIndicator());
+
           }
 
           if (state.status == Status.error) {

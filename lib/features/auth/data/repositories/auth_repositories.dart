@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dartz/dartz.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import 'package:flutter_application/core/error/failure.dart';
 import 'package:flutter_application/features/auth/data/datasources/auth_datasources.dart';
@@ -7,8 +8,10 @@ import 'package:flutter_application/features/auth/domain/repositories/auth_repos
 
 class AuthRepositoriesImpl extends AuthRepositories {
   AuthDatasources authDatasources;
+  InternetConnectionChecker internetConnectionChecker;
   AuthRepositoriesImpl({
     required this.authDatasources,
+    required this.internetConnectionChecker,
   });
 
   @override
@@ -49,16 +52,19 @@ class AuthRepositoriesImpl extends AuthRepositories {
   }
 
   Future<Either<Failure, void>> _change(Future<void> Function() change) async {
-    try {
-      return Right(await change());
-    } catch (e) {
-      return Left(ServerFailure());
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        return Right(await change());
+      } catch (e) {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
     }
   }
 
   Future<Either<Failure, void>> _logOut(Future<void> Function() log) async {
     try {
-      print('REPOODAAOAOAAO');
       return Right(await log());
     } catch (e) {
       return Left(CacheFailure());
@@ -66,27 +72,39 @@ class AuthRepositoriesImpl extends AuthRepositories {
   }
 
   Future<Either<Failure, void>> _logIn(Future<void> Function() log) async {
-    try {
-      return Right(await log());
-    } catch (e) {
-      return Left(ServerFailure());
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        return Right(await log());
+      } catch (e) {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
     }
   }
 
   Future<Either<Failure, void>> _register(
       Future<void> Function() register) async {
-    try {
-      return Right(await register());
-    } catch (e) {
-      return Left(ServerFailure());
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        return Right(await register());
+      } catch (e) {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
     }
   }
 
   Future<Either<Failure, void>> _reset(Future<void> Function() reset) async {
-    try {
-      return Right(await reset());
-    } catch (e) {
-      return Left(ServerFailure());
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        return Right(await reset());
+      } catch (e) {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
     }
   }
 }

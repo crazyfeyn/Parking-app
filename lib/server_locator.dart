@@ -42,8 +42,8 @@ import 'package:flutter_application/features/profile/domain/usecases/generate_cl
 import 'package:flutter_application/features/profile/domain/usecases/get_profile_usecase.dart';
 import 'package:flutter_application/features/profile/domain/usecases/update_profile_usecase.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:location/location.dart';
+import 'package:get_it/get_it.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 final sl = GetIt.instance;
 
@@ -82,7 +82,9 @@ Future<void> init() async {
 
   // Repositories
   sl.registerLazySingleton<AuthRepositoriesImpl>(
-    () => AuthRepositoriesImpl(authDatasources: sl<AuthDatasources>()),
+    () => AuthRepositoriesImpl(
+        authDatasources: sl<AuthDatasources>(),
+        internetConnectionChecker: InternetConnectionChecker.createInstance()),
   );
 
   // Use Cases
