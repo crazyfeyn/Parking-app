@@ -44,6 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
           }
 
           if (state.status == Status.error) {
+            print('--------------');
+            print(state.errorMessage);
             return Center(
               child: ErrorRefreshWidget(
                 onRefresh: _initializeData,

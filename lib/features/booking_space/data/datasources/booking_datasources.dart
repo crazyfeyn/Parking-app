@@ -7,7 +7,9 @@ class BookingDatasources {
   BookingDatasources({required this.dio});
 
   Future<void> bookingFunc(BookingView booking) async {
+    print('00000');
     try {
+      print('111111');
       final response = await dio.post(
         '/bookings/create/',
         data: booking.toJson(),
