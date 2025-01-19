@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:workmanager/workmanager.dart';
-import 'package:flutter/material.dart';
 
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/auth/data/datasources/local_auth_datasources.dart';
@@ -58,7 +57,7 @@ class WorkManagerClass {
       "refreshTokenTask",
       "refreshToken",
       inputData: {'refreshToken': refreshToken},
-      frequency: const Duration(seconds: 15),
+      frequency: const Duration(minutes: 5),
     );
     log("Periodic task registered for token refresh.");
   }
