@@ -142,7 +142,6 @@ void showLocationDetails(BuildContext context, LocationModel location) {
                 ],
               ),
               const SizedBox(height: 16.0),
-              // Contact Details
               const Text(
                 "Contact:",
                 style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
@@ -151,7 +150,6 @@ void showLocationDetails(BuildContext context, LocationModel location) {
               Text("Phone: ${location.phNumber}"),
               Text("Email: ${location.email}"),
               const SizedBox(height: 16.0),
-              // Book Now Button
               ButtonWidget(
                 text: 'Book now',
                 bgColor: AppConstants.mainColor,

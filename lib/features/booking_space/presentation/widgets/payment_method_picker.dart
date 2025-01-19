@@ -39,7 +39,7 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
 
   Future<void> _handleCardPayment(BuildContext context) async {
     try {
-      await _stripeService.makePayment();
+      await _stripeService.addCard();
 
       // ScaffoldMessenger.of(context).showSnackBar(
       //   const SnackBar(content: Text('Payment method added successfully!')),

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/features/booking_space/data/datasources/booking_datasources.dart';
 import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
+import 'package:flutter_application/features/home/data/models/booking_view.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
-import 'package:flutter_application/features/booking_space/data/models/booking_model.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_application/server_locator.dart';
 
 class BookingProvider extends ChangeNotifier {
   DateTime? _selectedDate;
@@ -21,7 +23,10 @@ class BookingProvider extends ChangeNotifier {
   String? _plateNumber;
   int? user;
 
-  BookingProvider({required this.locationModel});
+  final BookingDatasources bookingDatasources;
+
+  BookingProvider({required this.locationModel})
+      : bookingDatasources = sl<BookingDatasources>();
 
   DateTime? get selectedDate => _selectedDate;
   String? get selectedBookingType => _selectedBookingType;
@@ -114,19 +119,57 @@ class BookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void handleBooking() {
+  Future<void> handleBooking() async {
     if (!isFormValid) return;
 
-    final booking = BookingModel(
-      locationId: locationModel.id,
-      startDate: _selectedDate!,
-      bookingType: _selectedBookingType!,
-      duration: _selectedDuration!,
-      vehicleType: _selectedVehicle!,
-      paymentMethod: _selectedPaymentMethod!,
-    );
+    try {
+      final booking = BookingView(
+        id: 0,
+        status: BookingStatus(id: 1, name: 'Pending'),
+        client: 'Client Name',
+        spot: locationModel.name,
+        vehicle: _selectedVehicle!,
+        duration: int.parse(_selectedDuration!),
+        weekly: _selectedBookingType == 'Weekly',
+        daily: _selectedBookingType == 'Daily',
+        monthly: _selectedBookingType == 'Monthly',
+        startDate: _selectedDate!.toIso8601String(),
+        endDate: _calculateEndDate(_selectedDate!, _selectedBookingType!,
+            int.parse(_selectedDuration!)),
+        createdAt: DateTime.now().toIso8601String(),
+        reservationNumber: null,
+        lastUpdated: DateTime.now().toIso8601String(),
+        extendedFor: null,
+      );
 
-    print('Booking data: ${booking.toMap()}');
+      await bookingDatasources.bookingFunc(booking);
+
+      print('Booking created successfully');
+    } catch (e) {
+      print('Error creating booking: $e');
+    }
+  }
+
+  String _calculateEndDate(
+      DateTime startDate, String bookingType, int duration) {
+    DateTime endDate;
+
+    switch (bookingType) {
+      case 'Daily':
+        endDate = startDate.add(Duration(days: duration));
+        break;
+      case 'Weekly':
+        endDate = startDate.add(Duration(days: duration * 7));
+        break;
+      case 'Monthly':
+        endDate =
+            DateTime(startDate.year, startDate.month + duration, startDate.day);
+        break;
+      default:
+        throw ArgumentError('Invalid booking type: $bookingType');
+    }
+
+    return endDate.toIso8601String();
   }
 
   void handleVehicleCreation(int userId) {
@@ -136,18 +179,26 @@ class BookingProvider extends ChangeNotifier {
     print('-----User ID: $user');
 
     final vehicle = VehicleModel(
-        type: _vehicleType!,
-        unitNumber: _unitNumber!,
-        year: _year!,
-        make: make!,
-        model: _model!,
-        plateNumber: _plateNumber!,
-        user: userId);
+      type: _vehicleType!,
+      unitNumber: _unitNumber!,
+      year: _year!,
+      make: make!,
+      model: _model!,
+      plateNumber: _plateNumber!,
+      user: userId,
+    );
 
     print('Vehicle data: ${vehicle.toJson()}');
   }
 
-  void clearForm() {}
+  void clearForm() {
+    _selectedDate = null;
+    _selectedBookingType = null;
+    _selectedDuration = null;
+    _selectedVehicle = null;
+    _selectedPaymentMethod = null;
+    notifyListeners();
+  }
 
   void fetchUserProfile(BuildContext context) {
     final profileBloc = context.read<ProfileBloc>();
