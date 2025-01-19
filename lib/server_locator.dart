@@ -1,5 +1,6 @@
 import 'package:flutter_application/core/config/stripe_service.dart';
 import 'package:flutter_application/features/booking_space/data/datasources/booking_datasources.dart';
+import 'package:flutter_application/core/config/work_manager.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_application/core/config/dio_config.dart';
@@ -81,6 +82,9 @@ Future<void> init() async {
         dio: Dio(),
         localAuthDatasources: sl<LocalAuthDatasources>(),
       ));
+
+  sl.registerCachedFactory(() =>
+      WorkManagerClass(dio: Dio(), localAuthDatasources: sl<LocalAuthDatasources>()));
 
   // Repositories
   sl.registerLazySingleton<AuthRepositoriesImpl>(
