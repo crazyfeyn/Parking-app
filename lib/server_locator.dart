@@ -1,3 +1,5 @@
+import 'package:flutter_application/core/config/stripe_service.dart';
+import 'package:flutter_application/features/booking_space/data/datasources/booking_datasources.dart';
 import 'package:flutter_application/core/config/work_manager.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
@@ -284,8 +286,14 @@ Future<void> init() async {
   // Register StripeService
   sl.registerLazySingleton<StripeService>(
     () => StripeService(
-      dio: sl<Dio>(), // Pass any required dependencies
-      localConfig: sl<LocalConfig>(), // Example dependency
+      dio: sl<Dio>(),
+      localConfig: sl<LocalConfig>(),
+    ),
+  );
+
+  sl.registerFactory(
+    () => BookingDatasources(
+      dio: sl<Dio>(),
     ),
   );
 }
