@@ -17,35 +17,41 @@ import 'package:workmanager/workmanager.dart';
 import 'server_locator.dart' as di;
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await _setup();
-  await di.init();
-  final localAuthDatasources = di.sl<LocalAuthDatasources>();
-  final workManagerClass = WorkManagerClass(
-    dio: Dio(),
-    localAuthDatasources: localAuthDatasources,
-  );
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  final refreshToken = await localAuthDatasources.getRefreshToken();
+    Stripe.publishableKey = StripeConstants.stripePublishableKey;
 
-  // Инициализация Workmanager
-  Workmanager()
-      .initialize(WorkManagerClass.callbackDispatcher, isInDebugMode: true);
+    await di.init();
 
-  // Регистрация фоновой задачи
-  if (refreshToken.isNotEmpty) {
-    await workManagerClass.registerPeriodicTask(refreshToken);
-  } else {
-    print("No refresh token found. Skipping background task registration.");
+    final localAuthDatasources = di.sl<LocalAuthDatasources>();
+    print('------');
+    final workManagerClass = WorkManagerClass(
+      dio: Dio(),
+      localAuthDatasources: localAuthDatasources,
+    );
+    print('11111');
+
+    // await Workmanager()
+    //     .initialize(WorkManagerClass.callbackDispatcher, isInDebugMode: true);
+
+    // Handle refresh token
+    final refreshToken = await localAuthDatasources.getRefreshToken();
+    if (refreshToken.isNotEmpty) {
+      await workManagerClass.registerPeriodicTask(refreshToken);
+    }
+  } catch (e) {
+    print('Initialization error: $e');
+    // Handle the error appropriately
   }
 
   runApp(const MyApp());
 }
 
-Future<void> _setup() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey = StripeConstants.stripePublishableKey;
-}
+// Future<void> _setup() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   Stripe.publishableKey = StripeConstants.stripePublishableKey;
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
