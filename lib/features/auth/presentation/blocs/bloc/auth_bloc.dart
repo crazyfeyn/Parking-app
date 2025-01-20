@@ -1,16 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:bloc/bloc.dart';
-import 'package:flutter_application/core/error/failure.dart';
-import 'package:flutter_application/features/auth/domain/usecases/change_password_usecase.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/core/error/failure.dart';
 import 'package:flutter_application/features/auth/domain/usecases/authicated_usecase.dart';
+import 'package:flutter_application/features/auth/domain/usecases/change_password_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/log_out_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/login_user_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/refresh_user_token_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/register_user_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/reset_pass_user_usecase.dart';
+import 'package:flutter_application/features/auth/domain/usecases/stop_refresh_usecase.dart';
+
 part 'auth_bloc.freezed.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -23,6 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthicatedUsecase authicatedUsecase;
   LogOutUsecase logOutUsecase;
   ChangePasswordUsecase changePasswordUsecase;
+  StopRefreshUsecase stopRefreshUsecase;
   AuthBloc(
     this.loginUserUsecase,
     this.refreshUserTokenUsecase,
@@ -31,6 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this.authicatedUsecase,
     this.logOutUsecase,
     this.changePasswordUsecase,
+    this.stopRefreshUsecase,
   ) : super(AuthState()) {
     on<_log>(_logIn);
     on<_logOut>(_logOu);
@@ -40,6 +44,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<_refreshToken>(_refresh);
     on<_authicated>(_auth);
     on<_changePass>(_change);
+    on<_stopToken>(_stop);
   }
 
   Future<void> _change(_changePass event, Emitter<AuthState> emit) async {
@@ -63,6 +68,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
   }
 
+  Future<void> _stop(_stopToken event, Emitter<AuthState> emit) async {
+    await stopRefreshUsecase.call();
+  }
+
   Future<void> _logOu(_logOut event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: Status.loading));
     final recponce = await logOutUsecase(null);
@@ -82,22 +91,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _logIn(_log event, Emitter<AuthState> emit) async {
-  emit(state.copyWith(status: Status.loading));
-  final response = await loginUserUsecase(
-    LoginParams(email: event.email, password: event.password),
-  );
-
-  response.fold((error) {
-    emit(
-      state.copyWith(status: error is NetworkFailure ? Status.errorNetwork : Status.error),
+    emit(state.copyWith(status: Status.loading));
+    final response = await loginUserUsecase(
+      LoginParams(email: event.email, password: event.password),
     );
-  }, (data) {
-    emit(state.copyWith(status: Status.success));
-  });
 
-  // Сбрасываем состояние после успеха/ошибки
-  emit(state.copyWith(status: Status.initial));
-}
+    response.fold((error) {
+      emit(
+        state.copyWith(
+            status:
+                error is NetworkFailure ? Status.errorNetwork : Status.error),
+      );
+    }, (data) {
+      emit(state.copyWith(status: Status.success));
+    });
+
+    // Сбрасываем состояние после успеха/ошибки
+    emit(state.copyWith(status: Status.initial));
+  }
 
   Future<void> _register(_reg event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: Status.loading));
