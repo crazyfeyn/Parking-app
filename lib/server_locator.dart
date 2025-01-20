@@ -1,5 +1,6 @@
 import 'package:flutter_application/core/config/stripe_service.dart';
 import 'package:flutter_application/features/auth/domain/usecases/stop_refresh_usecase.dart';
+import 'package:flutter_application/features/booking_space/data/datasources/booking_datasources.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_application/core/config/dio_config.dart';

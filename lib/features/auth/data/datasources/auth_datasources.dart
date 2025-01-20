@@ -109,7 +109,7 @@ class AuthDatasources {
     log('[startTokenAutoRefresh] Запуск таймера автообновления токена.');
 
     _tokenRefreshTimer = Timer.periodic(
-      const Duration(minutes: 5), // Обновление каждые 5 минут
+      const Duration(minutes: 4), // Обновление каждые 5 минут
       (timer) async {
         try {
           log('[startTokenAutoRefresh] Попытка обновления токена...');
