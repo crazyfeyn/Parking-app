@@ -18,11 +18,16 @@ import 'server_locator.dart' as di;
 
 void main() async {
   try {
+    print('-1-1-1-1-1-1');
     WidgetsFlutterBinding.ensureInitialized();
+    print('-2-2-2-2-2');
 
     Stripe.publishableKey = StripeConstants.stripePublishableKey;
-
+    Stripe.merchantIdentifier = 'any string works';
+    await Stripe.instance.applySettings();
+    print('-3--3-3-33-3--3-');
     await di.init();
+    print('-4-4-4-4-4-4');
 
     final localAuthDatasources = di.sl<LocalAuthDatasources>();
     print('------');
@@ -32,8 +37,8 @@ void main() async {
     );
     print('11111');
 
-    // await Workmanager()
-    //     .initialize(WorkManagerClass.callbackDispatcher, isInDebugMode: true);
+    await Workmanager()
+        .initialize(WorkManagerClass.callbackDispatcher, isInDebugMode: true);
 
     // Handle refresh token
     final refreshToken = await localAuthDatasources.getRefreshToken();

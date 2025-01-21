@@ -8,7 +8,6 @@ class StripeService {
   final Dio dio;
   final LocalConfig localConfig;
 
-  /// Adds a card using Stripe's SetupIntent.
   Future<void> addCard() async {
     try {
       // Step 1: Fetch the SetupIntent client secret
@@ -38,7 +37,7 @@ class StripeService {
     } catch (e) {
       print('Error during card addition: $e');
       _handleError(e);
-      rethrow; // Rethrow the error to propagate it to the caller
+      rethrow;
     }
   }
 
