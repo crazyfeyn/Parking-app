@@ -8,28 +8,24 @@ class StripeService {
   final Dio dio;
   final LocalConfig localConfig;
 
-  /// Adds a card using Stripe's SetupIntent.
   Future<void> addCard() async {
     try {
-      // Step 1: Fetch the SetupIntent client secret
       final clientSecret = await _fetchSetupIntentClientSecret();
 
       if (clientSecret != null) {
-        print('Initializing payment sheet with clientSecret: $clientSecret');
-
-        // Step 2: Initialize the payment sheet
         await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
-            setupIntentClientSecret: clientSecret,
-            merchantDisplayName: 'Parking App',
-          ),
+              setupIntentClientSecret: clientSecret,
+              merchantDisplayName: 'Parking App',
+              paymentIntentClientSecret: 'da',
+              customerId: 'sad',
+              customerEphemeralKeySecret: 'sad'),
         );
+
         print('Payment sheet initialized');
 
-        // Step 3: Present the payment sheet
         await presentPaymentSheet();
 
-        // Step 4: Handle successful card addition
         await _handleCardAdditionSuccess(clientSecret);
       } else {
         print('Failed to fetch SetupIntent client secret');
@@ -38,11 +34,10 @@ class StripeService {
     } catch (e) {
       print('Error during card addition: $e');
       _handleError(e);
-      rethrow; // Rethrow the error to propagate it to the caller
+      rethrow;
     }
   }
 
-  /// Fetches the SetupIntent client secret from the backend.
   Future<String?> _fetchSetupIntentClientSecret() async {
     try {
       final response = await dio.post(
@@ -50,8 +45,8 @@ class StripeService {
       );
 
       if (response.statusCode == 200) {
-        print('-----------');
-        print(response.data['client_secret']);
+        print('---------');
+        print(response.data);
         return response.data['client_secret'];
       } else {
         throw Exception(
@@ -68,7 +63,6 @@ class StripeService {
     }
   }
 
-  /// Presents the payment sheet to the user.
   Future<void> presentPaymentSheet() async {
     try {
       await Stripe.instance.presentPaymentSheet();
@@ -79,15 +73,12 @@ class StripeService {
     }
   }
 
-  /// Handles successful card addition.
   Future<void> _handleCardAdditionSuccess(String clientSecret) async {
     print('Card added successfully!');
 
-    // Step 5: Retrieve the payment method ID
     final paymentMethodId = await _retrievePaymentMethodId(clientSecret);
 
     if (paymentMethodId != null) {
-      // Step 6: Save the payment method to the server
       await _savePaymentMethodToServer(paymentMethodId);
     } else {
       print('No payment method ID returned');
@@ -95,7 +86,6 @@ class StripeService {
     }
   }
 
-  /// Retrieves the payment method ID from the SetupIntent.
   Future<String?> _retrievePaymentMethodId(String clientSecret) async {
     try {
       final setupIntent =
@@ -107,7 +97,6 @@ class StripeService {
     }
   }
 
-  /// Saves the payment method ID to the server.
   Future<void> _savePaymentMethodToServer(String paymentMethodId) async {
     try {
       final response = await dio.post(
@@ -131,9 +120,7 @@ class StripeService {
     }
   }
 
-  /// Handles errors during the card addition process.
   void _handleError(dynamic error) {
     print('Card addition failed: $error');
-    // You can add additional error handling logic here, such as showing a user-friendly message.
   }
 }
