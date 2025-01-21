@@ -25,10 +25,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _initializeData();
+    
   }
 
   void _initializeData() {
-    // Fetch all required data at once
     context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
     context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
     context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());

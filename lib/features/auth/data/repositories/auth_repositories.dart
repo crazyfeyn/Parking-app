@@ -51,6 +51,11 @@ class AuthRepositoriesImpl extends AuthRepositories {
     return _change(() => authDatasources.changePass(oldPass, newPass));
   }
 
+  @override
+  Future<void> stopToken() {
+    return authDatasources.stopTokenAutoRefresh();
+  }
+
   Future<Either<Failure, void>> _change(Future<void> Function() change) async {
     if (await internetConnectionChecker.hasConnection) {
       try {

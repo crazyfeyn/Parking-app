@@ -79,7 +79,7 @@ class AuthDatasources {
 
   Future<void> resetPass(String email) async {
     log(email);
-   
+
     final recponce = await dio.post(
       'https://parkmytrucks.com/api/users/reset-password/',
       data: {
@@ -100,54 +100,64 @@ class AuthDatasources {
   }
 
   Future<void> startTokenAutoRefresh() async {
-    print('hlelelleel');
+    // Проверяем, есть ли уже активный таймер, чтобы избежать дублирования
+    if (_tokenRefreshTimer != null) {
+      log('[startTokenAutoRefresh] Таймер уже запущен.');
+      return;
+    }
+
+    log('[startTokenAutoRefresh] Запуск таймера автообновления токена.');
+
     _tokenRefreshTimer = Timer.periodic(
-      const Duration(minutes: 5),
+      const Duration(minutes: 4), // Обновление каждые 5 минут
       (timer) async {
         try {
+          log('[startTokenAutoRefresh] Попытка обновления токена...');
           await _refreshToken();
+          log('[startTokenAutoRefresh] Токен успешно обновлен.');
         } catch (e) {
-          print("Ошибка обновления токена: $e");
+          log('[startTokenAutoRefresh] Ошибка при обновлении токена: $e');
+          stopTokenAutoRefresh(); // Остановка таймера при ошибке
         }
       },
     );
-    print('TOKEN REFRESHED');
   }
 
   Future<void> stopTokenAutoRefresh() async {
-    _tokenRefreshTimer?.cancel();
+    if (_tokenRefreshTimer != null) {
+      log('[stopTokenAutoRefresh] Остановка таймера автообновления токена.');
+      _tokenRefreshTimer?.cancel();
+      _tokenRefreshTimer = null;
+    } else {
+      log('[stopTokenAutoRefresh] Таймер уже остановлен.');
+    }
   }
 
   Future<void> _refreshToken() async {
     try {
-      print("[_refreshToken] Attempting to refresh token...");
+      log('[_refreshToken] Попытка обновить токен...');
       final token = await localAuthDatasources.getRefreshToken();
-      print("[_refreshToken] Current refresh token: $token");
 
       if (token.isEmpty) {
-        print(
-            "[_refreshToken] Refresh token is empty. Throwing CacheException.");
+        log('[_refreshToken] Refresh-токен отсутствует.');
         throw CacheException();
       }
 
       final response = await dio.post(
-        '${AppConstants.baseUrl}users/token/refresh',
+        '${AppConstants.baseseconUrl}users/token/refresh/',
         data: {'refresh': token},
       );
 
-      print("[_refreshToken] Server response: ${response.data}");
-
       if (response.statusCode == 200) {
-        await localAuthDatasources.saveToken(response.data['access']);
-        print(
-            "[_refreshToken] Token refreshed successfully. New token: ${response.data['access']}");
+        final newAccessToken = response.data['access'];
+        await localAuthDatasources.saveToken(newAccessToken);
+        log('[_refreshToken] Токен успешно обновлен: $newAccessToken');
       } else {
-        print(
-            "[_refreshToken] Failed to refresh token. Server responded with status code: ${response.statusCode}");
+        log('[_refreshToken] Ошибка сервера: ${response.statusCode}');
         throw ServerException();
       }
     } catch (e) {
-      print("[_refreshToken] Error during token refresh: $e");
+      log('[_refreshToken] Ошибка при обновлении токена: $e');
       rethrow;
     }
   }

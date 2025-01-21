@@ -1,6 +1,6 @@
 import 'package:flutter_application/core/config/stripe_service.dart';
+import 'package:flutter_application/features/auth/domain/usecases/stop_refresh_usecase.dart';
 import 'package:flutter_application/features/booking_space/data/datasources/booking_datasources.dart';
-import 'package:flutter_application/core/config/work_manager.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_application/core/config/dio_config.dart';
@@ -83,9 +83,6 @@ Future<void> init() async {
         localAuthDatasources: sl<LocalAuthDatasources>(),
       ));
 
-  sl.registerCachedFactory(() =>
-      WorkManagerClass(dio: Dio(), localAuthDatasources: sl<LocalAuthDatasources>()));
-
   // Repositories
   sl.registerLazySingleton<AuthRepositoriesImpl>(
     () => AuthRepositoriesImpl(
@@ -118,15 +115,17 @@ Future<void> init() async {
   // Bloc
   sl.registerFactory<AuthBloc>(
     () => AuthBloc(
-      sl<LoginUserUsecase>(),
-      sl<RefreshUserTokenUsecase>(),
-      sl<RegisterUserUsecase>(),
-      sl<ResetPassUserUsecase>(),
-      sl<AuthicatedUsecase>(),
-      sl<LogOutUsecase>(),
-      sl<ChangePasswordUsecase>(),
-    ),
+        sl<LoginUserUsecase>(),
+        sl<RefreshUserTokenUsecase>(),
+        sl<RegisterUserUsecase>(),
+        sl<ResetPassUserUsecase>(),
+        sl<AuthicatedUsecase>(),
+        sl<LogOutUsecase>(),
+        sl<ChangePasswordUsecase>(),
+        sl<StopRefreshUsecase>()),
   );
+  sl.registerCachedFactory(
+      () => StopRefreshUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
 
   //? Home Feature
   // Data Sources

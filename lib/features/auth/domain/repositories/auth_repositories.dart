@@ -7,6 +7,7 @@ abstract class AuthRepositories {
   Future<Either<Failure, void>> resetPass(String email);
   Future<Either<Failure, void>> changePass(String oldPass,String newPass);
   Future< void> refreshToken();
+  Future< void> stopToken();
   Future< bool> authoricated();
   Future<Either<Failure, void>> logOut();
 
