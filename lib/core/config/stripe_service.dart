@@ -15,11 +15,12 @@ class StripeService {
       if (clientSecret != null) {
         await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
-              setupIntentClientSecret: clientSecret,
-              merchantDisplayName: 'Parking App',
-              paymentIntentClientSecret: 'da',
-              customerId: 'sad',
-              customerEphemeralKeySecret: 'sad'),
+            setupIntentClientSecret: clientSecret,
+            merchantDisplayName: 'Parking App',
+            paymentIntentClientSecret: 'da',
+            customerId: 'sad',
+            customerEphemeralKeySecret: 'sad',
+          ),
         );
 
         print('Payment sheet initialized');
@@ -46,7 +47,7 @@ class StripeService {
 
       if (response.statusCode == 200) {
         print('---------');
-        print(response.data);
+        print(response);
         return response.data['client_secret'];
       } else {
         throw Exception(
