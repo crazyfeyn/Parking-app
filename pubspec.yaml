@@ -59,7 +59,6 @@ dependencies:
   google_maps_flutter: ^2.10.0
   internet_connection_checker: ^3.0.1
   workmanager: ^0.5.2
-  google_maps_flutter: ^2.10.0
   connectivity_plus: ^6.1.2
 
 dev_dependencies:
