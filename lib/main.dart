@@ -49,13 +49,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     final context = navigatorKey.currentContext;
     if (context != null) {
       final authBloc = context.read<AuthBloc>();
-      if (state == AppLifecycleState.resumed) {
+      if (state == AppLifecycleState.resumed ||
+          state == AppLifecycleState.inactive) {
         authBloc.add(const AuthEvent.refresh());
       } else if (state == AppLifecycleState.paused ||
           state == AppLifecycleState.detached) {
         authBloc.add(const AuthEvent.stop());
-      } else if (state == AppLifecycleState.inactive) {
-        authBloc.add(const AuthEvent.refresh());
       }
     }
   }
