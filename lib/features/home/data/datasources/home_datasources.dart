@@ -36,8 +36,11 @@ class HomeDatasources {
       final currentLocation = await location.getLocation();
       if (currentLocation.latitude == null ||
           currentLocation.longitude == null) {
+        print('111111');
         throw Exception('Failed to retrieve location.');
       }
+      print('----------');
+      print(currentLocation);
 
       return currentLocation;
     } catch (e) {

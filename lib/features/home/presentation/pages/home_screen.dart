@@ -25,10 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _initializeData();
-    
   }
 
-  void _initializeData() {
+  void _initializeData() async {
     context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
     context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
     context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
@@ -39,13 +38,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
+          print('Current HomeState: ${state.toString()}');
+          print('Current Location: ${state.currentLocation}');
+          print('Current Status: ${state.status}');
+
           if (state.status == Status.initial) {
             return const Center(child: CircularProgressIndicator());
           }
 
           if (state.status == Status.error) {
-            print('--------------');
-            print(state.errorMessage);
+            print('Error state: ${state.errorMessage}');
             return Center(
               child: ErrorRefreshWidget(
                 onRefresh: _initializeData,
@@ -94,6 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Stack(
       children: [
         GoogleMap(
+          key: const Key('map_key'),
           initialCameraPosition: CameraPosition(
             target: location,
             zoom: 5,
@@ -149,5 +152,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    mapController?.dispose();
+    super.dispose();
   }
 }

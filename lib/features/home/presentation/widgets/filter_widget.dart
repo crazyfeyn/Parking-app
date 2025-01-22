@@ -7,7 +7,6 @@ import 'package:flutter_application/core/widgets/button_widget.dart';
 import 'package:flutter_application/features/home/data/models/filter_model.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/home/presentation/widgets/city_picker.dart';
-import 'package:flutter_application/features/home/presentation/widgets/mile_slider_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/services_serction_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/state_picker.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -60,12 +59,6 @@ class FilterWidget extends StatelessWidget {
                                   },
                                 ),
                                 12.hs(),
-                                MileSliderWidget(
-                                  onChanged: (mile) {
-                                    setState(() => filterModel.miles = mile);
-                                  },
-                                ),
-                                8.hs(),
                                 ServicesSectionWidget(
                                   title: 'Allowed services',
                                   items: filterModel.allowedServices,

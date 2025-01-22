@@ -75,24 +75,37 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _getCurrentLocationFunc(
       _getCurrentLocation event, Emitter<HomeState> emit) async {
-    print('_getCurrentLocationFunc triggered');
     emit(state.copyWith(status: Status.loading));
 
     final response = await currentLocationUsecase.call(());
-    response.fold((error) {
-      emit(
-          state.copyWith(status: Status.error, errorMessage: error.toString()));
-    }, (locationData) {
-      if (locationData != null) {
-        final currentLocation =
-            LatLng(locationData.latitude, locationData.longitude);
+
+    response.fold(
+      (error) {
         emit(state.copyWith(
-            status: Status.success, currentLocation: currentLocation));
-      } else {
-        emit(state.copyWith(
-            status: Status.error, errorMessage: "Location data is null"));
-      }
-    });
+          status: Status.error,
+          errorMessage: error.toString(),
+          // Maintain previous location if there was an error
+          currentLocation: state.currentLocation,
+        ));
+      },
+      (locationData) {
+        if (locationData.latitude != null && locationData.longitude != null) {
+          final currentLocation =
+              LatLng(locationData.latitude!, locationData.longitude!);
+          emit(state.copyWith(
+            status: Status.success,
+            currentLocation: currentLocation,
+          ));
+        } else {
+          emit(state.copyWith(
+            status: Status.error,
+            errorMessage: "Location data is null",
+            // Maintain previous location if new one is invalid
+            currentLocation: state.currentLocation,
+          ));
+        }
+      },
+    );
   }
 
   Future<void> _getVehicleListFunc(
