@@ -4,7 +4,6 @@ import 'package:flutter_application/features/home/domain/usecases/filter_locatio
 class FilterModel {
   String? city;
   String? state;
-  double? miles;
   bool? truckAllowed;
   bool? trailerAllowed;
   bool? truckTrailerAllowed;
@@ -75,7 +74,6 @@ class FilterModel {
   FilterModel({
     this.city,
     this.state,
-    this.miles,
     this.truckAllowed,
     this.trailerAllowed,
     this.truckTrailerAllowed,
@@ -170,7 +168,6 @@ class FilterModel {
     return {
       if (city != null) 'city': city,
       if (state != null) 'state': state,
-      if (miles != null) 'miles': miles,
       if (truckAllowed != null) 'truck_allowed': truckAllowed,
       if (trailerAllowed != null) 'trailer_allowed': trailerAllowed,
       if (truckTrailerAllowed != null)
