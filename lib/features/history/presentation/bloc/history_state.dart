@@ -6,5 +6,6 @@ class HistoryState with _$HistoryState {
     @Default(Status.initial) Status status,
     @Default([]) List<BookingView> bookingList,
     @Default([]) List<BookingView> currentBookingList,
+    String? errorMessage,
   }) = _HistoryState;
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/booking_space/data/datasources/booking_datasources.dart';
 import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
-import 'package:flutter_application/features/home/data/models/booking_view.dart';
+import 'package:flutter_application/features/home/data/models/booking_model.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +13,7 @@ class BookingProvider extends ChangeNotifier {
   String? _selectedBookingType;
   String? _selectedDuration;
   String? _selectedVehicle;
-  String? _selectedPaymentMethod;
+  String? _selectedCard;
   final LocationModel locationModel;
   String? _vehicleType;
   String? _unitNumber;
@@ -22,6 +22,8 @@ class BookingProvider extends ChangeNotifier {
   String? _model;
   String? _plateNumber;
   int? user;
+  int? _paymentId;
+  int? _selectedVehicleId;
 
   final BookingDatasources bookingDatasources;
 
@@ -32,7 +34,7 @@ class BookingProvider extends ChangeNotifier {
   String? get selectedBookingType => _selectedBookingType;
   String? get selectedDuration => _selectedDuration;
   String? get selectedVehicleType => _selectedVehicle;
-  String? get selectedPaymentMethod => _selectedPaymentMethod;
+  String? get selectedPaymentMethod => _selectedCard;
 
   String? get vehicleType => _vehicleType;
   String? get unitNumber => _unitNumber;
@@ -40,14 +42,17 @@ class BookingProvider extends ChangeNotifier {
   String? get model => _model;
   String? get plateNumber => _plateNumber;
   int? get userId => user;
+  int? get paymentId => _paymentId;
+  int? get vehicleId => _selectedVehicleId;
 
   bool get isFormValid =>
       _selectedDate != null &&
       _selectedBookingType != null &&
-      _selectedDuration != '' &&
+      _selectedDuration != null &&
       _selectedVehicle != null &&
-      _selectedPaymentMethod != null &&
-      locationModel.availableSpots! > 0;
+      _selectedCard != null &&
+      locationModel.availableSpots! > 0 &&
+      paymentId != null;
 
   bool get isFormValidVehicle {
     return _vehicleType != null &&
@@ -74,13 +79,15 @@ class BookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setVehicle(String vehicle) {
+  void setVehicle(String vehicle, int? vehicleId) {
     _selectedVehicle = vehicle;
+    _selectedVehicleId = vehicleId;
     notifyListeners();
   }
 
-  void setPaymentMethod(String method) {
-    _selectedPaymentMethod = method;
+  void setPaymentMethod(String method, int paymentId) {
+    _selectedCard = method;
+    _paymentId = paymentId;
     notifyListeners();
   }
 
@@ -119,57 +126,34 @@ class BookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> handleBooking() async {
-    if (!isFormValid) return;
+  void setPaymentId(int paymentId) {
+    _paymentId = paymentId;
+    notifyListeners();
+  }
+
+  Future<Status?> handleBooking() async {
+    if (!isFormValid) return null;
 
     try {
-      final booking = BookingView(
-        id: 0,
-        status: BookingStatus(id: 1, name: 'Pending'),
-        client: 'Client Name',
-        spot: locationModel.name,
-        vehicle: _selectedVehicle!,
+      final booking = BookingModel(
+        vehicleId: _selectedVehicleId!,
         duration: int.parse(_selectedDuration!),
         weekly: _selectedBookingType == 'Weekly',
         daily: _selectedBookingType == 'Daily',
         monthly: _selectedBookingType == 'Monthly',
         startDate: _selectedDate!.toIso8601String(),
-        endDate: _calculateEndDate(_selectedDate!, _selectedBookingType!,
-            int.parse(_selectedDuration!)),
-        createdAt: DateTime.now().toIso8601String(),
-        reservationNumber: null,
-        lastUpdated: DateTime.now().toIso8601String(),
-        extendedFor: null,
+        paymentMethodId: _paymentId!,
+        locationId: locationModel.id,
       );
 
-      await bookingDatasources.bookingFunc(booking);
+      final response = await bookingDatasources.bookingFunc(booking);
+      return response;
 
       print('Booking created successfully');
     } catch (e) {
       print('Error creating booking: $e');
     }
-  }
-
-  String _calculateEndDate(
-      DateTime startDate, String bookingType, int duration) {
-    DateTime endDate;
-
-    switch (bookingType) {
-      case 'Daily':
-        endDate = startDate.add(Duration(days: duration));
-        break;
-      case 'Weekly':
-        endDate = startDate.add(Duration(days: duration * 7));
-        break;
-      case 'Monthly':
-        endDate =
-            DateTime(startDate.year, startDate.month + duration, startDate.day);
-        break;
-      default:
-        throw ArgumentError('Invalid booking type: $bookingType');
-    }
-
-    return endDate.toIso8601String();
+    return null;
   }
 
   void handleVehicleCreation(int userId) {
@@ -196,7 +180,7 @@ class BookingProvider extends ChangeNotifier {
     _selectedBookingType = null;
     _selectedDuration = null;
     _selectedVehicle = null;
-    _selectedPaymentMethod = null;
+    _selectedCard = null;
     notifyListeners();
   }
 

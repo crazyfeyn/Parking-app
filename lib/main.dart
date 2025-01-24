@@ -25,6 +25,7 @@ void main() async {
 
 Future<void> _setup() async {
   Stripe.publishableKey = StripeConstants.stripePublishableKey;
+  await Stripe.instance.applySettings();
 }
 
 class MyApp extends StatefulWidget {

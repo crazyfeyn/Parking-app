@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
+import 'package:flutter_application/features/history/presentation/widgets/error_refresh_widget.dart';
+import 'package:flutter_application/features/history/presentation/widgets/success_refresh_widget.dart';
+import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
@@ -97,7 +100,40 @@ class BookingButton extends StatelessWidget {
     final provider = context.watch<BookingProvider>();
 
     return ZoomTapAnimation(
-      onTap: provider.isFormValid ? () => provider.handleBooking() : null,
+      onTap: () async {
+        if (provider.isFormValid) {
+          final response = await provider.handleBooking();
+
+          if (response == Status.success) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return SuccessNotifierWidget(
+                  onRefresh: () => Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const MainScreen()),
+                    (Route<dynamic> route) => false,
+                  ),
+                  text: 'Booking successfully created',
+                  contentText: 'back to main screen',
+                );
+              },
+            );
+          } else {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return ErrorRefreshWidget(
+                      onRefresh: () => Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const MainScreen()),
+                            (Route<dynamic> route) => false,
+                          ));
+                });
+          }
+        } else {
+          return null;
+        }
+      },
       child: Container(
         width: MediaQuery.of(context).size.width * 0.98,
         height: MediaQuery.of(context).size.height * 0.06,

@@ -125,7 +125,10 @@ class AddNewVehicleScreen extends StatelessWidget {
                           );
                         } else if (state.status == Status.loading) {
                           return const Center(
-                              child: CircularProgressIndicator());
+                              child: CircularProgressIndicator(
+                            color: Colors.red,
+                            strokeWidth: 3,
+                          ));
                         } else {
                           return const Center(
                             child: Text('Failed to load user data'),

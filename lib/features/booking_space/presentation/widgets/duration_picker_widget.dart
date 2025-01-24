@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class DurationPickerWidget extends StatefulWidget {
   final Function(String) onDurationChanged;
-  final String? initialDuration;
 
   const DurationPickerWidget({
     super.key,
     required this.onDurationChanged,
-    this.initialDuration,
   });
 
   @override
@@ -21,7 +20,6 @@ class _DurationPickerWidgetState extends State<DurationPickerWidget> {
   @override
   void initState() {
     super.initState();
-    _durationController.text = widget.initialDuration ?? '1';
   }
 
   @override
@@ -40,8 +38,10 @@ class _DurationPickerWidgetState extends State<DurationPickerWidget> {
         TextFormField(
           controller: _durationController,
           keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+          ],
           decoration: InputDecoration(
-            hintText: 'Enter duration in days',
             filled: true,
             fillColor: Colors.grey[200],
             border: OutlineInputBorder(

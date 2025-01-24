@@ -497,9 +497,7 @@ class HomeDatasources {
   Future<List<ListPaymentMethods>> fetchPaymentMethods() async {
     final response = await dio.get('/payments/list-payment-methods/');
     if (response.statusCode == 200) {
-      List data = response.data['result'];
-      print('--------');
-      print(response);
+      List<dynamic> data = response.data;
       return data.map((json) => ListPaymentMethods.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load payment methods');

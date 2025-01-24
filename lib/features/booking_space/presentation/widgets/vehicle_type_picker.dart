@@ -36,7 +36,7 @@ class _VehicleTypePickerState extends State<VehicleTypePicker> {
     context.read<HomeBloc>().add(const HomeEvent.getVehicleList());
   }
 
-  void _showVehiclePicker(List<String> vehicleTypes) async {
+  void _showVehiclePicker(List<Map<String, dynamic>> vehicleTypes) async {
     await showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -48,11 +48,10 @@ class _VehicleTypePickerState extends State<VehicleTypePicker> {
         return ListView.builder(
           itemCount: vehicleTypes.length,
           itemBuilder: (context, index) {
+            final vehicle = vehicleTypes[index];
             return ListTile(
               title: Text(
-                vehicleTypes.isNotEmpty
-                    ? vehicleTypes[index]
-                    : 'There is not vehicle list in your list',
+                vehicle['model'] ?? 'Unknown model',
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
@@ -60,9 +59,9 @@ class _VehicleTypePickerState extends State<VehicleTypePicker> {
               ),
               onTap: () {
                 setState(() {
-                  selectedVehicleType = vehicleTypes[index];
+                  selectedVehicleType = vehicle['model'];
                 });
-                widget.onStateChanged(vehicleTypes[index]);
+                widget.onStateChanged(vehicle['model'], vehicle['id']);
                 Navigator.pop(context);
               },
             );
@@ -87,10 +86,13 @@ class _VehicleTypePickerState extends State<VehicleTypePicker> {
               ),
             ),
             const SizedBox(height: 8),
-            BlocSelector<HomeBloc, HomeState, List<String>>(
+            BlocSelector<HomeBloc, HomeState, List<Map<String, dynamic>>>(
               selector: (state) {
                 return state.vehicleList
-                        ?.map((vehicle) => vehicle.model)
+                        ?.map((vehicle) => {
+                              'id': vehicle.id,
+                              'model': vehicle.model,
+                            })
                         .toList() ??
                     [];
               },
