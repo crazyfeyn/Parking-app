@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -15,14 +16,15 @@ class CardWidget extends StatelessWidget {
     return ZoomTapAnimation(
       onTap: () {},
       child: Container(
-        padding: const EdgeInsets.all(AppDimens.PADDING_12),
+        padding:
+            const EdgeInsets.only(left: 32, right: 12, bottom: 12, top: 12),
         margin: const EdgeInsets.only(bottom: AppDimens.MARGIN_16),
         decoration: BoxDecoration(
-          color: const Color(0xFFF5D21E),
+          color: AppConstants.mainColor,
           borderRadius: BorderRadius.circular(AppDimens.BORDER_RADIUS_15),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
               clipBehavior: Clip.hardEdge,
@@ -33,8 +35,8 @@ class CardWidget extends StatelessWidget {
               child: Image.asset(
                 'assets/images/parking.png',
                 color: Colors.black,
-                height: 77,
-                width: 77,
+                height: 42,
+                width: 42,
               ),
             ),
             Column(
@@ -44,7 +46,8 @@ class CardWidget extends StatelessWidget {
                   cardNumber,
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
-                    fontSize: 20,
+                    fontSize: 16,
+                    color: Colors.white,
                   ),
                 ),
               ],
