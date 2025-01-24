@@ -123,16 +123,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           _profileButton(
-            'card',
-            'Payment Methods',
-            () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const PaymentsScreen(),
-              ),
-            ),
-          ),
-          _profileButton(
             'listing',
             'Your Listings',
             () => Navigator.push(
