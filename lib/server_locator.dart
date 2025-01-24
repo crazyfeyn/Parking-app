@@ -286,7 +286,6 @@ Future<void> init() async {
   sl.registerLazySingleton<StripeService>(
     () => StripeService(
       dio: sl<Dio>(),
-      localConfig: sl<LocalConfig>(),
     ),
   );
 

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/profile/presentation/widgets/custom_profile_app_bar_widget_history.dart';
+import 'package:flutter_application/features/history/presentation/widgets/error_refresh_widget.dart';
+import 'package:flutter_application/features/home/data/models/booking_view.dart';
+import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/features/history/presentation/bloc/history_bloc.dart';
 import 'package:flutter_application/features/history/presentation/widgets/parking_item_widget.dart';
+import 'package:flutter_application/features/profile/presentation/widgets/custom_profile_app_bar_widget_history.dart';
 
 class HistoryScreen extends StatefulWidget {
   final int pageNumber;
@@ -19,10 +22,24 @@ class _HistoryScreenState extends State<HistoryScreen>
   late TabController _tabController;
 
   @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+
+    context.read<HistoryBloc>().add(const HistoryEvent.getBookingList());
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomProfileAppBarWidgetHistory(
-        title: widget.pageNumber == 1 ? 'History screen' : 'History screen',
+        title: 'History screen',
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(56.0),
           child: Container(
@@ -79,76 +96,32 @@ class _HistoryScreenState extends State<HistoryScreen>
       body: BlocBuilder<HistoryBloc, HistoryState>(
         builder: (context, state) {
           if (state.status == Status.loading) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.red,
+                strokeWidth: 3,
+              ),
+            );
           } else if (state.status == Status.error) {
-            return const Center(child: Text('Error loading data'));
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return ErrorRefreshWidget(
+                      onRefresh: () => Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const MainScreen()),
+                            (route) => false,
+                          ));
+                });
           }
 
           return TabBarView(
             controller: _tabController,
             children: [
-              state.bookingList.isEmpty
-                  ? const Center(child: Text('There is no booking history.'))
-                  : ListView.builder(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
-                      itemCount: state.bookingList.length,
-                      itemBuilder: (context, index) {
-                        final booking = state.bookingList[index];
-                        return ParkingItem(
-                          title: booking.spot,
-                          bookingType: booking.weekly
-                              ? 'Weekly'
-                              : booking.daily
-                                  ? 'Daily'
-                                  : 'Monthly',
-                          startDate: _formatDate(booking.startDate),
-                          endDate: booking.endDate != null
-                              ? _formatDate(booking.endDate!)
-                              : 'N/A',
-                          timeZone: _formatTimeZone(booking.startDate),
-                          vehicleType: booking.vehicle,
-                          price: '\$${booking.duration}',
-                          priceStatus: booking.status.name,
-                          parkingStatus: booking.status.name,
-                          priceStatusColor:
-                              _getStatusColor(booking.status.name),
-                          parkingStatusColor:
-                              _getStatusColor(booking.status.name),
-                        );
-                      },
-                    ),
-              state.currentBookingList.isEmpty
-                  ? const Center(child: Text('There are no current bookings.'))
-                  : ListView.builder(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
-                      itemCount: state.currentBookingList.length,
-                      itemBuilder: (context, index) {
-                        final booking = state.currentBookingList[index];
-                        return ParkingItem(
-                          title: booking.spot,
-                          bookingType: booking.weekly
-                              ? 'Weekly'
-                              : booking.daily
-                                  ? 'Daily'
-                                  : 'Monthly',
-                          startDate: _formatDate(booking.startDate),
-                          endDate: booking.endDate != null
-                              ? _formatDate(booking.endDate!)
-                              : 'N/A',
-                          timeZone: _formatTimeZone(booking.startDate),
-                          vehicleType: booking.vehicle,
-                          price: '\$${booking.duration}',
-                          priceStatus: booking.status.name,
-                          parkingStatus: booking.status.name,
-                          priceStatusColor:
-                              _getStatusColor(booking.status.name),
-                          parkingStatusColor:
-                              _getStatusColor(booking.status.name),
-                        );
-                      },
-                    ),
+              _buildBookingList(
+                  state.bookingList, 'There is no booking history.'),
+              _buildBookingList(
+                  state.currentBookingList, 'There are no current bookings.'),
             ],
           );
         },
@@ -156,27 +129,47 @@ class _HistoryScreenState extends State<HistoryScreen>
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+  Widget _buildBookingList(List<BookingView> bookings, String emptyMessage) {
+    if (bookings.isEmpty) {
+      return Center(
+        child: Text(
+          emptyMessage,
+          style: const TextStyle(fontSize: 16, color: Colors.grey),
+        ),
+      );
+    }
 
-    context.read<HistoryBloc>().add(const HistoryEvent.getBookingList());
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      itemCount: bookings.length,
+      itemBuilder: (context, index) {
+        final booking = bookings[index];
+        return ParkingItem(
+          title: booking.spot.locationName,
+          bookingType: booking.weekly
+              ? 'Weekly'
+              : booking.daily
+                  ? 'Daily'
+                  : 'Monthly',
+          startDate: _formatDate(booking.startDate),
+          endDate: _formatDate(booking.endDate),
+          timeZone: _formatTimeZone(booking.startDate),
+          vehicleType: booking.vehicle.model,
+          price: '\$${booking.duration}',
+          priceStatus: booking.status.name,
+          parkingStatus: booking.status.name,
+          priceStatusColor: _getStatusColor(booking.status.name),
+          parkingStatusColor: _getStatusColor(booking.status.name),
+        );
+      },
+    );
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  String _formatDate(String dateString) {
-    final date = DateTime.parse(dateString);
+  String _formatDate(DateTime date) {
     return '${date.day}.${date.month}.${date.year}';
   }
 
-  String _formatTimeZone(String dateString) {
-    final date = DateTime.parse(dateString);
+  String _formatTimeZone(DateTime date) {
     return '${date.hour}:${date.minute}';
   }
 

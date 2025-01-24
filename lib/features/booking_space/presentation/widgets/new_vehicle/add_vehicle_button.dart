@@ -35,24 +35,20 @@ class AddVehicleButton extends StatelessWidget {
 
           context.read<HomeBloc>().add(HomeEvent.createVehicle(vehicleModel));
 
-          // Listen to state changes
           context
               .read<HomeBloc>()
               .stream
               .firstWhere((state) => state.status == Status.success)
               .then((_) {
-            // ignore: use_build_context_synchronously
             context.read<HomeBloc>().add(const HomeEvent.getVehicleList());
 
             onSuccess();
 
-            // ignore: use_build_context_synchronously
             Navigator.pop(context);
           });
         } else {
-          // Show error message if the form is invalid
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please fill all fieldss')),
+            const SnackBar(content: Text('Please fill all fields')),
           );
         }
       },

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/config/stripe_service.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/features/history/presentation/widgets/error_refresh_widget.dart';
+import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
+import 'package:flutter_application/server_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
@@ -12,7 +16,7 @@ class SelectPaymentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Dispatch the fetchPaymentMethodList event when the screen is initialized
+    final StripeService stripeService = sl<StripeService>();
     context.read<HomeBloc>().add(const HomeEvent.fetchPaymentMethodList());
 
     return Scaffold(
@@ -29,19 +33,30 @@ class SelectPaymentScreen extends StatelessWidget {
         child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
             if (state.status == Status.loading) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.red,
+                  strokeWidth: 3,
+                ),
+              );
             } else if (state.status == Status.error) {
-              return Center(child: Text('Error: ${state.errorMessage}'));
+              return Center(
+                child: ErrorRefreshWidget(
+                  onRefresh: () {
+                    context
+                        .read<HomeBloc>()
+                        .add(const HomeEvent.fetchPaymentMethodList());
+                  },
+                ),
+              );
             } else if (state.status == Status.success &&
                 state.listPaymentMethod != null) {
-              final paymentMethods = state.listPaymentMethod!;
+              final paymentMethods = state.listPaymentMethod;
               return SingleChildScrollView(
                 child: Column(
                   children: [
                     ZoomTapAnimation(
-                      onTap: () {
-                        // Navigate to add card screen
-                      },
+                      onTap: () async => await stripeService.addCard(),
                       child: Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(AppDimens.PADDING_12),
@@ -72,10 +87,9 @@ class SelectPaymentScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    for (final method in paymentMethods)
+                    for (final method in paymentMethods!)
                       CardWidget(
-                        cardNumber: method
-                            .card.last4, // Access the last4 property directly
+                        cardNumber: _maskCardNumber(method.card.last4),
                       ),
                   ],
                 ),
@@ -87,5 +101,10 @@ class SelectPaymentScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _maskCardNumber(String last4Digits) {
+    const maskedDigits = '**** **** **** ';
+    return maskedDigits + last4Digits;
   }
 }

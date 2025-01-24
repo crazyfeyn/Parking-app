@@ -298,6 +298,7 @@ mixin _$HistoryState {
   List<BookingView> get bookingList => throw _privateConstructorUsedError;
   List<BookingView> get currentBookingList =>
       throw _privateConstructorUsedError;
+  String? get errorMessage => throw _privateConstructorUsedError;
 
   /// Create a copy of HistoryState
   /// with the given fields replaced by the non-null parameter values.
@@ -315,7 +316,8 @@ abstract class $HistoryStateCopyWith<$Res> {
   $Res call(
       {Status status,
       List<BookingView> bookingList,
-      List<BookingView> currentBookingList});
+      List<BookingView> currentBookingList,
+      String? errorMessage});
 }
 
 /// @nodoc
@@ -336,6 +338,7 @@ class _$HistoryStateCopyWithImpl<$Res, $Val extends HistoryState>
     Object? status = null,
     Object? bookingList = null,
     Object? currentBookingList = null,
+    Object? errorMessage = freezed,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -350,6 +353,10 @@ class _$HistoryStateCopyWithImpl<$Res, $Val extends HistoryState>
           ? _value.currentBookingList
           : currentBookingList // ignore: cast_nullable_to_non_nullable
               as List<BookingView>,
+      errorMessage: freezed == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -365,7 +372,8 @@ abstract class _$$HistoryStateImplCopyWith<$Res>
   $Res call(
       {Status status,
       List<BookingView> bookingList,
-      List<BookingView> currentBookingList});
+      List<BookingView> currentBookingList,
+      String? errorMessage});
 }
 
 /// @nodoc
@@ -384,6 +392,7 @@ class __$$HistoryStateImplCopyWithImpl<$Res>
     Object? status = null,
     Object? bookingList = null,
     Object? currentBookingList = null,
+    Object? errorMessage = freezed,
   }) {
     return _then(_$HistoryStateImpl(
       status: null == status
@@ -398,6 +407,10 @@ class __$$HistoryStateImplCopyWithImpl<$Res>
           ? _value._currentBookingList
           : currentBookingList // ignore: cast_nullable_to_non_nullable
               as List<BookingView>,
+      errorMessage: freezed == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -408,7 +421,8 @@ class _$HistoryStateImpl implements _HistoryState {
   const _$HistoryStateImpl(
       {this.status = Status.initial,
       final List<BookingView> bookingList = const [],
-      final List<BookingView> currentBookingList = const []})
+      final List<BookingView> currentBookingList = const [],
+      this.errorMessage})
       : _bookingList = bookingList,
         _currentBookingList = currentBookingList;
 
@@ -435,8 +449,11 @@ class _$HistoryStateImpl implements _HistoryState {
   }
 
   @override
+  final String? errorMessage;
+
+  @override
   String toString() {
-    return 'HistoryState(status: $status, bookingList: $bookingList, currentBookingList: $currentBookingList)';
+    return 'HistoryState(status: $status, bookingList: $bookingList, currentBookingList: $currentBookingList, errorMessage: $errorMessage)';
   }
 
   @override
@@ -448,7 +465,9 @@ class _$HistoryStateImpl implements _HistoryState {
             const DeepCollectionEquality()
                 .equals(other._bookingList, _bookingList) &&
             const DeepCollectionEquality()
-                .equals(other._currentBookingList, _currentBookingList));
+                .equals(other._currentBookingList, _currentBookingList) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
   }
 
   @override
@@ -456,7 +475,8 @@ class _$HistoryStateImpl implements _HistoryState {
       runtimeType,
       status,
       const DeepCollectionEquality().hash(_bookingList),
-      const DeepCollectionEquality().hash(_currentBookingList));
+      const DeepCollectionEquality().hash(_currentBookingList),
+      errorMessage);
 
   /// Create a copy of HistoryState
   /// with the given fields replaced by the non-null parameter values.
@@ -471,7 +491,8 @@ abstract class _HistoryState implements HistoryState {
   const factory _HistoryState(
       {final Status status,
       final List<BookingView> bookingList,
-      final List<BookingView> currentBookingList}) = _$HistoryStateImpl;
+      final List<BookingView> currentBookingList,
+      final String? errorMessage}) = _$HistoryStateImpl;
 
   @override
   Status get status;
@@ -479,6 +500,8 @@ abstract class _HistoryState implements HistoryState {
   List<BookingView> get bookingList;
   @override
   List<BookingView> get currentBookingList;
+  @override
+  String? get errorMessage;
 
   /// Create a copy of HistoryState
   /// with the given fields replaced by the non-null parameter values.

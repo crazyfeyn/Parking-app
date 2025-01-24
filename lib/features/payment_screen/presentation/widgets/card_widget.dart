@@ -13,9 +13,7 @@ class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ZoomTapAnimation(
-      onTap: () {
-        // Handle card tap
-      },
+      onTap: () {},
       child: Container(
         padding: const EdgeInsets.all(AppDimens.PADDING_12),
         margin: const EdgeInsets.only(bottom: AppDimens.MARGIN_16),
@@ -33,7 +31,8 @@ class CardWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50),
               ),
               child: Image.asset(
-                'assets/cards/master_card.png',
+                'assets/images/parking.png',
+                color: Colors.black,
                 height: 77,
                 width: 77,
               ),

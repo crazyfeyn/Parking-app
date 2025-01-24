@@ -43,7 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
           print('Current Status: ${state.status}');
 
           if (state.status == Status.initial) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+                child: CircularProgressIndicator(
+              color: Colors.red,
+              strokeWidth: 3,
+            ));
           }
 
           if (state.status == Status.error) {

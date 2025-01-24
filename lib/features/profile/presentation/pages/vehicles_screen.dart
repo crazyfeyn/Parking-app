@@ -113,7 +113,10 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
           builder: (context, state) {
             if (state.status == Status.loading) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  color: Colors.red,
+                  strokeWidth: 3,
+                ),
               );
             }
 

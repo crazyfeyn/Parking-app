@@ -1,65 +1,80 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_application/core/config/local_config.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 class StripeService {
-  StripeService({required this.dio, required this.localConfig});
+  StripeService({required this.dio});
 
   final Dio dio;
-  final LocalConfig localConfig;
 
-  Future<void> addCard() async {
+  Future<List<Map<String, dynamic>>> fetchPaymentMethods() async {
     try {
-      final clientSecret = await _fetchSetupIntentClientSecret();
+      final response = await dio.get(
+        '/payments/list-payment-methods/',
+      );
 
-      if (clientSecret != null) {
+      if (response.statusCode == 200) {
+        return List<Map<String, dynamic>>.from(response.data);
+      } else {
+        throw Exception('Failed to fetch payment methods: ${response.data}');
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch payment methods: $e');
+    }
+  }
+
+  Future<int?> addCard() async {
+    try {
+      final secretKey = await _fetchSetupIntent();
+
+      if (secretKey != null) {
         await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
-            setupIntentClientSecret: clientSecret,
+            setupIntentClientSecret: secretKey['setupIntentClientSecret'],
             merchantDisplayName: 'Parking App',
-            paymentIntentClientSecret: 'da',
-            customerId: 'sad',
-            customerEphemeralKeySecret: 'sad',
+            customerId: secretKey['customerId'],
+            customerEphemeralKeySecret: secretKey['customerEphemeralKeySecret'],
+            allowsRemovalOfLastSavedPaymentMethod: false,
           ),
         );
 
-        print('Payment sheet initialized');
-
         await presentPaymentSheet();
 
-        await _handleCardAdditionSuccess(clientSecret);
+        final paymentMethodId = await _retrievePaymentMethodId(
+            secretKey['setupIntentClientSecret']);
+        if (paymentMethodId != null) {
+          final paymentId = await _savePaymentMethodToServer(paymentMethodId);
+          return paymentId;
+        } else {
+          throw Exception('No payment method ID returned');
+        }
       } else {
-        print('Failed to fetch SetupIntent client secret');
         throw Exception('Failed to fetch SetupIntent client secret');
       }
     } catch (e) {
-      print('Error during card addition: $e');
       _handleError(e);
       rethrow;
     }
   }
 
-  Future<String?> _fetchSetupIntentClientSecret() async {
+  Future<Map<String, dynamic>?> _fetchSetupIntent() async {
     try {
       final response = await dio.post(
         '/payments/generate-client-secret-key-payment-intent/',
+        data: {
+          "mobile_client":
+              "ee1ac1061e6c7daf410700b3047d3a49d47970d31f43e1469e9ef9a26373a9dd"
+        },
       );
 
       if (response.statusCode == 200) {
-        print('---------');
-        print(response);
-        return response.data['client_secret'];
+        return response.data;
       } else {
         throw Exception(
             'Failed to fetch SetupIntent client secret: ${response.data}');
       }
-    } on DioException catch (e) {
-      print('DioException: ${e.message}');
-      print('Response data: ${e.response?.data}');
-      print('Status code: ${e.response?.statusCode}');
+    } on DioException {
       rethrow;
     } catch (e) {
-      print('Error fetching SetupIntent client secret: $e');
       rethrow;
     }
   }
@@ -67,23 +82,8 @@ class StripeService {
   Future<void> presentPaymentSheet() async {
     try {
       await Stripe.instance.presentPaymentSheet();
-      print('Payment sheet presented successfully');
     } catch (e) {
-      print('Error presenting payment sheet: $e');
       rethrow;
-    }
-  }
-
-  Future<void> _handleCardAdditionSuccess(String clientSecret) async {
-    print('Card added successfully!');
-
-    final paymentMethodId = await _retrievePaymentMethodId(clientSecret);
-
-    if (paymentMethodId != null) {
-      await _savePaymentMethodToServer(paymentMethodId);
-    } else {
-      print('No payment method ID returned');
-      throw Exception('No payment method ID returned');
     }
   }
 
@@ -98,7 +98,7 @@ class StripeService {
     }
   }
 
-  Future<void> _savePaymentMethodToServer(String paymentMethodId) async {
+  Future<int?> _savePaymentMethodToServer(String paymentMethodId) async {
     try {
       final response = await dio.post(
         '/users/add-payment-method/',
@@ -107,12 +107,13 @@ class StripeService {
         },
       );
 
-      if (response.statusCode != 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return response.data['id']; // Return the payment ID
+      } else {
         throw Exception(
             'Failed to save payment method to server: ${response.data}');
       }
     } on DioException catch (e) {
-      print('DioException: ${e.message}');
       print('Response data: ${e.response?.data}');
       rethrow;
     } catch (e) {
