@@ -49,7 +49,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _fetchSearchAllLocationsFunc(
       _fetchSearchAllLocations event, Emitter<HomeState> emit) async {
-    print('_fetchSearchAllLocationsFunc triggered with title: ${event.title}');
     emit(state.copyWith(status: Status.loading));
     final response = await fetchSearchUsecase(event.title);
     response.fold((error) {
@@ -62,7 +61,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _fetchAllLocationsFunc(
       _fetchAllLocations event, Emitter<HomeState> emit) async {
-    print('_fetchAllLocationsFunc triggered');
     emit(state.copyWith(status: Status.loading));
     final response = await fetchLocationsUsecase(null);
     response.fold((error) {
@@ -110,7 +108,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _getVehicleListFunc(
       _getVehicleList event, Emitter<HomeState> emit) async {
-    print('_getVehicleListFunc triggered');
     emit(state.copyWith(status: Status.loading));
     final response = await getVehicleListUsecase.call(());
     response.fold((error) {
@@ -123,7 +120,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _createVehicleFunc(
       _createVehicle event, Emitter<HomeState> emit) async {
-    print('_createVehicleFunc triggered with vehicle: ${event.vehicleModel}');
     emit(state.copyWith(status: Status.loading));
 
     try {
@@ -149,7 +145,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _fetchPaymentMethodListFunc(
       _fetchPaymentMethodList event, Emitter<HomeState> emit) async {
-    print('_fetchPaymentMethodListFunc triggered');
     emit(state.copyWith(status: Status.loading));
     final response = await fetchPaymentMethodListUsecase.call(());
     response.fold((error) {
@@ -163,7 +158,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _filterLocationsFunc(
       _filterLocation event, Emitter<HomeState> emit) async {
-    print('_filterLocationsFunc triggered with filter: ${event.filterModel}');
     emit(state.copyWith(status: Status.loading));
 
     // Convert FilterModel to FilterLocationsParams

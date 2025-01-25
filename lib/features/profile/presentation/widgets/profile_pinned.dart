@@ -4,7 +4,6 @@ import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/features/profile/domain/entity/profile_entity.dart';
 
-
 class ProfilePinned extends StatelessWidget {
   final ProfileEntity profile;
   const ProfilePinned({super.key, required this.profile});
@@ -38,7 +37,7 @@ class ProfilePinned extends StatelessWidget {
           Text(
             profile.first_name,
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: FontWeight.w600,
               color: AppConstants.blackColor,
             ),
@@ -47,6 +46,4 @@ class ProfilePinned extends StatelessWidget {
       ),
     );
   }
-
-
 }

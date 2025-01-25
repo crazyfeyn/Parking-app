@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
-import 'package:flutter_application/core/widgets/custom_error_widget.dart';
 import 'package:flutter_application/core/widgets/custom_loader.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:flutter_application/features/auth/presentation/pages/login_screen.dart';
 import 'package:flutter_application/features/auth/presentation/pages/reset_password_screen.dart';
 import 'package:flutter_application/features/history/presentation/pages/history_screen.dart';
+import 'package:flutter_application/features/history/presentation/widgets/error_refresh_widget.dart';
+import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
 import 'package:flutter_application/features/payment_screen/presentation/pages/select_payment_screen.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_application/features/profile/presentation/pages/contact_detail_screen.dart';
-import 'package:flutter_application/features/profile/presentation/pages/payments_screen.dart';
 import 'package:flutter_application/features/profile/presentation/pages/vehicles_screen.dart';
 import 'package:flutter_application/features/profile/presentation/widgets/leave_widget.dart';
 import 'package:flutter_application/features/profile/presentation/widgets/profile_pinned.dart';
@@ -38,12 +38,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: BlocListener<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state.status == Status.error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('An error occurred while loading profile data!'),
-                backgroundColor: Colors.red,
-              ),
-            );
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return ErrorRefreshWidget(
+                      onRefresh: () => Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const MainScreen()),
+                            (Route<dynamic> route) => false,
+                          ));
+                });
           }
         },
         child: BlocBuilder<ProfileBloc, ProfileState>(
@@ -158,7 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ResetPasswordScreen(),
+                builder: (context) => const ResetPasswordScreen(),
               ),
             ),
           ),
@@ -201,9 +205,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
             (route) => false,
           );
         } else if (state.status == Status.error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('An error occurred!')),
-          );
+          showDialog(
+              context: context,
+              builder: (context) {
+                return ErrorRefreshWidget(
+                    onRefresh: () => Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => const MainScreen()),
+                          (Route<dynamic> route) => false,
+                        ));
+              });
         }
       },
       builder: (context, state) {

@@ -6,10 +6,10 @@ class ButtonForMapWidget extends StatelessWidget {
   final dynamic Function()? onTap;
   final Widget? child;
   const ButtonForMapWidget({
-    Key? key,
+    super.key,
     this.onTap,
     this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +20,7 @@ class ButtonForMapWidget extends StatelessWidget {
         height: 50,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
+          // ignore: deprecated_member_use
           color: Colors.black.withOpacity(0.5),
         ),
         child: child,

@@ -93,7 +93,6 @@ class StripeService {
           await Stripe.instance.retrieveSetupIntent(clientSecret);
       return setupIntent.paymentMethodId;
     } catch (e) {
-      print('Error retrieving payment method ID: $e');
       rethrow;
     }
   }
@@ -113,16 +112,12 @@ class StripeService {
         throw Exception(
             'Failed to save payment method to server: ${response.data}');
       }
-    } on DioException catch (e) {
-      print('Response data: ${e.response?.data}');
+    } on DioException {
       rethrow;
     } catch (e) {
-      print('Error saving payment method: $e');
       rethrow;
     }
   }
 
-  void _handleError(dynamic error) {
-    print('Card addition failed: $error');
-  }
+  void _handleError(dynamic error) {}
 }

@@ -15,7 +15,6 @@ class HistoryRepositoriesImpl extends HistoryRepositories {
       final bookingList = await historyDatasources.getBookingList();
       return Right(bookingList);
     } catch (e) {
-      print('error fetching booking list: $e');
       return Left(ServerFailure());
     }
   }
@@ -27,7 +26,6 @@ class HistoryRepositoriesImpl extends HistoryRepositories {
           await historyDatasources.getCurrentBookingList();
       return Right(currentBookingList);
     } catch (e) {
-      print('error fetching current booking list: $e');
       return Left(ServerFailure());
     }
   }

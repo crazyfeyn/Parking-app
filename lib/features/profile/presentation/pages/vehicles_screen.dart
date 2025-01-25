@@ -1,12 +1,11 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
-import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/features/profile/presentation/pages/add_new_vehicle_assist_screen.dart';
+import 'package:flutter_application/features/profile/presentation/provider/vehicle_provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
 import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
-import 'package:flutter_application/features/profile/presentation/pages/add_vehicles_screen.dart';
 import 'package:flutter_application/features/profile/presentation/widgets/custom_profile_app_bar_widget.dart';
 import 'package:flutter_application/features/profile/presentation/widgets/info_text_widget.dart';
 
@@ -24,6 +23,103 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
     context.read<HomeBloc>().add(const HomeEvent.getVehicleList());
   }
 
+  @override
+  Widget build(BuildContext context) {
+    final provider = context.watch<VehicleProvider>();
+
+    return Scaffold(
+      appBar:
+          const CustomProfileAppBarWidget(title: 'Your vehicles information'),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            if (state.status == Status.loading) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.red,
+                  strokeWidth: 3,
+                ),
+              );
+            }
+
+            if (state.status == Status.error) {
+              return Center(
+                child: Text(
+                  'Failed to load vehicles. Please try again.',
+                  style: TextStyle(color: Colors.grey[600]),
+                ),
+              );
+            }
+
+            if (state.vehicleList == null || state.vehicleList!.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.directions_car_outlined,
+                      size: 64,
+                      color: Colors.grey[400],
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'No vehicles added yet',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    // const SizedBox(height: 20),
+                    // ButtonWidget(
+                    //   text: 'Add new vehicle',
+                    //   onTap: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) => AddVehiclesScreen(),
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
+                  ],
+                ),
+              );
+            }
+
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: state.vehicleList!.length,
+                    itemBuilder: (context, index) {
+                      final vehicle = state.vehicleList![index];
+                      return _buildVehicleCard(vehicle);
+                    },
+                  ),
+                ),
+                ButtonWidget(
+                  text: 'Add new vehicle',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            AddNewVehicleScreenAssistScreenAssist(
+                          provider: provider,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   Widget _buildVehicleCard(VehicleModel vehicle) {
     return Container(
       padding: const EdgeInsets.all(12),
@@ -34,6 +130,7 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.grey.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 4,
@@ -98,78 +195,6 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
             subTitle: 'Unit Number',
           ),
         ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar:
-          const CustomProfileAppBarWidget(title: 'Your vehicles information'),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: BlocBuilder<HomeBloc, HomeState>(
-          builder: (context, state) {
-            if (state.status == Status.loading) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.red,
-                  strokeWidth: 3,
-                ),
-              );
-            }
-
-            if (state.vehicleList == null || state.vehicleList!.isEmpty) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.directions_car_outlined,
-                      size: 64,
-                      color: Colors.grey[400],
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'No vehicles added yet',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }
-
-            return Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: state.vehicleList!.length,
-                    itemBuilder: (context, index) {
-                      final vehicle = state.vehicleList![index];
-                      return _buildVehicleCard(vehicle);
-                    },
-                  ),
-                ),
-                const SizedBox(height: 16),
-                ButtonWidget(
-                  text: 'Add new vehicle',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddVehiclesScreen(),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            );
-          },
-        ),
       ),
     );
   }

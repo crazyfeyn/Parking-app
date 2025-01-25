@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/widgets/white_back_widget.dart';
-import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
-import 'package:flutter_application/features/booking_space/presentation/widgets/new_vehicle/add_vehicle_button.dart';
 import 'package:flutter_application/features/booking_space/presentation/widgets/new_vehicle/general_form_field_widget.dart';
 import 'package:flutter_application/features/booking_space/presentation/widgets/new_vehicle/general_modal_field_widget.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:flutter_application/features/profile/presentation/provider/vehicle_provider.dart';
+import 'package:flutter_application/features/profile/presentation/widgets/add_vehicle_button_assist.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-class AddNewVehicleScreen extends StatelessWidget {
-  final BookingProvider provider;
+class AddNewVehicleScreenAssistScreenAssist extends StatelessWidget {
+  final VehicleProvider provider;
 
-  const AddNewVehicleScreen({super.key, required this.provider});
+  const AddNewVehicleScreenAssistScreenAssist(
+      {super.key, required this.provider});
 
   void _clearForm() {
     provider.setVehicleType(null);
@@ -114,7 +115,7 @@ class AddNewVehicleScreen extends StatelessWidget {
                       builder: (context, state) {
                         if (state.status == Status.success &&
                             state.profile != null) {
-                          return AddVehicleButton(
+                          return AddVehicleButtonAssist(
                             provider: provider,
                             userId: state.profile!.id,
                             onSuccess: _clearForm,

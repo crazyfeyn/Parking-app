@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/booking_space/presentation/pages/add_new_vehicle_screen.dart';
 import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
@@ -86,45 +87,67 @@ class _VehicleTypePickerState extends State<VehicleTypePicker> {
               ),
             ),
             const SizedBox(height: 8),
-            BlocSelector<HomeBloc, HomeState, List<Map<String, dynamic>>>(
-              selector: (state) {
-                return state.vehicleList
-                        ?.map((vehicle) => {
-                              'id': vehicle.id,
-                              'model': vehicle.model,
-                            })
-                        .toList() ??
-                    [];
-              },
-              builder: (context, vehicleTypes) {
-                return ZoomTapAnimation(
-                  onTap: () => _showVehiclePicker(vehicleTypes),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          selectedVehicleType ?? 'Select vehicle',
-                          style: TextStyle(
-                            color: selectedVehicleType != null
-                                ? Colors.black
-                                : Colors.black54,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
+            BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                // Check if the vehicle list is loaded
+                final isVehicleListLoaded = state.status == Status.success;
+
+                return IgnorePointer(
+                  // Disable the button if the vehicle list is not loaded
+                  ignoring: !isVehicleListLoaded,
+                  child: BlocSelector<HomeBloc, HomeState,
+                      List<Map<String, dynamic>>>(
+                    selector: (state) {
+                      return state.vehicleList
+                              ?.map((vehicle) => {
+                                    'id': vehicle.id,
+                                    'model': vehicle.model,
+                                  })
+                              .toList() ??
+                          [];
+                    },
+                    builder: (context, vehicleTypes) {
+                      return ZoomTapAnimation(
+                        onTap: () => _showVehiclePicker(vehicleTypes),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                selectedVehicleType ?? 'Select vehicle',
+                                style: TextStyle(
+                                  color: selectedVehicleType != null
+                                      ? Colors.black
+                                      : Colors.black54,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              if (!isVehicleListLoaded)
+                                const SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: AppConstants.mainColor,
+                                  ),
+                                )
+                              else
+                                const Icon(Icons.arrow_drop_down,
+                                    color: Colors.black54),
+                            ],
                           ),
                         ),
-                        const Icon(Icons.arrow_drop_down,
-                            color: Colors.black54),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                 );
               },

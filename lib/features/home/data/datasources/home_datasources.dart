@@ -36,11 +36,8 @@ class HomeDatasources {
       final currentLocation = await location.getLocation();
       if (currentLocation.latitude == null ||
           currentLocation.longitude == null) {
-        print('111111');
         throw Exception('Failed to retrieve location.');
       }
-      print('----------');
-      print(currentLocation);
 
       return currentLocation;
     } catch (e) {
@@ -134,15 +131,12 @@ class HomeDatasources {
   }
 
   Future<List<LocationModel>> fetchSearchAllLocations(String title) async {
-    print('TITITITIITLE:$title');
     final response = await dio.get(
       '/locations/list/',
       queryParameters: {
         'search': title,
       },
     );
-    print('RECOINCE FROM HOME LIST');
-    print(response.data);
 
     if (response.statusCode == 200) {
       final List<dynamic> data = response.data['results'] as List<dynamic>;
@@ -397,8 +391,6 @@ class HomeDatasources {
       if (noTowedVehicles != null) {
         queryParameters['no_towed_vehicles'] = noTowedVehicles;
       }
-      print('-----------');
-      print(queryParameters);
 
       // Make the API request with query parameters
       final response = await dio.get(

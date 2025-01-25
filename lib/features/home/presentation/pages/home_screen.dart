@@ -38,10 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          print('Current HomeState: ${state.toString()}');
-          print('Current Location: ${state.currentLocation}');
-          print('Current Status: ${state.status}');
-
           if (state.status == Status.initial) {
             return const Center(
                 child: CircularProgressIndicator(
@@ -51,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
           }
 
           if (state.status == Status.error) {
-            print('Error state: ${state.errorMessage}');
             return Center(
               child: ErrorRefreshWidget(
                 onRefresh: _initializeData,
