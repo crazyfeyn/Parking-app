@@ -77,9 +77,7 @@ class ParkingFilterModel {
       String prefix, Map<String, bool> services) {
     final Map<String, dynamic> params = {};
     services.forEach((key, value) {
-      if (value != null) {
-        params['$prefix.$key'] = value;
-      }
+      params['$prefix.$key'] = value;
     });
     return params;
   }

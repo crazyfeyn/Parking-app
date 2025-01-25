@@ -41,7 +41,7 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
     try {
       existingPaymentMethods = await _stripeService.fetchPaymentMethods();
     } catch (e) {
-      print('Failed to fetch payment methods: $e');
+      rethrow;
     } finally {
       setState(() {
         isLoading = false;
@@ -58,19 +58,24 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
           children: [
             ...existingPaymentMethods.map((method) {
               return ListTile(
-                title: Text('Card ending with ${method['card']['last4']}'),
+                title: Text(
+                  _maskCardNumber(method['card']['last4']),
+                  style: const TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
                 leading: const Icon(Icons.credit_card),
                 onTap: () {
                   setState(() {
                     selectedPaymentMethods =
-                        'Card ending with ${method['card']['last4']}';
+                        _maskCardNumber(method['card']['last4']);
                   });
                   widget.onStateChanged(
                       method['stripe_payment_method_id'], method['id']);
                   Navigator.pop(context);
                 },
               );
-            }).toList(),
+            }),
           ],
         );
       },
@@ -120,7 +125,7 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
@@ -131,7 +136,7 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
                           fontSize: 15,
                         ),
                       ),
-                      const Icon(Icons.arrow_drop_down, color: Colors.black54),
+                      Icon(Icons.arrow_drop_down, color: Colors.black54),
                     ],
                   ),
                 ),
@@ -181,4 +186,9 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
       ),
     );
   }
+}
+
+String _maskCardNumber(String last4Digits) {
+  const maskedDigits = '**** **** **** ';
+  return maskedDigits + last4Digits;
 }

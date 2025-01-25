@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/booking_space/data/datasources/booking_datasources.dart';
-import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
 import 'package:flutter_application/features/home/data/models/booking_model.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
@@ -148,31 +147,15 @@ class BookingProvider extends ChangeNotifier {
 
       final response = await bookingDatasources.bookingFunc(booking);
       return response;
-
-      print('Booking created successfully');
     } catch (e) {
-      print('Error creating booking: $e');
+      return null;
     }
-    return null;
   }
 
   void handleVehicleCreation(int userId) {
     if (!isFormValid) {
       return;
     }
-    print('-----User ID: $user');
-
-    final vehicle = VehicleModel(
-      type: _vehicleType!,
-      unitNumber: _unitNumber!,
-      year: _year!,
-      make: make!,
-      model: _model!,
-      plateNumber: _plateNumber!,
-      user: userId,
-    );
-
-    print('Vehicle data: ${vehicle.toJson()}');
   }
 
   void clearForm() {
@@ -191,9 +174,7 @@ class BookingProvider extends ChangeNotifier {
     context.read<ProfileBloc>().stream.listen((state) {
       if (state.status == Status.success && state.profile != null) {
         setUser(state.profile!.id);
-      } else if (state.status == Status.error) {
-        print('--------Failed to fetch user profile: ${state.message}');
-      }
+      } else if (state.status == Status.error) {}
     });
   }
 }

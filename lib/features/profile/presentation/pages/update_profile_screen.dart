@@ -12,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   final ProfileEntity profileEntity;
-  UpdateProfileScreen({
+  const UpdateProfileScreen({
     super.key,
     required this.profileEntity,
   });

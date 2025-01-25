@@ -5,6 +5,7 @@ import 'package:flutter_application/features/booking_space/presentation/provider
 import 'package:flutter_application/features/history/presentation/bloc/history_bloc.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:flutter_application/features/profile/presentation/provider/vehicle_provider.dart';
 import 'package:flutter_application/features/splash/presentation/pages/splash_screen.dart';
 import 'package:flutter_application/server_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,7 +46,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    print('Жизненный цикл изменен: $state');
 
     final context = navigatorKey.currentContext;
     if (context != null) {
@@ -69,6 +69,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         BlocProvider(create: (context) => sl<ProfileBloc>()),
         BlocProvider(create: (context) => sl<HistoryBloc>()),
         Provider(create: (context) => sl<BookingProvider>()),
+        ChangeNotifierProvider(create: (context) => sl<VehicleProvider>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -89,18 +90,15 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object? event) {
     super.onEvent(bloc, event);
-    print('Bloc Event: ${bloc.runtimeType}, Event: $event');
   }
 
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
-    print('Bloc Transition: ${bloc.runtimeType}, Transition: $transition');
   }
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
     super.onError(bloc, error, stackTrace);
-    print('Bloc Error: ${bloc.runtimeType}, Error: $error');
   }
 }

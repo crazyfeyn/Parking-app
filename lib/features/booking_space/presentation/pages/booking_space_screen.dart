@@ -81,7 +81,9 @@ class _BookingSpaceContentState extends State<BookingSpaceContent> {
                     onStateChanged: provider.setPaymentMethod,
                   ),
                   14.hs(),
-                  const BookingButton(),
+                  BookingButton(
+                    provider: provider,
+                  ),
                 ],
               ),
             )
@@ -93,12 +95,11 @@ class _BookingSpaceContentState extends State<BookingSpaceContent> {
 }
 
 class BookingButton extends StatelessWidget {
-  const BookingButton({super.key});
+  final BookingProvider provider;
+  const BookingButton({super.key, required this.provider});
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<BookingProvider>();
-
     return ZoomTapAnimation(
       onTap: () async {
         if (provider.isFormValid) {

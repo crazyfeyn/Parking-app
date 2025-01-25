@@ -162,8 +162,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _auth(_authicated event, Emitter<AuthState> emit) async {
     final recponce = await authicatedUsecase.call(null);
-    print('HELLO FROM BLOC');
-    print(recponce);
     if (recponce == true) {
       emit(state.copyWith(status: Status.success));
     } else {

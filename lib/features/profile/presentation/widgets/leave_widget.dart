@@ -9,9 +9,19 @@ class LeaveWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(
-        'Do you want to leave?',
-        style: TextStyle(fontWeight: FontWeight.w500),
+      titlePadding: const EdgeInsets.all(16),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      title: const Center(
+        child: Text(
+          'Do you want to leave?',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          ),
+          textAlign: TextAlign.center,
+        ),
       ),
       actionsAlignment: MainAxisAlignment.spaceBetween,
       actions: [

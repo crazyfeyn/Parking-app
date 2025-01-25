@@ -18,7 +18,6 @@ class HomeRepositoriesImpl extends HomeRepositories {
       final locations = await homeDatasources.fetchAllLocations();
       return Right(locations);
     } catch (e) {
-      print('Error fetching locations: $e');
       return Left(ServerFailure());
     }
   }
@@ -30,7 +29,6 @@ class HomeRepositoriesImpl extends HomeRepositories {
       final locations = await homeDatasources.fetchSearchAllLocations(title);
       return Right(locations);
     } catch (e) {
-      print('Error fetching locations: $e');
       return Left(ServerFailure());
     }
   }
@@ -41,7 +39,6 @@ class HomeRepositoriesImpl extends HomeRepositories {
       final locationData = await homeDatasources.getCurrentLocation();
       return Right(locationData);
     } catch (e) {
-      print('Error getting current location: $e');
       return Left(ServerFailure());
     }
   }
@@ -52,7 +49,6 @@ class HomeRepositoriesImpl extends HomeRepositories {
       final vehicleList = await homeDatasources.fetchVehicleList();
       return Right(vehicleList);
     } catch (e) {
-      print('Error fetching vehicle list: $e');
       return Left(CacheFailure());
     }
   }
@@ -148,7 +144,6 @@ class HomeRepositoriesImpl extends HomeRepositories {
       final response = await homeDatasources.fetchPaymentMethods();
       return Right(response);
     } catch (e) {
-      print('Error fetching payment method card list: $e');
       return Left(CacheFailure());
     }
   }

@@ -59,7 +59,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       (failure) => emit(state.copyWith(
           status: Status.error, message: _failureMessage(failure))),
       (_) {
-        print('successs');
         emit(state.copyWith(status: Status.success));
       },
     );

@@ -129,6 +129,7 @@ class ParkingItem extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
+                      // ignore: deprecated_member_use
                       color: priceStatusColor.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -151,6 +152,7 @@ class ParkingItem extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
+                      // ignore: deprecated_member_use
                       color: parkingStatusColor.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),

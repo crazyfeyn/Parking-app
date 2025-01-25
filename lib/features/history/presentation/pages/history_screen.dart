@@ -39,7 +39,7 @@ class _HistoryScreenState extends State<HistoryScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomProfileAppBarWidgetHistory(
-        title: 'History screen',
+        title: widget.pageNumber == 0 ? 'History screen' : 'Your listings',
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(56.0),
           child: Container(
