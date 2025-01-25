@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/config/stripe_service.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
-import 'package:flutter_application/features/history/presentation/widgets/error_refresh_widget.dart';
 import 'package:flutter_application/server_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
@@ -29,23 +28,30 @@ class SelectPaymentScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppDimens.PADDING_12),
-        child: BlocBuilder<HomeBloc, HomeState>(
+        child: BlocConsumer<HomeBloc, HomeState>(
+          listener: (context, state) {
+            if (state.status == Status.error) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.errorMessage ?? 'An error occurred'),
+                  action: SnackBarAction(
+                    label: 'Retry',
+                    onPressed: () {
+                      context
+                          .read<HomeBloc>()
+                          .add(const HomeEvent.fetchPaymentMethodList());
+                    },
+                  ),
+                ),
+              );
+            }
+          },
           builder: (context, state) {
             if (state.status == Status.loading) {
               return const Center(
                 child: CircularProgressIndicator(
                   color: Colors.red,
                   strokeWidth: 3,
-                ),
-              );
-            } else if (state.status == Status.error) {
-              return Center(
-                child: ErrorRefreshWidget(
-                  onRefresh: () {
-                    context
-                        .read<HomeBloc>()
-                        .add(const HomeEvent.fetchPaymentMethodList());
-                  },
                 ),
               );
             } else if (state.status == Status.success &&
@@ -99,7 +105,23 @@ class SelectPaymentScreen extends StatelessWidget {
                 ),
               );
             } else {
-              return const Center(child: Text('No payment methods found.'));
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('No payment methods found.'),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        context
+                            .read<HomeBloc>()
+                            .add(const HomeEvent.fetchPaymentMethodList());
+                      },
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
+              );
             }
           },
         ),

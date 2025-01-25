@@ -20,13 +20,17 @@ class FilterResultWidget extends StatelessWidget {
       ),
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.94,
-      child: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
+      child: BlocConsumer<HomeBloc, HomeState>(
+        listener: (context, state) {
           if (state.status == Status.error) {
-            return const Center(
-              child: Text("Not Found"),
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('An error occurred. Please try again.'),
+              ),
             );
           }
+        },
+        builder: (context, state) {
           if (state.status == Status.loading) {
             return const Center(
               child: CircularProgressIndicator(
@@ -35,144 +39,142 @@ class FilterResultWidget extends StatelessWidget {
               ),
             );
           }
+
           if (state.status == Status.success) {
             final locations = state.filterLocations;
-            return locations == null
-                ? const Center(
-                    child: Text('Something went wrong'),
-                  )
-                : locations.isEmpty
-                    ? const Center(
-                        child: Text('No locations found'),
-                      )
-                    : ListView.separated(
-                        itemCount: locations.length,
-                        separatorBuilder: (context, index) => 16.hs(),
-                        itemBuilder: (context, index) {
-                          final location = locations[index];
-                          return ZoomTapAnimation(
-                            onTap: () {
-                              // Navigate to the booking screen
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => BookingSpaceScreen(
-                                    locationModel: location,
+            if (locations == null) {
+              return const Center(
+                child: Text('Something went wrong'),
+              );
+            }
+
+            if (locations.isEmpty) {
+              return const Center(
+                child: Text('No locations found'),
+              );
+            }
+
+            return ListView.separated(
+              itemCount: locations.length,
+              separatorBuilder: (context, index) => 16.hs(),
+              itemBuilder: (context, index) {
+                final location = locations[index];
+                return ZoomTapAnimation(
+                  onTap: () {
+                    // Navigate to the booking screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BookingSpaceScreen(
+                          locationModel: location,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(AppDimens.PADDING_16),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.circular(AppDimens.BORDER_RADIUS_12),
+                      color: Colors.grey.shade200,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Parking name:',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.grey.shade700,
                                   ),
                                 ),
-                              );
-                            },
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.all(AppDimens.PADDING_16),
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    AppDimens.BORDER_RADIUS_12),
-                                color: Colors.grey.shade200,
-                              ),
+                                Text(
+                                  location.name,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Image.asset(
+                              'assets/images/logo_1.png',
+                              color: Colors.black,
+                              height: 45,
+                              width: 45,
+                            ),
+                          ],
+                        ),
+                        12.hs(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 115,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Parking name:',
-                                            style: TextStyle(
-                                              fontSize: 11,
-                                              color: Colors.grey.shade700,
-                                            ),
-                                          ),
-                                          Text(
-                                            location.name,
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Image.asset(
-                                        'assets/images/logo_1.png',
-                                        color: Colors.black,
-                                        height: 45,
-                                        width: 45,
-                                      ),
-                                    ],
+                                  Text(
+                                    'Available spaces: ${location.availableSpots ?? 0}',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: Colors.grey.shade700,
+                                    ),
                                   ),
-                                  12.hs(),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width: 115,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Available spaces: ${location.availableSpots ?? 0}',
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.grey.shade700,
-                                              ),
-                                            ),
-                                            Text(
-                                              '${location.availableSpots} spaces are available now',
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Free parking for all types of vehicles:',
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                              color: Colors.grey.shade700,
-                                            ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              _buildRateWidget(
-                                                  location.dailyRate.toString(),
-                                                  'Per day'),
-                                              17.ws(),
-                                              _buildRateWidget(
-                                                  location.weeklyRate
-                                                      .toString(),
-                                                  'Per week'),
-                                              17.ws(),
-                                              _buildRateWidget(
-                                                  location.monthlyRate
-                                                      .toString(),
-                                                  'Monthly'),
-                                            ],
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
+                                  Text(
+                                    '${location.availableSpots} spaces are available now',
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
-                          );
-                        },
-                      );
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Free parking for all types of vehicles:',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: Colors.grey.shade700,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    _buildRateWidget(
+                                        location.dailyRate.toString(),
+                                        'Per day'),
+                                    17.ws(),
+                                    _buildRateWidget(
+                                        location.weeklyRate.toString(),
+                                        'Per week'),
+                                    17.ws(),
+                                    _buildRateWidget(
+                                        location.monthlyRate.toString(),
+                                        'Monthly'),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
           }
+
           return Container();
         },
       ),

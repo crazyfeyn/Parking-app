@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/history/presentation/widgets/error_refresh_widget.dart';
 import 'package:flutter_application/features/home/data/models/booking_view.dart';
-import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
@@ -93,7 +91,30 @@ class _HistoryScreenState extends State<HistoryScreen>
           ),
         ),
       ),
-      body: BlocBuilder<HistoryBloc, HistoryState>(
+      body: BlocConsumer<HistoryBloc, HistoryState>(
+        listener: (context, state) {
+          if (state.status == Status.error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage ?? 'An error occurred'),
+                action: SnackBarAction(
+                  label: 'Retry',
+                  onPressed: () {
+                    if (_tabController.index == 0) {
+                      context
+                          .read<HistoryBloc>()
+                          .add(const HistoryEvent.getBookingList());
+                    } else {
+                      context
+                          .read<HistoryBloc>()
+                          .add(const HistoryEvent.getCurrentBookingList());
+                    }
+                  },
+                ),
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           if (state.status == Status.loading) {
             return const Center(
@@ -102,17 +123,6 @@ class _HistoryScreenState extends State<HistoryScreen>
                 strokeWidth: 3,
               ),
             );
-          } else if (state.status == Status.error) {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return ErrorRefreshWidget(
-                      onRefresh: () => Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => const MainScreen()),
-                            (route) => false,
-                          ));
-                });
           }
 
           return TabBarView(
