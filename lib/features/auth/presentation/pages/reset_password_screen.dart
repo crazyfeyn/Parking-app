@@ -32,7 +32,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text('Successfully changed'),
+                  title: const Text(
+                    'Successfully changed',
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
                   content: const Text(
                       'Your password has been changed successfully.'),
                   actions: [
@@ -53,7 +56,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             }
             if (state.status == Status.error) {
               AlertDialog(
-                content: const Text('Change Error'),
+                content: const Text(
+                  'Change Error',
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
                 actionsAlignment: MainAxisAlignment.spaceBetween,
                 actions: [
                   Expanded(

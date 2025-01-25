@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/features/profile/presentation/pages/add_new_vehicle_assist_screen.dart';
 import 'package:flutter_application/features/profile/presentation/provider/vehicle_provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,39 +62,37 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
               );
             }
 
-            if (state.vehicleList == null || state.vehicleList!.isEmpty) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.directions_car_outlined,
-                      size: 64,
-                      color: Colors.grey[400],
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'No vehicles have been added yet',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }
-
             return Column(
               children: [
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: state.vehicleList!.length,
-                    itemBuilder: (context, index) {
-                      final vehicle = state.vehicleList![index];
-                      return _buildVehicleCard(vehicle);
-                    },
-                  ),
+                  child: state.vehicleList == null || state.vehicleList!.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.directions_car_outlined,
+                                size: 64,
+                                color: Colors.grey[400],
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'No vehicles have been added yet',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: state.vehicleList!.length,
+                          itemBuilder: (context, index) {
+                            final vehicle = state.vehicleList![index];
+                            return _buildVehicleCard(vehicle);
+                          },
+                        ),
                 ),
                 ButtonWidget(
                   text: 'Add new vehicle',
@@ -109,6 +108,7 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
                     );
                   },
                 ),
+                5.hs(),
               ],
             );
           },

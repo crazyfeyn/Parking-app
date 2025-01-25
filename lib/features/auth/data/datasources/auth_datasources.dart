@@ -18,14 +18,10 @@ class AuthDatasources {
   }
   Timer? _tokenRefreshTimer;
   Future<void> logIn(String password, String email) async {
-    print(password);
-    print(email);
-    print('{"email": $email, "password": $password}');
     final recponce = await dio.post(
       '${AppConstants.baseseconUrl}users/token/',
       data: {"email": email, "password": password},
     );
-    print(recponce);
     if (recponce.statusCode == 200) {
       localAuthDatasources.saveRefreshToken(recponce.data['refresh']);
       localAuthDatasources.saveToken(recponce.data['access']);
@@ -36,7 +32,6 @@ class AuthDatasources {
 
   Future<void> register(
       String password, String email, String name, String surname) async {
-    print('${AppConstants.baseseconUrl}users/register/');
     final response = await dio.post(
       '${AppConstants.baseseconUrl}users/register/',
       data: {
@@ -47,9 +42,6 @@ class AuthDatasources {
       },
     );
 
-    print("Response data: ${response.data}");
-    print("Response status code: ${response.statusCode}");
-
     if (response.statusCode == 201) {
       return;
     } else {
@@ -58,7 +50,6 @@ class AuthDatasources {
   }
 
   Future<void> changePass(String oldPassword, String newPassword) async {
-    print('${AppConstants.baseseconUrl}users/register/');
     final response = await dio.post(
       '${AppConstants.baseseconUrl}users/change-password/',
       data: {
@@ -66,9 +57,6 @@ class AuthDatasources {
         'new_password': newPassword,
       },
     );
-
-    print("Response data: ${response.data}");
-    print("Response status code: ${response.statusCode}");
 
     if (response.statusCode == 200) {
       return;
@@ -87,7 +75,6 @@ class AuthDatasources {
       },
     );
     log('hellloooooo');
-    print(recponce);
     if (recponce.statusCode == 200) {
       return;
     }
@@ -95,7 +82,6 @@ class AuthDatasources {
   }
 
   Future<void> logOut() async {
-    print('hello from local datsoruces');
     return localAuthDatasources.logOut();
   }
 
@@ -163,8 +149,6 @@ class AuthDatasources {
   }
 
   Future<bool> authicated() async {
-    print('hello fro mdata');
-    print('REFRESSHSSHSH');
     // print(await localAuthDatasources.getRefreshToken());
     return localAuthDatasources.authicated();
   }
@@ -178,31 +162,25 @@ class DioInterceptor implements Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    print('Request: ${options.method} ${options.uri}');
-
     try {
       final token = await localConfig.getToken();
 
       if (token.isNotEmpty) {
         options.headers['Authorization'] = 'Bearer $token';
       }
-    } catch (e) {
-      print('Error fetching token: $e');
-    }
+      // ignore: empty_catches
+    } catch (e) {}
 
     handler.next(options);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print('Response: ${response.statusCode} ${response.data}');
     handler.next(response);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    print('Request failed: ${err.response?.statusCode}, ${err.message}');
-
     if (err.response?.statusCode == 401) {
       try {
         await _refreshToken();
@@ -216,7 +194,6 @@ class DioInterceptor implements Interceptor {
           return handler.resolve(clonedRequest);
         }
       } catch (e) {
-        print('Token refresh failed: $e');
         return handler.next(err);
       }
     }
@@ -244,7 +221,6 @@ class DioInterceptor implements Interceptor {
         throw Exception('Failed to refresh token');
       }
     } catch (e) {
-      print('Error during token refresh: $e');
       rethrow;
     }
   }

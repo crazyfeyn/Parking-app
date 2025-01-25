@@ -129,9 +129,9 @@ class _HistoryScreenState extends State<HistoryScreen>
             controller: _tabController,
             children: [
               _buildBookingList(
-                  state.bookingList, 'There is no booking history.'),
+                  state.bookingList, 'There is no booking history'),
               _buildBookingList(
-                  state.currentBookingList, 'There are no current bookings.'),
+                  state.currentBookingList, 'There are no current bookings'),
             ],
           );
         },

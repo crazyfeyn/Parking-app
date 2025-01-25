@@ -49,7 +49,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Change Error'),
+        title: const Text(
+          'Change Error',
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
+        actionsAlignment: MainAxisAlignment.spaceBetween,
         content: Text(message),
         actions: [
           TextButton(
