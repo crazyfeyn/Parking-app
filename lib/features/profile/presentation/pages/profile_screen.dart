@@ -6,8 +6,6 @@ import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_b
 import 'package:flutter_application/features/auth/presentation/pages/login_screen.dart';
 import 'package:flutter_application/features/auth/presentation/pages/reset_password_screen.dart';
 import 'package:flutter_application/features/history/presentation/pages/history_screen.dart';
-import 'package:flutter_application/features/history/presentation/widgets/error_refresh_widget.dart';
-import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
 import 'package:flutter_application/features/payment_screen/presentation/pages/select_payment_screen.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_application/features/profile/presentation/pages/contact_detail_screen.dart';
@@ -38,16 +36,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: BlocListener<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state.status == Status.error) {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return ErrorRefreshWidget(
-                      onRefresh: () => Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => const MainScreen()),
-                            (Route<dynamic> route) => false,
-                          ));
-                });
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('An error occurred while loading profile data!'),
+                backgroundColor: Colors.red,
+              ),
+            );
           }
         },
         child: BlocBuilder<ProfileBloc, ProfileState>(
@@ -205,16 +199,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             (route) => false,
           );
         } else if (state.status == Status.error) {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return ErrorRefreshWidget(
-                    onRefresh: () => Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) => const MainScreen()),
-                          (Route<dynamic> route) => false,
-                        ));
-              });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('An error occurred!')),
+          );
         }
       },
       builder: (context, state) {

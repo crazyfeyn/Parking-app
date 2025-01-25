@@ -61,7 +61,6 @@ class FilterResultWidget extends StatelessWidget {
                 final location = locations[index];
                 return ZoomTapAnimation(
                   onTap: () {
-                    // Navigate to the booking screen
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -96,11 +95,15 @@ class FilterResultWidget extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  location.name,
+                                  location.name.length <= 29
+                                      ? location.name
+                                      : '${location.name.substring(0, 29)}...',
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ],
                             ),

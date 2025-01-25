@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/home/presentation/widgets/booking_modal_bottom_widget.dart';
-import 'package:flutter_application/features/home/presentation/widgets/button_for_map_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/filter_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/search_home_widget.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
@@ -18,7 +17,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  GoogleMapController? mapController;
+  GoogleMapController? _mapController;
+  final UniqueKey _mapKey = UniqueKey();
 
   @override
   void initState() {
@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: BlocConsumer<HomeBloc, HomeState>(
         listener: (context, state) {
           if (state.status == Status.error) {
@@ -77,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
           markerId: const MarkerId('currentLocation'),
           position: state.currentLocation!,
           infoWindow: const InfoWindow(title: 'Current Location'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         ),
       if (state.locations != null)
         ...state.locations!
@@ -87,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 position: LatLng(loc.latitude!, loc.longitude!),
                 infoWindow: InfoWindow(title: loc.name),
                 onTap: () {
-                  mapController?.animateCamera(
+                  _mapController?.animateCamera(
                     CameraUpdate.newLatLngZoom(
                       LatLng(loc.latitude!, loc.longitude!),
                       15.0,
@@ -102,14 +104,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return Stack(
       children: [
         GoogleMap(
-          key: UniqueKey(),
+          key: _mapKey, // Use the unique key here
           initialCameraPosition: CameraPosition(
             target: location,
             zoom: 5,
           ),
           zoomControlsEnabled: false,
           onMapCreated: (controller) {
-            mapController = controller;
+            _mapController = controller;
           },
           myLocationEnabled: true,
           myLocationButtonEnabled: false,
@@ -127,42 +129,13 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        Positioned(
-          right: 10,
-          bottom: 10,
-          child: Column(
-            children: [
-              ButtonForMapWidget(
-                onTap: () =>
-                    mapController?.animateCamera(CameraUpdate.zoomIn()),
-                child: const Icon(Icons.add, size: 30),
-              ),
-              10.hs(),
-              ButtonForMapWidget(
-                onTap: () =>
-                    mapController?.animateCamera(CameraUpdate.zoomOut()),
-                child: const Icon(Icons.remove),
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          left: 10,
-          bottom: 15,
-          child: ButtonForMapWidget(
-            onTap: () => context
-                .read<HomeBloc>()
-                .add(const HomeEvent.getCurrentLocation()),
-            child: const Icon(Icons.location_on),
-          ),
-        ),
       ],
     );
   }
 
   @override
   void dispose() {
-    mapController?.dispose();
+    _mapController?.dispose();
     super.dispose();
   }
 }
