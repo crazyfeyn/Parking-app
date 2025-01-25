@@ -32,22 +32,31 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
           const CustomProfileAppBarWidget(title: 'Your vehicles information'),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: BlocBuilder<HomeBloc, HomeState>(
+        child: BlocConsumer<HomeBloc, HomeState>(
+          listener: (context, state) {
+            if (state.status == Status.error) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content:
+                      const Text('Failed to load vehicles. Please try again.'),
+                  action: SnackBarAction(
+                    label: 'Retry',
+                    onPressed: () {
+                      context
+                          .read<HomeBloc>()
+                          .add(const HomeEvent.getVehicleList());
+                    },
+                  ),
+                ),
+              );
+            }
+          },
           builder: (context, state) {
             if (state.status == Status.loading) {
               return const Center(
                 child: CircularProgressIndicator(
                   color: Colors.red,
                   strokeWidth: 3,
-                ),
-              );
-            }
-
-            if (state.status == Status.error) {
-              return Center(
-                child: Text(
-                  'Failed to load vehicles. Please try again.',
-                  style: TextStyle(color: Colors.grey[600]),
                 ),
               );
             }
@@ -64,24 +73,12 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'No vehicles added yet',
+                      'No vehicles have been added yet',
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.grey[600],
                       ),
                     ),
-                    // const SizedBox(height: 20),
-                    // ButtonWidget(
-                    //   text: 'Add new vehicle',
-                    //   onTap: () {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) => AddVehiclesScreen(),
-                    //       ),
-                    //     );
-                    //   },
-                    // ),
                   ],
                 ),
               );

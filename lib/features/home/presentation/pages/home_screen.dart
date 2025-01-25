@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/history/presentation/widgets/error_refresh_widget.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -36,20 +35,28 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<HomeBloc, HomeState>(
+      body: BlocConsumer<HomeBloc, HomeState>(
+        listener: (context, state) {
+          if (state.status == Status.error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text('No Internet, check your connection.'),
+                action: SnackBarAction(
+                  label: 'Retry',
+                  onPressed: () {
+                    _initializeData();
+                  },
+                ),
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           if (state.status == Status.initial) {
             return const Center(
-                child: CircularProgressIndicator(
-              color: Colors.red,
-              strokeWidth: 3,
-            ));
-          }
-
-          if (state.status == Status.error) {
-            return Center(
-              child: ErrorRefreshWidget(
-                onRefresh: _initializeData,
+              child: CircularProgressIndicator(
+                color: Colors.red,
+                strokeWidth: 3,
               ),
             );
           }
@@ -95,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Stack(
       children: [
         GoogleMap(
-          key: const Key('map_key'),
+          key: UniqueKey(),
           initialCameraPosition: CameraPosition(
             target: location,
             zoom: 5,
