@@ -11,17 +11,24 @@ import 'package:flutter_application/features/home/presentation/widgets/services_
 import 'package:flutter_application/features/home/presentation/widgets/state_picker.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-class FilterWidget extends StatelessWidget {
+class FilterWidget extends StatefulWidget {
   const FilterWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final filterModel = FilterModel();
+  // ignore: library_private_types_in_public_api
+  _FilterWidgetState createState() => _FilterWidgetState();
+}
 
+class _FilterWidgetState extends State<FilterWidget> {
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         return ZoomTapAnimation(
           onTap: () async {
+            // Reset the FilterModel to its initial state
+            final filterModel = FilterModel();
+
             await showModalBottomSheet(
               context: context,
               isScrollControlled: true,
