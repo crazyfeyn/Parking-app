@@ -42,9 +42,9 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Bizning ilovamizda sizning joriy joylashuvingizni ishlatish zarur, masalan, yaqin joylarni ko&apos;rsatish uchun.</string>
+	<string></string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Bizning ilovamizda doimiy joylashuvingizni ishlatish zarur, shunda biz sizni doimiy ravishda kuzatib borishimiz mumkin.</string>
+	<string>Our app requires access to your current location to provide personalized features, such as showcasing nearby places just for you</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

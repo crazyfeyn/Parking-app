@@ -60,6 +60,7 @@ dependencies:
   internet_connection_checker: ^3.0.1
   workmanager: ^0.5.2
   connectivity_plus: ^6.1.2
+  flutter_dotenv: ^5.2.1
 
 dev_dependencies:
   flutter_test:

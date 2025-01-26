@@ -42,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: const Text('No Internet, check your connection.'),
+                duration: const Duration(seconds: 10),
                 action: SnackBarAction(
                   label: 'Retry',
                   onPressed: () {

@@ -11,8 +11,6 @@ class AppConstants {
   static const Color blackColor = Color(0xFF000000);
   static const Color grayColor = Color(0xFFF2F2F3);
   static const Color shadeColor = Color(0xFF787878);
-  static const baseUrl = 'http://127.0.0.1:8000/';
-  static const baseseconUrl = 'https://parkmytrucks.com/api/';
   static const String sharedId = 'idUser';
   static const String userToken = 'userToken';
   static const String userRefresh = 'userRefresh';

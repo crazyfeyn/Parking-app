@@ -296,11 +296,10 @@ class HomeDatasources {
     bool? noTowedVehicles,
   }) async {
     try {
-      // Build query parameters dynamically
       final Map<String, dynamic> queryParameters = {};
 
       if (city != null) {
-        queryParameters['city'] = city;
+        queryParameters['search'] = city;
       }
       if (state != null) {
         queryParameters['state'] = state;
@@ -392,7 +391,6 @@ class HomeDatasources {
         queryParameters['no_towed_vehicles'] = noTowedVehicles;
       }
 
-      // Make the API request with query parameters
       final response = await dio.get(
         '/locations/list/',
         queryParameters: queryParameters,
@@ -405,8 +403,9 @@ class HomeDatasources {
           return [];
         }
 
-        // Parse the response into a list of LocationModel
         final List<LocationModel> bookings = data.map((json) {
+          print('------');
+          print(json);
           return LocationModel(
             id: json['id'],
             name: json['name'],
