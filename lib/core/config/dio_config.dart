@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_application/core/config/local_config.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/error/exception.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class DioConfig {
   late final Dio _dio;
@@ -13,7 +14,7 @@ class DioConfig {
   ) {
     _dio = Dio(
       BaseOptions(
-        baseUrl: AppConstants.baseseconUrl,
+        baseUrl: dotenv.env["baseseconUrl"]!,
         connectTimeout: const Duration(seconds: 15),
         receiveTimeout: const Duration(seconds: 15),
         headers: {
@@ -85,7 +86,7 @@ class DioInterceptor extends Interceptor {
 
     try {
       final response = await Dio().post(
-        '${AppConstants.baseseconUrl}users/token/refresh/',
+        '${dotenv.env["baseseconUrl"]}users/token/refresh/',
         data: {'refresh': refreshToken},
       );
 

@@ -296,18 +296,12 @@ class HomeDatasources {
     bool? noTowedVehicles,
   }) async {
     try {
-      // Build query parameters dynamically
       final Map<String, dynamic> queryParameters = {};
 
-      if (city != null) {
-        queryParameters['city'] = city;
-      }
-      if (state != null) {
-        queryParameters['state'] = state;
-      }
-      if (truckAllowed != null) {
-        queryParameters['truck_allowed'] = truckAllowed;
-      }
+      // Add filters to query parameters if they are not null
+      if (city != null) queryParameters['city'] = city;
+      if (state != null) queryParameters['state'] = state;
+      if (truckAllowed != null) queryParameters['truck_allowed'] = truckAllowed;
       if (trailerAllowed != null) {
         queryParameters['trailer_allowed'] = trailerAllowed;
       }
@@ -329,24 +323,14 @@ class HomeDatasources {
       if (doubleStackAllowed != null) {
         queryParameters['double_stack_allowed'] = doubleStackAllowed;
       }
-      if (bobtailOnly != null) {
-        queryParameters['bobtail_only'] = bobtailOnly;
-      }
+      if (bobtailOnly != null) queryParameters['bobtail_only'] = bobtailOnly;
       if (containersOnly != null) {
         queryParameters['containers_only'] = containersOnly;
       }
-      if (cameras != null) {
-        queryParameters['cameras'] = cameras;
-      }
-      if (fenced != null) {
-        queryParameters['fenced'] = fenced;
-      }
-      if (asphalt != null) {
-        queryParameters['asphalt'] = asphalt;
-      }
-      if (lights != null) {
-        queryParameters['lights'] = lights;
-      }
+      if (cameras != null) queryParameters['cameras'] = cameras;
+      if (fenced != null) queryParameters['fenced'] = fenced;
+      if (asphalt != null) queryParameters['asphalt'] = asphalt;
+      if (lights != null) queryParameters['lights'] = lights;
       if (twentyFourHours != null) {
         queryParameters['twenty_four_hours'] = twentyFourHours;
       }
@@ -366,15 +350,9 @@ class HomeDatasources {
       if (laundryMachines != null) {
         queryParameters['laundry_machines'] = laundryMachines;
       }
-      if (freeShowers != null) {
-        queryParameters['free_showers'] = freeShowers;
-      }
-      if (paidShowers != null) {
-        queryParameters['paid_showers'] = paidShowers;
-      }
-      if (repairShop != null) {
-        queryParameters['repair_shop'] = repairShop;
-      }
+      if (freeShowers != null) queryParameters['free_showers'] = freeShowers;
+      if (paidShowers != null) queryParameters['paid_showers'] = paidShowers;
+      if (repairShop != null) queryParameters['repair_shop'] = repairShop;
       if (paidContainerStackingServices != null) {
         queryParameters['paid_container_stacking_services'] =
             paidContainerStackingServices;
@@ -382,30 +360,29 @@ class HomeDatasources {
       if (trailerSnowScraper != null) {
         queryParameters['trailer_snow_scraper'] = trailerSnowScraper;
       }
-      if (truckWash != null) {
-        queryParameters['truck_wash'] = truckWash;
-      }
-      if (food != null) {
-        queryParameters['food'] = food;
-      }
+      if (truckWash != null) queryParameters['truck_wash'] = truckWash;
+      if (food != null) queryParameters['food'] = food;
       if (noTowedVehicles != null) {
         queryParameters['no_towed_vehicles'] = noTowedVehicles;
       }
 
-      // Make the API request with query parameters
+      print('Query Parameters: $queryParameters');
+
+      // Make the API request
       final response = await dio.get(
-        '/locations/list/',
+        '/locations/active-list/',
         queryParameters: queryParameters,
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = response.data['results'] as List<dynamic>;
+        final List<dynamic> data = response.data as List<dynamic>;
+        print('Response Data: ${response.data}');
 
         if (data.isEmpty) {
           return [];
         }
 
-        // Parse the response into a list of LocationModel
+        // Map the response data to LocationModel
         final List<LocationModel> bookings = data.map((json) {
           return LocationModel(
             id: json['id'],
@@ -479,9 +456,11 @@ class HomeDatasources {
       } else {
         throw ServerException();
       }
-    } on DioException {
+    } on DioException catch (e) {
+      print('DioException: ${e.message}');
       throw ServerException();
     } catch (e) {
+      print('Error: ${e.toString()}');
       throw ServerException();
     }
   }

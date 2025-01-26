@@ -97,7 +97,6 @@ class HomeRepositoriesImpl extends HomeRepositories {
     bool? noTowedVehicles,
   }) async {
     try {
-      // Call the datasource method with named parameters
       final filteredLocation = await homeDatasources.fetchBookingsWithFilters(
         city: city,
         state: state,

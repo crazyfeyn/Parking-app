@@ -40,6 +40,7 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
                 SnackBar(
                   content:
                       const Text('Failed to load vehicles. Please try again.'),
+                  duration: const Duration(seconds: 10),
                   action: SnackBarAction(
                     label: 'Retry',
                     onPressed: () {

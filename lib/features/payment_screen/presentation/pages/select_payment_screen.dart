@@ -34,6 +34,7 @@ class SelectPaymentScreen extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.errorMessage ?? 'An error occurred'),
+                  duration: const Duration(seconds: 10),
                   action: SnackBarAction(
                     label: 'Retry',
                     onPressed: () {

@@ -1,11 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
-import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/error/exception.dart';
 import 'package:flutter_application/features/auth/data/datasources/local_auth_datasources.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AuthDatasources {
   Dio dio;
@@ -19,7 +18,7 @@ class AuthDatasources {
   Timer? _tokenRefreshTimer;
   Future<void> logIn(String password, String email) async {
     final recponce = await dio.post(
-      '${AppConstants.baseseconUrl}users/token/',
+      '${dotenv.env["baseseconUrl"]}users/token/',
       data: {"email": email, "password": password},
     );
     if (recponce.statusCode == 200) {
@@ -33,7 +32,7 @@ class AuthDatasources {
   Future<void> register(
       String password, String email, String name, String surname) async {
     final response = await dio.post(
-      '${AppConstants.baseseconUrl}users/register/',
+      '${dotenv.env["baseseconUrl"]}users/register/',
       data: {
         "email": email,
         "password": password,
@@ -51,7 +50,7 @@ class AuthDatasources {
 
   Future<void> changePass(String oldPassword, String newPassword) async {
     final response = await dio.post(
-      '${AppConstants.baseseconUrl}users/change-password/',
+      '${dotenv.env["baseseconUrl"]}users/change-password/',
       data: {
         'old_password': oldPassword,
         'new_password': newPassword,
@@ -130,7 +129,7 @@ class AuthDatasources {
       }
 
       final response = await dio.post(
-        '${AppConstants.baseseconUrl}users/token/refresh/',
+        '${dotenv.env["baseseconUrl"]}users/token/refresh/',
         data: {'refresh': token},
       );
 
@@ -210,7 +209,7 @@ class DioInterceptor implements Interceptor {
 
     try {
       final response = await Dio().post(
-        '${AppConstants.baseseconUrl}users/token/refresh/',
+        '${dotenv.env["baseseconUrl"]}users/token/refresh/',
         data: {'refresh': refreshToken},
       );
 

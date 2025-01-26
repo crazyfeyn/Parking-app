@@ -21,21 +21,25 @@ class FilterResultWidget extends StatelessWidget {
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.94,
       child: BlocConsumer<HomeBloc, HomeState>(
-        listener: (context, state) {
-          if (state.status == Status.error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('An error occurred. Please try again.'),
-              ),
-            );
-          }
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           if (state.status == Status.loading) {
             return const Center(
               child: CircularProgressIndicator(
                 color: Colors.red,
                 strokeWidth: 3,
+              ),
+            );
+          }
+
+          if (state.status == Status.error) {
+            return const Center(
+              child: Text(
+                'An error occurred. Please try again.',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.red,
+                ),
               ),
             );
           }
