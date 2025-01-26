@@ -1,0 +1,12 @@
+// dotenv.gradle
+def dotenv = [:]
+def envFile = rootProject.file('.env')
+if (envFile.exists()) {
+    envFile.readLines().each { line ->
+        def (key, value) = line.tokenize('=')
+        dotenv[key] = value
+    }
+} else {
+    throw new GradleException("Missing .env file!")
+}
+ext.dotenv = dotenv

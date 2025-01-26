@@ -298,7 +298,6 @@ class HomeDatasources {
     try {
       final Map<String, dynamic> queryParameters = {};
 
-      // Add filters to query parameters if they are not null
       if (city != null) queryParameters['city'] = city;
       if (state != null) queryParameters['state'] = state;
       if (truckAllowed != null) queryParameters['truck_allowed'] = truckAllowed;
@@ -368,7 +367,6 @@ class HomeDatasources {
 
       print('Query Parameters: $queryParameters');
 
-      // Make the API request
       final response = await dio.get(
         '/locations/active-list/',
         queryParameters: queryParameters,
@@ -376,13 +374,11 @@ class HomeDatasources {
 
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data as List<dynamic>;
-        print('Response Data: ${response.data}');
 
         if (data.isEmpty) {
           return [];
         }
 
-        // Map the response data to LocationModel
         final List<LocationModel> bookings = data.map((json) {
           return LocationModel(
             id: json['id'],
