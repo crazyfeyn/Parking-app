@@ -298,77 +298,48 @@ class HomeDatasources {
     try {
       final Map<String, dynamic> queryParameters = {};
 
-      // Add filters to query parameters if they are not null
+      // Add city and state only if they are not null
       if (city != null) queryParameters['city'] = city;
       if (state != null) queryParameters['state'] = state;
-      if (truckAllowed != null) queryParameters['truck_allowed'] = truckAllowed;
-      if (trailerAllowed != null) {
-        queryParameters['trailer_allowed'] = trailerAllowed;
-      }
-      if (truckTrailerAllowed != null) {
-        queryParameters['truck_trailer_allowed'] = truckTrailerAllowed;
-      }
-      if (repairsAllowed != null) {
-        queryParameters['repairs_allowed'] = repairsAllowed;
-      }
-      if (lowboysAllowed != null) {
-        queryParameters['lowboys_allowed'] = lowboysAllowed;
-      }
-      if (oversizedAllowed != null) {
-        queryParameters['oversized_allowed'] = oversizedAllowed;
-      }
-      if (hazmatAllowed != null) {
-        queryParameters['hazmat_allowed'] = hazmatAllowed;
-      }
-      if (doubleStackAllowed != null) {
-        queryParameters['double_stack_allowed'] = doubleStackAllowed;
-      }
-      if (bobtailOnly != null) queryParameters['bobtail_only'] = bobtailOnly;
-      if (containersOnly != null) {
-        queryParameters['containers_only'] = containersOnly;
-      }
-      if (cameras != null) queryParameters['cameras'] = cameras;
-      if (fenced != null) queryParameters['fenced'] = fenced;
-      if (asphalt != null) queryParameters['asphalt'] = asphalt;
-      if (lights != null) queryParameters['lights'] = lights;
-      if (twentyFourHours != null) {
-        queryParameters['twenty_four_hours'] = twentyFourHours;
-      }
-      if (limitedEntryExitTimes != null) {
-        queryParameters['limited_entry_exit_times'] = limitedEntryExitTimes;
-      }
-      if (securityAtGate != null) {
-        queryParameters['security_at_gate'] = securityAtGate;
-      }
-      if (roamingSecurity != null) {
-        queryParameters['roaming_security'] = roamingSecurity;
-      }
-      if (landingGearSupportRequired != null) {
-        queryParameters['landing_gear_support_required'] =
-            landingGearSupportRequired;
-      }
-      if (laundryMachines != null) {
-        queryParameters['laundry_machines'] = laundryMachines;
-      }
-      if (freeShowers != null) queryParameters['free_showers'] = freeShowers;
-      if (paidShowers != null) queryParameters['paid_showers'] = paidShowers;
-      if (repairShop != null) queryParameters['repair_shop'] = repairShop;
-      if (paidContainerStackingServices != null) {
-        queryParameters['paid_container_stacking_services'] =
-            paidContainerStackingServices;
-      }
-      if (trailerSnowScraper != null) {
-        queryParameters['trailer_snow_scraper'] = trailerSnowScraper;
-      }
-      if (truckWash != null) queryParameters['truck_wash'] = truckWash;
-      if (food != null) queryParameters['food'] = food;
-      if (noTowedVehicles != null) {
-        queryParameters['no_towed_vehicles'] = noTowedVehicles;
-      }
+
+      // Add boolean parameters only if they are true
+      if (truckAllowed == true) queryParameters['truck_allowed'] = true;
+      if (trailerAllowed == true) queryParameters['trailer_allowed'] = true;
+      if (truckTrailerAllowed == true)
+        queryParameters['truck_trailer_allowed'] = true;
+      if (repairsAllowed == true) queryParameters['repairs_allowed'] = true;
+      if (lowboysAllowed == true) queryParameters['lowboys_allowed'] = true;
+      if (oversizedAllowed == true) queryParameters['oversized_allowed'] = true;
+      if (hazmatAllowed == true) queryParameters['hazmat_allowed'] = true;
+      if (doubleStackAllowed == true)
+        queryParameters['double_stack_allowed'] = true;
+      if (bobtailOnly == true) queryParameters['bobtail_only'] = true;
+      if (containersOnly == true) queryParameters['containers_only'] = true;
+      if (cameras == true) queryParameters['cameras'] = true;
+      if (fenced == true) queryParameters['fenced'] = true;
+      if (asphalt == true) queryParameters['asphalt'] = true;
+      if (lights == true) queryParameters['lights'] = true;
+      if (twentyFourHours == true) queryParameters['twenty_four_hours'] = true;
+      if (limitedEntryExitTimes == true)
+        queryParameters['limited_entry_exit_times'] = true;
+      if (securityAtGate == true) queryParameters['security_at_gate'] = true;
+      if (roamingSecurity == true) queryParameters['roaming_security'] = true;
+      if (landingGearSupportRequired == true)
+        queryParameters['landing_gear_support_required'] = true;
+      if (laundryMachines == true) queryParameters['laundry_machines'] = true;
+      if (freeShowers == true) queryParameters['free_showers'] = true;
+      if (paidShowers == true) queryParameters['paid_showers'] = true;
+      if (repairShop == true) queryParameters['repair_shop'] = true;
+      if (paidContainerStackingServices == true)
+        queryParameters['paid_container_stacking_services'] = true;
+      if (trailerSnowScraper == true)
+        queryParameters['trailer_snow_scraper'] = true;
+      if (truckWash == true) queryParameters['truck_wash'] = true;
+      if (food == true) queryParameters['food'] = true;
+      if (noTowedVehicles == true) queryParameters['no_towed_vehicles'] = true;
 
       print('Query Parameters: $queryParameters');
 
-      // Make the API request
       final response = await dio.get(
         '/locations/active-list/',
         queryParameters: queryParameters,
@@ -376,7 +347,6 @@ class HomeDatasources {
 
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data as List<dynamic>;
-        print('Response Data: ${response.data}');
 
         if (data.isEmpty) {
           return [];
