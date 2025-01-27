@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application/core/config/stripe_service.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart'; // Import the package
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class PaymentMethodPicker extends StatefulWidget {
   final Function(String, int) onStateChanged;
@@ -18,7 +18,6 @@ class PaymentMethodPicker extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _PaymentMethodPickerState createState() => _PaymentMethodPickerState();
 }
 
@@ -54,14 +53,14 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
       builder: (context) {
         return SizedBox(
           height: 400,
-          child: Expanded(
-              child: ListView(
+          child: ListView(
             shrinkWrap: true,
             children: [
               ...existingPaymentMethods.map((method) {
+                final last4Digits = method['card']['last4'] as String?;
                 return ListTile(
                   title: Text(
-                    _maskCardNumber(method['card']['last4']),
+                    _maskCardNumber(last4Digits),
                     style: const TextStyle(
                       fontSize: 15,
                     ),
@@ -69,17 +68,18 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
                   leading: const Icon(Icons.credit_card),
                   onTap: () {
                     setState(() {
-                      selectedPaymentMethods =
-                          _maskCardNumber(method['card']['last4']);
+                      selectedPaymentMethods = _maskCardNumber(last4Digits);
                     });
                     widget.onStateChanged(
-                        method['stripe_payment_method_id'], method['id']);
+                      method['stripe_payment_method_id']?.toString() ?? '',
+                      method['id'] as int? ?? 0, // Handle null
+                    );
                     Navigator.pop(context);
                   },
                 );
               }),
             ],
-          )),
+          ),
         );
       },
     );
@@ -98,16 +98,13 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
     return BlocListener<HomeBloc, HomeState>(
       listener: (context, state) {
         if (state.status == Status.error) {
-          // Show a MaterialBanner at the top of the screen
           ScaffoldMessenger.of(context).showMaterialBanner(
             MaterialBanner(
               content: Text(state.errorMessage ?? 'An error occurred'),
               actions: [
                 TextButton(
                   onPressed: () {
-                    // Dismiss the banner
                     ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-                    // Optionally, retry the operation
                     _fetchExistingPaymentMethods();
                   },
                   child: const Text('Retry'),
@@ -217,7 +214,8 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
   }
 }
 
-String _maskCardNumber(String last4Digits) {
+// Handle null values in the card number masking
+String _maskCardNumber(String? last4Digits) {
   const maskedDigits = '**** **** **** ';
-  return maskedDigits + last4Digits;
+  return maskedDigits + (last4Digits ?? '****');
 }

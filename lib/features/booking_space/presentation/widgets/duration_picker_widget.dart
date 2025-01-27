@@ -28,7 +28,7 @@ class _DurationPickerWidgetState extends State<DurationPickerWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Duration (days)',
+          'Duration',
           style: TextStyle(
             fontSize: 16,
             color: Colors.grey,

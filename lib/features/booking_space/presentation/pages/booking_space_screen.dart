@@ -104,7 +104,6 @@ class BookingButton extends StatelessWidget {
       onTap: () async {
         if (provider.isFormValid) {
           final response = await provider.handleBooking();
-
           if (response == Status.success) {
             showDialog(
               context: context,

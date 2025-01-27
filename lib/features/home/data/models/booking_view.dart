@@ -15,7 +15,7 @@ class BookingView {
   final DateTime createdAt;
   final String reservationNumber;
   final DateTime lastUpdated;
-  final int extendedFor;
+  final int? extendedFor; // Make this field nullable
 
   BookingView({
     required this.id,
@@ -34,7 +34,7 @@ class BookingView {
     required this.createdAt,
     required this.reservationNumber,
     required this.lastUpdated,
-    required this.extendedFor,
+    this.extendedFor, // Make this field nullable
   });
 
   factory BookingView.fromJson(Map<String, dynamic> json) {
@@ -55,7 +55,7 @@ class BookingView {
       createdAt: DateTime.parse(json['created_at']),
       reservationNumber: json['reservation_number'],
       lastUpdated: DateTime.parse(json['last_updated']),
-      extendedFor: json['extended_for'],
+      extendedFor: json['extended_for'], // This can now be null
     );
   }
 

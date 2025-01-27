@@ -44,7 +44,7 @@ class BookingModel {
       'daily': daily,
       'monthly': monthly,
       'start_date': formattedDate,
-      'payment_method_id': paymentMethodId,
+      'payment_method': paymentMethodId,
       'location': locationId,
     };
   }
