@@ -11,6 +11,7 @@ class HistoryDatasources {
     try {
       final response = await dio.get('/bookings/list/');
       if (response.statusCode == 200) {
+        print(response.data);
         return (response.data as List)
             .map((json) => BookingView.fromJson(json))
             .toList();
@@ -19,7 +20,8 @@ class HistoryDatasources {
       }
     } on DioException {
       throw ServerException();
-    } catch (_) {
+    } catch (e) {
+      print(e.toString());
       throw ServerException();
     }
   }
