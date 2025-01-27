@@ -27,6 +27,10 @@ class AppConstants {
     fontWeight: FontWeight.w400,
     color: AppConstants.blackColor,
   );
+  static const stripePublishableKey =
+      "pk_live_51QJJwLKGxTbJF2zHAAwb5WwS0W8FrHwWQ3MOjF17dHXFHylffb3EpfoCecxi8IAXTZkH69hi1jkQyHpXpW5obb7O00WF7hunHE";
+  static const baseseconUrl = "https://parkmytrucks.com/api/";
+  static const GOOGLE_MAPS_API_KEY = "AIzaSyDm9itJq8n-dpqw4m88T3NuGaPTU7RFT-E";
 }
 
 enum Status { loading, error, success, initial, errorNetwork }
