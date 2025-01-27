@@ -52,30 +52,34 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return ListView(
-          shrinkWrap: true,
-          children: [
-            ...existingPaymentMethods.map((method) {
-              return ListTile(
-                title: Text(
-                  _maskCardNumber(method['card']['last4']),
-                  style: const TextStyle(
-                    fontSize: 15,
+        return SizedBox(
+          height: 400,
+          child: Expanded(
+              child: ListView(
+            shrinkWrap: true,
+            children: [
+              ...existingPaymentMethods.map((method) {
+                return ListTile(
+                  title: Text(
+                    _maskCardNumber(method['card']['last4']),
+                    style: const TextStyle(
+                      fontSize: 15,
+                    ),
                   ),
-                ),
-                leading: const Icon(Icons.credit_card),
-                onTap: () {
-                  setState(() {
-                    selectedPaymentMethods =
-                        _maskCardNumber(method['card']['last4']);
-                  });
-                  widget.onStateChanged(
-                      method['stripe_payment_method_id'], method['id']);
-                  Navigator.pop(context);
-                },
-              );
-            }),
-          ],
+                  leading: const Icon(Icons.credit_card),
+                  onTap: () {
+                    setState(() {
+                      selectedPaymentMethods =
+                          _maskCardNumber(method['card']['last4']);
+                    });
+                    widget.onStateChanged(
+                        method['stripe_payment_method_id'], method['id']);
+                    Navigator.pop(context);
+                  },
+                );
+              }),
+            ],
+          )),
         );
       },
     );
@@ -136,11 +140,10 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
             ),
             const SizedBox(height: 8),
             if (isLoading)
-              // Disabled button while loading
               IgnorePointer(
-                ignoring: true, // Make the button untappable
+                ignoring: true,
                 child: Opacity(
-                  opacity: 0.5, // Make the button look disabled
+                  opacity: 0.5,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,

@@ -120,16 +120,19 @@ class BookingButton extends StatelessWidget {
               },
             );
           } else {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return ErrorRefreshWidget(
-                      onRefresh: () => Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => const MainScreen()),
-                            (Route<dynamic> route) => false,
-                          ));
-                });
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text(
+                    'Error occurred while booking. Please try again.'),
+                duration: const Duration(seconds: 5),
+                action: SnackBarAction(
+                  label: 'Retry',
+                  onPressed: () {
+                    provider.handleBooking();
+                  },
+                ),
+              ),
+            );
           }
         } else {
           return null;
@@ -159,3 +162,18 @@ class BookingButton extends StatelessWidget {
     );
   }
 }
+
+
+
+// ScaffoldMessenger.of(context).showSnackBar(
+//               SnackBar(
+//                 content: const Text('No Internet, check your connection.'),
+//                 duration: const Duration(seconds: 10),
+//                 action: SnackBarAction(
+//                   label: 'Retry',
+//                   onPressed: () {
+//                     _initializeData();
+//                   },
+//                 ),
+//               ),
+//             );

@@ -106,23 +106,7 @@ class SelectPaymentScreen extends StatelessWidget {
                 ),
               );
             } else {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('No payment methods found.'),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        context
-                            .read<HomeBloc>()
-                            .add(const HomeEvent.fetchPaymentMethodList());
-                      },
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                ),
-              );
+              return const SizedBox();
             }
           },
         ),

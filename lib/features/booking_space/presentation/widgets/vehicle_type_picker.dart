@@ -46,6 +46,22 @@ class _VehicleTypePickerState extends State<VehicleTypePicker> {
         ),
       ),
       builder: (BuildContext context) {
+        if (vehicleTypes.isEmpty) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'No vehicles available. Please add a new vehicle.',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        }
         return ListView.builder(
           itemCount: vehicleTypes.length,
           itemBuilder: (context, index) {

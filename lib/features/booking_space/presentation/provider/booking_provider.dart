@@ -134,13 +134,16 @@ class BookingProvider extends ChangeNotifier {
     if (!isFormValid) return null;
 
     try {
+      final formattedDate =
+          "${_selectedDate!.year}-${_selectedDate!.month.toString().padLeft(2, '0')}-${_selectedDate!.day.toString().padLeft(2, '0')}";
+
       final booking = BookingModel(
         vehicleId: _selectedVehicleId!,
         duration: int.parse(_selectedDuration!),
-        weekly: _selectedBookingType == 'Weekly',
-        daily: _selectedBookingType == 'Daily',
-        monthly: _selectedBookingType == 'Monthly',
-        startDate: _selectedDate!.toIso8601String(),
+        weekly: _selectedBookingType == 'weekly',
+        daily: _selectedBookingType == 'daily',
+        monthly: _selectedBookingType == 'monthly',
+        startDate: formattedDate,
         paymentMethodId: _paymentId!,
         locationId: locationModel.id,
       );
