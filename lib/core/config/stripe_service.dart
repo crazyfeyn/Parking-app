@@ -33,7 +33,6 @@ class StripeService {
             merchantDisplayName: 'Parking App',
             customerId: secretKey['customerId'],
             customerEphemeralKeySecret: secretKey['customerEphemeralKeySecret'],
-            allowsRemovalOfLastSavedPaymentMethod: false,
           ),
         );
 
