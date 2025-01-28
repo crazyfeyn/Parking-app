@@ -21,9 +21,18 @@ class _HomeScreenState extends State<HomeScreen> {
   GoogleMapController? _mapController;
   final UniqueKey _mapKey = UniqueKey();
 
+  // USA bounds
+  static LatLngBounds usaBounds = LatLngBounds(
+    southwest: const LatLng(
+        24.396308, -125.000000), // Southwest corner of continental US
+    northeast: const LatLng(
+        49.384358, -66.934570), // Northeast corner of continental US
+  );
+
   @override
   void initState() {
     super.initState();
+    context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
     _initializeData();
   }
 
@@ -31,6 +40,71 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
     context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
     context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
+  }
+
+  void _focusOnSearchedLocations(List<LocationModel> searchedLocations) {
+    if (searchedLocations.isEmpty || _mapController == null) return;
+
+    final validLocations = searchedLocations
+        .where((loc) =>
+            loc.latitude != null &&
+            loc.longitude != null &&
+            _isWithinUSA(loc.latitude!, loc.longitude!))
+        .toList();
+
+    if (validLocations.isEmpty) return;
+
+    // For single location
+    if (validLocations.length == 1) {
+      _mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(
+          LatLng(
+              validLocations.first.latitude!, validLocations.first.longitude!),
+          8, // Closer zoom for single location
+        ),
+      );
+      return;
+    }
+
+    // For multiple locations, calculate visible region within USA bounds
+    double minLat = validLocations
+        .map((loc) => loc.latitude!)
+        .reduce((a, b) => a < b ? a : b);
+    double maxLat = validLocations
+        .map((loc) => loc.latitude!)
+        .reduce((a, b) => a > b ? a : b);
+    double minLng = validLocations
+        .map((loc) => loc.longitude!)
+        .reduce((a, b) => a < b ? a : b);
+    double maxLng = validLocations
+        .map((loc) => loc.longitude!)
+        .reduce((a, b) => a > b ? a : b);
+
+    // Ensure we stay within USA bounds
+    minLat = minLat.clamp(
+        usaBounds.southwest.latitude, usaBounds.northeast.latitude);
+    maxLat = maxLat.clamp(
+        usaBounds.southwest.latitude, usaBounds.northeast.latitude);
+    minLng = minLng.clamp(
+        usaBounds.southwest.longitude, usaBounds.northeast.longitude);
+    maxLng = maxLng.clamp(
+        usaBounds.southwest.longitude, usaBounds.northeast.longitude);
+
+    final bounds = LatLngBounds(
+      southwest: LatLng(minLat, minLng),
+      northeast: LatLng(maxLat, maxLng),
+    );
+
+    _mapController?.animateCamera(
+      CameraUpdate.newLatLngBounds(bounds, 50),
+    );
+  }
+
+  bool _isWithinUSA(double lat, double lng) {
+    return lat >= usaBounds.southwest.latitude &&
+        lat <= usaBounds.northeast.latitude &&
+        lng >= usaBounds.southwest.longitude &&
+        lng <= usaBounds.northeast.longitude;
   }
 
   @override
@@ -53,6 +127,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           }
+
+          if (state.searchLocations?.isNotEmpty == true) {
+            _focusOnSearchedLocations(state.searchLocations!);
+          }
         },
         builder: (context, state) {
           if (state.status == Status.initial) {
@@ -71,14 +149,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildGoogleMap(HomeState state) {
-    final location =
-        state.currentLocation ?? const LatLng(33.592806, -84.388716);
-
-    // Use searchLocations if it's not empty or null, otherwise use locations
-    final List<LocationModel>? locationsToDisplay =
-        state.searchLocations?.isNotEmpty == true
-            ? state.searchLocations
-            : state.locations;
+    // Use current location as the initial position if available
+    final initialPosition =
+        state.currentLocation ?? const LatLng(39.8283, -98.5795);
 
     Set<Marker> markers = {
       if (state.currentLocation != null)
@@ -88,19 +161,26 @@ class _HomeScreenState extends State<HomeScreen> {
           infoWindow: const InfoWindow(title: 'Current Location'),
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         ),
-      if (locationsToDisplay != null)
-        ...locationsToDisplay
+      if (state.locations != null)
+        ...state.locations!
             .where((loc) => loc.latitude != null && loc.longitude != null)
             .map(
               (loc) => Marker(
                 markerId: MarkerId(loc.id.toString()),
                 position: LatLng(loc.latitude!, loc.longitude!),
                 infoWindow: InfoWindow(title: loc.name),
+                icon: state.searchLocations
+                            ?.any((searchLoc) => searchLoc.id == loc.id) ==
+                        true
+                    ? BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueGreen)
+                    : BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueRed),
                 onTap: () {
                   _mapController?.animateCamera(
                     CameraUpdate.newLatLngZoom(
                       LatLng(loc.latitude!, loc.longitude!),
-                      15,
+                      22,
                     ),
                   );
                   showLocationDetails(context, loc);
@@ -114,12 +194,18 @@ class _HomeScreenState extends State<HomeScreen> {
         GoogleMap(
           key: _mapKey,
           initialCameraPosition: CameraPosition(
-            target: location,
-            zoom: 5,
+            target: initialPosition,
+            zoom: state.currentLocation != null
+                ? 14
+                : 4, // Zoom closer if current location is available
           ),
+          minMaxZoomPreference: const MinMaxZoomPreference(4, 20),
+          cameraTargetBounds: CameraTargetBounds(usaBounds),
           zoomControlsEnabled: false,
           onMapCreated: (controller) {
             _mapController = controller;
+            controller
+                .animateCamera(CameraUpdate.newLatLngBounds(usaBounds, 0));
           },
           myLocationEnabled: true,
           myLocationButtonEnabled: false,
@@ -146,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 _mapController?.animateCamera(
                   CameraUpdate.newLatLngZoom(
                     state.currentLocation!,
-                    15,
+                    22,
                   ),
                 );
               }
