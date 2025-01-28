@@ -42,7 +42,7 @@ class SearchWidget extends StatelessWidget {
                 context
                     .read<HomeBloc>()
                     .add(HomeEvent.fetchSearchLocations(searchController.text));
-                openGotNext(context);
+                Navigator.of(context);
               },
               decoration: InputDecoration(
                 labelText: 'Where to park',

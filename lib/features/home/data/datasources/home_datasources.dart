@@ -305,14 +305,16 @@ class HomeDatasources {
       // Add boolean parameters only if they are true
       if (truckAllowed == true) queryParameters['truck_allowed'] = true;
       if (trailerAllowed == true) queryParameters['trailer_allowed'] = true;
-      if (truckTrailerAllowed == true)
+      if (truckTrailerAllowed == true) {
         queryParameters['truck_trailer_allowed'] = true;
+      }
       if (repairsAllowed == true) queryParameters['repairs_allowed'] = true;
       if (lowboysAllowed == true) queryParameters['lowboys_allowed'] = true;
       if (oversizedAllowed == true) queryParameters['oversized_allowed'] = true;
       if (hazmatAllowed == true) queryParameters['hazmat_allowed'] = true;
-      if (doubleStackAllowed == true)
+      if (doubleStackAllowed == true) {
         queryParameters['double_stack_allowed'] = true;
+      }
       if (bobtailOnly == true) queryParameters['bobtail_only'] = true;
       if (containersOnly == true) queryParameters['containers_only'] = true;
       if (cameras == true) queryParameters['cameras'] = true;
@@ -320,20 +322,24 @@ class HomeDatasources {
       if (asphalt == true) queryParameters['asphalt'] = true;
       if (lights == true) queryParameters['lights'] = true;
       if (twentyFourHours == true) queryParameters['twenty_four_hours'] = true;
-      if (limitedEntryExitTimes == true)
+      if (limitedEntryExitTimes == true) {
         queryParameters['limited_entry_exit_times'] = true;
+      }
       if (securityAtGate == true) queryParameters['security_at_gate'] = true;
       if (roamingSecurity == true) queryParameters['roaming_security'] = true;
-      if (landingGearSupportRequired == true)
+      if (landingGearSupportRequired == true) {
         queryParameters['landing_gear_support_required'] = true;
+      }
       if (laundryMachines == true) queryParameters['laundry_machines'] = true;
       if (freeShowers == true) queryParameters['free_showers'] = true;
       if (paidShowers == true) queryParameters['paid_showers'] = true;
       if (repairShop == true) queryParameters['repair_shop'] = true;
-      if (paidContainerStackingServices == true)
+      if (paidContainerStackingServices == true) {
         queryParameters['paid_container_stacking_services'] = true;
-      if (trailerSnowScraper == true)
+      }
+      if (trailerSnowScraper == true) {
         queryParameters['trailer_snow_scraper'] = true;
+      }
       if (truckWash == true) queryParameters['truck_wash'] = true;
       if (food == true) queryParameters['food'] = true;
       if (noTowedVehicles == true) queryParameters['no_towed_vehicles'] = true;

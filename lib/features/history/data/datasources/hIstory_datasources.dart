@@ -11,17 +11,20 @@ class HistoryDatasources {
     try {
       final response = await dio.get('/bookings/list/');
       if (response.statusCode == 200) {
-        print(response.data);
-        return (response.data as List)
+        DateTime now = DateTime.now();
+
+        List<BookingView> historyBookings = (response.data as List)
             .map((json) => BookingView.fromJson(json))
+            .where((booking) => booking.endDate.isBefore(now))
             .toList();
+
+        return historyBookings;
       } else {
         throw ServerException();
       }
     } on DioException {
       throw ServerException();
     } catch (e) {
-      print(e.toString());
       throw ServerException();
     }
   }
@@ -31,16 +34,17 @@ class HistoryDatasources {
       final response = await dio.get('/bookings/list/');
 
       if (response.statusCode == 200) {
-        List<BookingView> allBookings = (response.data as List)
-            .map((json) => BookingView.fromJson(json))
-            .toList();
-
         DateTime now = DateTime.now();
 
-        return allBookings.where((booking) {
-          return now.isAtSameMomentAs(booking.startDate) ||
-              now.isAfter(booking.startDate) && now.isBefore(booking.endDate);
+        List<BookingView> currentBookings = (response.data as List)
+            .map((json) => BookingView.fromJson(json))
+            .where((booking) {
+          return booking.startDate.isAfter(now) ||
+              booking.startDate.isAtSameMomentAs(now) ||
+              (now.isAfter(booking.startDate) && now.isBefore(booking.endDate));
         }).toList();
+
+        return currentBookings;
       } else {
         throw ServerException();
       }
