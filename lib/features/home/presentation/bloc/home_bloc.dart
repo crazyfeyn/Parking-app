@@ -98,7 +98,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           emit(state.copyWith(
             status: Status.error,
             errorMessage: "Location data is null",
-            // Maintain previous location if new one is invalid
             currentLocation: state.currentLocation,
           ));
         }
@@ -160,7 +159,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _filterLocation event, Emitter<HomeState> emit) async {
     emit(state.copyWith(status: Status.loading));
 
-    // Convert FilterModel to FilterLocationsParams
     final filterParams = event.filterModel.toFilterLocationsParams();
 
     final response = await filterLocationsUsecase.call(filterParams);

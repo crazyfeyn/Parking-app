@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -73,6 +74,12 @@ class _HomeScreenState extends State<HomeScreen> {
     final location =
         state.currentLocation ?? const LatLng(33.592806, -84.388716);
 
+    // Use searchLocations if it's not empty or null, otherwise use locations
+    final List<LocationModel>? locationsToDisplay =
+        state.searchLocations?.isNotEmpty == true
+            ? state.searchLocations
+            : state.locations;
+
     Set<Marker> markers = {
       if (state.currentLocation != null)
         Marker(
@@ -81,8 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
           infoWindow: const InfoWindow(title: 'Current Location'),
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         ),
-      if (state.locations != null)
-        ...state.locations!
+      if (locationsToDisplay != null)
+        ...locationsToDisplay
             .where((loc) => loc.latitude != null && loc.longitude != null)
             .map(
               (loc) => Marker(
@@ -93,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   _mapController?.animateCamera(
                     CameraUpdate.newLatLngZoom(
                       LatLng(loc.latitude!, loc.longitude!),
-                      15.0,
+                      15,
                     ),
                   );
                   showLocationDetails(context, loc);
@@ -105,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Stack(
       children: [
         GoogleMap(
-          key: _mapKey, // Use the unique key here
+          key: _mapKey,
           initialCameraPosition: CameraPosition(
             target: location,
             zoom: 5,
@@ -129,6 +136,24 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ],
+        ),
+        Positioned(
+          bottom: 20.0,
+          right: 20.0,
+          child: FloatingActionButton(
+            onPressed: () {
+              if (state.currentLocation != null) {
+                _mapController?.animateCamera(
+                  CameraUpdate.newLatLngZoom(
+                    state.currentLocation!,
+                    15,
+                  ),
+                );
+              }
+            },
+            backgroundColor: Colors.blue,
+            child: const Icon(Icons.my_location),
+          ),
         ),
       ],
     );

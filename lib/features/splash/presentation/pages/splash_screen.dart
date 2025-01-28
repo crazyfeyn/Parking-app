@@ -18,8 +18,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     context.read<AuthBloc>().add(const AuthEvent.authicated());
-  
+
     context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
+    context.read<AuthBloc>().add(const AuthEvent.refresh());
   }
 
   @override
