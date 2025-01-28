@@ -33,6 +33,11 @@ class AuthRepositoriesImpl extends AuthRepositories {
 
   @override
   Future<void> refreshToken() {
+    return authDatasources.refreshToken();
+  }
+
+   @override
+  Future<void> startTimer() {
     return authDatasources.startTokenAutoRefresh();
   }
 

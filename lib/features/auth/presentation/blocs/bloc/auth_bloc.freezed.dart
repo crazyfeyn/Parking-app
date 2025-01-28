@@ -27,6 +27,7 @@ mixin _$AuthEvent {
     required TResult Function() logOut,
     required TResult Function() refresh,
     required TResult Function() stop,
+    required TResult Function() start,
     required TResult Function() authicated,
     required TResult Function() doInitial,
   }) =>
@@ -42,6 +43,7 @@ mixin _$AuthEvent {
     TResult? Function()? logOut,
     TResult? Function()? refresh,
     TResult? Function()? stop,
+    TResult? Function()? start,
     TResult? Function()? authicated,
     TResult? Function()? doInitial,
   }) =>
@@ -57,6 +59,7 @@ mixin _$AuthEvent {
     TResult Function()? logOut,
     TResult Function()? refresh,
     TResult Function()? stop,
+    TResult Function()? start,
     TResult Function()? authicated,
     TResult Function()? doInitial,
     required TResult orElse(),
@@ -71,6 +74,7 @@ mixin _$AuthEvent {
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
     required TResult Function(_stopToken value) stop,
+    required TResult Function(_startToken value) start,
     required TResult Function(_authicated value) authicated,
     required TResult Function(_initial value) doInitial,
   }) =>
@@ -84,6 +88,7 @@ mixin _$AuthEvent {
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
     TResult? Function(_stopToken value)? stop,
+    TResult? Function(_startToken value)? start,
     TResult? Function(_authicated value)? authicated,
     TResult? Function(_initial value)? doInitial,
   }) =>
@@ -97,6 +102,7 @@ mixin _$AuthEvent {
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
     TResult Function(_stopToken value)? stop,
+    TResult Function(_startToken value)? start,
     TResult Function(_authicated value)? authicated,
     TResult Function(_initial value)? doInitial,
     required TResult orElse(),
@@ -208,6 +214,7 @@ class _$logImpl implements _log {
     required TResult Function() logOut,
     required TResult Function() refresh,
     required TResult Function() stop,
+    required TResult Function() start,
     required TResult Function() authicated,
     required TResult Function() doInitial,
   }) {
@@ -226,6 +233,7 @@ class _$logImpl implements _log {
     TResult? Function()? logOut,
     TResult? Function()? refresh,
     TResult? Function()? stop,
+    TResult? Function()? start,
     TResult? Function()? authicated,
     TResult? Function()? doInitial,
   }) {
@@ -244,6 +252,7 @@ class _$logImpl implements _log {
     TResult Function()? logOut,
     TResult Function()? refresh,
     TResult Function()? stop,
+    TResult Function()? start,
     TResult Function()? authicated,
     TResult Function()? doInitial,
     required TResult orElse(),
@@ -264,6 +273,7 @@ class _$logImpl implements _log {
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
     required TResult Function(_stopToken value) stop,
+    required TResult Function(_startToken value) start,
     required TResult Function(_authicated value) authicated,
     required TResult Function(_initial value) doInitial,
   }) {
@@ -280,6 +290,7 @@ class _$logImpl implements _log {
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
     TResult? Function(_stopToken value)? stop,
+    TResult? Function(_startToken value)? start,
     TResult? Function(_authicated value)? authicated,
     TResult? Function(_initial value)? doInitial,
   }) {
@@ -296,6 +307,7 @@ class _$logImpl implements _log {
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
     TResult Function(_stopToken value)? stop,
+    TResult Function(_startToken value)? start,
     TResult Function(_authicated value)? authicated,
     TResult Function(_initial value)? doInitial,
     required TResult orElse(),
@@ -420,6 +432,7 @@ class _$regImpl implements _reg {
     required TResult Function() logOut,
     required TResult Function() refresh,
     required TResult Function() stop,
+    required TResult Function() start,
     required TResult Function() authicated,
     required TResult Function() doInitial,
   }) {
@@ -438,6 +451,7 @@ class _$regImpl implements _reg {
     TResult? Function()? logOut,
     TResult? Function()? refresh,
     TResult? Function()? stop,
+    TResult? Function()? start,
     TResult? Function()? authicated,
     TResult? Function()? doInitial,
   }) {
@@ -456,6 +470,7 @@ class _$regImpl implements _reg {
     TResult Function()? logOut,
     TResult Function()? refresh,
     TResult Function()? stop,
+    TResult Function()? start,
     TResult Function()? authicated,
     TResult Function()? doInitial,
     required TResult orElse(),
@@ -476,6 +491,7 @@ class _$regImpl implements _reg {
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
     required TResult Function(_stopToken value) stop,
+    required TResult Function(_startToken value) start,
     required TResult Function(_authicated value) authicated,
     required TResult Function(_initial value) doInitial,
   }) {
@@ -492,6 +508,7 @@ class _$regImpl implements _reg {
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
     TResult? Function(_stopToken value)? stop,
+    TResult? Function(_startToken value)? start,
     TResult? Function(_authicated value)? authicated,
     TResult? Function(_initial value)? doInitial,
   }) {
@@ -508,6 +525,7 @@ class _$regImpl implements _reg {
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
     TResult Function(_stopToken value)? stop,
+    TResult Function(_startToken value)? start,
     TResult Function(_authicated value)? authicated,
     TResult Function(_initial value)? doInitial,
     required TResult orElse(),
@@ -620,6 +638,7 @@ class _$changePassImpl implements _changePass {
     required TResult Function() logOut,
     required TResult Function() refresh,
     required TResult Function() stop,
+    required TResult Function() start,
     required TResult Function() authicated,
     required TResult Function() doInitial,
   }) {
@@ -638,6 +657,7 @@ class _$changePassImpl implements _changePass {
     TResult? Function()? logOut,
     TResult? Function()? refresh,
     TResult? Function()? stop,
+    TResult? Function()? start,
     TResult? Function()? authicated,
     TResult? Function()? doInitial,
   }) {
@@ -656,6 +676,7 @@ class _$changePassImpl implements _changePass {
     TResult Function()? logOut,
     TResult Function()? refresh,
     TResult Function()? stop,
+    TResult Function()? start,
     TResult Function()? authicated,
     TResult Function()? doInitial,
     required TResult orElse(),
@@ -676,6 +697,7 @@ class _$changePassImpl implements _changePass {
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
     required TResult Function(_stopToken value) stop,
+    required TResult Function(_startToken value) start,
     required TResult Function(_authicated value) authicated,
     required TResult Function(_initial value) doInitial,
   }) {
@@ -692,6 +714,7 @@ class _$changePassImpl implements _changePass {
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
     TResult? Function(_stopToken value)? stop,
+    TResult? Function(_startToken value)? start,
     TResult? Function(_authicated value)? authicated,
     TResult? Function(_initial value)? doInitial,
   }) {
@@ -708,6 +731,7 @@ class _$changePassImpl implements _changePass {
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
     TResult Function(_stopToken value)? stop,
+    TResult Function(_startToken value)? start,
     TResult Function(_authicated value)? authicated,
     TResult Function(_initial value)? doInitial,
     required TResult orElse(),
@@ -810,6 +834,7 @@ class _$resetPassImpl implements _resetPass {
     required TResult Function() logOut,
     required TResult Function() refresh,
     required TResult Function() stop,
+    required TResult Function() start,
     required TResult Function() authicated,
     required TResult Function() doInitial,
   }) {
@@ -828,6 +853,7 @@ class _$resetPassImpl implements _resetPass {
     TResult? Function()? logOut,
     TResult? Function()? refresh,
     TResult? Function()? stop,
+    TResult? Function()? start,
     TResult? Function()? authicated,
     TResult? Function()? doInitial,
   }) {
@@ -846,6 +872,7 @@ class _$resetPassImpl implements _resetPass {
     TResult Function()? logOut,
     TResult Function()? refresh,
     TResult Function()? stop,
+    TResult Function()? start,
     TResult Function()? authicated,
     TResult Function()? doInitial,
     required TResult orElse(),
@@ -866,6 +893,7 @@ class _$resetPassImpl implements _resetPass {
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
     required TResult Function(_stopToken value) stop,
+    required TResult Function(_startToken value) start,
     required TResult Function(_authicated value) authicated,
     required TResult Function(_initial value) doInitial,
   }) {
@@ -882,6 +910,7 @@ class _$resetPassImpl implements _resetPass {
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
     TResult? Function(_stopToken value)? stop,
+    TResult? Function(_startToken value)? start,
     TResult? Function(_authicated value)? authicated,
     TResult? Function(_initial value)? doInitial,
   }) {
@@ -898,6 +927,7 @@ class _$resetPassImpl implements _resetPass {
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
     TResult Function(_stopToken value)? stop,
+    TResult Function(_startToken value)? start,
     TResult Function(_authicated value)? authicated,
     TResult Function(_initial value)? doInitial,
     required TResult orElse(),
@@ -971,6 +1001,7 @@ class _$logOutImpl implements _logOut {
     required TResult Function() logOut,
     required TResult Function() refresh,
     required TResult Function() stop,
+    required TResult Function() start,
     required TResult Function() authicated,
     required TResult Function() doInitial,
   }) {
@@ -989,6 +1020,7 @@ class _$logOutImpl implements _logOut {
     TResult? Function()? logOut,
     TResult? Function()? refresh,
     TResult? Function()? stop,
+    TResult? Function()? start,
     TResult? Function()? authicated,
     TResult? Function()? doInitial,
   }) {
@@ -1007,6 +1039,7 @@ class _$logOutImpl implements _logOut {
     TResult Function()? logOut,
     TResult Function()? refresh,
     TResult Function()? stop,
+    TResult Function()? start,
     TResult Function()? authicated,
     TResult Function()? doInitial,
     required TResult orElse(),
@@ -1027,6 +1060,7 @@ class _$logOutImpl implements _logOut {
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
     required TResult Function(_stopToken value) stop,
+    required TResult Function(_startToken value) start,
     required TResult Function(_authicated value) authicated,
     required TResult Function(_initial value) doInitial,
   }) {
@@ -1043,6 +1077,7 @@ class _$logOutImpl implements _logOut {
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
     TResult? Function(_stopToken value)? stop,
+    TResult? Function(_startToken value)? start,
     TResult? Function(_authicated value)? authicated,
     TResult? Function(_initial value)? doInitial,
   }) {
@@ -1059,6 +1094,7 @@ class _$logOutImpl implements _logOut {
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
     TResult Function(_stopToken value)? stop,
+    TResult Function(_startToken value)? start,
     TResult Function(_authicated value)? authicated,
     TResult Function(_initial value)? doInitial,
     required TResult orElse(),
@@ -1124,6 +1160,7 @@ class _$refreshTokenImpl implements _refreshToken {
     required TResult Function() logOut,
     required TResult Function() refresh,
     required TResult Function() stop,
+    required TResult Function() start,
     required TResult Function() authicated,
     required TResult Function() doInitial,
   }) {
@@ -1142,6 +1179,7 @@ class _$refreshTokenImpl implements _refreshToken {
     TResult? Function()? logOut,
     TResult? Function()? refresh,
     TResult? Function()? stop,
+    TResult? Function()? start,
     TResult? Function()? authicated,
     TResult? Function()? doInitial,
   }) {
@@ -1160,6 +1198,7 @@ class _$refreshTokenImpl implements _refreshToken {
     TResult Function()? logOut,
     TResult Function()? refresh,
     TResult Function()? stop,
+    TResult Function()? start,
     TResult Function()? authicated,
     TResult Function()? doInitial,
     required TResult orElse(),
@@ -1180,6 +1219,7 @@ class _$refreshTokenImpl implements _refreshToken {
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
     required TResult Function(_stopToken value) stop,
+    required TResult Function(_startToken value) start,
     required TResult Function(_authicated value) authicated,
     required TResult Function(_initial value) doInitial,
   }) {
@@ -1196,6 +1236,7 @@ class _$refreshTokenImpl implements _refreshToken {
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
     TResult? Function(_stopToken value)? stop,
+    TResult? Function(_startToken value)? start,
     TResult? Function(_authicated value)? authicated,
     TResult? Function(_initial value)? doInitial,
   }) {
@@ -1212,6 +1253,7 @@ class _$refreshTokenImpl implements _refreshToken {
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
     TResult Function(_stopToken value)? stop,
+    TResult Function(_startToken value)? start,
     TResult Function(_authicated value)? authicated,
     TResult Function(_initial value)? doInitial,
     required TResult orElse(),
@@ -1277,6 +1319,7 @@ class _$stopTokenImpl implements _stopToken {
     required TResult Function() logOut,
     required TResult Function() refresh,
     required TResult Function() stop,
+    required TResult Function() start,
     required TResult Function() authicated,
     required TResult Function() doInitial,
   }) {
@@ -1295,6 +1338,7 @@ class _$stopTokenImpl implements _stopToken {
     TResult? Function()? logOut,
     TResult? Function()? refresh,
     TResult? Function()? stop,
+    TResult? Function()? start,
     TResult? Function()? authicated,
     TResult? Function()? doInitial,
   }) {
@@ -1313,6 +1357,7 @@ class _$stopTokenImpl implements _stopToken {
     TResult Function()? logOut,
     TResult Function()? refresh,
     TResult Function()? stop,
+    TResult Function()? start,
     TResult Function()? authicated,
     TResult Function()? doInitial,
     required TResult orElse(),
@@ -1333,6 +1378,7 @@ class _$stopTokenImpl implements _stopToken {
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
     required TResult Function(_stopToken value) stop,
+    required TResult Function(_startToken value) start,
     required TResult Function(_authicated value) authicated,
     required TResult Function(_initial value) doInitial,
   }) {
@@ -1349,6 +1395,7 @@ class _$stopTokenImpl implements _stopToken {
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
     TResult? Function(_stopToken value)? stop,
+    TResult? Function(_startToken value)? start,
     TResult? Function(_authicated value)? authicated,
     TResult? Function(_initial value)? doInitial,
   }) {
@@ -1365,6 +1412,7 @@ class _$stopTokenImpl implements _stopToken {
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
     TResult Function(_stopToken value)? stop,
+    TResult Function(_startToken value)? start,
     TResult Function(_authicated value)? authicated,
     TResult Function(_initial value)? doInitial,
     required TResult orElse(),
@@ -1378,6 +1426,165 @@ class _$stopTokenImpl implements _stopToken {
 
 abstract class _stopToken implements AuthEvent {
   const factory _stopToken() = _$stopTokenImpl;
+}
+
+/// @nodoc
+abstract class _$$startTokenImplCopyWith<$Res> {
+  factory _$$startTokenImplCopyWith(
+          _$startTokenImpl value, $Res Function(_$startTokenImpl) then) =
+      __$$startTokenImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$startTokenImplCopyWithImpl<$Res>
+    extends _$AuthEventCopyWithImpl<$Res, _$startTokenImpl>
+    implements _$$startTokenImplCopyWith<$Res> {
+  __$$startTokenImplCopyWithImpl(
+      _$startTokenImpl _value, $Res Function(_$startTokenImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$startTokenImpl implements _startToken {
+  const _$startTokenImpl();
+
+  @override
+  String toString() {
+    return 'AuthEvent.start()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$startTokenImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String password, String email) logIn,
+    required TResult Function(
+            String password, String email, String name, String surname)
+        register,
+    required TResult Function(String oldPass, String newPass) change,
+    required TResult Function(String email) reset,
+    required TResult Function() logOut,
+    required TResult Function() refresh,
+    required TResult Function() stop,
+    required TResult Function() start,
+    required TResult Function() authicated,
+    required TResult Function() doInitial,
+  }) {
+    return start();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String password, String email)? logIn,
+    TResult? Function(
+            String password, String email, String name, String surname)?
+        register,
+    TResult? Function(String oldPass, String newPass)? change,
+    TResult? Function(String email)? reset,
+    TResult? Function()? logOut,
+    TResult? Function()? refresh,
+    TResult? Function()? stop,
+    TResult? Function()? start,
+    TResult? Function()? authicated,
+    TResult? Function()? doInitial,
+  }) {
+    return start?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String password, String email)? logIn,
+    TResult Function(
+            String password, String email, String name, String surname)?
+        register,
+    TResult Function(String oldPass, String newPass)? change,
+    TResult Function(String email)? reset,
+    TResult Function()? logOut,
+    TResult Function()? refresh,
+    TResult Function()? stop,
+    TResult Function()? start,
+    TResult Function()? authicated,
+    TResult Function()? doInitial,
+    required TResult orElse(),
+  }) {
+    if (start != null) {
+      return start();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_log value) logIn,
+    required TResult Function(_reg value) register,
+    required TResult Function(_changePass value) change,
+    required TResult Function(_resetPass value) reset,
+    required TResult Function(_logOut value) logOut,
+    required TResult Function(_refreshToken value) refresh,
+    required TResult Function(_stopToken value) stop,
+    required TResult Function(_startToken value) start,
+    required TResult Function(_authicated value) authicated,
+    required TResult Function(_initial value) doInitial,
+  }) {
+    return start(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_log value)? logIn,
+    TResult? Function(_reg value)? register,
+    TResult? Function(_changePass value)? change,
+    TResult? Function(_resetPass value)? reset,
+    TResult? Function(_logOut value)? logOut,
+    TResult? Function(_refreshToken value)? refresh,
+    TResult? Function(_stopToken value)? stop,
+    TResult? Function(_startToken value)? start,
+    TResult? Function(_authicated value)? authicated,
+    TResult? Function(_initial value)? doInitial,
+  }) {
+    return start?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_log value)? logIn,
+    TResult Function(_reg value)? register,
+    TResult Function(_changePass value)? change,
+    TResult Function(_resetPass value)? reset,
+    TResult Function(_logOut value)? logOut,
+    TResult Function(_refreshToken value)? refresh,
+    TResult Function(_stopToken value)? stop,
+    TResult Function(_startToken value)? start,
+    TResult Function(_authicated value)? authicated,
+    TResult Function(_initial value)? doInitial,
+    required TResult orElse(),
+  }) {
+    if (start != null) {
+      return start(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _startToken implements AuthEvent {
+  const factory _startToken() = _$startTokenImpl;
 }
 
 /// @nodoc
@@ -1430,6 +1637,7 @@ class _$authicatedImpl implements _authicated {
     required TResult Function() logOut,
     required TResult Function() refresh,
     required TResult Function() stop,
+    required TResult Function() start,
     required TResult Function() authicated,
     required TResult Function() doInitial,
   }) {
@@ -1448,6 +1656,7 @@ class _$authicatedImpl implements _authicated {
     TResult? Function()? logOut,
     TResult? Function()? refresh,
     TResult? Function()? stop,
+    TResult? Function()? start,
     TResult? Function()? authicated,
     TResult? Function()? doInitial,
   }) {
@@ -1466,6 +1675,7 @@ class _$authicatedImpl implements _authicated {
     TResult Function()? logOut,
     TResult Function()? refresh,
     TResult Function()? stop,
+    TResult Function()? start,
     TResult Function()? authicated,
     TResult Function()? doInitial,
     required TResult orElse(),
@@ -1486,6 +1696,7 @@ class _$authicatedImpl implements _authicated {
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
     required TResult Function(_stopToken value) stop,
+    required TResult Function(_startToken value) start,
     required TResult Function(_authicated value) authicated,
     required TResult Function(_initial value) doInitial,
   }) {
@@ -1502,6 +1713,7 @@ class _$authicatedImpl implements _authicated {
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
     TResult? Function(_stopToken value)? stop,
+    TResult? Function(_startToken value)? start,
     TResult? Function(_authicated value)? authicated,
     TResult? Function(_initial value)? doInitial,
   }) {
@@ -1518,6 +1730,7 @@ class _$authicatedImpl implements _authicated {
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
     TResult Function(_stopToken value)? stop,
+    TResult Function(_startToken value)? start,
     TResult Function(_authicated value)? authicated,
     TResult Function(_initial value)? doInitial,
     required TResult orElse(),
@@ -1583,6 +1796,7 @@ class _$initialImpl implements _initial {
     required TResult Function() logOut,
     required TResult Function() refresh,
     required TResult Function() stop,
+    required TResult Function() start,
     required TResult Function() authicated,
     required TResult Function() doInitial,
   }) {
@@ -1601,6 +1815,7 @@ class _$initialImpl implements _initial {
     TResult? Function()? logOut,
     TResult? Function()? refresh,
     TResult? Function()? stop,
+    TResult? Function()? start,
     TResult? Function()? authicated,
     TResult? Function()? doInitial,
   }) {
@@ -1619,6 +1834,7 @@ class _$initialImpl implements _initial {
     TResult Function()? logOut,
     TResult Function()? refresh,
     TResult Function()? stop,
+    TResult Function()? start,
     TResult Function()? authicated,
     TResult Function()? doInitial,
     required TResult orElse(),
@@ -1639,6 +1855,7 @@ class _$initialImpl implements _initial {
     required TResult Function(_logOut value) logOut,
     required TResult Function(_refreshToken value) refresh,
     required TResult Function(_stopToken value) stop,
+    required TResult Function(_startToken value) start,
     required TResult Function(_authicated value) authicated,
     required TResult Function(_initial value) doInitial,
   }) {
@@ -1655,6 +1872,7 @@ class _$initialImpl implements _initial {
     TResult? Function(_logOut value)? logOut,
     TResult? Function(_refreshToken value)? refresh,
     TResult? Function(_stopToken value)? stop,
+    TResult? Function(_startToken value)? start,
     TResult? Function(_authicated value)? authicated,
     TResult? Function(_initial value)? doInitial,
   }) {
@@ -1671,6 +1889,7 @@ class _$initialImpl implements _initial {
     TResult Function(_logOut value)? logOut,
     TResult Function(_refreshToken value)? refresh,
     TResult Function(_stopToken value)? stop,
+    TResult Function(_startToken value)? start,
     TResult Function(_authicated value)? authicated,
     TResult Function(_initial value)? doInitial,
     required TResult orElse(),

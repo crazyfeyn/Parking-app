@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Navigator.pushReplacement(
               context,
               PageRouteBuilder(
-                transitionDuration: const Duration(seconds: 1),
+                transitionDuration: const Duration(seconds: 3),
                 pageBuilder: (context, animation, secondaryAnimation) =>
                     const MainScreen(),
                 transitionsBuilder:

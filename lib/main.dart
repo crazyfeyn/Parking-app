@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
@@ -34,7 +36,6 @@ class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  
   State<MyApp> createState() => _MyAppState();
 }
 
@@ -48,13 +49,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-
+    log(state.toString());
     final context = navigatorKey.currentContext;
     if (context != null) {
       final authBloc = context.read<AuthBloc>();
-      if (state == AppLifecycleState.resumed ||
-          state == AppLifecycleState.inactive) {
-        authBloc.add(const AuthEvent.refresh());
+      if (state == AppLifecycleState.inactive ||
+          state == AppLifecycleState.resumed) {
+        authBloc.add(const AuthEvent.start());
       } else if (state == AppLifecycleState.paused ||
           state == AppLifecycleState.detached) {
         authBloc.add(const AuthEvent.stop());

@@ -85,7 +85,6 @@ class AuthDatasources {
   }
 
   Future<void> startTokenAutoRefresh() async {
-    // Проверяем, есть ли уже активный таймер, чтобы избежать дублирования
     if (_tokenRefreshTimer != null) {
       log('[startTokenAutoRefresh] Таймер уже запущен.');
       return;
@@ -94,15 +93,15 @@ class AuthDatasources {
     log('[startTokenAutoRefresh] Запуск таймера автообновления токена.');
 
     _tokenRefreshTimer = Timer.periodic(
-      const Duration(minutes: 4), // Обновление каждые 5 минут
+      const Duration(minutes: 4),
       (timer) async {
         try {
           log('[startTokenAutoRefresh] Попытка обновления токена...');
-          await _refreshToken();
+          await refreshToken();
           log('[startTokenAutoRefresh] Токен успешно обновлен.');
         } catch (e) {
           log('[startTokenAutoRefresh] Ошибка при обновлении токена: $e');
-          stopTokenAutoRefresh(); // Остановка таймера при ошибке
+          stopTokenAutoRefresh();
         }
       },
     );
@@ -118,7 +117,8 @@ class AuthDatasources {
     }
   }
 
-  Future<void> _refreshToken() async {
+  Future<void> refreshToken() async {
+    log('SRAZU REFRESH BOLDIDIDIDID');
     try {
       log('[_refreshToken] Попытка обновить токен...');
       final token = await localAuthDatasources.getRefreshToken();
