@@ -42,9 +42,9 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Our app requires access to your current location to provide personalized features, such as showcasing nearby places just for you</string>
+<string>Our app requires access to your current location to provide personalized features, such as showcasing nearby places just for you.</string>
+<key>NSLocationAlwaysUsageDescription</key>
+<string>Our app requires access to your current location to provide personalized features, such as showcasing nearby places just for you.</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -60,7 +60,5 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 		<string>Scan your card to add it automatically</string>
-	<key>NSCameraUsageDescription</key>
-		<string>To scan cards</string>
 </dict>
 </plist>

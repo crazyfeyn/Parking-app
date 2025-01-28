@@ -15,32 +15,51 @@ class HomeDatasources {
   Future<LocationData> getCurrentLocation() async {
     final Location location = Location();
     try {
+      print('Checking if location service is enabled...');
       final isServiceEnabled = await location.serviceEnabled();
       if (!isServiceEnabled) {
+        print('Location service is disabled. Requesting to enable it...');
         final serviceRequested = await location.requestService();
         if (!serviceRequested) {
+          print('Location service was not enabled by the user.');
           throw LocationException();
         }
+        print('Location service enabled by the user.');
+      } else {
+        print('Location service is already enabled.');
       }
 
+      print('Checking location permissions...');
       final permissionStatus = await location.hasPermission();
       if (permissionStatus == PermissionStatus.denied) {
+        print('Location permissions are denied. Requesting permissions...');
         final permissionRequested = await location.requestPermission();
         if (permissionRequested != PermissionStatus.granted) {
+          print('Location permissions were not granted by the user.');
           throw Exception('Location permissions are denied.');
         }
+        print('Location permissions granted by the user.');
       } else if (permissionStatus == PermissionStatus.deniedForever) {
+        print('Location permissions are permanently denied.');
         throw Exception('Location permissions are permanently denied.');
+      } else {
+        print('Location permissions are already granted.');
       }
 
+      print('Fetching current location...');
       final currentLocation = await location.getLocation();
       if (currentLocation.latitude == null ||
           currentLocation.longitude == null) {
+        print('Failed to retrieve location: Latitude or longitude is null.');
         throw Exception('Failed to retrieve location.');
       }
 
+      print('Current location fetched successfully:');
+      print('Latitude: ${currentLocation.latitude}');
+      print('Longitude: ${currentLocation.longitude}');
       return currentLocation;
     } catch (e) {
+      print('Error occurred while fetching location: $e');
       throw ServerException();
     }
   }
