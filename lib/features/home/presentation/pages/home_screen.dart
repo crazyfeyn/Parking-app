@@ -32,7 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
     _initializeData();
   }
 
@@ -54,19 +53,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (validLocations.isEmpty) return;
 
-    // For single location
+    // For single location - show closer zoom
     if (validLocations.length == 1) {
       _mapController?.animateCamera(
         CameraUpdate.newLatLngZoom(
           LatLng(
               validLocations.first.latitude!, validLocations.first.longitude!),
-          8, // Closer zoom for single location
+          15, // Closer zoom level for single location
         ),
       );
       return;
     }
 
-    // For multiple locations, calculate visible region within USA bounds
+    // For multiple locations - show all of USA with max zoom that fits all locations
     double minLat = validLocations
         .map((loc) => loc.latitude!)
         .reduce((a, b) => a < b ? a : b);
@@ -80,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .map((loc) => loc.longitude!)
         .reduce((a, b) => a > b ? a : b);
 
-    // Ensure we stay within USA bounds
+    // Ensure bounds stay within USA
     minLat = minLat.clamp(
         usaBounds.southwest.latitude, usaBounds.northeast.latitude);
     maxLat = maxLat.clamp(
@@ -95,8 +94,10 @@ class _HomeScreenState extends State<HomeScreen> {
       northeast: LatLng(maxLat, maxLng),
     );
 
+    // Add padding to ensure markers are visible
     _mapController?.animateCamera(
-      CameraUpdate.newLatLngBounds(bounds, 50),
+      CameraUpdate.newLatLngBounds(
+          bounds, 100), // Increased padding for better visibility
     );
   }
 
@@ -113,7 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
       resizeToAvoidBottomInset: false,
       body: BlocConsumer<HomeBloc, HomeState>(
         listener: (context, state) {
-          if (state.status == Status.error) {
+          // Handle network error
+          if (state.status == Status.errorNetwork) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: const Text('No Internet, check your connection.'),
@@ -127,7 +129,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           }
+          // Auto retry for other errors without showing snackbar
+          else if (state.status == Status.error) {
+            _initializeData();
+          }
 
+          // Handle search results
           if (state.searchLocations?.isNotEmpty == true) {
             _focusOnSearchedLocations(state.searchLocations!);
           }
@@ -180,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   _mapController?.animateCamera(
                     CameraUpdate.newLatLngZoom(
                       LatLng(loc.latitude!, loc.longitude!),
-                      22,
+                      15,
                     ),
                   );
                   showLocationDetails(context, loc);
@@ -232,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 _mapController?.animateCamera(
                   CameraUpdate.newLatLngZoom(
                     state.currentLocation!,
-                    22,
+                    15,
                   ),
                 );
               }
