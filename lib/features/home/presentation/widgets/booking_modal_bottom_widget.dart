@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
 import 'package:flutter_application/features/booking_space/presentation/pages/booking_space_screen.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
+import 'package:html/parser.dart'; // Import the html package
 
 void showLocationDetails(BuildContext context, LocationModel location) async {
   // Precache the image before showing the modal sheet
@@ -23,12 +25,33 @@ void showLocationDetails(BuildContext context, LocationModel location) async {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image Section (no FutureBuilder needed)
               if (location.images != null && location.images!.isNotEmpty)
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12.0),
                   child: Image.network(
                     location.images!.first.image,
+                    height: 180,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      // Display error image in case of network failure
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: Image.asset(
+                          'assets/images/network_error.png',
+                          height: 180,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    },
+                  ),
+                )
+              else
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12.0),
+                  child: Image.asset(
+                    'assets/images/network_error.png',
                     height: 180,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -51,8 +74,9 @@ void showLocationDetails(BuildContext context, LocationModel location) async {
                 ),
               ),
               const SizedBox(height: 8.0),
+              // Parse and remove HTML tags from the description
               Text(
-                location.description,
+                parse(location.description).documentElement?.text ?? '',
                 style: const TextStyle(
                   fontSize: 14.0,
                 ),
@@ -64,25 +88,26 @@ void showLocationDetails(BuildContext context, LocationModel location) async {
                   children: [
                     const Text(
                       "Available Spaces:",
-                      style: TextStyle(fontSize: 14.0, color: Colors.grey),
+                      style: TextStyle(
+                        fontSize: 14.0,
+                      ),
                     ),
                     Text(
                       "${location.availableSpots} spots",
                       style: const TextStyle(
-                        fontSize: 14.0,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
-              const SizedBox(height: 16.0),
-              // Rates
+              16.hs(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
                     "Rates:",
-                    style: TextStyle(fontSize: 14.0, color: Colors.grey),
+                    style: TextStyle(fontSize: 14),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,

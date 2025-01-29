@@ -39,7 +39,7 @@ class _MainScreenState extends State<MainScreen> {
           ],
         ),
         child: BottomNavigationBar(
-          currentIndex: _currentIndex,
+          currentIndex: _currentIndex, // ✅ Corrected this
           onTap: (index) {
             setState(() {
               _currentIndex = index;

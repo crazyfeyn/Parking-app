@@ -1,4 +1,5 @@
 import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/core/error/failure.dart';
 import 'package:flutter_application/features/history/domain/usecases/get_booking_list_usecase.dart';
 import 'package:flutter_application/features/history/domain/usecases/get_current_booking_list_usecase.dart';
 import 'package:flutter_application/features/home/data/models/booking_view.dart';
@@ -24,8 +25,9 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     emit(state.copyWith(status: Status.loading));
     final response = await getBookingListUsecase.call(());
     response.fold((error) {
-      emit(
-          state.copyWith(status: Status.error, errorMessage: error.toString()));
+      emit(state.copyWith(
+          status: error is NetworkFailure ? Status.errorNetwork : Status.error,
+          errorMessage: error.toString()));
     }, (bookingList) {
       emit(state.copyWith(status: Status.success, bookingList: bookingList));
     });
@@ -38,8 +40,9 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     emit(state.copyWith(status: Status.loading));
     final response = await getCurrentBookingListUsecase.call(());
     response.fold((error) {
-      emit(
-          state.copyWith(status: Status.error, errorMessage: error.toString()));
+      emit(state.copyWith(
+          status: error is NetworkFailure ? Status.errorNetwork : Status.error,
+          errorMessage: error.toString()));
     }, (bookingList) {
       emit(state.copyWith(
           status: Status.success, currentBookingList: bookingList));

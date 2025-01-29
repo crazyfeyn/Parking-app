@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/core/error/failure.dart';
 import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_application/features/home/data/models/filter_model.dart';
@@ -53,8 +54,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(status: Status.loading));
     final response = await fetchSearchUsecase(event.title);
     response.fold((error) {
-      emit(
-          state.copyWith(status: Status.error, errorMessage: error.toString()));
+      emit(state.copyWith(
+          status: error is NetworkFailure ? Status.errorNetwork : Status.error,
+          errorMessage: error.toString()));
     }, (data) {
       emit(state.copyWith(status: Status.success, searchLocations: data));
     });
@@ -65,8 +67,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(status: Status.loading));
     final response = await fetchLocationsUsecase(null);
     response.fold((error) {
-      emit(
-          state.copyWith(status: Status.error, errorMessage: error.toString()));
+      emit(state.copyWith(
+          status: error is NetworkFailure ? Status.errorNetwork : Status.error,
+          errorMessage: error.toString()));
     }, (data) {
       emit(state.copyWith(status: Status.success, locations: data));
     });
@@ -81,7 +84,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     response.fold(
       (error) {
         emit(state.copyWith(
-          status: Status.error,
+          status: error is NetworkFailure ? Status.errorNetwork : Status.error,
           errorMessage: error.toString(),
           // Maintain previous location if there was an error
           currentLocation: state.currentLocation,
@@ -111,8 +114,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(status: Status.loading));
     final response = await getVehicleListUsecase.call(());
     response.fold((error) {
-      emit(
-          state.copyWith(status: Status.error, errorMessage: error.toString()));
+      emit(state.copyWith(
+          status: error is NetworkFailure ? Status.errorNetwork : Status.error,
+          errorMessage: error.toString()));
     }, (vehicleList) {
       emit(state.copyWith(status: Status.success, vehicleList: vehicleList));
     });
@@ -148,8 +152,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(status: Status.loading));
     final response = await fetchPaymentMethodListUsecase.call(());
     response.fold((error) {
-      emit(
-          state.copyWith(status: Status.error, errorMessage: error.toString()));
+      emit(state.copyWith(
+          status: error is NetworkFailure ? Status.errorNetwork : Status.error,
+          errorMessage: error.toString()));
     }, (paymentMethodList) {
       emit(state.copyWith(
           status: Status.success, listPaymentMethod: paymentMethodList));
@@ -167,7 +172,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     response.fold(
       (error) {
         emit(state.copyWith(
-            status: Status.error, errorMessage: error.toString()));
+            status:
+                error is NetworkFailure ? Status.errorNetwork : Status.error,
+            errorMessage: error.toString()));
       },
       (locations) {
         emit(

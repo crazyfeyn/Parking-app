@@ -154,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
           key: _mapKey,
           initialCameraPosition: CameraPosition(
             target: initialPosition,
-            zoom: state.currentLocation != null ? 14 : 2,
+            zoom: state.currentLocation != null ? 10 : 2,
           ),
           minMaxZoomPreference: const MinMaxZoomPreference(2, 20),
           zoomControlsEnabled: false,
