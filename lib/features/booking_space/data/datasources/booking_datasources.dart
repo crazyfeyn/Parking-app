@@ -9,20 +9,17 @@ class BookingDatasources {
 
   Future<Status> bookingFunc(BookingModel booking) async {
     try {
-      print(booking.toJson());
       final response = await dio.post(
         '/bookings/create/',
         data: booking.toJson(),
       );
 
       if (response.statusCode == 201) {
-        print('kirdi');
         return Status.success;
       } else {
         return Status.error;
       }
     } catch (e) {
-      print(e.toString());
       return Status.error;
     }
   }
