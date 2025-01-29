@@ -21,14 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
   GoogleMapController? _mapController;
   final UniqueKey _mapKey = UniqueKey();
 
-  // USA bounds
-  static LatLngBounds usaBounds = LatLngBounds(
-    southwest: const LatLng(
-        24.396308, -125.000000), // Southwest corner of continental US
-    northeast: const LatLng(
-        49.384358, -66.934570), // Northeast corner of continental US
-  );
-
   @override
   void initState() {
     super.initState();
@@ -45,67 +37,28 @@ class _HomeScreenState extends State<HomeScreen> {
     if (searchedLocations.isEmpty || _mapController == null) return;
 
     final validLocations = searchedLocations
-        .where((loc) =>
-            loc.latitude != null &&
-            loc.longitude != null &&
-            _isWithinUSA(loc.latitude!, loc.longitude!))
+        .where((loc) => loc.latitude != null && loc.longitude != null)
         .toList();
 
     if (validLocations.isEmpty) return;
 
-    // For single location - show closer zoom
     if (validLocations.length == 1) {
+      // Single result: Zoom in closely
       _mapController?.animateCamera(
         CameraUpdate.newLatLngZoom(
           LatLng(
               validLocations.first.latitude!, validLocations.first.longitude!),
-          15, // Closer zoom level for single location
+          10,
         ),
       );
-      return;
+    } else {
+      _mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(
+          const LatLng(37.0902, -95.7129),
+          4,
+        ),
+      );
     }
-
-    // For multiple locations - show all of USA with max zoom that fits all locations
-    double minLat = validLocations
-        .map((loc) => loc.latitude!)
-        .reduce((a, b) => a < b ? a : b);
-    double maxLat = validLocations
-        .map((loc) => loc.latitude!)
-        .reduce((a, b) => a > b ? a : b);
-    double minLng = validLocations
-        .map((loc) => loc.longitude!)
-        .reduce((a, b) => a < b ? a : b);
-    double maxLng = validLocations
-        .map((loc) => loc.longitude!)
-        .reduce((a, b) => a > b ? a : b);
-
-    // Ensure bounds stay within USA
-    minLat = minLat.clamp(
-        usaBounds.southwest.latitude, usaBounds.northeast.latitude);
-    maxLat = maxLat.clamp(
-        usaBounds.southwest.latitude, usaBounds.northeast.latitude);
-    minLng = minLng.clamp(
-        usaBounds.southwest.longitude, usaBounds.northeast.longitude);
-    maxLng = maxLng.clamp(
-        usaBounds.southwest.longitude, usaBounds.northeast.longitude);
-
-    final bounds = LatLngBounds(
-      southwest: LatLng(minLat, minLng),
-      northeast: LatLng(maxLat, maxLng),
-    );
-
-    // Add padding to ensure markers are visible
-    _mapController?.animateCamera(
-      CameraUpdate.newLatLngBounds(
-          bounds, 100), // Increased padding for better visibility
-    );
-  }
-
-  bool _isWithinUSA(double lat, double lng) {
-    return lat >= usaBounds.southwest.latitude &&
-        lat <= usaBounds.northeast.latitude &&
-        lng >= usaBounds.southwest.longitude &&
-        lng <= usaBounds.northeast.longitude;
   }
 
   @override
@@ -156,9 +109,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildGoogleMap(HomeState state) {
-    // Use current location as the initial position if available
-    final initialPosition =
-        state.currentLocation ?? const LatLng(39.8283, -98.5795);
+    // Use current location as the initial position if available, otherwise use world center
+    final initialPosition = state.currentLocation ?? const LatLng(0, 0);
 
     Set<Marker> markers = {
       if (state.currentLocation != null)
@@ -202,17 +154,12 @@ class _HomeScreenState extends State<HomeScreen> {
           key: _mapKey,
           initialCameraPosition: CameraPosition(
             target: initialPosition,
-            zoom: state.currentLocation != null
-                ? 14
-                : 4, // Zoom closer if current location is available
+            zoom: state.currentLocation != null ? 14 : 2,
           ),
-          minMaxZoomPreference: const MinMaxZoomPreference(4, 20),
-          cameraTargetBounds: CameraTargetBounds(usaBounds),
+          minMaxZoomPreference: const MinMaxZoomPreference(2, 20),
           zoomControlsEnabled: false,
           onMapCreated: (controller) {
             _mapController = controller;
-            controller
-                .animateCamera(CameraUpdate.newLatLngBounds(usaBounds, 0));
           },
           myLocationEnabled: true,
           myLocationButtonEnabled: false,
@@ -235,11 +182,21 @@ class _HomeScreenState extends State<HomeScreen> {
           right: 20.0,
           child: FloatingActionButton(
             onPressed: () {
+              context
+                  .read<HomeBloc>()
+                  .add(const HomeEvent.clearSearchResults());
               if (state.currentLocation != null) {
                 _mapController?.animateCamera(
                   CameraUpdate.newLatLngZoom(
                     state.currentLocation!,
                     15,
+                  ),
+                );
+              } else {
+                _mapController?.animateCamera(
+                  CameraUpdate.newLatLngZoom(
+                    const LatLng(37.0902, -95.7129),
+                    2,
                   ),
                 );
               }

@@ -39,10 +39,10 @@ class SearchWidget extends StatelessWidget {
             ),
             child: TextFormField(
               onFieldSubmitted: (newValue) {
-                context
-                    .read<HomeBloc>()
-                    .add(HomeEvent.fetchSearchLocations(searchController.text));
-                Navigator.of(context);
+                if (searchController.text.trim().isNotEmpty) {
+                  context.read<HomeBloc>().add(
+                      HomeEvent.fetchSearchLocations(searchController.text));
+                }
               },
               decoration: InputDecoration(
                 labelText: 'Where to park',

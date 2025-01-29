@@ -11,7 +11,7 @@ class ErrorRefreshWidget extends StatelessWidget {
         'Something went wrong!',
         style: TextStyle(fontWeight: FontWeight.w500),
       ),
-      content: const Text('Please check your connection and try again.'),
+      content: const Text('No Internet, check your connection.'),
       actionsAlignment: MainAxisAlignment.spaceBetween,
       actions: [
         GestureDetector(

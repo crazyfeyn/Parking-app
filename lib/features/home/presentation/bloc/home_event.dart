@@ -12,4 +12,5 @@ class HomeEvent with _$HomeEvent {
   const factory HomeEvent.filterLocation(FilterModel filterModel) =
       _filterLocation;
   const factory HomeEvent.fetchPaymentMethodList() = _fetchPaymentMethodList;
+  const factory HomeEvent.clearSearchResults() = _clearSearchResults;
 }
