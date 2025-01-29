@@ -35,11 +35,10 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: BlocConsumer<HomeBloc, HomeState>(
           listener: (context, state) {
-            if (state.status == Status.error) {
+            if (state.status == Status.errorNetwork) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content:
-                      const Text('Failed to load vehicles. Please try again.'),
+                  content: const Text('No Internet, check your connection.'),
                   duration: const Duration(seconds: 10),
                   action: SnackBarAction(
                     label: 'Retry',
@@ -51,6 +50,8 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
                   ),
                 ),
               );
+            } else if (state.status == Status.error) {
+              context.read<HomeBloc>().add(const HomeEvent.getVehicleList());
             }
           },
           builder: (context, state) {

@@ -56,17 +56,7 @@ class _HistoryScreenState extends State<HistoryScreen>
               ),
               child: TabBar(
                 controller: _tabController,
-                onTap: (index) {
-                  if (index == 0) {
-                    context
-                        .read<HistoryBloc>()
-                        .add(const HistoryEvent.getBookingList());
-                  } else {
-                    context
-                        .read<HistoryBloc>()
-                        .add(const HistoryEvent.getCurrentBookingList());
-                  }
-                },
+                onTap: _handleTabChange,
                 tabs: const [
                   Tab(text: 'History parking'),
                   Tab(text: 'Current parking'),
@@ -93,27 +83,22 @@ class _HistoryScreenState extends State<HistoryScreen>
       ),
       body: BlocConsumer<HistoryBloc, HistoryState>(
         listener: (context, state) {
-          if (state.status == Status.error) {
+          // Handle network error with snackbar and manual retry
+          if (state.status == Status.errorNetwork) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.errorMessage ?? 'An error occurred'),
+                content: const Text('No Internet, check your connection.'),
                 duration: const Duration(seconds: 10),
                 action: SnackBarAction(
                   label: 'Retry',
-                  onPressed: () {
-                    if (_tabController.index == 0) {
-                      context
-                          .read<HistoryBloc>()
-                          .add(const HistoryEvent.getBookingList());
-                    } else {
-                      context
-                          .read<HistoryBloc>()
-                          .add(const HistoryEvent.getCurrentBookingList());
-                    }
-                  },
+                  onPressed: () => _refreshCurrentTab(),
                 ),
               ),
             );
+          }
+          // Auto retry for other errors without showing notification
+          else if (state.status == Status.error) {
+            _refreshCurrentTab();
           }
         },
         builder: (context, state) {
@@ -138,6 +123,26 @@ class _HistoryScreenState extends State<HistoryScreen>
         },
       ),
     );
+  }
+
+  void _handleTabChange(int index) {
+    if (index == 0) {
+      context.read<HistoryBloc>().add(const HistoryEvent.getBookingList());
+    } else {
+      context
+          .read<HistoryBloc>()
+          .add(const HistoryEvent.getCurrentBookingList());
+    }
+  }
+
+  void _refreshCurrentTab() {
+    if (_tabController.index == 0) {
+      context.read<HistoryBloc>().add(const HistoryEvent.getBookingList());
+    } else {
+      context
+          .read<HistoryBloc>()
+          .add(const HistoryEvent.getCurrentBookingList());
+    }
   }
 
   Widget _buildBookingList(List<BookingView> bookings, String emptyMessage) {

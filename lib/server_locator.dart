@@ -139,8 +139,8 @@ Future<void> init() async {
   // Repositories
   sl.registerLazySingleton<HomeRepositories>(
     () => HomeRepositoriesImpl(
-      homeDatasources: sl<HomeDatasources>(),
-    ),
+        homeDatasources: sl<HomeDatasources>(),
+        internetConnectionChecker: InternetConnectionChecker.createInstance()),
   );
 
   // Use Cases

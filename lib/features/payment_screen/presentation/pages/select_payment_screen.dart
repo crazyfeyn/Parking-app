@@ -31,10 +31,14 @@ class SelectPaymentScreen extends StatelessWidget {
         child: BlocConsumer<HomeBloc, HomeState>(
           listener: (context, state) {
             if (state.status == Status.error) {
+              context
+                  .read<HomeBloc>()
+                  .add(const HomeEvent.fetchPaymentMethodList());
+            } else if (state.status == Status.errorNetwork) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(state.errorMessage ?? 'An error occurred'),
-                  duration: const Duration(seconds: 10),
+                  content:
+                      Text(state.errorMessage ?? 'Plase check your conenction'),
                   action: SnackBarAction(
                     label: 'Retry',
                     onPressed: () {

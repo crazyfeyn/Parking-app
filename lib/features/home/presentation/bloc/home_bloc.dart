@@ -45,6 +45,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<_createVehicle>(_createVehicleFunc);
     on<_fetchPaymentMethodList>(_fetchPaymentMethodListFunc);
     on<_filterLocation>(_filterLocationsFunc);
+    on<_clearSearchResults>(_clearSearchResultsFunc);
   }
 
   Future<void> _fetchSearchAllLocationsFunc(
@@ -173,5 +174,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             state.copyWith(status: Status.success, filterLocations: locations));
       },
     );
+  }
+
+  Future<void> _clearSearchResultsFunc(
+      _clearSearchResults event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(searchLocations: []));
   }
 }
