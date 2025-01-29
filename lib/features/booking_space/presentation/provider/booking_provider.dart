@@ -148,8 +148,6 @@ class BookingProvider extends ChangeNotifier {
         locationId: locationModel.id,
       );
 
-      print(booking.toJson());
-
       final response = await bookingDatasources.bookingFunc(booking);
       return response;
     } catch (e) {

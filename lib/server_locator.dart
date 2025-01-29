@@ -260,7 +260,9 @@ Future<void> init() async {
 
   // Repositories
   sl.registerLazySingleton<HistoryRepositories>(
-    () => HistoryRepositoriesImpl(historyDatasources: sl<HistoryDatasources>()),
+    () => HistoryRepositoriesImpl(
+        historyDatasources: sl<HistoryDatasources>(),
+        internetConnectionChecker: InternetConnectionChecker.createInstance()),
   );
 
   // Use Cases

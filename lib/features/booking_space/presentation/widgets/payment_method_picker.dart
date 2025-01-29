@@ -26,6 +26,7 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
   String? selectedPaymentMethods;
   List<Map<String, dynamic>> existingPaymentMethods = [];
   bool isLoading = true;
+  String? errorMessage;
 
   final StripeService _stripeService = sl<StripeService>();
 
@@ -39,11 +40,16 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
   Future<void> _fetchExistingPaymentMethods() async {
     try {
       existingPaymentMethods = await _stripeService.fetchPaymentMethods();
-    } catch (e) {
-      rethrow;
-    } finally {
       setState(() {
         isLoading = false;
+        errorMessage =
+            null; // Clear the error message if data is fetched successfully
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        errorMessage =
+            'Network error. Please check your connection.'; // Set the error message
       });
     }
   }
@@ -96,31 +102,21 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HomeBloc, HomeState>(
-      listener: (context, state) {
-        if (state.status == Status.errorNetwork) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('No Internet, check your connection.'),
-              duration: const Duration(seconds: 10),
-              action: SnackBarAction(
-                label: 'Retry',
-                onPressed: () {
-                  _fetchExistingPaymentMethods();
-                },
-              ),
-            ),
-          );
-        } else if (state.status == Status.error) {
-          _fetchExistingPaymentMethods();
-        }
-      },
-      child: LiquidPullToRefresh(
-        onRefresh: _handleRefresh,
-        color: Colors.blue,
-        height: 100,
-        animSpeedFactor: 2,
-        showChildOpacityTransition: false,
+    return LiquidPullToRefresh(
+      onRefresh: _handleRefresh,
+      color: Colors.blue,
+      height: 100,
+      animSpeedFactor: 2,
+      showChildOpacityTransition: false,
+      child: BlocListener<HomeBloc, HomeState>(
+        listener: (context, state) {
+          if (state.status == Status.errorNetwork) {
+            setState(() {
+              errorMessage =
+                  'No Internet connection. Please check your connection.';
+            });
+          }
+        },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -138,6 +134,14 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
                 child: Opacity(
                   opacity: 0.5,
                   child: _buildPaymentMethodSelector(enabled: false),
+                ),
+              )
+            else if (errorMessage != null)
+              Text(
+                errorMessage!,
+                style: const TextStyle(
+                  color: Colors.red,
+                  fontSize: 14,
                 ),
               )
             else if (existingPaymentMethods.isEmpty)
@@ -188,7 +192,7 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
     );
   }
 
-// Handle null values in the card number masking
+  // Handle null values in the card number masking
   String _maskCardNumber(String? last4Digits) {
     const maskedDigits = '**** **** **** ';
     return maskedDigits + (last4Digits ?? '****');
