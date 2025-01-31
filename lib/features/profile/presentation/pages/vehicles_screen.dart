@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/features/profile/presentation/pages/add_new_vehicle_assist_screen.dart';
 import 'package:flutter_application/features/profile/presentation/provider/vehicle_provider.dart';
+import 'package:flutter_application/features/profile/presentation/widgets/vehicle_card_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
@@ -92,7 +93,12 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
                           itemCount: state.vehicleList!.length,
                           itemBuilder: (context, index) {
                             final vehicle = state.vehicleList![index];
-                            return _buildVehicleCard(vehicle);
+                            return VehicleCardWidget(
+                              vehicle: vehicle,
+                              onEditPressed: () {
+                                _navigateToEditScreen(context, vehicle);
+                              },
+                            );
                           },
                         ),
                 ),
@@ -119,82 +125,20 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
     );
   }
 
-  Widget _buildVehicleCard(VehicleModel vehicle) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            // ignore: deprecated_member_use
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 4,
-            offset: const Offset(0, 1),
-          ),
-        ],
+  void _navigateToEditScreen(BuildContext context, VehicleModel vehicle) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddNewVehicleScreenAssistScreenAssist(
+          provider: context.read<VehicleProvider>(),
+          vehicle: vehicle,
+          isEditing: true,
+        ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Vehicle type',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: AppConstants.shadeColor,
-                ),
-              ),
-              Text(
-                vehicle.type,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              InfoTextWidget(
-                title: vehicle.make,
-                subTitle: 'Make',
-              ),
-              InfoTextWidget(
-                title: vehicle.model,
-                subTitle: 'Model',
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              InfoTextWidget(
-                title: vehicle.year.toString(),
-                subTitle: 'Year',
-              ),
-              InfoTextWidget(
-                title: vehicle.plateNumber,
-                subTitle: 'Plate Number',
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          InfoTextWidget(
-            title: vehicle.unitNumber,
-            subTitle: 'Unit Number',
-          ),
-        ],
-      ),
-    );
+    ).then((updatedVehicle) {
+      if (updatedVehicle != null) {
+        context.read<HomeBloc>().add(HomeEvent.updateVehicle(updatedVehicle));
+      }
+    });
   }
 }

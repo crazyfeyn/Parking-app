@@ -23,6 +23,11 @@ class BookingProvider extends ChangeNotifier {
   int? user;
   int? _paymentId;
   int? _selectedVehicleId;
+  int? _selectedVehicleIdExtend;
+  String? _selectedVehicleExtend;
+  String? _selectedDurationExtend;
+  String? _selectedCardExtend;
+  int? _paymentIdExtend;
 
   final BookingDatasources bookingDatasources;
 
@@ -34,6 +39,11 @@ class BookingProvider extends ChangeNotifier {
   String? get selectedDuration => _selectedDuration;
   String? get selectedVehicleType => _selectedVehicle;
   String? get selectedPaymentMethod => _selectedCard;
+  String? get selectedDurationExtend => _selectedDurationExtend;
+  String? get selectedVehicleExtend => _selectedVehicleExtend;
+  int? get selectedVehicleIdExtend => _selectedVehicleIdExtend;
+  String? get selectedCardExtend => _selectedCardExtend;
+  int? get paymentIdExtend => _paymentIdExtend;
 
   String? get vehicleType => _vehicleType;
   String? get unitNumber => _unitNumber;
@@ -63,6 +73,12 @@ class BookingProvider extends ChangeNotifier {
         _plateNumber != null;
   }
 
+  bool get isExtendBookingValid =>
+      _selectedDurationExtend != null &&
+      _selectedVehicleExtend != null &&
+      _selectedVehicleIdExtend != null &&
+      paymentIdExtend != null;
+
   void setDate(DateTime date) {
     _selectedDate = date;
     notifyListeners();
@@ -78,15 +94,32 @@ class BookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setDurationExtend(String duration) {
+    _selectedDurationExtend = duration;
+    notifyListeners();
+  }
+
   void setVehicle(String vehicle, int? vehicleId) {
     _selectedVehicle = vehicle;
     _selectedVehicleId = vehicleId;
     notifyListeners();
   }
 
+  void setVehicleExtend(String vehicle, int? vehicleId) {
+    _selectedVehicleExtend = vehicle;
+    _selectedVehicleIdExtend = vehicleId;
+    notifyListeners();
+  }
+
   void setPaymentMethod(String method, int paymentId) {
     _selectedCard = method;
     _paymentId = paymentId;
+    notifyListeners();
+  }
+
+  void setPaymentMethodExtend(String method, int paymentId) {
+    _selectedCardExtend = method;
+    _paymentIdExtend = paymentId;
     notifyListeners();
   }
 
@@ -179,5 +212,16 @@ class BookingProvider extends ChangeNotifier {
         setUser(state.profile!.id);
       } else if (state.status == Status.error) {}
     });
+  }
+
+  Future<Status?> extendBooking(int bookingId) async {
+    if (!isExtendBookingValid) return null;
+
+    final response = await bookingDatasources.extendBooking(
+      id: bookingId,
+      duration: int.parse(_selectedDurationExtend!),
+      paymentMethodId: _paymentIdExtend!,
+    );
+    return response;
   }
 }

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
 
 class DurationPickerWidget extends StatefulWidget {
+  final BookingProvider provider;
   final Function(String) onDurationChanged;
+  final String? bookingType;
 
   const DurationPickerWidget({
     super.key,
     required this.onDurationChanged,
+    required this.provider,
+    this.bookingType,
   });
 
   @override
@@ -42,6 +47,7 @@ class _DurationPickerWidgetState extends State<DurationPickerWidget> {
             FilteringTextInputFormatter.digitsOnly,
           ],
           decoration: InputDecoration(
+            hintText: widget.bookingType ?? widget.provider.selectedBookingType,
             filled: true,
             fillColor: Colors.grey[200],
             border: OutlineInputBorder(

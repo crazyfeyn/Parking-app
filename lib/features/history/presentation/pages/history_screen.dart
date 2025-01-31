@@ -4,12 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/features/history/presentation/bloc/history_bloc.dart';
-import 'package:flutter_application/features/history/presentation/widgets/parking_item_widget.dart';
+import 'package:flutter_application/features/history/presentation/widgets/history_item_widget.dart';
 import 'package:flutter_application/features/profile/presentation/widgets/custom_profile_app_bar_widget_history.dart';
 
 class HistoryScreen extends StatefulWidget {
-  final int pageNumber;
-  const HistoryScreen({super.key, required this.pageNumber});
+  const HistoryScreen({super.key});
 
   @override
   State<HistoryScreen> createState() => _HistoryScreenState();
@@ -37,7 +36,7 @@ class _HistoryScreenState extends State<HistoryScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomProfileAppBarWidgetHistory(
-        title: widget.pageNumber == 0 ? 'History screen' : 'Your listings',
+        title: 'Your listings',
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(56.0),
           child: Container(
@@ -83,7 +82,6 @@ class _HistoryScreenState extends State<HistoryScreen>
       ),
       body: BlocConsumer<HistoryBloc, HistoryState>(
         listener: (context, state) {
-          // Handle network error with snackbar and manual retry
           if (state.status == Status.errorNetwork) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -95,9 +93,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                 ),
               ),
             );
-          }
-          // Auto retry for other errors without showing notification
-          else if (state.status == Status.error) {
+          } else if (state.status == Status.error) {
             _refreshCurrentTab();
           }
         },
@@ -160,22 +156,8 @@ class _HistoryScreenState extends State<HistoryScreen>
       itemCount: bookings.length,
       itemBuilder: (context, index) {
         final booking = bookings[index];
-        return ParkingItem(
-          title: booking.spot.locationName,
-          bookingType: booking.weekly
-              ? 'Weekly'
-              : booking.daily
-                  ? 'Daily'
-                  : 'Monthly',
-          startDate: _formatDate(booking.startDate),
-          endDate: _formatDate(booking.endDate),
-          timeZone: _formatTimeZone(booking.startDate),
-          vehicleType: booking.vehicle.model,
-          price: '\$${booking.duration}',
-          priceStatus: booking.status.name,
-          parkingStatus: booking.status.name,
-          priceStatusColor: _getStatusColor(booking.status.name),
-          parkingStatusColor: _getStatusColor(booking.status.name),
+        return HistoryItem(
+          booking: booking,
         );
       },
     );

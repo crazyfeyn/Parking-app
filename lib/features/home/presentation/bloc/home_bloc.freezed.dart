@@ -26,6 +26,7 @@ mixin _$HomeEvent {
     required TResult Function(FilterModel filterModel) filterLocation,
     required TResult Function() fetchPaymentMethodList,
     required TResult Function() clearSearchResults,
+    required TResult Function(VehicleModel vehicleModel) updateVehicle,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -38,6 +39,7 @@ mixin _$HomeEvent {
     TResult? Function(FilterModel filterModel)? filterLocation,
     TResult? Function()? fetchPaymentMethodList,
     TResult? Function()? clearSearchResults,
+    TResult? Function(VehicleModel vehicleModel)? updateVehicle,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,6 +52,7 @@ mixin _$HomeEvent {
     TResult Function(FilterModel filterModel)? filterLocation,
     TResult Function()? fetchPaymentMethodList,
     TResult Function()? clearSearchResults,
+    TResult Function(VehicleModel vehicleModel)? updateVehicle,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -65,6 +68,7 @@ mixin _$HomeEvent {
     required TResult Function(_fetchPaymentMethodList value)
         fetchPaymentMethodList,
     required TResult Function(_clearSearchResults value) clearSearchResults,
+    required TResult Function(_updateVehicle value) updateVehicle,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -77,6 +81,7 @@ mixin _$HomeEvent {
     TResult? Function(_filterLocation value)? filterLocation,
     TResult? Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult? Function(_clearSearchResults value)? clearSearchResults,
+    TResult? Function(_updateVehicle value)? updateVehicle,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -89,6 +94,7 @@ mixin _$HomeEvent {
     TResult Function(_filterLocation value)? filterLocation,
     TResult Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult Function(_clearSearchResults value)? clearSearchResults,
+    TResult Function(_updateVehicle value)? updateVehicle,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -171,6 +177,7 @@ class _$fetchAllLocationsImpl
     required TResult Function(FilterModel filterModel) filterLocation,
     required TResult Function() fetchPaymentMethodList,
     required TResult Function() clearSearchResults,
+    required TResult Function(VehicleModel vehicleModel) updateVehicle,
   }) {
     return fetchAllLocations();
   }
@@ -186,6 +193,7 @@ class _$fetchAllLocationsImpl
     TResult? Function(FilterModel filterModel)? filterLocation,
     TResult? Function()? fetchPaymentMethodList,
     TResult? Function()? clearSearchResults,
+    TResult? Function(VehicleModel vehicleModel)? updateVehicle,
   }) {
     return fetchAllLocations?.call();
   }
@@ -201,6 +209,7 @@ class _$fetchAllLocationsImpl
     TResult Function(FilterModel filterModel)? filterLocation,
     TResult Function()? fetchPaymentMethodList,
     TResult Function()? clearSearchResults,
+    TResult Function(VehicleModel vehicleModel)? updateVehicle,
     required TResult orElse(),
   }) {
     if (fetchAllLocations != null) {
@@ -222,6 +231,7 @@ class _$fetchAllLocationsImpl
     required TResult Function(_fetchPaymentMethodList value)
         fetchPaymentMethodList,
     required TResult Function(_clearSearchResults value) clearSearchResults,
+    required TResult Function(_updateVehicle value) updateVehicle,
   }) {
     return fetchAllLocations(this);
   }
@@ -237,6 +247,7 @@ class _$fetchAllLocationsImpl
     TResult? Function(_filterLocation value)? filterLocation,
     TResult? Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult? Function(_clearSearchResults value)? clearSearchResults,
+    TResult? Function(_updateVehicle value)? updateVehicle,
   }) {
     return fetchAllLocations?.call(this);
   }
@@ -252,6 +263,7 @@ class _$fetchAllLocationsImpl
     TResult Function(_filterLocation value)? filterLocation,
     TResult Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult Function(_clearSearchResults value)? clearSearchResults,
+    TResult Function(_updateVehicle value)? updateVehicle,
     required TResult orElse(),
   }) {
     if (fetchAllLocations != null) {
@@ -354,6 +366,7 @@ class _$fetchSearchAllLocationsImpl
     required TResult Function(FilterModel filterModel) filterLocation,
     required TResult Function() fetchPaymentMethodList,
     required TResult Function() clearSearchResults,
+    required TResult Function(VehicleModel vehicleModel) updateVehicle,
   }) {
     return fetchSearchLocations(title);
   }
@@ -369,6 +382,7 @@ class _$fetchSearchAllLocationsImpl
     TResult? Function(FilterModel filterModel)? filterLocation,
     TResult? Function()? fetchPaymentMethodList,
     TResult? Function()? clearSearchResults,
+    TResult? Function(VehicleModel vehicleModel)? updateVehicle,
   }) {
     return fetchSearchLocations?.call(title);
   }
@@ -384,6 +398,7 @@ class _$fetchSearchAllLocationsImpl
     TResult Function(FilterModel filterModel)? filterLocation,
     TResult Function()? fetchPaymentMethodList,
     TResult Function()? clearSearchResults,
+    TResult Function(VehicleModel vehicleModel)? updateVehicle,
     required TResult orElse(),
   }) {
     if (fetchSearchLocations != null) {
@@ -405,6 +420,7 @@ class _$fetchSearchAllLocationsImpl
     required TResult Function(_fetchPaymentMethodList value)
         fetchPaymentMethodList,
     required TResult Function(_clearSearchResults value) clearSearchResults,
+    required TResult Function(_updateVehicle value) updateVehicle,
   }) {
     return fetchSearchLocations(this);
   }
@@ -420,6 +436,7 @@ class _$fetchSearchAllLocationsImpl
     TResult? Function(_filterLocation value)? filterLocation,
     TResult? Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult? Function(_clearSearchResults value)? clearSearchResults,
+    TResult? Function(_updateVehicle value)? updateVehicle,
   }) {
     return fetchSearchLocations?.call(this);
   }
@@ -435,6 +452,7 @@ class _$fetchSearchAllLocationsImpl
     TResult Function(_filterLocation value)? filterLocation,
     TResult Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult Function(_clearSearchResults value)? clearSearchResults,
+    TResult Function(_updateVehicle value)? updateVehicle,
     required TResult orElse(),
   }) {
     if (fetchSearchLocations != null) {
@@ -514,6 +532,7 @@ class _$getCurrentLocationImpl
     required TResult Function(FilterModel filterModel) filterLocation,
     required TResult Function() fetchPaymentMethodList,
     required TResult Function() clearSearchResults,
+    required TResult Function(VehicleModel vehicleModel) updateVehicle,
   }) {
     return getCurrentLocation();
   }
@@ -529,6 +548,7 @@ class _$getCurrentLocationImpl
     TResult? Function(FilterModel filterModel)? filterLocation,
     TResult? Function()? fetchPaymentMethodList,
     TResult? Function()? clearSearchResults,
+    TResult? Function(VehicleModel vehicleModel)? updateVehicle,
   }) {
     return getCurrentLocation?.call();
   }
@@ -544,6 +564,7 @@ class _$getCurrentLocationImpl
     TResult Function(FilterModel filterModel)? filterLocation,
     TResult Function()? fetchPaymentMethodList,
     TResult Function()? clearSearchResults,
+    TResult Function(VehicleModel vehicleModel)? updateVehicle,
     required TResult orElse(),
   }) {
     if (getCurrentLocation != null) {
@@ -565,6 +586,7 @@ class _$getCurrentLocationImpl
     required TResult Function(_fetchPaymentMethodList value)
         fetchPaymentMethodList,
     required TResult Function(_clearSearchResults value) clearSearchResults,
+    required TResult Function(_updateVehicle value) updateVehicle,
   }) {
     return getCurrentLocation(this);
   }
@@ -580,6 +602,7 @@ class _$getCurrentLocationImpl
     TResult? Function(_filterLocation value)? filterLocation,
     TResult? Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult? Function(_clearSearchResults value)? clearSearchResults,
+    TResult? Function(_updateVehicle value)? updateVehicle,
   }) {
     return getCurrentLocation?.call(this);
   }
@@ -595,6 +618,7 @@ class _$getCurrentLocationImpl
     TResult Function(_filterLocation value)? filterLocation,
     TResult Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult Function(_clearSearchResults value)? clearSearchResults,
+    TResult Function(_updateVehicle value)? updateVehicle,
     required TResult orElse(),
   }) {
     if (getCurrentLocation != null) {
@@ -665,6 +689,7 @@ class _$getVehicleListImpl
     required TResult Function(FilterModel filterModel) filterLocation,
     required TResult Function() fetchPaymentMethodList,
     required TResult Function() clearSearchResults,
+    required TResult Function(VehicleModel vehicleModel) updateVehicle,
   }) {
     return getVehicleList();
   }
@@ -680,6 +705,7 @@ class _$getVehicleListImpl
     TResult? Function(FilterModel filterModel)? filterLocation,
     TResult? Function()? fetchPaymentMethodList,
     TResult? Function()? clearSearchResults,
+    TResult? Function(VehicleModel vehicleModel)? updateVehicle,
   }) {
     return getVehicleList?.call();
   }
@@ -695,6 +721,7 @@ class _$getVehicleListImpl
     TResult Function(FilterModel filterModel)? filterLocation,
     TResult Function()? fetchPaymentMethodList,
     TResult Function()? clearSearchResults,
+    TResult Function(VehicleModel vehicleModel)? updateVehicle,
     required TResult orElse(),
   }) {
     if (getVehicleList != null) {
@@ -716,6 +743,7 @@ class _$getVehicleListImpl
     required TResult Function(_fetchPaymentMethodList value)
         fetchPaymentMethodList,
     required TResult Function(_clearSearchResults value) clearSearchResults,
+    required TResult Function(_updateVehicle value) updateVehicle,
   }) {
     return getVehicleList(this);
   }
@@ -731,6 +759,7 @@ class _$getVehicleListImpl
     TResult? Function(_filterLocation value)? filterLocation,
     TResult? Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult? Function(_clearSearchResults value)? clearSearchResults,
+    TResult? Function(_updateVehicle value)? updateVehicle,
   }) {
     return getVehicleList?.call(this);
   }
@@ -746,6 +775,7 @@ class _$getVehicleListImpl
     TResult Function(_filterLocation value)? filterLocation,
     TResult Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult Function(_clearSearchResults value)? clearSearchResults,
+    TResult Function(_updateVehicle value)? updateVehicle,
     required TResult orElse(),
   }) {
     if (getVehicleList != null) {
@@ -846,6 +876,7 @@ class _$createVehicleImpl
     required TResult Function(FilterModel filterModel) filterLocation,
     required TResult Function() fetchPaymentMethodList,
     required TResult Function() clearSearchResults,
+    required TResult Function(VehicleModel vehicleModel) updateVehicle,
   }) {
     return createVehicle(vehicleModel);
   }
@@ -861,6 +892,7 @@ class _$createVehicleImpl
     TResult? Function(FilterModel filterModel)? filterLocation,
     TResult? Function()? fetchPaymentMethodList,
     TResult? Function()? clearSearchResults,
+    TResult? Function(VehicleModel vehicleModel)? updateVehicle,
   }) {
     return createVehicle?.call(vehicleModel);
   }
@@ -876,6 +908,7 @@ class _$createVehicleImpl
     TResult Function(FilterModel filterModel)? filterLocation,
     TResult Function()? fetchPaymentMethodList,
     TResult Function()? clearSearchResults,
+    TResult Function(VehicleModel vehicleModel)? updateVehicle,
     required TResult orElse(),
   }) {
     if (createVehicle != null) {
@@ -897,6 +930,7 @@ class _$createVehicleImpl
     required TResult Function(_fetchPaymentMethodList value)
         fetchPaymentMethodList,
     required TResult Function(_clearSearchResults value) clearSearchResults,
+    required TResult Function(_updateVehicle value) updateVehicle,
   }) {
     return createVehicle(this);
   }
@@ -912,6 +946,7 @@ class _$createVehicleImpl
     TResult? Function(_filterLocation value)? filterLocation,
     TResult? Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult? Function(_clearSearchResults value)? clearSearchResults,
+    TResult? Function(_updateVehicle value)? updateVehicle,
   }) {
     return createVehicle?.call(this);
   }
@@ -927,6 +962,7 @@ class _$createVehicleImpl
     TResult Function(_filterLocation value)? filterLocation,
     TResult Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult Function(_clearSearchResults value)? clearSearchResults,
+    TResult Function(_updateVehicle value)? updateVehicle,
     required TResult orElse(),
   }) {
     if (createVehicle != null) {
@@ -1037,6 +1073,7 @@ class _$filterLocationImpl
     required TResult Function(FilterModel filterModel) filterLocation,
     required TResult Function() fetchPaymentMethodList,
     required TResult Function() clearSearchResults,
+    required TResult Function(VehicleModel vehicleModel) updateVehicle,
   }) {
     return filterLocation(filterModel);
   }
@@ -1052,6 +1089,7 @@ class _$filterLocationImpl
     TResult? Function(FilterModel filterModel)? filterLocation,
     TResult? Function()? fetchPaymentMethodList,
     TResult? Function()? clearSearchResults,
+    TResult? Function(VehicleModel vehicleModel)? updateVehicle,
   }) {
     return filterLocation?.call(filterModel);
   }
@@ -1067,6 +1105,7 @@ class _$filterLocationImpl
     TResult Function(FilterModel filterModel)? filterLocation,
     TResult Function()? fetchPaymentMethodList,
     TResult Function()? clearSearchResults,
+    TResult Function(VehicleModel vehicleModel)? updateVehicle,
     required TResult orElse(),
   }) {
     if (filterLocation != null) {
@@ -1088,6 +1127,7 @@ class _$filterLocationImpl
     required TResult Function(_fetchPaymentMethodList value)
         fetchPaymentMethodList,
     required TResult Function(_clearSearchResults value) clearSearchResults,
+    required TResult Function(_updateVehicle value) updateVehicle,
   }) {
     return filterLocation(this);
   }
@@ -1103,6 +1143,7 @@ class _$filterLocationImpl
     TResult? Function(_filterLocation value)? filterLocation,
     TResult? Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult? Function(_clearSearchResults value)? clearSearchResults,
+    TResult? Function(_updateVehicle value)? updateVehicle,
   }) {
     return filterLocation?.call(this);
   }
@@ -1118,6 +1159,7 @@ class _$filterLocationImpl
     TResult Function(_filterLocation value)? filterLocation,
     TResult Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult Function(_clearSearchResults value)? clearSearchResults,
+    TResult Function(_updateVehicle value)? updateVehicle,
     required TResult orElse(),
   }) {
     if (filterLocation != null) {
@@ -1201,6 +1243,7 @@ class _$fetchPaymentMethodListImpl
     required TResult Function(FilterModel filterModel) filterLocation,
     required TResult Function() fetchPaymentMethodList,
     required TResult Function() clearSearchResults,
+    required TResult Function(VehicleModel vehicleModel) updateVehicle,
   }) {
     return fetchPaymentMethodList();
   }
@@ -1216,6 +1259,7 @@ class _$fetchPaymentMethodListImpl
     TResult? Function(FilterModel filterModel)? filterLocation,
     TResult? Function()? fetchPaymentMethodList,
     TResult? Function()? clearSearchResults,
+    TResult? Function(VehicleModel vehicleModel)? updateVehicle,
   }) {
     return fetchPaymentMethodList?.call();
   }
@@ -1231,6 +1275,7 @@ class _$fetchPaymentMethodListImpl
     TResult Function(FilterModel filterModel)? filterLocation,
     TResult Function()? fetchPaymentMethodList,
     TResult Function()? clearSearchResults,
+    TResult Function(VehicleModel vehicleModel)? updateVehicle,
     required TResult orElse(),
   }) {
     if (fetchPaymentMethodList != null) {
@@ -1252,6 +1297,7 @@ class _$fetchPaymentMethodListImpl
     required TResult Function(_fetchPaymentMethodList value)
         fetchPaymentMethodList,
     required TResult Function(_clearSearchResults value) clearSearchResults,
+    required TResult Function(_updateVehicle value) updateVehicle,
   }) {
     return fetchPaymentMethodList(this);
   }
@@ -1267,6 +1313,7 @@ class _$fetchPaymentMethodListImpl
     TResult? Function(_filterLocation value)? filterLocation,
     TResult? Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult? Function(_clearSearchResults value)? clearSearchResults,
+    TResult? Function(_updateVehicle value)? updateVehicle,
   }) {
     return fetchPaymentMethodList?.call(this);
   }
@@ -1282,6 +1329,7 @@ class _$fetchPaymentMethodListImpl
     TResult Function(_filterLocation value)? filterLocation,
     TResult Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult Function(_clearSearchResults value)? clearSearchResults,
+    TResult Function(_updateVehicle value)? updateVehicle,
     required TResult orElse(),
   }) {
     if (fetchPaymentMethodList != null) {
@@ -1352,6 +1400,7 @@ class _$clearSearchResultsImpl
     required TResult Function(FilterModel filterModel) filterLocation,
     required TResult Function() fetchPaymentMethodList,
     required TResult Function() clearSearchResults,
+    required TResult Function(VehicleModel vehicleModel) updateVehicle,
   }) {
     return clearSearchResults();
   }
@@ -1367,6 +1416,7 @@ class _$clearSearchResultsImpl
     TResult? Function(FilterModel filterModel)? filterLocation,
     TResult? Function()? fetchPaymentMethodList,
     TResult? Function()? clearSearchResults,
+    TResult? Function(VehicleModel vehicleModel)? updateVehicle,
   }) {
     return clearSearchResults?.call();
   }
@@ -1382,6 +1432,7 @@ class _$clearSearchResultsImpl
     TResult Function(FilterModel filterModel)? filterLocation,
     TResult Function()? fetchPaymentMethodList,
     TResult Function()? clearSearchResults,
+    TResult Function(VehicleModel vehicleModel)? updateVehicle,
     required TResult orElse(),
   }) {
     if (clearSearchResults != null) {
@@ -1403,6 +1454,7 @@ class _$clearSearchResultsImpl
     required TResult Function(_fetchPaymentMethodList value)
         fetchPaymentMethodList,
     required TResult Function(_clearSearchResults value) clearSearchResults,
+    required TResult Function(_updateVehicle value) updateVehicle,
   }) {
     return clearSearchResults(this);
   }
@@ -1418,6 +1470,7 @@ class _$clearSearchResultsImpl
     TResult? Function(_filterLocation value)? filterLocation,
     TResult? Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult? Function(_clearSearchResults value)? clearSearchResults,
+    TResult? Function(_updateVehicle value)? updateVehicle,
   }) {
     return clearSearchResults?.call(this);
   }
@@ -1433,6 +1486,7 @@ class _$clearSearchResultsImpl
     TResult Function(_filterLocation value)? filterLocation,
     TResult Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
     TResult Function(_clearSearchResults value)? clearSearchResults,
+    TResult Function(_updateVehicle value)? updateVehicle,
     required TResult orElse(),
   }) {
     if (clearSearchResults != null) {
@@ -1444,6 +1498,202 @@ class _$clearSearchResultsImpl
 
 abstract class _clearSearchResults implements HomeEvent {
   const factory _clearSearchResults() = _$clearSearchResultsImpl;
+}
+
+/// @nodoc
+abstract class _$$updateVehicleImplCopyWith<$Res> {
+  factory _$$updateVehicleImplCopyWith(
+          _$updateVehicleImpl value, $Res Function(_$updateVehicleImpl) then) =
+      __$$updateVehicleImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({VehicleModel vehicleModel});
+}
+
+/// @nodoc
+class __$$updateVehicleImplCopyWithImpl<$Res>
+    extends _$HomeEventCopyWithImpl<$Res, _$updateVehicleImpl>
+    implements _$$updateVehicleImplCopyWith<$Res> {
+  __$$updateVehicleImplCopyWithImpl(
+      _$updateVehicleImpl _value, $Res Function(_$updateVehicleImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of HomeEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? vehicleModel = null,
+  }) {
+    return _then(_$updateVehicleImpl(
+      null == vehicleModel
+          ? _value.vehicleModel
+          : vehicleModel // ignore: cast_nullable_to_non_nullable
+              as VehicleModel,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$updateVehicleImpl
+    with DiagnosticableTreeMixin
+    implements _updateVehicle {
+  const _$updateVehicleImpl(this.vehicleModel);
+
+  @override
+  final VehicleModel vehicleModel;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'HomeEvent.updateVehicle(vehicleModel: $vehicleModel)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'HomeEvent.updateVehicle'))
+      ..add(DiagnosticsProperty('vehicleModel', vehicleModel));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$updateVehicleImpl &&
+            (identical(other.vehicleModel, vehicleModel) ||
+                other.vehicleModel == vehicleModel));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, vehicleModel);
+
+  /// Create a copy of HomeEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$updateVehicleImplCopyWith<_$updateVehicleImpl> get copyWith =>
+      __$$updateVehicleImplCopyWithImpl<_$updateVehicleImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() fetchAllLocations,
+    required TResult Function(String title) fetchSearchLocations,
+    required TResult Function() getCurrentLocation,
+    required TResult Function() getVehicleList,
+    required TResult Function(VehicleModel vehicleModel) createVehicle,
+    required TResult Function(FilterModel filterModel) filterLocation,
+    required TResult Function() fetchPaymentMethodList,
+    required TResult Function() clearSearchResults,
+    required TResult Function(VehicleModel vehicleModel) updateVehicle,
+  }) {
+    return updateVehicle(vehicleModel);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? fetchAllLocations,
+    TResult? Function(String title)? fetchSearchLocations,
+    TResult? Function()? getCurrentLocation,
+    TResult? Function()? getVehicleList,
+    TResult? Function(VehicleModel vehicleModel)? createVehicle,
+    TResult? Function(FilterModel filterModel)? filterLocation,
+    TResult? Function()? fetchPaymentMethodList,
+    TResult? Function()? clearSearchResults,
+    TResult? Function(VehicleModel vehicleModel)? updateVehicle,
+  }) {
+    return updateVehicle?.call(vehicleModel);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? fetchAllLocations,
+    TResult Function(String title)? fetchSearchLocations,
+    TResult Function()? getCurrentLocation,
+    TResult Function()? getVehicleList,
+    TResult Function(VehicleModel vehicleModel)? createVehicle,
+    TResult Function(FilterModel filterModel)? filterLocation,
+    TResult Function()? fetchPaymentMethodList,
+    TResult Function()? clearSearchResults,
+    TResult Function(VehicleModel vehicleModel)? updateVehicle,
+    required TResult orElse(),
+  }) {
+    if (updateVehicle != null) {
+      return updateVehicle(vehicleModel);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_fetchAllLocations value) fetchAllLocations,
+    required TResult Function(_fetchSearchAllLocations value)
+        fetchSearchLocations,
+    required TResult Function(_getCurrentLocation value) getCurrentLocation,
+    required TResult Function(_getVehicleList value) getVehicleList,
+    required TResult Function(_createVehicle value) createVehicle,
+    required TResult Function(_filterLocation value) filterLocation,
+    required TResult Function(_fetchPaymentMethodList value)
+        fetchPaymentMethodList,
+    required TResult Function(_clearSearchResults value) clearSearchResults,
+    required TResult Function(_updateVehicle value) updateVehicle,
+  }) {
+    return updateVehicle(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_fetchAllLocations value)? fetchAllLocations,
+    TResult? Function(_fetchSearchAllLocations value)? fetchSearchLocations,
+    TResult? Function(_getCurrentLocation value)? getCurrentLocation,
+    TResult? Function(_getVehicleList value)? getVehicleList,
+    TResult? Function(_createVehicle value)? createVehicle,
+    TResult? Function(_filterLocation value)? filterLocation,
+    TResult? Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
+    TResult? Function(_clearSearchResults value)? clearSearchResults,
+    TResult? Function(_updateVehicle value)? updateVehicle,
+  }) {
+    return updateVehicle?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_fetchAllLocations value)? fetchAllLocations,
+    TResult Function(_fetchSearchAllLocations value)? fetchSearchLocations,
+    TResult Function(_getCurrentLocation value)? getCurrentLocation,
+    TResult Function(_getVehicleList value)? getVehicleList,
+    TResult Function(_createVehicle value)? createVehicle,
+    TResult Function(_filterLocation value)? filterLocation,
+    TResult Function(_fetchPaymentMethodList value)? fetchPaymentMethodList,
+    TResult Function(_clearSearchResults value)? clearSearchResults,
+    TResult Function(_updateVehicle value)? updateVehicle,
+    required TResult orElse(),
+  }) {
+    if (updateVehicle != null) {
+      return updateVehicle(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _updateVehicle implements HomeEvent {
+  const factory _updateVehicle(final VehicleModel vehicleModel) =
+      _$updateVehicleImpl;
+
+  VehicleModel get vehicleModel;
+
+  /// Create a copy of HomeEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$updateVehicleImplCopyWith<_$updateVehicleImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc

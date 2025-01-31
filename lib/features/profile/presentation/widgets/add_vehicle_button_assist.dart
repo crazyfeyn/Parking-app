@@ -10,12 +10,14 @@ class AddVehicleButtonAssist extends StatelessWidget {
   final VehicleProvider provider;
   final int userId;
   final VoidCallback onSuccess;
+  final bool isEditing;
 
   const AddVehicleButtonAssist({
     super.key,
     required this.provider,
     required this.userId,
     required this.onSuccess,
+    this.isEditing = false,
   });
 
   @override
@@ -31,9 +33,16 @@ class AddVehicleButtonAssist extends StatelessWidget {
             model: provider.model!,
             plateNumber: provider.plateNumber!,
             user: userId,
+            id: isEditing ? provider.vehicleId! : 0,
           );
 
-          context.read<HomeBloc>().add(HomeEvent.createVehicle(vehicleModel));
+          isEditing
+              ? context
+                  .read<HomeBloc>()
+                  .add(HomeEvent.updateVehicle(vehicleModel))
+              : context
+                  .read<HomeBloc>()
+                  .add(HomeEvent.createVehicle(vehicleModel));
 
           context
               .read<HomeBloc>()
@@ -59,9 +68,9 @@ class AddVehicleButtonAssist extends StatelessWidget {
         ),
         padding: const EdgeInsets.symmetric(vertical: 16),
         alignment: Alignment.center,
-        child: const Text(
-          'Add vehicle',
-          style: TextStyle(
+        child: Text(
+          isEditing ? 'Save vehicle' : 'Add vehicle',
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 16,
             fontWeight: FontWeight.w500,
