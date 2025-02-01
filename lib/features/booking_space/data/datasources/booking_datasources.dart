@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
 import 'package:flutter_application/features/home/data/models/booking_model.dart';
 
 class BookingDatasources {
@@ -44,7 +45,28 @@ class BookingDatasources {
         return Status.error;
       }
     } catch (e) {
-      print(e.toString());
+      return Status.error;
+    }
+  }
+
+  Future<Status> updateBookingVehicle({
+    required int bookingId,
+    required int vehicleId,
+  }) async {
+    try {
+      final response = await dio.patch(
+        '/bookings/booking/$bookingId/vehicle-update/',
+        data: {
+          "vehicle": vehicleId,
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return Status.success;
+      } else {
+        return Status.error;
+      }
+    } catch (e) {
       return Status.error;
     }
   }

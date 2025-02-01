@@ -52,7 +52,6 @@ class HomeDatasources {
 
     if (response.statusCode == 200) {
       final List<dynamic> data = response.data['results'] as List<dynamic>;
-
       if (data.isEmpty) {
         return [];
       }
@@ -67,7 +66,7 @@ class HomeDatasources {
           state: json['state'] ?? '',
           zipCode: json['zip_code'] ?? '',
           phNumber: json['ph_number'] ?? '',
-          schedule: json['schedule'],
+          schedule: json['schedule'] ?? '',
           weeklyRate: double.tryParse(json['weekly_rate'].toString()) ?? 0.0,
           dailyRate: double.tryParse(json['daily_rate'].toString()) ?? 0.0,
           monthlyRate: double.tryParse(json['monthly_rate'].toString()) ?? 0.0,
@@ -356,7 +355,6 @@ class HomeDatasources {
           return [];
         }
 
-        // Map the response data to LocationModel
         final List<LocationModel> bookings = data.map((json) {
           return LocationModel(
             id: json['id'],
@@ -450,15 +448,6 @@ class HomeDatasources {
   Future<void> updateVehicle({
     required VehicleModel vehicleData,
   }) async {
-    print('------');
-    print(vehicleData.id);
-    print(vehicleData.make);
-    print(vehicleData.model);
-    print(vehicleData.plateNumber);
-    print(vehicleData.type);
-    print(vehicleData.unitNumber);
-    print(vehicleData.year);
-    print(vehicleData.user);
     try {
       if (vehicleData.unitNumber.isEmpty ||
           vehicleData.year <= 0 ||
@@ -473,12 +462,10 @@ class HomeDatasources {
           data: vehicleData.toJson());
 
       if (response.statusCode == 200) {
-        print('kirdi');
       } else {
         throw Exception('Failed to update vehicle');
       }
-    } on DioException catch (e) {
-      print(e.toString());
+    } on DioException {
       rethrow;
     } catch (e) {
       rethrow;

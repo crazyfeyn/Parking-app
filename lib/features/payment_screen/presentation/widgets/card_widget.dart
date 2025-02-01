@@ -53,6 +53,7 @@ class CardWidget extends StatelessWidget {
               ],
             ),
             const SizedBox(),
+            
           ],
         ),
       ),

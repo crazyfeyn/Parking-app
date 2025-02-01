@@ -6,19 +6,21 @@ import 'package:flutter_application/features/booking_space/presentation/provider
 import 'package:flutter_application/features/booking_space/presentation/widgets/duration_picker_widget.dart';
 import 'package:flutter_application/features/booking_space/presentation/widgets/payment_method_picker.dart';
 import 'package:flutter_application/features/history/presentation/pages/history_screen.dart';
+import 'package:flutter_application/features/history/presentation/widgets/calendar_widget.dart';
 import 'package:flutter_application/features/history/presentation/widgets/success_refresh_widget.dart';
 import 'package:flutter_application/features/history/presentation/widgets/vehicle_extend_widget.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
-import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import 'package:flutter_application/features/home/data/models/booking_view.dart'; // Import the BookingView model
 
 class HistoryItem extends StatelessWidget {
+  final Function refresh;
   final BookingView booking;
 
   const HistoryItem({
     super.key,
     required this.booking,
+    required this.refresh,
   });
 
   @override
@@ -153,9 +155,9 @@ class HistoryItem extends StatelessWidget {
                   ),
                 ],
               ),
-              12.hs(),
+              14.hs(),
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ZoomTapAnimation(
                     onTap: () {
@@ -168,7 +170,13 @@ class HistoryItem extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Text('Spot'),
+                                const Text(
+                                  'Spot',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
                                 Text(booking.spot.locationName),
                                 5.hs(),
                                 DurationPickerWidget(
@@ -176,15 +184,6 @@ class HistoryItem extends StatelessWidget {
                                       provider.setDurationExtend(duration),
                                   provider: provider,
                                   bookingType: bookingType,
-                                ),
-                                5.hs(),
-                                VehicleExtendWidget(
-                                  onStateChanged: (String model, int? id) {
-                                    provider.setVehicleExtend(model, id);
-                                  },
-                                  locationModel:
-                                      _convertSpotToLocationModel(booking.spot),
-                                  initialValue: booking.vehicle.model,
                                 ),
                                 5.hs(),
                                 PaymentMethodPicker(
@@ -197,8 +196,7 @@ class HistoryItem extends StatelessWidget {
                                       final response = await provider
                                           .extendBooking(booking.id);
                                       if (response == Status.success) {
-                                        Navigator.of(context)
-                                            .pop(); // Close the dialog
+                                        Navigator.of(context).pop();
                                         showDialog(
                                           context: context,
                                           builder: (context) {
@@ -220,8 +218,7 @@ class HistoryItem extends StatelessWidget {
                                           },
                                         );
                                       } else {
-                                        Navigator.of(context)
-                                            .pop(); // Close the dialog
+                                        Navigator.of(context).pop();
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
@@ -253,6 +250,77 @@ class HistoryItem extends StatelessWidget {
                       ),
                     ),
                   ),
+                  ZoomTapAnimation(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Update Vehicle'),
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                VehicleExtendWidget(
+                                  onStateChanged: (String model, int? id) {
+                                    provider.setVehicleExtend(model, id);
+                                  },
+                                  locationModel:
+                                      _convertSpotToLocationModel(booking.spot),
+                                  initialValue: booking.vehicle.model,
+                                ),
+                                5.hs(),
+                                ButtonWidget(
+                                    text: 'Update',
+                                    onTap: () async {
+                                      final response =
+                                          await provider.bookingUpdateVehicle(
+                                        vehicleId:
+                                            provider.selectedVehicleIdExtend!,
+                                        bookingId: booking.id,
+                                      );
+                                      if (response == Status.success) {
+                                        Navigator.of(context).pop();
+                                        await refresh();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              content: Text(
+                                                  'Vehicle has been updated successfully')),
+                                        );
+                                      } else {
+                                        Navigator.of(context).pop();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content:
+                                                Text('Something went wrong'),
+                                          ),
+                                        );
+                                      }
+                                    }),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.blue,
+                      ),
+                      child: const Text(
+                        'Update vehicle',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -262,17 +330,14 @@ class HistoryItem extends StatelessWidget {
     );
   }
 
-  // Helper method to format date
   String _formatDate(DateTime date) {
     return '${date.day}.${date.month}.${date.year}';
   }
 
-  // Helper method to format time zone
   String _formatTimeZone(DateTime date) {
     return '${date.hour}:${date.minute}';
   }
 
-  // Helper method to get status color
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'paid':
