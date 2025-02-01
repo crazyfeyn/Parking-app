@@ -446,4 +446,42 @@ class HomeDatasources {
       throw Exception('Failed to load payment methods');
     }
   }
+
+  Future<void> updateVehicle({
+    required VehicleModel vehicleData,
+  }) async {
+    print('------');
+    print(vehicleData.id);
+    print(vehicleData.make);
+    print(vehicleData.model);
+    print(vehicleData.plateNumber);
+    print(vehicleData.type);
+    print(vehicleData.unitNumber);
+    print(vehicleData.year);
+    print(vehicleData.user);
+    try {
+      if (vehicleData.unitNumber.isEmpty ||
+          vehicleData.year <= 0 ||
+          vehicleData.make.isEmpty ||
+          vehicleData.model.isEmpty ||
+          vehicleData.plateNumber.isEmpty) {
+        throw Exception('Invalid vehicle data');
+      }
+
+      final response = await dio.patch(
+          '/bookings/vehicle-update/${vehicleData.id}/',
+          data: vehicleData.toJson());
+
+      if (response.statusCode == 200) {
+        print('kirdi');
+      } else {
+        throw Exception('Failed to update vehicle');
+      }
+    } on DioException catch (e) {
+      print(e.toString());
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

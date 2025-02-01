@@ -68,6 +68,7 @@ class _BookingSpaceContentState extends State<BookingSpaceContent> {
                   14.hs(),
                   DurationPickerWidget(
                     onDurationChanged: provider.setDuration,
+                    provider: provider,
                   ),
                   14.hs(),
                   VehicleTypePicker(

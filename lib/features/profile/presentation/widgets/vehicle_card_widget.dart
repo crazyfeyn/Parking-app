@@ -5,8 +5,13 @@ import 'package:flutter_application/features/profile/presentation/widgets/info_t
 
 class VehicleCardWidget extends StatelessWidget {
   final VehicleModel vehicle;
+  final VoidCallback onEditPressed;
 
-  const VehicleCardWidget({super.key, required this.vehicle});
+  const VehicleCardWidget({
+    super.key,
+    required this.vehicle,
+    required this.onEditPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,6 @@ class VehicleCardWidget extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            // ignore: deprecated_member_use
             color: Colors.grey.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 4,
@@ -61,6 +65,14 @@ class VehicleCardWidget extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           InfoTextWidget(title: vehicle.unitNumber, subTitle: 'Unit Number'),
+          const SizedBox(height: 12),
+          Align(
+            alignment: Alignment.centerRight,
+            child: IconButton(
+              icon: const Icon(Icons.edit, color: Colors.blue),
+              onPressed: onEditPressed,
+            ),
+          ),
         ],
       ),
     );

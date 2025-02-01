@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
 import 'package:flutter_application/features/history/presentation/bloc/history_bloc.dart';
+import 'package:flutter_application/features/history/presentation/provider/filter_provider.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_application/features/profile/presentation/provider/vehicle_provider.dart';
@@ -72,6 +73,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         BlocProvider(create: (context) => sl<ProfileBloc>()),
         BlocProvider(create: (context) => sl<HistoryBloc>()),
         Provider(create: (context) => sl<BookingProvider>()),
+        Provider(create: (context) => sl<FilterProvider>()),
         ChangeNotifierProvider(create: (context) => sl<VehicleProvider>()),
       ],
       child: MaterialApp(

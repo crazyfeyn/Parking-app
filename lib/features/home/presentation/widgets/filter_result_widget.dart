@@ -3,6 +3,7 @@ import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/features/booking_space/presentation/pages/booking_space_screen.dart';
+import 'package:flutter_application/features/history/presentation/widgets/parking_detail_screen.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -172,6 +173,41 @@ class FilterResultWidget extends StatelessWidget {
                                 ),
                               ],
                             )
+                          ],
+                        ),
+                        16.hs(),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ParkingDetailsScreen(
+                                              location: location),
+                                    ),
+                                  );
+                                },
+                                child: const Text('Details'),
+                              ),
+                            ),
+                            8.ws(),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BookingSpaceScreen(
+                                          locationModel: location),
+                                    ),
+                                  );
+                                },
+                                child: const Text('Book'),
+                              ),
+                            ),
                           ],
                         ),
                       ],

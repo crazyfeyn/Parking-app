@@ -173,4 +173,18 @@ class HomeRepositoriesImpl extends HomeRepositories {
       return Left(NetworkFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, void>> updateVehicle(VehicleModel vehicleModel) async {
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        await homeDatasources.updateVehicle(vehicleData: vehicleModel);
+        return const Right(null);
+      } catch (e) {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
 }

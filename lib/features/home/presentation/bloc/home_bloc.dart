@@ -13,6 +13,7 @@ import 'package:flutter_application/features/home/domain/usecases/fetch_payment_
 import 'package:flutter_application/features/home/domain/usecases/fetch_search_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/filter_locations_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/get_vehicle_list_usecase.dart';
+import 'package:flutter_application/features/home/domain/usecases/update_vehicle_usecase.dart';
 import 'package:flutter_application/features/payment_screen/presentation/data/models/list_payment_methods.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -29,6 +30,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final FetchSearchUsecase fetchSearchUsecase;
   final FetchPaymentMethodListUsecase fetchPaymentMethodListUsecase;
   final FilterLocationsUsecase filterLocationsUsecase;
+  final UpdateVehicleUsecase updateVehicleUsecase;
 
   HomeBloc(
     this.currentLocationUsecase,
@@ -38,6 +40,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this.fetchSearchUsecase,
     this.fetchPaymentMethodListUsecase,
     this.filterLocationsUsecase,
+    this.updateVehicleUsecase,
   ) : super(const HomeState()) {
     on<_fetchAllLocations>(_fetchAllLocationsFunc);
     on<_fetchSearchAllLocations>(_fetchSearchAllLocationsFunc);
@@ -47,6 +50,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<_fetchPaymentMethodList>(_fetchPaymentMethodListFunc);
     on<_filterLocation>(_filterLocationsFunc);
     on<_clearSearchResults>(_clearSearchResultsFunc);
+    on<_updateVehicle>(_updateVehicleFunc);
   }
 
   Future<void> _fetchSearchAllLocationsFunc(
@@ -186,5 +190,28 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> _clearSearchResultsFunc(
       _clearSearchResults event, Emitter<HomeState> emit) async {
     emit(state.copyWith(searchLocations: []));
+  }
+
+  Future<void> _updateVehicleFunc(
+      _updateVehicle event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(status: Status.loading));
+
+    try {
+      await updateVehicleUsecase.call(event.vehicleModel);
+
+      emit(
+        state.copyWith(
+          status: Status.success,
+          createdVehicle: event.vehicleModel,
+        ),
+      );
+    } catch (error) {
+      emit(
+        state.copyWith(
+          status: Status.error,
+          errorMessage: error.toString(),
+        ),
+      );
+    }
   }
 }

@@ -43,7 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
     if (validLocations.isEmpty) return;
 
     if (validLocations.length == 1) {
-      // Single result: Zoom in closely
       _mapController?.animateCamera(
         CameraUpdate.newLatLngZoom(
           LatLng(
@@ -67,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
       resizeToAvoidBottomInset: false,
       body: BlocConsumer<HomeBloc, HomeState>(
         listener: (context, state) {
-          // Handle network error
           if (state.status == Status.errorNetwork) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -81,13 +79,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             );
-          }
-          // Auto retry for other errors without showing snackbar
-          else if (state.status == Status.error) {
+          } else if (state.status == Status.error) {
             _initializeData();
           }
 
-          // Handle search results
           if (state.searchLocations?.isNotEmpty == true) {
             _focusOnSearchedLocations(state.searchLocations!);
           }
@@ -109,7 +104,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildGoogleMap(HomeState state) {
-    // Use current location as the initial position if available, otherwise use world center
     final initialPosition = state.currentLocation ?? const LatLng(0, 0);
 
     Set<Marker> markers = {

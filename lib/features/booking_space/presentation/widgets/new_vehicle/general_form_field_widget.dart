@@ -7,16 +7,17 @@ class GeneralFormFieldWidget extends StatefulWidget {
   final String initialExample;
   final String aboveText;
   final TextInputType keyboardType;
+  final String? editingText;
 
-  const GeneralFormFieldWidget({
-    super.key,
-    required this.onValueChanged,
-    this.initialValue,
-    required this.labelText,
-    required this.initialExample,
-    required this.aboveText,
-    this.keyboardType = TextInputType.text,
-  });
+  const GeneralFormFieldWidget(
+      {super.key,
+      required this.onValueChanged,
+      this.initialValue,
+      required this.labelText,
+      required this.initialExample,
+      required this.aboveText,
+      this.keyboardType = TextInputType.text,
+      this.editingText});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -33,6 +34,7 @@ class _GeneralFormFieldWidgetState extends State<GeneralFormFieldWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.editingText != null) _textController.text = widget.editingText!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

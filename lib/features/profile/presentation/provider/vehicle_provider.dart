@@ -11,6 +11,7 @@ class VehicleProvider extends ChangeNotifier {
   String? _model;
   String? _plateNumber;
   int? _userId;
+  int? _vehicleId;
 
   String? get vehicleType => _vehicleType;
   String? get unitNumber => _unitNumber;
@@ -19,6 +20,7 @@ class VehicleProvider extends ChangeNotifier {
   String? get model => _model;
   String? get plateNumber => _plateNumber;
   int? get userId => _userId;
+  int? get vehicleId => _vehicleId;
 
   bool get isFormValidVehicle {
     return _vehicleType != null &&
@@ -32,6 +34,11 @@ class VehicleProvider extends ChangeNotifier {
 
   void setVehicleType(String? type) {
     _vehicleType = type;
+    notifyListeners();
+  }
+
+  void setVehicleId(int? id) {
+    _vehicleId = id;
     notifyListeners();
   }
 

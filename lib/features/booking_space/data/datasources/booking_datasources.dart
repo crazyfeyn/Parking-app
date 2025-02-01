@@ -23,4 +23,29 @@ class BookingDatasources {
       return Status.error;
     }
   }
+
+  Future<Status> extendBooking({
+    required int id,
+    required int duration,
+    required int paymentMethodId,
+  }) async {
+    try {
+      final response = await dio.post(
+        '/bookings/extend/$id/',
+        data: {
+          'duration': duration,
+          'payment_method': paymentMethodId,
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return Status.success;
+      } else {
+        return Status.error;
+      }
+    } catch (e) {
+      print(e.toString());
+      return Status.error;
+    }
+  }
 }

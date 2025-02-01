@@ -7,7 +7,7 @@ import 'package:flutter_application/core/widgets/button_widget.dart';
 import 'package:flutter_application/features/home/data/models/filter_model.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/home/presentation/widgets/city_picker.dart';
-import 'package:flutter_application/features/home/presentation/widgets/services_serction_widget.dart';
+import 'package:flutter_application/features/home/presentation/widgets/parking_filter_model.dart';
 import 'package:flutter_application/features/home/presentation/widgets/state_picker.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -26,7 +26,6 @@ class _FilterWidgetState extends State<FilterWidget> {
       builder: (context, state) {
         return ZoomTapAnimation(
           onTap: () async {
-            // Reset the FilterModel to its initial state
             final filterModel = FilterModel();
 
             await showModalBottomSheet(
@@ -101,11 +100,9 @@ class _FilterWidgetState extends State<FilterWidget> {
                                 ButtonWidget(
                                   text: 'Filter',
                                   onTap: () {
-                                    // Dispatch the filter event to the HomeBloc
                                     context.read<HomeBloc>().add(
                                           HomeEvent.filterLocation(filterModel),
                                         );
-                                    // Close the bottom sheet and open the SearchOptionScreen
                                     Navigator.pop(context);
                                     showModalBottomSheet(
                                       context: context,
