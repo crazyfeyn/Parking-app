@@ -5,12 +5,12 @@ import 'package:flutter_application/features/home/data/models/location_model.dar
 import 'package:flutter_application/features/home/domain/repositories/home_repositories.dart';
 
 class FetchLocationsUsecase extends Usecase<List<LocationModel>, void> {
-  HomeRepositories homeRepositories;
+  final HomeRepositories homeRepositories;
 
   FetchLocationsUsecase({required this.homeRepositories});
 
   @override
-  Future<Either<Failure, List<LocationModel>>> call(params) {
-    return homeRepositories.fetchAllLocations();
+  Future<Either<Failure, List<LocationModel>>> call(void params) async {
+    return await homeRepositories.fetchAllLocations();
   }
 }

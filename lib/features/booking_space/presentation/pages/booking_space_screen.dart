@@ -134,7 +134,13 @@ class BookingButton extends StatelessWidget {
             );
           }
         } else {
-          return null;
+          return ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Please fill the all forms'),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+            ),
+          );
         }
       },
       child: Container(

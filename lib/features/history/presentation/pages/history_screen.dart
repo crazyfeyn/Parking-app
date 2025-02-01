@@ -158,31 +158,9 @@ class _HistoryScreenState extends State<HistoryScreen>
         final booking = bookings[index];
         return HistoryItem(
           booking: booking,
+          refresh: _refreshCurrentTab,
         );
       },
     );
-  }
-
-  String _formatDate(DateTime date) {
-    return '${date.day}.${date.month}.${date.year}';
-  }
-
-  String _formatTimeZone(DateTime date) {
-    return '${date.hour}:${date.minute}';
-  }
-
-  Color _getStatusColor(String status) {
-    switch (status.toLowerCase()) {
-      case 'paid':
-        return Colors.green;
-      case 'pending':
-        return Colors.orange;
-      case 'in progress':
-        return Colors.blue;
-      case 'closed':
-        return Colors.red;
-      default:
-        return Colors.grey;
-    }
   }
 }

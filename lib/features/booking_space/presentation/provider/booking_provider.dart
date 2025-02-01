@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/booking_space/data/datasources/booking_datasources.dart';
+import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
 import 'package:flutter_application/features/home/data/models/booking_model.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
@@ -74,10 +75,10 @@ class BookingProvider extends ChangeNotifier {
   }
 
   bool get isExtendBookingValid =>
-      _selectedDurationExtend != null &&
-      _selectedVehicleExtend != null &&
-      _selectedVehicleIdExtend != null &&
-      paymentIdExtend != null;
+      _selectedDurationExtend != null && paymentIdExtend != null;
+
+  bool get isBookingUpdateVehicleValid =>
+      _selectedVehicleExtend != null && selectedVehicleIdExtend != null;
 
   void setDate(DateTime date) {
     _selectedDate = date;
@@ -221,6 +222,19 @@ class BookingProvider extends ChangeNotifier {
       id: bookingId,
       duration: int.parse(_selectedDurationExtend!),
       paymentMethodId: _paymentIdExtend!,
+    );
+    return response;
+  }
+
+  Future<Status?> bookingUpdateVehicle({
+    required int vehicleId,
+    required int bookingId,
+  }) async {
+    if (!isBookingUpdateVehicleValid) return null;
+
+    final response = await bookingDatasources.updateBookingVehicle(
+      vehicleId: vehicleId,
+      bookingId: bookingId,
     );
     return response;
   }

@@ -103,8 +103,34 @@ class SelectPaymentScreen extends StatelessWidget {
                       ),
                     ),
                     for (final method in paymentMethods!)
-                      CardWidget(
-                        cardNumber: _maskCardNumber(method.card.last4),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(bottom: AppDimens.MARGIN_12),
+                        child: Stack(
+                          alignment: Alignment.topRight,
+                          children: [
+                            CardWidget(
+                              cardNumber: _maskCardNumber(method.card.last4),
+                            ),
+                            if (method.isDefault)
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: const Text(
+                                  'Default',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                   ],
                 ),

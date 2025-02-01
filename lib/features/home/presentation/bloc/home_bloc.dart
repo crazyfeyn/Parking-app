@@ -70,13 +70,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _fetchAllLocations event, Emitter<HomeState> emit) async {
     emit(state.copyWith(status: Status.loading));
     final response = await fetchLocationsUsecase(null);
-    response.fold((error) {
-      emit(state.copyWith(
+    response.fold(
+      (error) {
+        emit(state.copyWith(
           status: error is NetworkFailure ? Status.errorNetwork : Status.error,
-          errorMessage: error.toString()));
-    }, (data) {
-      emit(state.copyWith(status: Status.success, locations: data));
-    });
+          errorMessage: error.toString(),
+        ));
+      },
+      (data) {
+        emit(state.copyWith(status: Status.success, locations: data));
+      },
+    );
   }
 
   Future<void> _getCurrentLocationFunc(

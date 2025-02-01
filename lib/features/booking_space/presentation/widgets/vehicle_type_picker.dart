@@ -68,7 +68,7 @@ class _VehicleTypePickerState extends State<VehicleTypePicker> {
             final vehicle = vehicleTypes[index];
             return ListTile(
               title: Text(
-                vehicle['model'] ?? 'Unknown model',
+                '${vehicle['model']} (${vehicle['plateNumber']})', // Display model and plate number
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
@@ -76,9 +76,12 @@ class _VehicleTypePickerState extends State<VehicleTypePicker> {
               ),
               onTap: () {
                 setState(() {
-                  selectedVehicleType = vehicle['model'];
+                  selectedVehicleType =
+                      '${vehicle['model']} (${vehicle['plateNumber']})';
                 });
-                widget.onStateChanged(vehicle['model'], vehicle['id']);
+                widget.onStateChanged(
+                    '${vehicle['model']} (${vehicle['plateNumber']})',
+                    vehicle['id']);
                 Navigator.pop(context);
               },
             );
@@ -118,6 +121,8 @@ class _VehicleTypePickerState extends State<VehicleTypePicker> {
                               ?.map((vehicle) => {
                                     'id': vehicle.id,
                                     'model': vehicle.model,
+                                    'plateNumber':
+                                        vehicle.plateNumber, // Add plate number
                                   })
                               .toList() ??
                           [];
