@@ -13,16 +13,28 @@ class HistoryDatasources {
       if (response.statusCode == 200) {
         DateTime now = DateTime.now();
 
-        List<BookingView> historyBookings = (response.data as List)
-            .map((json) => BookingView.fromJson(json))
-            .where((booking) => booking.endDate.isBefore(now))
-            .toList();
+        if (response.data is! List) {
+          throw FormatException(
+              'Expected List, got ${response.data.runtimeType}');
+        }
+
+        List<BookingView> historyBookings = [];
+
+        for (var item in response.data) {
+          try {
+            BookingView booking = BookingView.fromJson(item);
+            if (booking.endDate.isBefore(now)) {
+              historyBookings.add(booking);
+            }
+            // ignore: empty_catches
+          } catch (e) {}
+        }
 
         return historyBookings;
       } else {
         throw ServerException();
       }
-    } on DioException {
+    } on DioException catch (e) {
       throw ServerException();
     } catch (e) {
       throw ServerException();
@@ -36,13 +48,25 @@ class HistoryDatasources {
       if (response.statusCode == 200) {
         DateTime now = DateTime.now();
 
-        List<BookingView> currentBookings = (response.data as List)
-            .map((json) => BookingView.fromJson(json))
-            .where((booking) {
-          return booking.startDate.isAfter(now) ||
-              booking.startDate.isAtSameMomentAs(now) ||
-              (now.isAfter(booking.startDate) && now.isBefore(booking.endDate));
-        }).toList();
+        if (response.data is! List) {
+          throw FormatException(
+              'Expected List, got ${response.data.runtimeType}');
+        }
+
+        List<BookingView> currentBookings = [];
+
+        for (var item in response.data) {
+          try {
+            BookingView booking = BookingView.fromJson(item);
+            if (booking.startDate.isAfter(now) ||
+                booking.startDate.isAtSameMomentAs(now) ||
+                (now.isAfter(booking.startDate) &&
+                    now.isBefore(booking.endDate))) {
+              currentBookings.add(booking);
+            }
+            // ignore: empty_catches
+          } catch (e) {}
+        }
 
         return currentBookings;
       } else {
@@ -50,7 +74,7 @@ class HistoryDatasources {
       }
     } on DioException {
       throw ServerException();
-    } catch (_) {
+    } catch (e) {
       throw ServerException();
     }
   }

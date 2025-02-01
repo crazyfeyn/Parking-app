@@ -9,7 +9,6 @@ import 'package:flutter_application/core/widgets/button_widget.dart';
 import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/profile/presentation/widgets/custom_profile_app_bar_widget.dart';
-import 'package:flutter_application/features/profile/presentation/widgets/info_text_widget.dart';
 
 class VehiclesScreen extends StatefulWidget {
   const VehiclesScreen({super.key});
