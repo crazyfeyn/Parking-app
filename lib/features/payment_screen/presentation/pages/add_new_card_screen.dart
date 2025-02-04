@@ -50,7 +50,6 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Payment Method Section
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

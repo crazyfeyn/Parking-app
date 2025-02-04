@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
 import 'package:flutter_application/core/widgets/text_widget.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
@@ -7,23 +8,34 @@ import 'package:flutter_application/features/home/presentation/pages/main_screen
 import 'package:flutter_application/features/profile/presentation/widgets/custom_profile_app_bar_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ResetPasswordScreen extends StatelessWidget {
-  ResetPasswordScreen({super.key});
+class ResetPasswordScreen extends StatefulWidget {
+  const ResetPasswordScreen({super.key});
 
+  @override
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+}
+
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+  bool _isOldPasswordVisible = false;
+  bool _isNewPasswordVisible = false;
   final newpassController = TextEditingController();
+
   final oldpassController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const CustomProfileAppBarWidget(title: 'CUSTOM RESET PASS'),
+        appBar: const CustomProfileAppBarWidget(title: 'Change password'),
         body: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state.status == Status.success) {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text('Successfully changed'),
+                  title: const Text(
+                    'Successfully changed',
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
                   content: const Text(
                       'Your password has been changed successfully.'),
                   actions: [
@@ -43,18 +55,37 @@ class ResetPasswordScreen extends StatelessWidget {
               );
             }
             if (state.status == Status.error) {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Change Error'),
-                  content: const Text('Your Old password dont correct'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Retry'),
-                    ),
-                  ],
+              AlertDialog(
+                content: const Text(
+                  'Change Error',
+                  style: TextStyle(fontWeight: FontWeight.w500),
                 ),
+                actionsAlignment: MainAxisAlignment.spaceBetween,
+                actions: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: const Color(0xFF2357ED),
+                        ),
+                        child: const Text(
+                          'The password you entered is incorrect. Please try again',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Retry'),
+                  ),
+                ],
               );
             }
           },
@@ -67,17 +98,45 @@ class ResetPasswordScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('CUSTOM OLD PASSWORD'),
+                  const Text('Old password'),
+                  8.hs(),
                   TextWidget(
                     controller: oldpassController,
-                    labelText: 'Old password',
+                    labelText: 'Enter your old password',
+                    obscureText: !_isOldPasswordVisible,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isOldPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isOldPasswordVisible = !_isOldPasswordVisible;
+                        });
+                      },
+                    ),
                   ),
                   const Text(
-                    'CUSTOM NEW PASSWORD',
+                    'New password',
                   ),
+                  8.hs(),
                   TextWidget(
                     controller: newpassController,
-                    labelText: 'New password',
+                    labelText: 'Enter your new password',
+                    obscureText: !_isNewPasswordVisible,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isNewPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isNewPasswordVisible = !_isNewPasswordVisible;
+                        });
+                      },
+                    ),
                   ),
                   ButtonWidget(
                     text: 'Change',

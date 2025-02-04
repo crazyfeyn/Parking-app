@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/config/stripe_service.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/server_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
@@ -12,7 +14,7 @@ class SelectPaymentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Dispatch the fetchPaymentMethodList event when the screen is initialized
+    final StripeService stripeService = sl<StripeService>();
     context.read<HomeBloc>().add(const HomeEvent.fetchPaymentMethodList());
 
     return Scaffold(
@@ -26,29 +28,57 @@ class SelectPaymentScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppDimens.PADDING_12),
-        child: BlocBuilder<HomeBloc, HomeState>(
+        child: BlocConsumer<HomeBloc, HomeState>(
+          listener: (context, state) {
+            if (state.status == Status.error) {
+              context
+                  .read<HomeBloc>()
+                  .add(const HomeEvent.fetchPaymentMethodList());
+            } else if (state.status == Status.errorNetwork) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content:
+                      Text(state.errorMessage ?? 'Plase check your conenction'),
+                  action: SnackBarAction(
+                    label: 'Retry',
+                    onPressed: () {
+                      context
+                          .read<HomeBloc>()
+                          .add(const HomeEvent.fetchPaymentMethodList());
+                    },
+                  ),
+                ),
+              );
+            }
+          },
           builder: (context, state) {
             if (state.status == Status.loading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state.status == Status.error) {
-              return Center(child: Text('Error: ${state.errorMessage}'));
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.red,
+                  strokeWidth: 3,
+                ),
+              );
             } else if (state.status == Status.success &&
                 state.listPaymentMethod != null) {
-              final paymentMethods = state.listPaymentMethod!;
+              final paymentMethods = state.listPaymentMethod;
               return SingleChildScrollView(
                 child: Column(
                   children: [
                     ZoomTapAnimation(
-                      onTap: () {
-                        // Navigate to add card screen
+                      onTap: () async {
+                        await stripeService.addCard();
+                        context
+                            .read<HomeBloc>()
+                            .add(const HomeEvent.fetchPaymentMethodList());
                       },
                       child: Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(AppDimens.PADDING_12),
+                        padding: const EdgeInsets.all(AppDimens.PADDING_14),
                         margin:
                             const EdgeInsets.only(bottom: AppDimens.MARGIN_16),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF5D21E),
+                          color: AppConstants.mainColor,
                           borderRadius:
                               BorderRadius.circular(AppDimens.BORDER_RADIUS_15),
                         ),
@@ -58,34 +88,64 @@ class SelectPaymentScreen extends StatelessWidget {
                             const Text(
                               'Add Card',
                               style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 22,
-                              ),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18,
+                                  color: Colors.white),
                             ),
                             8.ws(),
                             const Icon(
                               Icons.add_circle_outline_rounded,
                               color: Colors.white,
-                              size: 47,
+                              size: 28,
                             ),
                           ],
                         ),
                       ),
                     ),
-                    for (final method in paymentMethods)
-                      CardWidget(
-                        cardNumber: method
-                            .card.last4, // Access the last4 property directly
+                    for (final method in paymentMethods!)
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(bottom: AppDimens.MARGIN_12),
+                        child: Stack(
+                          alignment: Alignment.topRight,
+                          children: [
+                            CardWidget(
+                              cardNumber: _maskCardNumber(method.card.last4),
+                            ),
+                            if (method.isDefault)
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: const Text(
+                                  'Default',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                   ],
                 ),
               );
             } else {
-              return const Center(child: Text('No payment methods found.'));
+              return const SizedBox();
             }
           },
         ),
       ),
     );
+  }
+
+  String _maskCardNumber(String last4Digits) {
+    const maskedDigits = '**** **** **** ';
+    return maskedDigits + last4Digits;
   }
 }

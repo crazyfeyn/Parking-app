@@ -8,14 +8,10 @@ class ProfileLocalDataSources {
   });
 
   Future<void> saveId(int id) async {
-    print('HELLLO MATHERID USER ID');
-    print(await localConfig.getUserIdToken());
     return localConfig.saveUserIdToken(id);
   }
 
   Future<void> getId() {
-    print('HELLLO MATHERID USER ID');
-    print(localConfig.getUserIdToken());
     return localConfig.getUserIdToken();
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/history/presentation/pages/history_screen.dart';
+import 'package:flutter_application/features/history/presentation/pages/parking_screen.dart';
 import 'package:flutter_application/features/home/presentation/pages/home_screen.dart';
 import 'package:flutter_application/features/profile/presentation/pages/profile_screen.dart';
 
@@ -14,9 +14,7 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 1;
 
   final List<Widget> _pages = [
-    const HistoryScreen(
-      pageNumber: 0,
-    ),
+    const ParkingScreen(),
     const HomeScreen(),
     const ProfileScreen(),
   ];
@@ -62,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             BottomNavigationBarItem(
               icon: Padding(
-                padding: EdgeInsets.only(bottom: 0),
+                padding: EdgeInsets.only(bottom: 2),
                 child: Icon(Icons.person, color: Colors.red, size: 28),
               ),
               label: 'Profile',
@@ -73,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
           selectedItemColor: Colors.red,
           unselectedItemColor: Colors.grey,
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
-          iconSize: 24, // Adjust icon size for better control
+          iconSize: 24,
         ),
       ),
     );

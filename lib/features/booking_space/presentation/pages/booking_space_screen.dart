@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
+import 'package:flutter_application/features/history/presentation/widgets/success_refresh_widget.dart';
+import 'package:flutter_application/features/home/presentation/pages/main_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
@@ -66,6 +68,7 @@ class _BookingSpaceContentState extends State<BookingSpaceContent> {
                   14.hs(),
                   DurationPickerWidget(
                     onDurationChanged: provider.setDuration,
+                    provider: provider,
                   ),
                   14.hs(),
                   VehicleTypePicker(
@@ -78,7 +81,9 @@ class _BookingSpaceContentState extends State<BookingSpaceContent> {
                     onStateChanged: provider.setPaymentMethod,
                   ),
                   14.hs(),
-                  const BookingButton(),
+                  BookingButton(
+                    provider: provider,
+                  ),
                 ],
               ),
             )
@@ -90,14 +95,54 @@ class _BookingSpaceContentState extends State<BookingSpaceContent> {
 }
 
 class BookingButton extends StatelessWidget {
-  const BookingButton({super.key});
+  final BookingProvider provider;
+  const BookingButton({super.key, required this.provider});
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<BookingProvider>();
-
     return ZoomTapAnimation(
-      onTap: provider.isFormValid ? () => provider.handleBooking() : null,
+      onTap: () async {
+        if (provider.isFormValid) {
+          final response = await provider.handleBooking();
+          if (response == Status.success) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return SuccessNotifierWidget(
+                  onRefresh: () => Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const MainScreen()),
+                    (Route<dynamic> route) => false,
+                  ),
+                  text: 'Booking successfully created',
+                  contentText: 'back to main screen',
+                );
+              },
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text(
+                    'Error occurred while booking. Please try again.'),
+                duration: const Duration(seconds: 5),
+                action: SnackBarAction(
+                  label: 'Retry',
+                  onPressed: () {
+                    provider.handleBooking();
+                  },
+                ),
+              ),
+            );
+          }
+        } else {
+          return ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Please fill the all forms'),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
+      },
       child: Container(
         width: MediaQuery.of(context).size.width * 0.98,
         height: MediaQuery.of(context).size.height * 0.06,
@@ -122,3 +167,18 @@ class BookingButton extends StatelessWidget {
     );
   }
 }
+
+
+
+// ScaffoldMessenger.of(context).showSnackBar(
+//               SnackBar(
+//                 content: const Text('No Internet, check your connection.'),
+//                 duration: const Duration(seconds: 10),
+//                 action: SnackBarAction(
+//                   label: 'Retry',
+//                   onPressed: () {
+//                     _initializeData();
+//                   },
+//                 ),
+//               ),
+//             );

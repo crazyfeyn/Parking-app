@@ -1,32 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
+import 'package:flutter_application/features/booking_space/presentation/pages/booking_space_screen.dart';
+import 'package:flutter_application/features/history/presentation/widgets/parking_detail_screen.dart';
+import 'package:flutter_application/features/home/data/models/location_model.dart';
 
 class ParkingItem extends StatelessWidget {
-  final String title;
-  final String bookingType;
-  final String startDate;
-  final String endDate;
-  final String timeZone;
-  final String vehicleType;
-  final String price;
-  final String priceStatus;
-  final String parkingStatus;
-  final Color priceStatusColor;
-  final Color parkingStatusColor;
+  final LocationModel location;
 
   const ParkingItem({
     super.key,
-    required this.title,
-    required this.bookingType,
-    required this.startDate,
-    required this.endDate,
-    required this.timeZone,
-    required this.vehicleType,
-    required this.price,
-    required this.priceStatus,
-    required this.parkingStatus,
-    required this.priceStatusColor,
-    required this.parkingStatusColor,
+    required this.location,
   });
 
   @override
@@ -50,119 +33,88 @@ class ParkingItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Parking name',
+            'Parking name:',
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 15,
               color: Colors.grey,
             ),
           ),
-          const SizedBox(height: 4),
           Text(
-            title,
+            location.name,
             style: const TextStyle(
               fontSize: 16,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          const Divider(height: 20, color: Colors.grey),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Booking type'),
-              Text(bookingType),
-            ],
+          8.hs(),
+          const Text(
+            'Adress:',
+            style: TextStyle(
+              fontSize: 15,
+              color: Colors.grey,
+            ),
           ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Start day'),
-              Text(startDate),
-            ],
+          Text(
+            location.address,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('End day'),
-              Text(endDate),
-            ],
+          8.hs(),
+          Text(
+            'Available Spaces: ${location.availableSpots ?? 'N/A'}',
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Time zone'),
-              Text(timeZone),
-            ],
+          8.hs(),
+          const Text(
+            'Rates:',
+            style: TextStyle(
+              fontSize: 15,
+              color: Colors.grey,
+            ),
           ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Vehicle type'),
-              Text(vehicleType),
-            ],
+          Text(
+            'Weekly - \$${location.weeklyRate}, Daily - \$${location.dailyRate}, Monthly - \$${location.monthlyRate}',
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-          const SizedBox(height: 8),
+          16.hs(),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Price'),
-              Text(
-                price,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ParkingDetailsScreen(location: location),
+                      ),
+                    );
+                  },
+                  child: const Text('Details'),
                 ),
               ),
-            ],
-          ),
-          12.hs(),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Price status'),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: priceStatusColor.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      priceStatus,
-                      style: TextStyle(
-                        color: priceStatusColor,
-                        fontWeight: FontWeight.bold,
+              8.ws(),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            BookingSpaceScreen(locationModel: location),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-              12.hs(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Parking status'),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: parkingStatusColor.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      parkingStatus,
-                      style: TextStyle(
-                        color: parkingStatusColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
+                    );
+                  },
+                  child: const Text('Book'),
+                ),
               ),
             ],
           ),

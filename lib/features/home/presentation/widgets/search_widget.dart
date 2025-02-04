@@ -29,8 +29,7 @@ class SearchWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-            // padding: const EdgeInsets.all(AppDimens.PADDING_10),
-            width: MediaQuery.of(context).size.width * 0.8,
+            width: MediaQuery.of(context).size.width * 0.76,
             height: MediaQuery.of(context).size.height * 0.057,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
@@ -39,10 +38,10 @@ class SearchWidget extends StatelessWidget {
             ),
             child: TextFormField(
               onFieldSubmitted: (newValue) {
-                context
-                    .read<HomeBloc>()
-                    .add(HomeEvent.fetchSearchLocations(searchController.text));
-                openGotNext(context);
+                if (searchController.text.trim().isNotEmpty) {
+                  context.read<HomeBloc>().add(
+                      HomeEvent.fetchSearchLocations(searchController.text));
+                }
               },
               decoration: InputDecoration(
                 labelText: 'Where to park',

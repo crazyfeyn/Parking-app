@@ -11,6 +11,7 @@ import 'package:flutter_application/features/auth/domain/usecases/login_user_use
 import 'package:flutter_application/features/auth/domain/usecases/refresh_user_token_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/register_user_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/reset_pass_user_usecase.dart';
+import 'package:flutter_application/features/auth/domain/usecases/start_refresh_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/stop_refresh_usecase.dart';
 
 part 'auth_bloc.freezed.dart';
@@ -26,6 +27,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   LogOutUsecase logOutUsecase;
   ChangePasswordUsecase changePasswordUsecase;
   StopRefreshUsecase stopRefreshUsecase;
+  StartRefreshUsecase startRefreshUsecase;
   AuthBloc(
     this.loginUserUsecase,
     this.refreshUserTokenUsecase,
@@ -35,6 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this.logOutUsecase,
     this.changePasswordUsecase,
     this.stopRefreshUsecase,
+    this.startRefreshUsecase,
   ) : super(AuthState()) {
     on<_log>(_logIn);
     on<_logOut>(_logOu);
@@ -45,6 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<_authicated>(_auth);
     on<_changePass>(_change);
     on<_stopToken>(_stop);
+    on<_startToken>(_start);
   }
 
   Future<void> _change(_changePass event, Emitter<AuthState> emit) async {
@@ -70,6 +74,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _stop(_stopToken event, Emitter<AuthState> emit) async {
     await stopRefreshUsecase.call();
+  }
+
+  Future<void> _start(_startToken event, Emitter<AuthState> emit) async {
+    await startRefreshUsecase.call();
   }
 
   Future<void> _logOu(_logOut event, Emitter<AuthState> emit) async {
@@ -162,8 +170,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _auth(_authicated event, Emitter<AuthState> emit) async {
     final recponce = await authicatedUsecase.call(null);
-    print('HELLO FROM BLOC');
-    print(recponce);
     if (recponce == true) {
       emit(state.copyWith(status: Status.success));
     } else {

@@ -1,6 +1,10 @@
 import 'package:flutter_application/core/config/stripe_service.dart';
+import 'package:flutter_application/features/auth/domain/usecases/start_refresh_usecase.dart';
 import 'package:flutter_application/features/auth/domain/usecases/stop_refresh_usecase.dart';
 import 'package:flutter_application/features/booking_space/data/datasources/booking_datasources.dart';
+import 'package:flutter_application/features/history/presentation/provider/filter_provider.dart';
+import 'package:flutter_application/features/home/domain/usecases/update_vehicle_usecase.dart';
+import 'package:flutter_application/features/profile/presentation/provider/vehicle_provider.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_application/core/config/dio_config.dart';
@@ -45,8 +49,8 @@ import 'package:flutter_application/features/profile/domain/usecases/get_profile
 import 'package:flutter_application/features/profile/domain/usecases/update_profile_usecase.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
 
@@ -111,7 +115,8 @@ Future<void> init() async {
 
   sl.registerLazySingleton<ChangePasswordUsecase>(() =>
       ChangePasswordUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
-
+  sl.registerCachedFactory(
+      () => StartRefreshUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
   // Bloc
   sl.registerFactory<AuthBloc>(
     () => AuthBloc(
@@ -122,7 +127,8 @@ Future<void> init() async {
         sl<AuthicatedUsecase>(),
         sl<LogOutUsecase>(),
         sl<ChangePasswordUsecase>(),
-        sl<StopRefreshUsecase>()),
+        sl<StopRefreshUsecase>(),
+        sl<StartRefreshUsecase>()),
   );
   sl.registerCachedFactory(
       () => StopRefreshUsecase(authRepositories: sl<AuthRepositoriesImpl>()));
@@ -135,8 +141,8 @@ Future<void> init() async {
   // Repositories
   sl.registerLazySingleton<HomeRepositories>(
     () => HomeRepositoriesImpl(
-      homeDatasources: sl<HomeDatasources>(),
-    ),
+        homeDatasources: sl<HomeDatasources>(),
+        internetConnectionChecker: InternetConnectionChecker.createInstance()),
   );
 
   // Use Cases
@@ -182,6 +188,12 @@ Future<void> init() async {
     ),
   );
 
+  sl.registerLazySingleton<UpdateVehicleUsecase>(
+    () => UpdateVehicleUsecase(
+      homeRepositories: sl<HomeRepositories>(),
+    ),
+  );
+
   // Bloc
   sl.registerFactory<HomeBloc>(
     () => HomeBloc(
@@ -192,6 +204,7 @@ Future<void> init() async {
       sl<FetchSearchUsecase>(),
       sl<FetchPaymentMethodListUsecase>(),
       sl<FilterLocationsUsecase>(),
+      sl<UpdateVehicleUsecase>(),
     ),
   );
 
@@ -256,7 +269,9 @@ Future<void> init() async {
 
   // Repositories
   sl.registerLazySingleton<HistoryRepositories>(
-    () => HistoryRepositoriesImpl(historyDatasources: sl<HistoryDatasources>()),
+    () => HistoryRepositoriesImpl(
+        historyDatasources: sl<HistoryDatasources>(),
+        internetConnectionChecker: InternetConnectionChecker.createInstance()),
   );
 
   // Use Cases
@@ -281,12 +296,18 @@ Future<void> init() async {
   sl.registerFactoryParam<BookingProvider, LocationModel, void>(
     (locationModel, _) => BookingProvider(locationModel: locationModel),
   );
+  sl.registerFactory<VehicleProvider>(
+    () => VehicleProvider(),
+  );
+
+  sl.registerFactory<FilterProvider>(
+    () => FilterProvider(),
+  );
 
   // Register StripeService
   sl.registerLazySingleton<StripeService>(
     () => StripeService(
       dio: sl<Dio>(),
-      localConfig: sl<LocalConfig>(),
     ),
   );
 

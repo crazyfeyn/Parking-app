@@ -13,7 +13,6 @@ class LocalConfig {
   }
 
   Future<String?> getToken() async {
-    print('hello from localconfig');
     final token = sharedPreferences.getString(
       AppConstants.userToken,
     );
@@ -21,10 +20,7 @@ class LocalConfig {
   }
 
   Future<bool> authenticated() async {
-    print('Checking authentication status in local config...');
     final token = sharedPreferences.getString(AppConstants.userToken);
-    print(await getRefreshToken());
-    print(token);
     return token != null && token.isNotEmpty;
   }
 

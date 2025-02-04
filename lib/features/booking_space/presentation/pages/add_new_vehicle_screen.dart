@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/widgets/white_back_widget.dart';
 import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
 import 'package:flutter_application/features/booking_space/presentation/widgets/new_vehicle/add_vehicle_button.dart';
@@ -52,14 +53,9 @@ class AddNewVehicleScreen extends StatelessWidget {
                 ),
                 title: const Text(
                   'Add new vehicle',
-                  style: TextStyle(
-                    color: Color(0xFF323232),
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                  ),
                 ),
               ),
-              const SizedBox(height: 16),
+              14.hs(),
               WhiteBackWidget(
                 widget: ListView(
                   shrinkWrap: true,
@@ -125,7 +121,10 @@ class AddNewVehicleScreen extends StatelessWidget {
                           );
                         } else if (state.status == Status.loading) {
                           return const Center(
-                              child: CircularProgressIndicator());
+                              child: CircularProgressIndicator(
+                            color: Colors.red,
+                            strokeWidth: 3,
+                          ));
                         } else {
                           return const Center(
                             child: Text('Failed to load user data'),

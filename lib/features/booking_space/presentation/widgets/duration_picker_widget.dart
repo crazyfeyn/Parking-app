@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_application/features/booking_space/presentation/provider/booking_provider.dart';
 
 class DurationPickerWidget extends StatefulWidget {
+  final BookingProvider provider;
   final Function(String) onDurationChanged;
-  final String? initialDuration;
+  final String? bookingType;
 
   const DurationPickerWidget({
     super.key,
     required this.onDurationChanged,
-    this.initialDuration,
+    required this.provider,
+    this.bookingType,
   });
 
   @override
@@ -21,7 +25,6 @@ class _DurationPickerWidgetState extends State<DurationPickerWidget> {
   @override
   void initState() {
     super.initState();
-    _durationController.text = widget.initialDuration ?? '1';
   }
 
   @override
@@ -30,7 +33,7 @@ class _DurationPickerWidgetState extends State<DurationPickerWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Duration (days)',
+          'Duration',
           style: TextStyle(
             fontSize: 16,
             color: Colors.grey,
@@ -40,8 +43,11 @@ class _DurationPickerWidgetState extends State<DurationPickerWidget> {
         TextFormField(
           controller: _durationController,
           keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+          ],
           decoration: InputDecoration(
-            hintText: 'Enter duration in days',
+            hintText: widget.bookingType ?? widget.provider.selectedBookingType,
             filled: true,
             fillColor: Colors.grey[200],
             border: OutlineInputBorder(

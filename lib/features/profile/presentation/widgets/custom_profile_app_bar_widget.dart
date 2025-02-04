@@ -10,7 +10,7 @@ class CustomProfileAppBarWidget extends StatelessWidget
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
-      leadingWidth: 80,
+      leadingWidth: 70,
       leading: const BackButtonCircleWidget(),
       title: Text(
         title,

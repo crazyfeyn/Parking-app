@@ -3,7 +3,6 @@ import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
-import 'package:flutter_application/core/widgets/text_widget.dart';
 import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_bloc.dart';
 import 'package:flutter_application/features/auth/presentation/pages/forget_password_screen.dart';
 import 'package:flutter_application/features/auth/presentation/pages/register_screen.dart';
@@ -19,6 +18,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>(); // Form key for validation
   final passController = TextEditingController();
   final emailController = TextEditingController();
   bool isPasswordVisible = false;
@@ -47,7 +47,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: const Text('Error'),
+                    title: const Text(
+                      'Error',
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    actionsAlignment: MainAxisAlignment.spaceBetween,
                     content: const Text(
                         'Invalid email or password. Please try again.'),
                     actions: [
@@ -59,11 +63,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 );
               } else if (state.status == Status.success) {
-                Navigator.pushReplacement(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const MainScreen(),
                   ),
+                  (route) => false,
                 );
               }
             },
@@ -72,7 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 return _buildLoadingState();
               }
               return SingleChildScrollView(
-                child: _buildLoginForm(),
+                child: Form(
+                  key: _formKey,
+                  child: _buildLoginForm(),
+                ),
               );
             },
           ),
@@ -105,15 +113,35 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           child: Column(
             children: [
-              TextWidget(
-                labelText: 'Email',
+              TextFormField(
                 controller: emailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                        AppDimens.BORDER_RADIUS_10), // Add border radius
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  if (!value.contains('@')) {
+                    return 'Please enter a valid email address';
+                  }
+                  return null;
+                },
               ),
-              TextField(
+              const SizedBox(height: 16),
+              TextFormField(
                 controller: passController,
                 obscureText: !isPasswordVisible,
                 decoration: InputDecoration(
                   labelText: 'Password',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                        AppDimens.BORDER_RADIUS_10), // Add border radius
+                  ),
                   suffixIcon: IconButton(
                     icon: Icon(
                       isPasswordVisible
@@ -127,9 +155,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
                     },
                   ),
-                  border: const OutlineInputBorder(),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  }
+                  return null;
+                },
               ),
+              const SizedBox(height: 16),
               Row(
                 children: [
                   const Spacer(),
@@ -160,25 +194,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
-              const Spacer(),
-              ButtonWidget(
-                text: 'Login',
-                onTap: () {
-                  if (emailController.text.isEmpty ||
-                      passController.text.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please fill in all fields'),
-                      ),
-                    );
-                    return;
-                  }
-
-                  context.read<AuthBloc>().add(AuthEvent.logIn(
-                        passController.text,
-                        emailController.text,
-                      ));
-                },
+              const SizedBox(
+                height: 32,
+              ),
+              Card(
+                elevation: 5,
+                child: ButtonWidget(
+                  text: 'Login',
+                  onTap: () {
+                    if (_formKey.currentState!.validate()) {
+                      // If the form is valid, proceed with login
+                      context.read<AuthBloc>().add(AuthEvent.logIn(
+                            passController.text,
+                            emailController.text,
+                          ));
+                    }
+                  },
+                ),
               ),
               20.hs(),
               ZoomTapAnimation(
@@ -193,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: RichText(
                   text: const TextSpan(
                     style: TextStyle(color: Colors.grey),
-                    text: 'Don’t have an account?',
+                    text: 'Don\'t have an account?',
                     children: [
                       TextSpan(
                         style: TextStyle(
