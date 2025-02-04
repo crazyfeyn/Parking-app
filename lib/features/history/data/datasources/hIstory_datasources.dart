@@ -10,19 +10,30 @@ class HistoryDatasources {
   Future<List<BookingView>> getBookingList() async {
     try {
       final response = await dio.get('/bookings/list/');
+
       if (response.statusCode == 200) {
         DateTime now = DateTime.now();
 
-        List<BookingView> historyBookings = (response.data as List)
-            .map((json) => BookingView.fromJson(json))
-            .where((booking) => booking.endDate.isBefore(now))
-            .toList();
+        try {
+          List<BookingView> historyBookings =
+              (response.data as List).map((json) {
+            try {
+              return BookingView.fromJson(json);
+            } catch (e) {
+              rethrow;
+            }
+          }).where((booking) {
+            return booking.endDate.isBefore(now);
+          }).toList();
 
-        return historyBookings;
+          return historyBookings;
+        } catch (e) {
+          rethrow;
+        }
       } else {
         throw ServerException();
       }
-    } on DioException {
+    } on DioException catch (e) {
       throw ServerException();
     } catch (e) {
       throw ServerException();

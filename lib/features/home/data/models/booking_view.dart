@@ -5,7 +5,7 @@ class BookingView {
   final Spot spot;
   final Vehicle vehicle;
   final PaymentDetails paymentDetails;
-  final PayoutDetails payoutDetails;
+  final PayoutDetails? payoutDetails;
   final int duration;
   final bool weekly;
   final bool daily;
@@ -15,7 +15,7 @@ class BookingView {
   final DateTime createdAt;
   final String reservationNumber;
   final DateTime lastUpdated;
-  final int? extendedFor; // Make this field nullable
+  final int? extendedFor;
 
   BookingView({
     required this.id,
@@ -24,7 +24,7 @@ class BookingView {
     required this.spot,
     required this.vehicle,
     required this.paymentDetails,
-    required this.payoutDetails,
+    this.payoutDetails,
     required this.duration,
     required this.weekly,
     required this.daily,
@@ -34,29 +34,46 @@ class BookingView {
     required this.createdAt,
     required this.reservationNumber,
     required this.lastUpdated,
-    this.extendedFor, // Make this field nullable
+    this.extendedFor,
   });
 
   factory BookingView.fromJson(Map<String, dynamic> json) {
-    return BookingView(
-      id: json['id'],
-      status: BookingStatus.fromJson(json['status']),
-      client: Client.fromJson(json['client']),
-      spot: Spot.fromJson(json['spot']),
-      vehicle: Vehicle.fromJson(json['vehicle']),
-      paymentDetails: PaymentDetails.fromJson(json['payment_details']),
-      payoutDetails: PayoutDetails.fromJson(json['payout_details']),
-      duration: json['duration'],
-      weekly: json['weekly'],
-      daily: json['daily'],
-      monthly: json['monthly'],
-      startDate: DateTime.parse(json['start_date']),
-      endDate: DateTime.parse(json['end_date']),
-      createdAt: DateTime.parse(json['created_at']),
-      reservationNumber: json['reservation_number'],
-      lastUpdated: DateTime.parse(json['last_updated']),
-      extendedFor: json['extended_for'], // This can now be null
-    );
+    try {
+      return BookingView(
+        id: json['id'] ?? (throw const FormatException('ID is null')),
+        status: BookingStatus.fromJson(
+            json['status'] ?? (throw const FormatException('Status is null'))),
+        client: Client.fromJson(
+            json['client'] ?? (throw const FormatException('Client is null'))),
+        spot: Spot.fromJson(
+            json['spot'] ?? (throw const FormatException('Spot is null'))),
+        vehicle: Vehicle.fromJson(json['vehicle'] ??
+            (throw const FormatException('Vehicle is null'))),
+        paymentDetails: PaymentDetails.fromJson(json['payment_details'] ??
+            (throw const FormatException('Payment details is null'))),
+        payoutDetails: json['payout_details'] != null
+            ? PayoutDetails.fromJson(json['payout_details'])
+            : null,
+        duration: json['duration'] ??
+            (throw const FormatException('Duration is null')),
+        weekly: json['weekly'] ?? false,
+        daily: json['daily'] ?? false,
+        monthly: json['monthly'] ?? false,
+        startDate: DateTime.parse(json['start_date'] ??
+            (throw const FormatException('Start date is null'))),
+        endDate: DateTime.parse(json['end_date'] ??
+            (throw const FormatException('End date is null'))),
+        createdAt: DateTime.parse(json['created_at'] ??
+            (throw const FormatException('Created at is null'))),
+        reservationNumber: json['reservation_number'] ??
+            (throw const FormatException('Reservation number is null')),
+        lastUpdated: DateTime.parse(json['last_updated'] ??
+            (throw const FormatException('Last updated is null'))),
+        extendedFor: json['extended_for'],
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -67,7 +84,7 @@ class BookingView {
       'spot': spot.toJson(),
       'vehicle': vehicle.toJson(),
       'payment_details': paymentDetails.toJson(),
-      'payout_details': payoutDetails.toJson(),
+      'payout_details': payoutDetails?.toJson(),
       'duration': duration,
       'weekly': weekly,
       'daily': daily,
@@ -92,10 +109,15 @@ class BookingStatus {
   });
 
   factory BookingStatus.fromJson(Map<String, dynamic> json) {
-    return BookingStatus(
-      id: json['id'],
-      name: json['name'],
-    );
+    try {
+      return BookingStatus(
+        id: json['id'] ?? (throw const FormatException('Status ID is null')),
+        name: json['name'] ??
+            (throw const FormatException('Status name is null')),
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -120,12 +142,18 @@ class Client {
   });
 
   factory Client.fromJson(Map<String, dynamic> json) {
-    return Client(
-      id: json['id'],
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      email: json['email'],
-    );
+    try {
+      return Client(
+        id: json['id'] ?? (throw const FormatException('Client ID is null')),
+        firstName: json['first_name'] ??
+            (throw const FormatException('First name is null')),
+        lastName: json['last_name'] ??
+            (throw const FormatException('Last name is null')),
+        email: json['email'] ?? (throw const FormatException('Email is null')),
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -164,18 +192,31 @@ class Spot {
   });
 
   factory Spot.fromJson(Map<String, dynamic> json) {
-    return Spot(
-      id: json['id'],
-      location: json['location'],
-      locationName: json['location_name'],
-      locationAddress: json['location_address'],
-      locationCity: json['location_city'],
-      locationState: json['location_state'],
-      spotNumber: json['spot_number'],
-      locationDailyRate: json['location_daily_rate'],
-      locationWeeklyRate: json['location_weekly_rate'],
-      locationMonthlyRate: json['location_monthly_rate'],
-    );
+    try {
+      return Spot(
+        id: json['id'] ?? (throw const FormatException('Spot ID is null')),
+        location: json['location'] ??
+            (throw const FormatException('Location is null')),
+        locationName: json['location_name'] ??
+            (throw const FormatException('Location name is null')),
+        locationAddress: json['location_address'] ??
+            (throw const FormatException('Location address is null')),
+        locationCity: json['location_city'] ??
+            (throw const FormatException('Location city is null')),
+        locationState: json['location_state'] ??
+            (throw const FormatException('Location state is null')),
+        spotNumber: json['spot_number'] ??
+            (throw const FormatException('Spot number is null')),
+        locationDailyRate:
+            (json['location_daily_rate'] as num?)?.toDouble() ?? 0.0,
+        locationWeeklyRate:
+            (json['location_weekly_rate'] as num?)?.toDouble() ?? 0.0,
+        locationMonthlyRate:
+            (json['location_monthly_rate'] as num?)?.toDouble() ?? 0.0,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -210,13 +251,19 @@ class Vehicle {
   });
 
   factory Vehicle.fromJson(Map<String, dynamic> json) {
-    return Vehicle(
-      id: json['id'],
-      unitNumber: json['unit_number'],
-      make: json['make'],
-      model: json['model'],
-      plateNumber: json['plate_number'],
-    );
+    try {
+      return Vehicle(
+        id: json['id'] ?? (throw const FormatException('Vehicle ID is null')),
+        unitNumber: json['unit_number'] ??
+            (throw const FormatException('Unit number is null')),
+        make: json['make'] ?? (throw const FormatException('Make is null')),
+        model: json['model'] ?? (throw const FormatException('Model is null')),
+        plateNumber: json['plate_number'] ??
+            (throw const FormatException('Plate number is null')),
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -242,11 +289,15 @@ class PaymentDetails {
   });
 
   factory PaymentDetails.fromJson(Map<String, dynamic> json) {
-    return PaymentDetails(
-      totalAmount: json['total_amount'],
-      payoutAmount: json['payout_amount'],
-      profit: json['profit'],
-    );
+    try {
+      return PaymentDetails(
+        totalAmount: (json['total_amount'] as num?)?.toDouble() ?? 0.0,
+        payoutAmount: (json['payout_amount'] as num?)?.toDouble() ?? 0.0,
+        profit: (json['profit'] as num?)?.toDouble() ?? 0.0,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -268,10 +319,15 @@ class PayoutDetails {
   });
 
   factory PayoutDetails.fromJson(Map<String, dynamic> json) {
-    return PayoutDetails(
-      amount: json['amount'],
-      destinationAccount: json['destination_account'],
-    );
+    try {
+      return PayoutDetails(
+        amount: (json['amount'] as num?)?.toDouble() ?? 0.0,
+        destinationAccount: json['destination_account'] ??
+            (throw const FormatException('Destination account is null')),
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {
