@@ -37,8 +37,8 @@ class SelectPaymentScreen extends StatelessWidget {
             } else if (state.status == Status.errorNetwork) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content:
-                      Text(state.errorMessage ?? 'Plase check your conenction'),
+                  content: Text(
+                      state.errorMessage ?? 'Please check your connection'),
                   action: SnackBarAction(
                     label: 'Retry',
                     onPressed: () {
@@ -106,30 +106,15 @@ class SelectPaymentScreen extends StatelessWidget {
                       Padding(
                         padding:
                             const EdgeInsets.only(bottom: AppDimens.MARGIN_12),
-                        child: Stack(
-                          alignment: Alignment.topRight,
-                          children: [
-                            CardWidget(
-                              cardNumber: _maskCardNumber(method.card.last4),
-                            ),
-                            if (method.isDefault)
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: const Text(
-                                  'Default',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                          ],
+                        child: CardWidget(
+                          cardNumber: _maskCardNumber(method.card.last4),
+                          isDefault: method.isDefault,
+                          onTap: () {
+                            context.read<HomeBloc>().add(
+                                  HomeEvent.updateIsDefaultCard(
+                                      method.id.toString()),
+                                );
+                          },
                         ),
                       ),
                   ],
@@ -145,7 +130,7 @@ class SelectPaymentScreen extends StatelessWidget {
   }
 
   String _maskCardNumber(String last4Digits) {
-    const maskedDigits = '**** **** **** ';
+    const maskedDigits = '**** ** ** ';
     return maskedDigits + last4Digits;
   }
 }

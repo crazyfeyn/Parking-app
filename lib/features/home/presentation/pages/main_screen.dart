@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/features/history/presentation/pages/parking_screen.dart';
+import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/home/presentation/pages/home_screen.dart';
+import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_application/features/profile/presentation/pages/profile_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -13,65 +17,85 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 1;
 
-  final List<Widget> _pages = [
-    const ParkingScreen(),
-    const HomeScreen(),
-    const ProfileScreen(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _initializeData();
+  }
+
+  void _initializeData() {
+    context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
+    final homeBloc = context.read<HomeBloc>();
+    homeBloc.add(const HomeEvent.getCurrentLocation());
+    homeBloc.add(const HomeEvent.fetchAllLocations());
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _pages[_currentIndex],
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 10,
-              spreadRadius: 2,
-            )
-          ],
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
+    return BlocListener<HomeBloc, HomeState>(
+      listener: (context, state) {
+        if (state.status == Status.error) {
+          _initializeData();
+        }
+      },
+      child: Scaffold(
+        body: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            if (state.status == Status.initial) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.red,
+                  strokeWidth: 3,
+                ),
+              );
+            }
+
+            final List<Widget> pages = [
+              ParkingScreen(state.locations ?? []),
+              const HomeScreen(),
+              const ProfileScreen(),
+            ];
+
+            return pages[_currentIndex];
           },
-          items: const [
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: EdgeInsets.only(bottom: 2),
-                child: Icon(Icons.local_parking, color: Colors.red, size: 28),
+        ),
+        bottomNavigationBar: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 10,
+                spreadRadius: 2,
+              )
+            ],
+          ),
+          child: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            onTap: (index) => setState(() => _currentIndex = index),
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.local_parking, color: Colors.red, size: 28),
+                label: 'Parking',
               ),
-              label: 'Parking',
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: EdgeInsets.only(bottom: 2),
-                child: Icon(Icons.home, color: Colors.red, size: 28),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home, color: Colors.red, size: 28),
+                label: 'Home',
               ),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: EdgeInsets.only(bottom: 2),
-                child: Icon(Icons.person, color: Colors.red, size: 28),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person, color: Colors.red, size: 28),
+                label: 'Profile',
               ),
-              label: 'Profile',
-            ),
-          ],
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          selectedItemColor: Colors.red,
-          unselectedItemColor: Colors.grey,
-          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
-          iconSize: 24,
+            ],
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            selectedItemColor: Colors.red,
+            unselectedItemColor: Colors.grey,
+            selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
+            iconSize: 24,
+          ),
         ),
       ),
     );

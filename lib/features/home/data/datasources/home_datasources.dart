@@ -46,20 +46,19 @@ class HomeDatasources {
   }
 
   Future<List<LocationModel>> fetchAllLocations() async {
-    final response = await dio.get(
-      '/locations/list/',
-    );
+    final response = await dio.get('/locations/list/');
 
     if (response.statusCode == 200) {
       final List<dynamic> data = response.data['results'] as List<dynamic>;
+
       if (data.isEmpty) {
         return [];
       }
 
       final List<LocationModel> locations = data.map((json) {
         return LocationModel(
-          id: json['id'],
-          name: json['name'],
+          id: json['id'] ?? 0, // Fallback to 0 if id is null
+          name: json['name'] ?? '',
           description: json['description'] ?? '',
           address: json['address'] ?? '',
           city: json['city'] ?? '',
@@ -67,9 +66,15 @@ class HomeDatasources {
           zipCode: json['zip_code'] ?? '',
           phNumber: json['ph_number'] ?? '',
           schedule: json['schedule'] ?? '',
-          weeklyRate: double.tryParse(json['weekly_rate'].toString()) ?? 0.0,
-          dailyRate: double.tryParse(json['daily_rate'].toString()) ?? 0.0,
-          monthlyRate: double.tryParse(json['monthly_rate'].toString()) ?? 0.0,
+
+          // Use double.tryParse for safety
+          weeklyRate:
+              double.tryParse(json['weekly_rate']?.toString() ?? '0') ?? 0.0,
+          dailyRate:
+              double.tryParse(json['daily_rate']?.toString() ?? '0') ?? 0.0,
+          monthlyRate:
+              double.tryParse(json['monthly_rate']?.toString() ?? '0') ?? 0.0,
+
           twentyFourHours: json['twenty_four_hours'] ?? false,
           limitedEntryExitTimes: json['limited_entry_exit_times'] ?? false,
           lowboysAllowed: json['lowboys_allowed'] ?? false,
@@ -101,31 +106,44 @@ class HomeDatasources {
           asphalt: json['asphalt'] ?? false,
           lights: json['lights'] ?? false,
           repairsAllowed: json['repairs_allowed'] ?? false,
+
+          // Safely map the images list
           images: (json['images'] as List<dynamic>?)
               ?.map((imageJson) => LocationImage(
-                    id: imageJson['id'],
-                    image: imageJson['image'] ?? '',
+                    id: imageJson['id'] ??
+                        0, // Ensure id exists or fallback to 0
+                    image: imageJson['image'] ??
+                        '', // Fallback if image is missing
                   ))
               .toList(),
+
+          // Parse longitude and latitude safely
           longitude: json['longitude'] != null
-              ? double.tryParse(json['longitude'].toString())
-              : null,
+              ? double.tryParse(json['longitude'].toString()) ?? 0.0
+              : 0.0,
           latitude: json['latitude'] != null
-              ? double.tryParse(json['latitude'].toString())
-              : null,
-          bankAccountAdded: json['bank_account_added'],
-          availableSpots: json['available_spots'],
+              ? double.tryParse(json['latitude'].toString()) ?? 0.0
+              : 0.0,
+
+          // Check if bank account details exist
+          bankAccountAdded: json['bank_account_added'] ?? false,
+
+          // Available spots could be null, default to 0 if missing
+          availableSpots: json['available_spots'] ?? 0,
+
+          // Ensure status is properly parsed
           status: json['status'] != null
-              ? LocationStatus(
-                  id: json['status']['id'],
-                  name: json['status']['name'],
-                )
+              ? LocationStatus.fromJson(json['status'])
               : null,
         );
       }).toList();
-
+      print('0000000000');
+      print('1111111111');
+      print(locations);
       return locations;
     }
+
+    // Handle error if response is not successful
     throw ServerException();
   }
 
@@ -357,15 +375,15 @@ class HomeDatasources {
 
         final List<LocationModel> bookings = data.map((json) {
           return LocationModel(
-            id: json['id'],
-            name: json['name'],
+            id: json['id'] ?? '',
+            name: json['name'] ?? '',
             description: json['description'] ?? '',
             address: json['address'] ?? '',
             city: json['city'] ?? '',
             state: json['state'] ?? '',
             zipCode: json['zip_code'] ?? '',
             phNumber: json['ph_number'] ?? '',
-            schedule: json['schedule'],
+            schedule: json['schedule'] ?? '',
             weeklyRate: double.tryParse(json['weekly_rate'].toString()) ?? 0.0,
             dailyRate: double.tryParse(json['daily_rate'].toString()) ?? 0.0,
             monthlyRate:
@@ -403,7 +421,7 @@ class HomeDatasources {
             repairsAllowed: json['repairs_allowed'] ?? false,
             images: (json['images'] as List<dynamic>?)
                 ?.map((imageJson) => LocationImage(
-                      id: imageJson['id'],
+                      id: imageJson['id'] ?? '',
                       image: imageJson['image'] ?? '',
                     ))
                 .toList(),
@@ -413,12 +431,12 @@ class HomeDatasources {
             latitude: json['latitude'] != null
                 ? double.tryParse(json['latitude'].toString())
                 : null,
-            bankAccountAdded: json['bank_account_added'],
-            availableSpots: json['available_spots'],
+            bankAccountAdded: json['bank_account_added'] ?? false,
+            availableSpots: json['available_spots'] ?? 0,
             status: json['status'] != null
                 ? LocationStatus(
-                    id: json['status']['id'],
-                    name: json['status']['name'],
+                    id: json['status']['id'] ?? '',
+                    name: json['status']['name'] ?? '',
                   )
                 : null,
           );
@@ -469,6 +487,17 @@ class HomeDatasources {
       rethrow;
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<void> updateIsDefaultCard(String id) async {
+    try {
+      await dio.patch('/payments/update-payment-methods/$id/',
+          data: {'is_default': true});
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      throw Exception('Failed to update isDefault card');
     }
   }
 }
