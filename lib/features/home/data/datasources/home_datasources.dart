@@ -137,9 +137,7 @@ class HomeDatasources {
               : null,
         );
       }).toList();
-      print('0000000000');
-      print('1111111111');
-      print(locations);
+
       return locations;
     }
 
