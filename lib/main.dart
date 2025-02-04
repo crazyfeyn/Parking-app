@@ -11,10 +11,10 @@ import 'package:flutter_application/features/profile/presentation/provider/vehic
 import 'package:flutter_application/features/splash/presentation/pages/splash_screen.dart';
 import 'package:flutter_application/server_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 import 'server_locator.dart' as di;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 

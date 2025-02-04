@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-// import 'package:flutter_application/features/home/presentation/widgets/services_serction_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -11,9 +10,9 @@ import 'package:flutter_application/features/home/data/models/filter_model.dart'
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/home/presentation/widgets/city_picker.dart';
 import 'package:flutter_application/features/home/presentation/widgets/filter_result_widget.dart';
+import 'package:flutter_application/features/home/presentation/widgets/parking_filter_model.dart';
 import 'package:flutter_application/features/home/presentation/widgets/state_picker.dart';
 
-//update
 class FilterForParkingWidget extends StatefulWidget {
   const FilterForParkingWidget({
     Key? key,
