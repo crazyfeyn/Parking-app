@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
 
 class ParkingDetailsScreen extends StatelessWidget {
@@ -21,7 +23,9 @@ class ParkingDetailsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (location.images != null && location.images!.isNotEmpty)
-              _buildParkingImage(location.images!.first.image)
+              location.images!.length == 1
+                  ? _buildSingleImage(location.images!.first)
+                  : _buildImageCarousel(location.images!)
             else
               _buildFallbackImage(),
             const SizedBox(height: 16),
@@ -41,11 +45,13 @@ class ParkingDetailsScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            _buildInfoRow('City', location.city),
+            _buildInfoRow('City', _truncateText(location.city)),
             _buildInfoRow('State', location.state),
             _buildInfoRow('Zip Code', location.zipCode),
             _buildInfoRow('Phone Number', location.phNumber),
-            _buildInfoRow('Schedule', location.schedule),
+            7.hs(),
+            _buildInfoColumn('Schedule', location.schedule),
+            5.hs(),
             _buildInfoRow(
                 'Available Spaces', '${location.availableSpots ?? 'N/A'}'),
             const SizedBox(height: 16),
@@ -59,7 +65,7 @@ class ParkingDetailsScreen extends StatelessWidget {
             _buildInfoRow('Weekly Rate', '\$${location.weeklyRate}'),
             _buildInfoRow('Daily Rate', '\$${location.dailyRate}'),
             _buildInfoRow('Monthly Rate', '\$${location.monthlyRate}'),
-            const SizedBox(height: 16),
+            16.hs(),
             const Text(
               'Features',
               style: TextStyle(
@@ -68,7 +74,7 @@ class ParkingDetailsScreen extends StatelessWidget {
               ),
             ),
             _buildFeatureChips(location),
-            const SizedBox(height: 16),
+            16.hs(),
             const Text(
               'Status',
               style: TextStyle(
@@ -83,18 +89,44 @@ class ParkingDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildParkingImage(String imageUrl) {
+  Widget _buildSingleImage(LocationImage image) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: Image.network(
-        imageUrl,
+        image.image,
         width: double.infinity,
         height: 200,
         fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          return _buildFallbackImage();
-        },
       ),
+    );
+  }
+
+  Widget _buildImageCarousel(List<LocationImage> images) {
+    return CarouselSlider(
+      options: CarouselOptions(
+        height: 200,
+        autoPlay: true,
+        enlargeCenterPage: true,
+        aspectRatio: 16 / 9,
+        viewportFraction: 0.8,
+      ),
+      items: images.map((image) {
+        return Builder(
+          builder: (BuildContext context) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                image: DecorationImage(
+                  image: NetworkImage(image.image),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          },
+        );
+      }).toList(),
     );
   }
 
@@ -128,6 +160,39 @@ class ParkingDetailsScreen extends StatelessWidget {
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoColumn(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.grey,
+            ),
+          ),
+          SizedBox(
+            width: 140,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ],
             ),
           ),
         ],
@@ -182,7 +247,6 @@ class ParkingDetailsScreen extends StatelessWidget {
     );
   }
 
-  // Helper method to build status chips
   Widget _buildStatusChips(LocationStatus? status) {
     if (status == null) {
       return const Chip(
@@ -201,7 +265,6 @@ class ParkingDetailsScreen extends StatelessWidget {
     );
   }
 
-  // Helper method to get status color
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'paid':
@@ -216,4 +279,10 @@ class ParkingDetailsScreen extends StatelessWidget {
         return Colors.grey;
     }
   }
+}
+
+String _truncateText(String text, {int maxLength = 24}) {
+  return text.length > maxLength
+      ? '${text.substring(0, maxLength - 3)}...'
+      : text;
 }
