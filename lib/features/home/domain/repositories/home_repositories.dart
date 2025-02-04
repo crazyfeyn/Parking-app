@@ -12,6 +12,7 @@ abstract class HomeRepositories {
       String title);
   Future<Either<Failure, List<VehicleModel>>> fetchVehicleList();
   Future<Either<Failure, void>> createVehicle(VehicleModel vehicleModel);
+  Future<Either<Failure, void>> updateVehicle(VehicleModel vehicleModel);
   Future<Either<Failure, List<ListPaymentMethods>>> fetchPaymentMethods();
   Future<Either<Failure, List<LocationModel>>> filterLocations({
     String? city,

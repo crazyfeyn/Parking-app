@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/history/presentation/widgets/error_refresh_widget.dart';
+import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/home/presentation/widgets/booking_modal_bottom_widget.dart';
-import 'package:flutter_application/features/home/presentation/widgets/button_for_map_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/filter_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/search_home_widget.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
@@ -19,36 +18,81 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  GoogleMapController? mapController;
+  GoogleMapController? _mapController;
+  final UniqueKey _mapKey = UniqueKey();
 
   @override
   void initState() {
     super.initState();
     _initializeData();
-    
   }
 
-  void _initializeData() {
+  void _initializeData() async {
     context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
     context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
     context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
   }
 
+  void _focusOnSearchedLocations(List<LocationModel> searchedLocations) {
+    if (searchedLocations.isEmpty || _mapController == null) return;
+
+    final validLocations = searchedLocations
+        .where((loc) => loc.latitude != null && loc.longitude != null)
+        .toList();
+
+    if (validLocations.isEmpty) return;
+
+    if (validLocations.length == 1) {
+      _mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(
+          LatLng(
+              validLocations.first.latitude!, validLocations.first.longitude!),
+          10,
+        ),
+      );
+    } else {
+      _mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(
+          const LatLng(37.0902, -95.7129),
+          4,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
-          if (state.status == Status.initial) {
-            return const Center(child: CircularProgressIndicator());
+      resizeToAvoidBottomInset: false,
+      body: BlocConsumer<HomeBloc, HomeState>(
+        listener: (context, state) {
+          if (state.status == Status.errorNetwork) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text('No Internet, check your connection.'),
+                duration: const Duration(seconds: 10),
+                action: SnackBarAction(
+                  label: 'Retry',
+                  onPressed: () {
+                    _initializeData();
+                  },
+                ),
+              ),
+            );
+          } else if (state.status == Status.error) {
+            _initializeData();
           }
 
-          if (state.status == Status.error) {
-            print('--------------');
-            print(state.errorMessage);
-            return Center(
-              child: ErrorRefreshWidget(
-                onRefresh: _initializeData,
+          if (state.searchLocations?.isNotEmpty == true) {
+            _focusOnSearchedLocations(state.searchLocations!);
+          }
+        },
+        builder: (context, state) {
+          if (state.status == Status.initial) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.red,
+                strokeWidth: 3,
               ),
             );
           }
@@ -60,8 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildGoogleMap(HomeState state) {
-    final location =
-        state.currentLocation ?? const LatLng(33.592806, -84.388716);
+    final initialPosition = state.currentLocation ?? const LatLng(0, 0);
 
     Set<Marker> markers = {
       if (state.currentLocation != null)
@@ -69,6 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
           markerId: const MarkerId('currentLocation'),
           position: state.currentLocation!,
           infoWindow: const InfoWindow(title: 'Current Location'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         ),
       if (state.locations != null)
         ...state.locations!
@@ -78,11 +122,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 markerId: MarkerId(loc.id.toString()),
                 position: LatLng(loc.latitude!, loc.longitude!),
                 infoWindow: InfoWindow(title: loc.name),
+                icon: state.searchLocations
+                            ?.any((searchLoc) => searchLoc.id == loc.id) ==
+                        true
+                    ? BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueGreen)
+                    : BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueRed),
                 onTap: () {
-                  mapController?.animateCamera(
+                  _mapController?.animateCamera(
                     CameraUpdate.newLatLngZoom(
                       LatLng(loc.latitude!, loc.longitude!),
-                      15.0,
+                      15,
                     ),
                   );
                   showLocationDetails(context, loc);
@@ -94,13 +145,15 @@ class _HomeScreenState extends State<HomeScreen> {
     return Stack(
       children: [
         GoogleMap(
+          key: _mapKey,
           initialCameraPosition: CameraPosition(
-            target: location,
-            zoom: 5,
+            target: initialPosition,
+            zoom: state.currentLocation != null ? 10 : 2,
           ),
+          minMaxZoomPreference: const MinMaxZoomPreference(2, 20),
           zoomControlsEnabled: false,
           onMapCreated: (controller) {
-            mapController = controller;
+            _mapController = controller;
           },
           myLocationEnabled: true,
           myLocationButtonEnabled: false,
@@ -114,40 +167,48 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 SearchWidgetHome(),
                 FilterWidget(),
+                SizedBox(
+                  width: 16,
+                )
               ],
             ),
           ],
         ),
         Positioned(
-          right: 10,
-          bottom: 10,
-          child: Column(
-            children: [
-              ButtonForMapWidget(
-                onTap: () =>
-                    mapController?.animateCamera(CameraUpdate.zoomIn()),
-                child: const Icon(Icons.add, size: 30),
-              ),
-              10.hs(),
-              ButtonForMapWidget(
-                onTap: () =>
-                    mapController?.animateCamera(CameraUpdate.zoomOut()),
-                child: const Icon(Icons.remove),
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          left: 10,
-          bottom: 15,
-          child: ButtonForMapWidget(
-            onTap: () => context
-                .read<HomeBloc>()
-                .add(const HomeEvent.getCurrentLocation()),
-            child: const Icon(Icons.location_on),
+          bottom: 20.0,
+          right: 20.0,
+          child: FloatingActionButton(
+            onPressed: () {
+              context
+                  .read<HomeBloc>()
+                  .add(const HomeEvent.clearSearchResults());
+              if (state.currentLocation != null) {
+                _mapController?.animateCamera(
+                  CameraUpdate.newLatLngZoom(
+                    state.currentLocation!,
+                    15,
+                  ),
+                );
+              } else {
+                _mapController?.animateCamera(
+                  CameraUpdate.newLatLngZoom(
+                    const LatLng(37.0902, -95.7129),
+                    2,
+                  ),
+                );
+              }
+            },
+            backgroundColor: Colors.blue,
+            child: const Icon(Icons.my_location),
           ),
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    _mapController?.dispose();
+    super.dispose();
   }
 }

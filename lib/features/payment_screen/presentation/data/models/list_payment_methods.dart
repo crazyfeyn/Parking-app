@@ -1,32 +1,23 @@
 class ListPaymentMethods {
   final int id;
-  final String stripePaymentMethodId;
+  final String stripeListPaymentMethodsId;
   final bool isDefault;
   final CardInfo card;
 
   ListPaymentMethods({
     required this.id,
-    required this.stripePaymentMethodId,
+    required this.stripeListPaymentMethodsId,
     required this.isDefault,
     required this.card,
   });
 
   factory ListPaymentMethods.fromJson(Map<String, dynamic> json) {
     return ListPaymentMethods(
-      id: json['id'],
-      stripePaymentMethodId: json['stripe_payment_method_id'],
-      isDefault: json['is_default'],
-      card: CardInfo.fromJson(json['card']), // Parse the nested card object
+      id: json['id'] as int,
+      stripeListPaymentMethodsId: json['stripe_payment_method_id'] as String,
+      isDefault: json['is_default'] as bool,
+      card: CardInfo.fromJson(json['card'] as Map<String, dynamic>),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'stripe_payment_method_id': stripePaymentMethodId,
-      'is_default': isDefault,
-      'card': card.toJson(),
-    };
   }
 }
 
@@ -43,17 +34,9 @@ class CardInfo {
 
   factory CardInfo.fromJson(Map<String, dynamic> json) {
     return CardInfo(
-      expMonth: json['exp_month'],
-      expYear: json['exp_year'],
-      last4: json['last4'],
+      expMonth: json['exp_month'] as int,
+      expYear: json['exp_year'] as int,
+      last4: json['last4'].toString(), // Convert `last4` to String
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'exp_month': expMonth,
-      'exp_year': expYear,
-      'last4': last4,
-    };
   }
 }

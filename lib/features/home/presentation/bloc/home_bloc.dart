@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/core/error/failure.dart';
 import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_application/features/home/data/models/filter_model.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_application/features/home/domain/usecases/fetch_payment_
 import 'package:flutter_application/features/home/domain/usecases/fetch_search_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/filter_locations_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/get_vehicle_list_usecase.dart';
+import 'package:flutter_application/features/home/domain/usecases/update_vehicle_usecase.dart';
 import 'package:flutter_application/features/payment_screen/presentation/data/models/list_payment_methods.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -28,6 +30,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final FetchSearchUsecase fetchSearchUsecase;
   final FetchPaymentMethodListUsecase fetchPaymentMethodListUsecase;
   final FilterLocationsUsecase filterLocationsUsecase;
+  final UpdateVehicleUsecase updateVehicleUsecase;
 
   HomeBloc(
     this.currentLocationUsecase,
@@ -37,6 +40,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this.fetchSearchUsecase,
     this.fetchPaymentMethodListUsecase,
     this.filterLocationsUsecase,
+    this.updateVehicleUsecase,
   ) : super(const HomeState()) {
     on<_fetchAllLocations>(_fetchAllLocationsFunc);
     on<_fetchSearchAllLocations>(_fetchSearchAllLocationsFunc);
@@ -45,16 +49,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<_createVehicle>(_createVehicleFunc);
     on<_fetchPaymentMethodList>(_fetchPaymentMethodListFunc);
     on<_filterLocation>(_filterLocationsFunc);
+    on<_clearSearchResults>(_clearSearchResultsFunc);
+    on<_updateVehicle>(_updateVehicleFunc);
   }
 
   Future<void> _fetchSearchAllLocationsFunc(
       _fetchSearchAllLocations event, Emitter<HomeState> emit) async {
-    print('_fetchSearchAllLocationsFunc triggered with title: ${event.title}');
     emit(state.copyWith(status: Status.loading));
     final response = await fetchSearchUsecase(event.title);
     response.fold((error) {
-      emit(
-          state.copyWith(status: Status.error, errorMessage: error.toString()));
+      emit(state.copyWith(
+          status: error is NetworkFailure ? Status.errorNetwork : Status.error,
+          errorMessage: error.toString()));
     }, (data) {
       emit(state.copyWith(status: Status.success, searchLocations: data));
     });
@@ -62,47 +68,63 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _fetchAllLocationsFunc(
       _fetchAllLocations event, Emitter<HomeState> emit) async {
-    print('_fetchAllLocationsFunc triggered');
     emit(state.copyWith(status: Status.loading));
     final response = await fetchLocationsUsecase(null);
-    response.fold((error) {
-      emit(
-          state.copyWith(status: Status.error, errorMessage: error.toString()));
-    }, (data) {
-      emit(state.copyWith(status: Status.success, locations: data));
-    });
+    response.fold(
+      (error) {
+        emit(state.copyWith(
+          status: error is NetworkFailure ? Status.errorNetwork : Status.error,
+          errorMessage: error.toString(),
+        ));
+      },
+      (data) {
+        emit(state.copyWith(status: Status.success, locations: data));
+      },
+    );
   }
 
   Future<void> _getCurrentLocationFunc(
       _getCurrentLocation event, Emitter<HomeState> emit) async {
-    print('_getCurrentLocationFunc triggered');
     emit(state.copyWith(status: Status.loading));
 
     final response = await currentLocationUsecase.call(());
-    response.fold((error) {
-      emit(
-          state.copyWith(status: Status.error, errorMessage: error.toString()));
-    }, (locationData) {
-      if (locationData != null) {
-        final currentLocation =
-            LatLng(locationData.latitude, locationData.longitude);
+
+    response.fold(
+      (error) {
         emit(state.copyWith(
-            status: Status.success, currentLocation: currentLocation));
-      } else {
-        emit(state.copyWith(
-            status: Status.error, errorMessage: "Location data is null"));
-      }
-    });
+          status: error is NetworkFailure ? Status.errorNetwork : Status.error,
+          errorMessage: error.toString(),
+          // Maintain previous location if there was an error
+          currentLocation: state.currentLocation,
+        ));
+      },
+      (locationData) {
+        if (locationData.latitude != null && locationData.longitude != null) {
+          final currentLocation =
+              LatLng(locationData.latitude!, locationData.longitude!);
+          emit(state.copyWith(
+            status: Status.success,
+            currentLocation: currentLocation,
+          ));
+        } else {
+          emit(state.copyWith(
+            status: Status.error,
+            errorMessage: "Location data is null",
+            currentLocation: state.currentLocation,
+          ));
+        }
+      },
+    );
   }
 
   Future<void> _getVehicleListFunc(
       _getVehicleList event, Emitter<HomeState> emit) async {
-    print('_getVehicleListFunc triggered');
     emit(state.copyWith(status: Status.loading));
     final response = await getVehicleListUsecase.call(());
     response.fold((error) {
-      emit(
-          state.copyWith(status: Status.error, errorMessage: error.toString()));
+      emit(state.copyWith(
+          status: error is NetworkFailure ? Status.errorNetwork : Status.error,
+          errorMessage: error.toString()));
     }, (vehicleList) {
       emit(state.copyWith(status: Status.success, vehicleList: vehicleList));
     });
@@ -110,7 +132,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _createVehicleFunc(
       _createVehicle event, Emitter<HomeState> emit) async {
-    print('_createVehicleFunc triggered with vehicle: ${event.vehicleModel}');
     emit(state.copyWith(status: Status.loading));
 
     try {
@@ -136,12 +157,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _fetchPaymentMethodListFunc(
       _fetchPaymentMethodList event, Emitter<HomeState> emit) async {
-    print('_fetchPaymentMethodListFunc triggered');
     emit(state.copyWith(status: Status.loading));
     final response = await fetchPaymentMethodListUsecase.call(());
     response.fold((error) {
-      emit(
-          state.copyWith(status: Status.error, errorMessage: error.toString()));
+      emit(state.copyWith(
+          status: error is NetworkFailure ? Status.errorNetwork : Status.error,
+          errorMessage: error.toString()));
     }, (paymentMethodList) {
       emit(state.copyWith(
           status: Status.success, listPaymentMethod: paymentMethodList));
@@ -150,10 +171,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _filterLocationsFunc(
       _filterLocation event, Emitter<HomeState> emit) async {
-    print('_filterLocationsFunc triggered with filter: ${event.filterModel}');
     emit(state.copyWith(status: Status.loading));
 
-    // Convert FilterModel to FilterLocationsParams
     final filterParams = event.filterModel.toFilterLocationsParams();
 
     final response = await filterLocationsUsecase.call(filterParams);
@@ -161,12 +180,42 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     response.fold(
       (error) {
         emit(state.copyWith(
-            status: Status.error, errorMessage: error.toString()));
+            status:
+                error is NetworkFailure ? Status.errorNetwork : Status.error,
+            errorMessage: error.toString()));
       },
       (locations) {
         emit(
             state.copyWith(status: Status.success, filterLocations: locations));
       },
     );
+  }
+
+  Future<void> _clearSearchResultsFunc(
+      _clearSearchResults event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(searchLocations: []));
+  }
+
+  Future<void> _updateVehicleFunc(
+      _updateVehicle event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(status: Status.loading));
+
+    try {
+      await updateVehicleUsecase.call(event.vehicleModel);
+
+      emit(
+        state.copyWith(
+          status: Status.success,
+          createdVehicle: event.vehicleModel,
+        ),
+      );
+    } catch (error) {
+      emit(
+        state.copyWith(
+          status: Status.error,
+          errorMessage: error.toString(),
+        ),
+      );
+    }
   }
 }

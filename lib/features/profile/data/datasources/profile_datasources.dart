@@ -30,23 +30,18 @@ class ProfileDatasources {
     required String surname,
     required String email,
   }) async {
-    print('QWERTYUIOIUYTREWQWERTYUIUYTREWERTYU');
     try {
       final updateData = {
         'first_name': name,
         'last_name': surname,
         'email': email,
       };
-      print('UPDATED DATA');
-      print(updateData);
 
       final response = await dio.patch(
         '/users/profile/',
         data: updateData,
       );
-      print(response.statusCode);
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print('qwertyuiuytrewhello20202020202');
         return;
         // cachedProfile = cachedProfile?.copyWith(
         //   name: name,
@@ -96,10 +91,7 @@ class ProfileDatasources {
 
       if (response.statusCode != 200) {
         throw ServerException();
-      } else {
-        print('success');
-        print('-----1111111--------');
-      }
+      } else {}
     } on DioException {
       throw ServerException();
     } catch (_) {
@@ -112,8 +104,6 @@ class ProfileDatasources {
       final response = await dio.post(
         '/payments/generate-client-secret-key-payment-intent/',
       );
-      print('-----000000--------');
-      print(response.data['clientSecret']);
 
       if (response.statusCode == 200) {
         return response.data['clientSecret'];

@@ -82,8 +82,13 @@ class ForgetPasswordScreen extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: const Text('Success'),
-                    content: const Text('Operation completed successfully!'),
+                    title: const Text(
+                      'Success',
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    actionsAlignment: MainAxisAlignment.spaceBetween,
+                    content: const Text(
+                        'Check your inbox for the magic link to reset your password and regain access effortlessly'),
                     actions: [
                       TextButton(
                         onPressed: () {

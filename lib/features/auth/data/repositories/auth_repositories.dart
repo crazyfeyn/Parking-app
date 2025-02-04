@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dartz/dartz.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-
 import 'package:flutter_application/core/error/failure.dart';
 import 'package:flutter_application/features/auth/data/datasources/auth_datasources.dart';
 import 'package:flutter_application/features/auth/domain/repositories/auth_repositories.dart';
@@ -33,6 +32,11 @@ class AuthRepositoriesImpl extends AuthRepositories {
 
   @override
   Future<void> refreshToken() {
+    return authDatasources.refreshToken();
+  }
+
+  @override
+  Future<void> startTimer() {
     return authDatasources.startTokenAutoRefresh();
   }
 

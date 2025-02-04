@@ -21,7 +21,7 @@ class HomeDatasources {
         if (!serviceRequested) {
           throw LocationException();
         }
-      }
+      } else {}
 
       final permissionStatus = await location.hasPermission();
       if (permissionStatus == PermissionStatus.denied) {
@@ -31,7 +31,7 @@ class HomeDatasources {
         }
       } else if (permissionStatus == PermissionStatus.deniedForever) {
         throw Exception('Location permissions are permanently denied.');
-      }
+      } else {}
 
       final currentLocation = await location.getLocation();
       if (currentLocation.latitude == null ||
@@ -52,7 +52,6 @@ class HomeDatasources {
 
     if (response.statusCode == 200) {
       final List<dynamic> data = response.data['results'] as List<dynamic>;
-
       if (data.isEmpty) {
         return [];
       }
@@ -67,7 +66,7 @@ class HomeDatasources {
           state: json['state'] ?? '',
           zipCode: json['zip_code'] ?? '',
           phNumber: json['ph_number'] ?? '',
-          schedule: json['schedule'],
+          schedule: json['schedule'] ?? '',
           weeklyRate: double.tryParse(json['weekly_rate'].toString()) ?? 0.0,
           dailyRate: double.tryParse(json['daily_rate'].toString()) ?? 0.0,
           monthlyRate: double.tryParse(json['monthly_rate'].toString()) ?? 0.0,
@@ -131,15 +130,12 @@ class HomeDatasources {
   }
 
   Future<List<LocationModel>> fetchSearchAllLocations(String title) async {
-    print('TITITITIITLE:$title');
     final response = await dio.get(
       '/locations/list/',
       queryParameters: {
         'search': title,
       },
     );
-    print('RECOINCE FROM HOME LIST');
-    print(response.data);
 
     if (response.statusCode == 200) {
       final List<dynamic> data = response.data['results'] as List<dynamic>;
@@ -299,118 +295,66 @@ class HomeDatasources {
     bool? noTowedVehicles,
   }) async {
     try {
-      // Build query parameters dynamically
       final Map<String, dynamic> queryParameters = {};
 
-      if (city != null) {
-        queryParameters['city'] = city;
-      }
-      if (state != null) {
-        queryParameters['state'] = state;
-      }
-      if (truckAllowed != null) {
-        queryParameters['truck_allowed'] = truckAllowed;
-      }
-      if (trailerAllowed != null) {
-        queryParameters['trailer_allowed'] = trailerAllowed;
-      }
-      if (truckTrailerAllowed != null) {
-        queryParameters['truck_trailer_allowed'] = truckTrailerAllowed;
-      }
-      if (repairsAllowed != null) {
-        queryParameters['repairs_allowed'] = repairsAllowed;
-      }
-      if (lowboysAllowed != null) {
-        queryParameters['lowboys_allowed'] = lowboysAllowed;
-      }
-      if (oversizedAllowed != null) {
-        queryParameters['oversized_allowed'] = oversizedAllowed;
-      }
-      if (hazmatAllowed != null) {
-        queryParameters['hazmat_allowed'] = hazmatAllowed;
-      }
-      if (doubleStackAllowed != null) {
-        queryParameters['double_stack_allowed'] = doubleStackAllowed;
-      }
-      if (bobtailOnly != null) {
-        queryParameters['bobtail_only'] = bobtailOnly;
-      }
-      if (containersOnly != null) {
-        queryParameters['containers_only'] = containersOnly;
-      }
-      if (cameras != null) {
-        queryParameters['cameras'] = cameras;
-      }
-      if (fenced != null) {
-        queryParameters['fenced'] = fenced;
-      }
-      if (asphalt != null) {
-        queryParameters['asphalt'] = asphalt;
-      }
-      if (lights != null) {
-        queryParameters['lights'] = lights;
-      }
-      if (twentyFourHours != null) {
-        queryParameters['twenty_four_hours'] = twentyFourHours;
-      }
-      if (limitedEntryExitTimes != null) {
-        queryParameters['limited_entry_exit_times'] = limitedEntryExitTimes;
-      }
-      if (securityAtGate != null) {
-        queryParameters['security_at_gate'] = securityAtGate;
-      }
-      if (roamingSecurity != null) {
-        queryParameters['roaming_security'] = roamingSecurity;
-      }
-      if (landingGearSupportRequired != null) {
-        queryParameters['landing_gear_support_required'] =
-            landingGearSupportRequired;
-      }
-      if (laundryMachines != null) {
-        queryParameters['laundry_machines'] = laundryMachines;
-      }
-      if (freeShowers != null) {
-        queryParameters['free_showers'] = freeShowers;
-      }
-      if (paidShowers != null) {
-        queryParameters['paid_showers'] = paidShowers;
-      }
-      if (repairShop != null) {
-        queryParameters['repair_shop'] = repairShop;
-      }
-      if (paidContainerStackingServices != null) {
-        queryParameters['paid_container_stacking_services'] =
-            paidContainerStackingServices;
-      }
-      if (trailerSnowScraper != null) {
-        queryParameters['trailer_snow_scraper'] = trailerSnowScraper;
-      }
-      if (truckWash != null) {
-        queryParameters['truck_wash'] = truckWash;
-      }
-      if (food != null) {
-        queryParameters['food'] = food;
-      }
-      if (noTowedVehicles != null) {
-        queryParameters['no_towed_vehicles'] = noTowedVehicles;
-      }
-      print('-----------');
-      print(queryParameters);
+      // Add city and state only if they are not null
+      if (city != null) queryParameters['city'] = city;
+      if (state != null) queryParameters['state'] = state;
 
-      // Make the API request with query parameters
+      // Add boolean parameters only if they are true
+      if (truckAllowed == true) queryParameters['truck_allowed'] = true;
+      if (trailerAllowed == true) queryParameters['trailer_allowed'] = true;
+      if (truckTrailerAllowed == true) {
+        queryParameters['truck_trailer_allowed'] = true;
+      }
+      if (repairsAllowed == true) queryParameters['repairs_allowed'] = true;
+      if (lowboysAllowed == true) queryParameters['lowboys_allowed'] = true;
+      if (oversizedAllowed == true) queryParameters['oversized_allowed'] = true;
+      if (hazmatAllowed == true) queryParameters['hazmat_allowed'] = true;
+      if (doubleStackAllowed == true) {
+        queryParameters['double_stack_allowed'] = true;
+      }
+      if (bobtailOnly == true) queryParameters['bobtail_only'] = true;
+      if (containersOnly == true) queryParameters['containers_only'] = true;
+      if (cameras == true) queryParameters['cameras'] = true;
+      if (fenced == true) queryParameters['fenced'] = true;
+      if (asphalt == true) queryParameters['asphalt'] = true;
+      if (lights == true) queryParameters['lights'] = true;
+      if (twentyFourHours == true) queryParameters['twenty_four_hours'] = true;
+      if (limitedEntryExitTimes == true) {
+        queryParameters['limited_entry_exit_times'] = true;
+      }
+      if (securityAtGate == true) queryParameters['security_at_gate'] = true;
+      if (roamingSecurity == true) queryParameters['roaming_security'] = true;
+      if (landingGearSupportRequired == true) {
+        queryParameters['landing_gear_support_required'] = true;
+      }
+      if (laundryMachines == true) queryParameters['laundry_machines'] = true;
+      if (freeShowers == true) queryParameters['free_showers'] = true;
+      if (paidShowers == true) queryParameters['paid_showers'] = true;
+      if (repairShop == true) queryParameters['repair_shop'] = true;
+      if (paidContainerStackingServices == true) {
+        queryParameters['paid_container_stacking_services'] = true;
+      }
+      if (trailerSnowScraper == true) {
+        queryParameters['trailer_snow_scraper'] = true;
+      }
+      if (truckWash == true) queryParameters['truck_wash'] = true;
+      if (food == true) queryParameters['food'] = true;
+      if (noTowedVehicles == true) queryParameters['no_towed_vehicles'] = true;
+
       final response = await dio.get(
-        '/locations/list/',
+        '/locations/active-list/',
         queryParameters: queryParameters,
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = response.data['results'] as List<dynamic>;
+        final List<dynamic> data = response.data as List<dynamic>;
 
         if (data.isEmpty) {
           return [];
         }
 
-        // Parse the response into a list of LocationModel
         final List<LocationModel> bookings = data.map((json) {
           return LocationModel(
             id: json['id'],
@@ -494,12 +438,37 @@ class HomeDatasources {
   Future<List<ListPaymentMethods>> fetchPaymentMethods() async {
     final response = await dio.get('/payments/list-payment-methods/');
     if (response.statusCode == 200) {
-      List data = response.data['result'];
-      print('--------');
-      print(response);
+      List<dynamic> data = response.data;
       return data.map((json) => ListPaymentMethods.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load payment methods');
+    }
+  }
+
+  Future<void> updateVehicle({
+    required VehicleModel vehicleData,
+  }) async {
+    try {
+      if (vehicleData.unitNumber.isEmpty ||
+          vehicleData.year <= 0 ||
+          vehicleData.make.isEmpty ||
+          vehicleData.model.isEmpty ||
+          vehicleData.plateNumber.isEmpty) {
+        throw Exception('Invalid vehicle data');
+      }
+
+      final response = await dio.patch(
+          '/bookings/vehicle-update/${vehicleData.id}/',
+          data: vehicleData.toJson());
+
+      if (response.statusCode == 200) {
+      } else {
+        throw Exception('Failed to update vehicle');
+      }
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
     }
   }
 }

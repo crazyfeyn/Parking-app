@@ -1,28 +1,37 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/home/presentation/widgets/filter_result_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
 import 'package:flutter_application/features/home/data/models/filter_model.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/home/presentation/widgets/city_picker.dart';
-import 'package:flutter_application/features/home/presentation/widgets/mile_slider_widget.dart';
-import 'package:flutter_application/features/home/presentation/widgets/services_serction_widget.dart';
+import 'package:flutter_application/features/home/presentation/widgets/filter_result_widget.dart';
+import 'package:flutter_application/features/home/presentation/widgets/parking_filter_model.dart';
 import 'package:flutter_application/features/home/presentation/widgets/state_picker.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-class FilterWidget extends StatelessWidget {
-  const FilterWidget({super.key});
+class FilterWidget extends StatefulWidget {
+  const FilterWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final filterModel = FilterModel();
+  // ignore: library_private_types_in_public_api
+  _FilterWidgetState createState() => _FilterWidgetState();
+}
 
+class _FilterWidgetState extends State<FilterWidget> {
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         return ZoomTapAnimation(
           onTap: () async {
+            final filterModel = FilterModel();
+
             await showModalBottomSheet(
               context: context,
               isScrollControlled: true,
@@ -60,12 +69,6 @@ class FilterWidget extends StatelessWidget {
                                   },
                                 ),
                                 12.hs(),
-                                MileSliderWidget(
-                                  onChanged: (mile) {
-                                    setState(() => filterModel.miles = mile);
-                                  },
-                                ),
-                                8.hs(),
                                 ServicesSectionWidget(
                                   title: 'Allowed services',
                                   items: filterModel.allowedServices,
@@ -101,11 +104,9 @@ class FilterWidget extends StatelessWidget {
                                 ButtonWidget(
                                   text: 'Filter',
                                   onTap: () {
-                                    // Dispatch the filter event to the HomeBloc
                                     context.read<HomeBloc>().add(
                                           HomeEvent.filterLocation(filterModel),
                                         );
-                                    // Close the bottom sheet and open the SearchOptionScreen
                                     Navigator.pop(context);
                                     showModalBottomSheet(
                                       context: context,

@@ -1,7 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dio/dio.dart';
 import 'package:flutter_application/core/config/local_config.dart';
-import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/core/error/exception.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class DioConfig {
   late final Dio _dio;
@@ -12,7 +13,7 @@ class DioConfig {
   ) {
     _dio = Dio(
       BaseOptions(
-        baseUrl: AppConstants.baseseconUrl,
+        baseUrl: dotenv.env["baseseconUrl"]!,
         connectTimeout: const Duration(seconds: 15),
         receiveTimeout: const Duration(seconds: 15),
         headers: {
@@ -36,16 +37,14 @@ class DioInterceptor extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    print('Request: ${options.method} ${options.uri}');
-
     try {
       final token = await localConfig.getToken();
 
-      if (token!=null&& token.isNotEmpty) {
+      if (token != null && token.isNotEmpty) {
         options.headers['Authorization'] = 'Bearer $token';
       }
     } catch (e) {
-      print('Error fetching token: $e');
+      throw ServerException();
     }
 
     handler.next(options);
@@ -53,28 +52,23 @@ class DioInterceptor extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print('Response: ${response.statusCode} ${response.data}');
     handler.next(response);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    print('Request failed: ${err.response?.statusCode}, ${err.message}');
-
     if (err.response?.statusCode == 401) {
       try {
         await _refreshToken();
 
         final newToken = await localConfig.getToken();
-        if (newToken!=null && newToken.isNotEmpty) {
+        if (newToken != null && newToken.isNotEmpty) {
           err.requestOptions.headers['Authorization'] = 'Bearer $newToken';
 
-          
           final clonedRequest = await _retry(err.requestOptions);
           return handler.resolve(clonedRequest);
         }
       } catch (e) {
-        print('Token refresh failed: $e');
         return handler.next(err);
       }
     }
@@ -91,7 +85,7 @@ class DioInterceptor extends Interceptor {
 
     try {
       final response = await Dio().post(
-        '${AppConstants.baseseconUrl}users/token/refresh/',
+        '${dotenv.env["baseseconUrl"]}users/token/refresh/',
         data: {'refresh': refreshToken},
       );
 
@@ -102,7 +96,6 @@ class DioInterceptor extends Interceptor {
         throw Exception('Failed to refresh token');
       }
     } catch (e) {
-      print('Error during token refresh: $e');
       rethrow;
     }
   }

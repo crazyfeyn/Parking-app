@@ -5,33 +5,42 @@ import 'package:flutter_application/features/home/data/datasources/home_datasour
 import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_application/features/home/domain/repositories/home_repositories.dart';
 import 'package:flutter_application/features/payment_screen/presentation/data/models/list_payment_methods.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:location/location.dart';
 
 class HomeRepositoriesImpl extends HomeRepositories {
   final HomeDatasources homeDatasources;
+  InternetConnectionChecker internetConnectionChecker;
 
-  HomeRepositoriesImpl({required this.homeDatasources});
+  HomeRepositoriesImpl(
+      {required this.homeDatasources, required this.internetConnectionChecker});
 
   @override
   Future<Either<Failure, List<LocationModel>>> fetchAllLocations() async {
-    try {
-      final locations = await homeDatasources.fetchAllLocations();
-      return Right(locations);
-    } catch (e) {
-      print('Error fetching locations: $e');
-      return Left(ServerFailure());
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        final locations = await homeDatasources.fetchAllLocations();
+        return Right(locations);
+      } catch (e) {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
     }
   }
 
   @override
   Future<Either<Failure, List<LocationModel>>> fetchSearchAllLocations(
       String title) async {
-    try {
-      final locations = await homeDatasources.fetchSearchAllLocations(title);
-      return Right(locations);
-    } catch (e) {
-      print('Error fetching locations: $e');
-      return Left(ServerFailure());
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        final locations = await homeDatasources.fetchSearchAllLocations(title);
+        return Right(locations);
+      } catch (e) {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
     }
   }
 
@@ -41,29 +50,35 @@ class HomeRepositoriesImpl extends HomeRepositories {
       final locationData = await homeDatasources.getCurrentLocation();
       return Right(locationData);
     } catch (e) {
-      print('Error getting current location: $e');
       return Left(ServerFailure());
     }
   }
 
   @override
   Future<Either<Failure, List<VehicleModel>>> fetchVehicleList() async {
-    try {
-      final vehicleList = await homeDatasources.fetchVehicleList();
-      return Right(vehicleList);
-    } catch (e) {
-      print('Error fetching vehicle list: $e');
-      return Left(CacheFailure());
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        final vehicleList = await homeDatasources.fetchVehicleList();
+        return Right(vehicleList);
+      } catch (e) {
+        return Left(CacheFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
     }
   }
 
   @override
   Future<Either<Failure, void>> createVehicle(VehicleModel vehicleModel) async {
-    try {
-      await homeDatasources.createVehicle(vehicleModel: vehicleModel);
-      return const Right(null);
-    } catch (e) {
-      return Left(ServerFailure());
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        await homeDatasources.createVehicle(vehicleModel: vehicleModel);
+        return const Right(null);
+      } catch (e) {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
     }
   }
 
@@ -100,56 +115,76 @@ class HomeRepositoriesImpl extends HomeRepositories {
     bool? food,
     bool? noTowedVehicles,
   }) async {
-    try {
-      // Call the datasource method with named parameters
-      final filteredLocation = await homeDatasources.fetchBookingsWithFilters(
-        city: city,
-        state: state,
-        truckAllowed: truckAllowed,
-        trailerAllowed: trailerAllowed,
-        truckTrailerAllowed: truckTrailerAllowed,
-        repairsAllowed: repairsAllowed,
-        lowboysAllowed: lowboysAllowed,
-        oversizedAllowed: oversizedAllowed,
-        hazmatAllowed: hazmatAllowed,
-        doubleStackAllowed: doubleStackAllowed,
-        bobtailOnly: bobtailOnly,
-        containersOnly: containersOnly,
-        cameras: cameras,
-        fenced: fenced,
-        asphalt: asphalt,
-        lights: lights,
-        twentyFourHours: twentyFourHours,
-        limitedEntryExitTimes: limitedEntryExitTimes,
-        securityAtGate: securityAtGate,
-        roamingSecurity: roamingSecurity,
-        landingGearSupportRequired: landingGearSupportRequired,
-        laundryMachines: laundryMachines,
-        freeShowers: freeShowers,
-        paidShowers: paidShowers,
-        repairShop: repairShop,
-        paidContainerStackingServices: paidContainerStackingServices,
-        trailerSnowScraper: trailerSnowScraper,
-        truckWash: truckWash,
-        food: food,
-        noTowedVehicles: noTowedVehicles,
-      );
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        final filteredLocation = await homeDatasources.fetchBookingsWithFilters(
+          city: city,
+          state: state,
+          truckAllowed: truckAllowed,
+          trailerAllowed: trailerAllowed,
+          truckTrailerAllowed: truckTrailerAllowed,
+          repairsAllowed: repairsAllowed,
+          lowboysAllowed: lowboysAllowed,
+          oversizedAllowed: oversizedAllowed,
+          hazmatAllowed: hazmatAllowed,
+          doubleStackAllowed: doubleStackAllowed,
+          bobtailOnly: bobtailOnly,
+          containersOnly: containersOnly,
+          cameras: cameras,
+          fenced: fenced,
+          asphalt: asphalt,
+          lights: lights,
+          twentyFourHours: twentyFourHours,
+          limitedEntryExitTimes: limitedEntryExitTimes,
+          securityAtGate: securityAtGate,
+          roamingSecurity: roamingSecurity,
+          landingGearSupportRequired: landingGearSupportRequired,
+          laundryMachines: laundryMachines,
+          freeShowers: freeShowers,
+          paidShowers: paidShowers,
+          repairShop: repairShop,
+          paidContainerStackingServices: paidContainerStackingServices,
+          trailerSnowScraper: trailerSnowScraper,
+          truckWash: truckWash,
+          food: food,
+          noTowedVehicles: noTowedVehicles,
+        );
 
-      return Right(filteredLocation);
-    } catch (e) {
-      return Left(ServerFailure());
+        return Right(filteredLocation);
+      } catch (e) {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
     }
   }
 
   @override
   Future<Either<Failure, List<ListPaymentMethods>>>
       fetchPaymentMethods() async {
-    try {
-      final response = await homeDatasources.fetchPaymentMethods();
-      return Right(response);
-    } catch (e) {
-      print('Error fetching payment method card list: $e');
-      return Left(CacheFailure());
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        final response = await homeDatasources.fetchPaymentMethods();
+        return Right(response);
+      } catch (e) {
+        return Left(CacheFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateVehicle(VehicleModel vehicleModel) async {
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        await homeDatasources.updateVehicle(vehicleData: vehicleModel);
+        return const Right(null);
+      } catch (e) {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
     }
   }
 }

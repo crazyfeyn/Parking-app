@@ -5,9 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application/core/config/stripe_service.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class PaymentMethodPicker extends StatefulWidget {
-  final Function(String) onStateChanged;
+  final Function(String, int) onStateChanged;
   final String? initialValue;
 
   const PaymentMethodPicker({
@@ -23,11 +24,9 @@ class PaymentMethodPicker extends StatefulWidget {
 
 class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
   String? selectedPaymentMethods;
-
-  List<String> paymentMethods = [
-    'Cash',
-    'By card',
-  ];
+  List<Map<String, dynamic>> existingPaymentMethods = [];
+  bool isLoading = true;
+  String? errorMessage;
 
   final StripeService _stripeService = sl<StripeService>();
 
@@ -35,120 +34,167 @@ class _PaymentMethodPickerState extends State<PaymentMethodPicker> {
   void initState() {
     super.initState();
     selectedPaymentMethods = widget.initialValue;
+    _fetchExistingPaymentMethods();
   }
 
-  Future<void> _handleCardPayment(BuildContext context) async {
+  Future<void> _fetchExistingPaymentMethods() async {
     try {
-      await _stripeService.addCard();
-
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(content: Text('Payment method added successfully!')),
-      // );
+      existingPaymentMethods = await _stripeService.fetchPaymentMethods();
+      setState(() {
+        isLoading = false;
+        errorMessage =
+            null; // Clear the error message if data is fetched successfully
+      });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to add payment method: $e')),
-      );
+      setState(() {
+        isLoading = false;
+        errorMessage =
+            'Network error. Please check your connection.'; // Set the error message
+      });
     }
   }
 
-  void _showStatesPicker(BuildContext context) async {
-    await showModalBottomSheet(
+  void _showPaymentMethodsPicker(BuildContext context) {
+    showModalBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder: (BuildContext context) {
-        return ListView.builder(
-          itemCount: paymentMethods.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(
-                paymentMethods[index],
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              onTap: () async {
-                setState(() {
-                  selectedPaymentMethods = paymentMethods[index];
-                });
-
-                // Handle "By card" selection
-                if (paymentMethods[index] == 'By card') {
-                  await _handleCardPayment(context);
-                }
-
-                widget.onStateChanged(paymentMethods[index]);
-                // ignore: use_build_context_synchronously
-                Navigator.pop(context);
-              },
-            );
-          },
+      builder: (context) {
+        return SizedBox(
+          height: 400,
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              ...existingPaymentMethods.map((method) {
+                final last4Digits = method['card']['last4'] as String?;
+                return ListTile(
+                  title: Text(
+                    _maskCardNumber(last4Digits),
+                    style: const TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                  leading: const Icon(Icons.credit_card),
+                  onTap: () {
+                    setState(() {
+                      selectedPaymentMethods = _maskCardNumber(last4Digits);
+                    });
+                    widget.onStateChanged(
+                      method['stripe_payment_method_id']?.toString() ?? '',
+                      method['id'] as int? ?? 0, // Handle null
+                    );
+                    Navigator.pop(context);
+                  },
+                );
+              }),
+            ],
+          ),
         );
       },
     );
   }
 
+  // Handle the refresh action
+  Future<void> _handleRefresh() async {
+    setState(() {
+      isLoading = true; // Show loading state
+    });
+    await _fetchExistingPaymentMethods(); // Fetch payment methods again
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HomeBloc, HomeState>(
-      listener: (context, state) {
-        if (state.status == Status.error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage ?? 'An error occurred')),
-          );
-        } else if (state.status == Status.success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text('Payment method fetched successfully!')),
-          );
-        }
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return LiquidPullToRefresh(
+      onRefresh: _handleRefresh,
+      color: Colors.blue,
+      height: 100,
+      animSpeedFactor: 2,
+      showChildOpacityTransition: false,
+      child: BlocListener<HomeBloc, HomeState>(
+        listener: (context, state) {
+          if (state.status == Status.errorNetwork) {
+            setState(() {
+              errorMessage =
+                  'No Internet connection. Please check your connection.';
+            });
+          }
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Payment methods',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 8),
+            if (isLoading)
+              IgnorePointer(
+                ignoring: true,
+                child: Opacity(
+                  opacity: 0.5,
+                  child: _buildPaymentMethodSelector(enabled: false),
+                ),
+              )
+            else if (errorMessage != null)
+              Text(
+                errorMessage!,
+                style: const TextStyle(
+                  color: Colors.red,
+                  fontSize: 14,
+                ),
+              )
+            else if (existingPaymentMethods.isEmpty)
+              const Text(
+                'No payment methods are available. Please add a card to proceed',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 14,
+                ),
+              )
+            else
+              ZoomTapAnimation(
+                onTap: () => _showPaymentMethodsPicker(context),
+                child: _buildPaymentMethodSelector(enabled: true),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPaymentMethodSelector({required bool enabled}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 12,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            'Payment methods',
+          Text(
+            selectedPaymentMethods ?? 'Select payment methods',
             style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey,
+              color: enabled && selectedPaymentMethods != null
+                  ? Colors.black
+                  : Colors.black54,
+              fontWeight: FontWeight.w500,
+              fontSize: 15,
             ),
           ),
-          const SizedBox(height: 8),
-          ZoomTapAnimation(
-            onTap: () => _showStatesPicker(context),
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    selectedPaymentMethods ?? 'Select payment methods',
-                    style: TextStyle(
-                      color: selectedPaymentMethods != null
-                          ? Colors.black
-                          : Colors.black54,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15,
-                    ),
-                  ),
-                  const Icon(Icons.arrow_drop_down, color: Colors.black54),
-                ],
-              ),
-            ),
-          ),
+          const Icon(Icons.arrow_drop_down, color: Colors.black54),
         ],
       ),
     );
+  }
+
+  // Handle null values in the card number masking
+  String _maskCardNumber(String? last4Digits) {
+    const maskedDigits = '**** **** **** ';
+    return maskedDigits + (last4Digits ?? '****');
   }
 }
