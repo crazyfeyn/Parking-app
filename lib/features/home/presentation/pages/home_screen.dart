@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _initializeData() async {
     context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
-    context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
+    // context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
     context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
   }
 
@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: const Text('No Internet, check your connection.'),
-                duration: const Duration(seconds: 10),
+                duration: const Duration(seconds: 5),
                 action: SnackBarAction(
                   label: 'Retry',
                   onPressed: () {

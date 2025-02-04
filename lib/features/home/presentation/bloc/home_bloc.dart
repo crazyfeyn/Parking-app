@@ -13,6 +13,7 @@ import 'package:flutter_application/features/home/domain/usecases/fetch_payment_
 import 'package:flutter_application/features/home/domain/usecases/fetch_search_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/filter_locations_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/get_vehicle_list_usecase.dart';
+import 'package:flutter_application/features/home/domain/usecases/update_is_default_card_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/update_vehicle_usecase.dart';
 import 'package:flutter_application/features/payment_screen/presentation/data/models/list_payment_methods.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -31,6 +32,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final FetchPaymentMethodListUsecase fetchPaymentMethodListUsecase;
   final FilterLocationsUsecase filterLocationsUsecase;
   final UpdateVehicleUsecase updateVehicleUsecase;
+  final UpdateIsDefaultCardUsecase updateIsDefaultCardUsecase;
 
   HomeBloc(
     this.currentLocationUsecase,
@@ -41,6 +43,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this.fetchPaymentMethodListUsecase,
     this.filterLocationsUsecase,
     this.updateVehicleUsecase,
+    this.updateIsDefaultCardUsecase,
   ) : super(const HomeState()) {
     on<_fetchAllLocations>(_fetchAllLocationsFunc);
     on<_fetchSearchAllLocations>(_fetchSearchAllLocationsFunc);
@@ -51,6 +54,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<_filterLocation>(_filterLocationsFunc);
     on<_clearSearchResults>(_clearSearchResultsFunc);
     on<_updateVehicle>(_updateVehicleFunc);
+    on<_updateIsDefaultCard>(_updateIsDefaultCardFunc);
   }
 
   Future<void> _fetchSearchAllLocationsFunc(
@@ -209,6 +213,38 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           createdVehicle: event.vehicleModel,
         ),
       );
+    } catch (error) {
+      emit(
+        state.copyWith(
+          status: Status.error,
+          errorMessage: error.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> _updateIsDefaultCardFunc(
+      _updateIsDefaultCard event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(status: Status.loading));
+
+    try {
+      // Update the default card
+      await updateIsDefaultCardUsecase.call(event.id);
+
+      // Fetch the updated payment method list
+      final response = await fetchPaymentMethodListUsecase.call(());
+
+      response.fold((error) {
+        emit(state.copyWith(
+          status: error is NetworkFailure ? Status.errorNetwork : Status.error,
+          errorMessage: error.toString(),
+        ));
+      }, (paymentMethodList) {
+        emit(state.copyWith(
+          status: Status.success,
+          listPaymentMethod: paymentMethodList,
+        ));
+      });
     } catch (error) {
       emit(
         state.copyWith(

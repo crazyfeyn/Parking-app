@@ -5,12 +5,12 @@ import 'package:flutter_application/features/history/presentation/widgets/filter
 import 'package:flutter_application/features/history/presentation/widgets/parking_item_widget.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
-import 'package:flutter_application/features/home/presentation/widgets/filter_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 
 class ParkingScreen extends StatefulWidget {
-  const ParkingScreen({super.key});
+  final List<LocationModel>? locations;
+  const ParkingScreen(this.locations, {super.key});
 
   @override
   State<ParkingScreen> createState() => _ParkingScreenState();
@@ -25,15 +25,17 @@ class _ParkingScreenState extends State<ParkingScreen>
   @override
   void initState() {
     super.initState();
-    _fetchAllLocations();
+    // Initialize allLocations and searchedLocations with widget.locations
+    allLocations = widget.locations ?? [];
+    searchedLocations = List.from(allLocations);
   }
 
-  void searchLocations(String query, List<LocationModel> locations) {
+  void searchLocations(String query) {
     setState(() {
       if (query.isEmpty) {
         searchedLocations = List.from(allLocations);
       } else {
-        searchedLocations = locations.where((location) {
+        searchedLocations = allLocations.where((location) {
           return location.name.toLowerCase().contains(query.toLowerCase()) ||
               location.address.toLowerCase().contains(query.toLowerCase());
         }).toList();
@@ -43,6 +45,7 @@ class _ParkingScreenState extends State<ParkingScreen>
 
   @override
   Widget build(BuildContext context) {
+    print(widget.locations);
     return Scaffold(
       body: BlocConsumer<HomeBloc, HomeState>(
         listener: (context, state) {
@@ -53,19 +56,14 @@ class _ParkingScreenState extends State<ParkingScreen>
                 duration: const Duration(seconds: 3),
                 action: SnackBarAction(
                   label: 'Retry',
-                  onPressed: () => _fetchAllLocations(),
+                  onPressed: () {
+                    context
+                        .read<HomeBloc>()
+                        .add(const HomeEvent.fetchAllLocations());
+                  },
                 ),
               ),
             );
-          } else if (state.status == Status.error) {
-            _fetchAllLocations();
-          }
-
-          if (state.status == Status.success && state.locations != null) {
-            setState(() {
-              allLocations = state.locations!;
-              searchedLocations = List.from(allLocations);
-            });
           }
         },
         builder: (context, state) {
@@ -76,10 +74,11 @@ class _ParkingScreenState extends State<ParkingScreen>
                 strokeWidth: 3,
               ),
             );
-          } else {
-            return _buildBookingList(
-                searchedLocations, 'No locations available');
+          } else if (state.status == Status.success) {
+            // Add any additional handling for the success state if needed
           }
+
+          return _buildBookingList(searchedLocations, 'No locations available');
         },
       ),
     );
@@ -104,16 +103,14 @@ class _ParkingScreenState extends State<ParkingScreen>
                 ),
                 child: TextFormField(
                   controller: searchController,
-                  onChanged: (value) {
-                    searchLocations(value, allLocations);
-                  },
+                  onChanged: (value) => searchLocations(value),
                   decoration: InputDecoration(
                     labelText: 'Where to park',
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.clear),
                       onPressed: () {
                         searchController.clear();
-                        searchLocations('', allLocations);
+                        searchLocations('');
                       },
                     ),
                     border: OutlineInputBorder(
@@ -123,7 +120,7 @@ class _ParkingScreenState extends State<ParkingScreen>
                   ),
                 ),
               ),
-              FilterForParkingWidget(),
+              const FilterForParkingWidget(), // Updated
             ],
           ),
         ),
@@ -152,10 +149,6 @@ class _ParkingScreenState extends State<ParkingScreen>
         ),
       ],
     );
-  }
-
-  void _fetchAllLocations() {
-    context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
   }
 
   @override

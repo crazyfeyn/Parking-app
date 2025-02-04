@@ -14,6 +14,7 @@ abstract class HomeRepositories {
   Future<Either<Failure, void>> createVehicle(VehicleModel vehicleModel);
   Future<Either<Failure, void>> updateVehicle(VehicleModel vehicleModel);
   Future<Either<Failure, List<ListPaymentMethods>>> fetchPaymentMethods();
+  Future<Either<Failure, void>> updateIsDefaultCard(String id);
   Future<Either<Failure, List<LocationModel>>> filterLocations({
     String? city,
     String? state,

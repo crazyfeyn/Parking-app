@@ -187,4 +187,18 @@ class HomeRepositoriesImpl extends HomeRepositories {
       return Left(NetworkFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, void>> updateIsDefaultCard(String id) async {
+    if (await internetConnectionChecker.hasConnection) {
+      try {
+        await homeDatasources.updateIsDefaultCard(id);
+        return const Right(null);
+      } catch (e) {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
 }

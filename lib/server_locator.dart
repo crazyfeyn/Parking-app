@@ -3,6 +3,7 @@ import 'package:flutter_application/features/auth/domain/usecases/start_refresh_
 import 'package:flutter_application/features/auth/domain/usecases/stop_refresh_usecase.dart';
 import 'package:flutter_application/features/booking_space/data/datasources/booking_datasources.dart';
 import 'package:flutter_application/features/history/presentation/provider/filter_provider.dart';
+import 'package:flutter_application/features/home/domain/usecases/update_is_default_card_usecase.dart';
 import 'package:flutter_application/features/home/domain/usecases/update_vehicle_usecase.dart';
 import 'package:flutter_application/features/profile/presentation/provider/vehicle_provider.dart';
 import 'package:get_it/get_it.dart';
@@ -194,6 +195,12 @@ Future<void> init() async {
     ),
   );
 
+  sl.registerLazySingleton<UpdateIsDefaultCardUsecase>(
+    () => UpdateIsDefaultCardUsecase(
+      homeRepositories: sl<HomeRepositories>(),
+    ),
+  );
+
   // Bloc
   sl.registerFactory<HomeBloc>(
     () => HomeBloc(
@@ -205,6 +212,7 @@ Future<void> init() async {
       sl<FetchPaymentMethodListUsecase>(),
       sl<FilterLocationsUsecase>(),
       sl<UpdateVehicleUsecase>(),
+      sl<UpdateIsDefaultCardUsecase>(),
     ),
   );
 

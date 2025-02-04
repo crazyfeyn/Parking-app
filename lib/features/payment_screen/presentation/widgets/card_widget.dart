@@ -5,16 +5,20 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class CardWidget extends StatelessWidget {
   final String cardNumber;
+  final VoidCallback onTap;
+  final bool isDefault;
 
   const CardWidget({
     super.key,
     required this.cardNumber,
+    required this.onTap,
+    required this.isDefault,
   });
 
   @override
   Widget build(BuildContext context) {
     return ZoomTapAnimation(
-      onTap: () {},
+      onTap: onTap, // Use the provided callback directly
       child: Container(
         padding:
             const EdgeInsets.only(left: 32, right: 12, bottom: 12, top: 12),
@@ -52,8 +56,22 @@ class CardWidget extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(),
-            
+            if (isDefault) // Only show "Default" if isDefault is true
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: const Text(
+                  'Default',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
           ],
         ),
       ),
