@@ -67,7 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
       body: BlocConsumer<HomeBloc, HomeState>(
         listener: (context, state) {
           if (state.status == Status.errorNetwork) {
-            print('-----');
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: const Text('No Internet, check your connection.'),
