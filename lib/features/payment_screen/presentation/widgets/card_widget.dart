@@ -18,7 +18,7 @@ class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ZoomTapAnimation(
-      onTap: onTap, // Use the provided callback directly
+      onTap: onTap,
       child: Container(
         padding:
             const EdgeInsets.only(left: 32, right: 12, bottom: 12, top: 12),

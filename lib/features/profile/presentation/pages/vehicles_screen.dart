@@ -10,6 +10,7 @@ import 'package:flutter_application/features/booking_space/data/models/vehicle_m
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/profile/presentation/widgets/custom_profile_app_bar_widget.dart';
 import 'package:flutter_application/features/profile/presentation/widgets/info_text_widget.dart';
+import 'package:shimmer/shimmer.dart'; // Import shimmer package
 
 class VehiclesScreen extends StatefulWidget {
   const VehiclesScreen({super.key});
@@ -57,12 +58,7 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
           },
           builder: (context, state) {
             if (state.status == Status.loading) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.red,
-                  strokeWidth: 3,
-                ),
-              );
+              return _buildShimmer();
             }
 
             return Column(
@@ -122,6 +118,79 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
           },
         ),
       ),
+    );
+  }
+
+  // Shimmer placeholder widget
+  Widget _buildShimmer() {
+    return ListView.builder(
+      itemCount: 5, // Number of shimmer placeholders
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: Colors.grey.shade300,
+          highlightColor: Colors.grey.shade100,
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            margin: const EdgeInsets.only(bottom: 16),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Placeholder for vehicle type row
+                Container(
+                  height: 20,
+                  width: 150,
+                  color: Colors.grey[400],
+                ),
+                const SizedBox(height: 16),
+                // Placeholder row for make & model
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: 16,
+                      width: 80,
+                      color: Colors.grey[400],
+                    ),
+                    Container(
+                      height: 16,
+                      width: 80,
+                      color: Colors.grey[400],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                // Placeholder row for year & plate number
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: 16,
+                      width: 80,
+                      color: Colors.grey[400],
+                    ),
+                    Container(
+                      height: 16,
+                      width: 80,
+                      color: Colors.grey[400],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                // Placeholder for unit number
+                Container(
+                  height: 16,
+                  width: 120,
+                  color: Colors.grey[400],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

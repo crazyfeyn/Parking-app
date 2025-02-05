@@ -7,6 +7,7 @@ import 'package:flutter_application/features/history/presentation/widgets/parkin
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+import 'package:shimmer/shimmer.dart';
 
 class FilterResultWidget extends StatelessWidget {
   const FilterResultWidget({super.key});
@@ -25,12 +26,7 @@ class FilterResultWidget extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           if (state.status == Status.loading) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: Colors.red,
-                strokeWidth: 3,
-              ),
-            );
+            return _buildShimmer();
           }
 
           if (state.status == Status.error) {
@@ -86,6 +82,7 @@ class FilterResultWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Header row with parking name and logo
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -121,6 +118,7 @@ class FilterResultWidget extends StatelessWidget {
                           ],
                         ),
                         12.hs(),
+                        // Row showing available spaces and rate details
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -176,6 +174,7 @@ class FilterResultWidget extends StatelessWidget {
                           ],
                         ),
                         16.hs(),
+                        // Buttons row
                         Row(
                           children: [
                             Expanded(
@@ -221,6 +220,99 @@ class FilterResultWidget extends StatelessWidget {
           return Container();
         },
       ),
+    );
+  }
+
+  // Shimmer placeholder widget for loading state
+  Widget _buildShimmer() {
+    return ListView.separated(
+      itemCount: 5, // Adjust this count as needed.
+      separatorBuilder: (context, index) =>
+          SizedBox(height: AppDimens.PADDING_20),
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: Colors.grey.shade300,
+          highlightColor: Colors.grey.shade100,
+          child: Container(
+            padding: const EdgeInsets.all(AppDimens.PADDING_16),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppDimens.BORDER_RADIUS_12),
+              color: Colors.grey.shade200,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Shimmer header row (Parking name and logo placeholder)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Text placeholders
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 11,
+                          width: 80,
+                          color: Colors.grey,
+                        ),
+                        const SizedBox(height: 4),
+                        Container(
+                          height: 16,
+                          width: 120,
+                          color: Colors.grey,
+                        ),
+                      ],
+                    ),
+                    // Image placeholder
+                    Container(
+                      height: 45,
+                      width: 45,
+                      color: Colors.grey,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                // Shimmer row for available spaces and rates
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: 10,
+                      width: 115,
+                      color: Colors.grey,
+                    ),
+                    Container(
+                      height: 10,
+                      width: 150,
+                      color: Colors.grey,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                // Shimmer row for buttons
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 40,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Container(
+                        height: 40,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

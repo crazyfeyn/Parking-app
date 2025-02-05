@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/config/stripe_service.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
+import 'package:flutter_application/features/payment_screen/presentation/widgets/shimmer_card_widget.dart';
 import 'package:flutter_application/server_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
@@ -53,10 +54,49 @@ class SelectPaymentScreen extends StatelessWidget {
           },
           builder: (context, state) {
             if (state.status == Status.loading) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.red,
-                  strokeWidth: 3,
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ZoomTapAnimation(
+                      onTap: () async {
+                        await stripeService.addCard();
+                        context
+                            .read<HomeBloc>()
+                            .add(const HomeEvent.fetchPaymentMethodList());
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(AppDimens.PADDING_14),
+                        margin:
+                            const EdgeInsets.only(bottom: AppDimens.MARGIN_16),
+                        decoration: BoxDecoration(
+                          color: AppConstants.mainColor,
+                          borderRadius:
+                              BorderRadius.circular(AppDimens.BORDER_RADIUS_15),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Add Card',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                            8.ws(),
+                            const Icon(
+                              Icons.add_circle_outline_rounded,
+                              color: Colors.white,
+                              size: 28,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const ShimmerCardWidget(),
+                  ],
                 ),
               );
             } else if (state.status == Status.success &&
