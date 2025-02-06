@@ -70,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final profile = state.profile;
 
     if (profile == null) {
-      _refreshData();
+      _buildLoadingState();
     }
 
     return RefreshIndicator(

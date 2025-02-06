@@ -26,10 +26,15 @@ class VehicleProvider extends ChangeNotifier {
     return _vehicleType != null &&
         _vehicleType!.isNotEmpty &&
         _unitNumber != null &&
+        _unitNumber!.isNotEmpty &&
         _year != null &&
+        _year != 0 &&
         _make != null &&
+        _make!.isNotEmpty &&
         _model != null &&
-        _plateNumber != null;
+        _model!.isNotEmpty &&
+        _plateNumber != null &&
+        _plateNumber!.isNotEmpty;
   }
 
   void setVehicleType(String? type) {

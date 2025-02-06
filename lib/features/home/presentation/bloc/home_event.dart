@@ -16,4 +16,5 @@ class HomeEvent with _$HomeEvent {
   const factory HomeEvent.updateIsDefaultCard(String id) = _updateIsDefaultCard;
   const factory HomeEvent.updateVehicle(VehicleModel vehicleModel) =
       _updateVehicle;
+  const factory HomeEvent.clearFilterResults() = _clearFilterResults;
 }

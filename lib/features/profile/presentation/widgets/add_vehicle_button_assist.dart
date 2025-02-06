@@ -6,7 +6,7 @@ import 'package:flutter_application/features/profile/presentation/provider/vehic
 import 'package:provider/provider.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-class AddVehicleButtonAssist extends StatelessWidget {
+class AddVehicleButtonAssist extends StatefulWidget {
   final VehicleProvider provider;
   final int userId;
   final VoidCallback onSuccess;
@@ -21,46 +21,69 @@ class AddVehicleButtonAssist extends StatelessWidget {
   });
 
   @override
+  State<AddVehicleButtonAssist> createState() => _AddVehicleButtonAssistState();
+}
+
+class _AddVehicleButtonAssistState extends State<AddVehicleButtonAssist> {
+  bool _isLoading = false;
+
+  @override
   Widget build(BuildContext context) {
     return ZoomTapAnimation(
-      onTap: () async {
-        if (provider.isFormValidVehicle) {
-          final vehicleModel = VehicleModel(
-            type: provider.vehicleType!,
-            unitNumber: provider.unitNumber!,
-            year: provider.year!,
-            make: provider.make!,
-            model: provider.model!,
-            plateNumber: provider.plateNumber!,
-            user: userId,
-            id: isEditing ? provider.vehicleId! : 0,
-          );
+      onTap: _isLoading
+          ? null
+          : () async {
+              if (widget.provider.isFormValidVehicle) {
+                setState(() {
+                  _isLoading = true;
+                });
 
-          isEditing
-              ? context
-                  .read<HomeBloc>()
-                  .add(HomeEvent.updateVehicle(vehicleModel))
-              : context
-                  .read<HomeBloc>()
-                  .add(HomeEvent.createVehicle(vehicleModel));
+                try {
+                  final vehicleModel = VehicleModel(
+                    type: widget.provider.vehicleType!,
+                    unitNumber: widget.provider.unitNumber!,
+                    year: widget.provider.year!,
+                    make: widget.provider.make!,
+                    model: widget.provider.model!,
+                    plateNumber: widget.provider.plateNumber!,
+                    user: widget.userId,
+                    id: widget.isEditing ? widget.provider.vehicleId! : 0,
+                  );
 
-          context
-              .read<HomeBloc>()
-              .stream
-              .firstWhere((state) => state.status == Status.success)
-              .then((_) {
-            context.read<HomeBloc>().add(const HomeEvent.getVehicleList());
+                  if (widget.isEditing) {
+                    context
+                        .read<HomeBloc>()
+                        .add(HomeEvent.updateVehicle(vehicleModel));
+                  } else {
+                    context
+                        .read<HomeBloc>()
+                        .add(HomeEvent.createVehicle(vehicleModel));
+                  }
 
-            onSuccess();
+                  await context
+                      .read<HomeBloc>()
+                      .stream
+                      .firstWhere((state) => state.status == Status.success);
 
-            Navigator.pop(context);
-          });
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please fill all fields')),
-          );
-        }
-      },
+                  context
+                      .read<HomeBloc>()
+                      .add(const HomeEvent.getVehicleList());
+                  widget.onSuccess();
+                  Navigator.pop(context);
+                } finally {
+                  if (mounted) {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  }
+                }
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text('Please fill all fields correctly')),
+                );
+              }
+            },
       child: Container(
         decoration: BoxDecoration(
           color: AppConstants.mainColor,
@@ -68,14 +91,23 @@ class AddVehicleButtonAssist extends StatelessWidget {
         ),
         padding: const EdgeInsets.symmetric(vertical: 16),
         alignment: Alignment.center,
-        child: Text(
-          isEditing ? 'Save vehicle' : 'Add vehicle',
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        child: _isLoading
+            ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
+            : Text(
+                widget.isEditing ? 'Save vehicle' : 'Add vehicle',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
       ),
     );
   }

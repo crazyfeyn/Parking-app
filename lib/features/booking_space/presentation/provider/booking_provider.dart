@@ -68,10 +68,14 @@ class BookingProvider extends ChangeNotifier {
     return _vehicleType != null &&
         _vehicleType!.isNotEmpty &&
         _unitNumber != null &&
+        _unitNumber!.isNotEmpty &&
         _year != null &&
         make != null &&
+        make!.isNotEmpty &&
         _model != null &&
-        _plateNumber != null;
+        model!.isNotEmpty &&
+        _plateNumber != null &&
+        plateNumber!.isNotEmpty;
   }
 
   bool get isExtendBookingValid =>

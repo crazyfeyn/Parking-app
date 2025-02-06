@@ -23,11 +23,10 @@ class _MainScreenState extends State<MainScreen> {
     _initializeData();
   }
 
-  void _initializeData() {
+  void _initializeData() async {
     context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
-    final homeBloc = context.read<HomeBloc>();
-    homeBloc.add(const HomeEvent.getCurrentLocation());
-    homeBloc.add(const HomeEvent.fetchAllLocations());
+    context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
+    context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
   }
 
   @override
@@ -51,7 +50,7 @@ class _MainScreenState extends State<MainScreen> {
             }
 
             final List<Widget> pages = [
-              ParkingScreen(state.locations ?? []),
+              const ParkingScreen(),
               const HomeScreen(),
               const ProfileScreen(),
             ];

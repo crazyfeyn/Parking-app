@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -9,14 +10,12 @@ import 'package:flutter_application/core/widgets/button_widget.dart';
 import 'package:flutter_application/features/home/data/models/filter_model.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/home/presentation/widgets/city_picker.dart';
-import 'package:flutter_application/features/home/presentation/widgets/filter_result_widget.dart';
 import 'package:flutter_application/features/home/presentation/widgets/parking_filter_model.dart';
 import 'package:flutter_application/features/home/presentation/widgets/state_picker.dart';
 
 class FilterForParkingWidget extends StatefulWidget {
-  const FilterForParkingWidget({
-    Key? key,
-  }) : super(key: key);
+  final Function onTap;
+  const FilterForParkingWidget({super.key, required this.onTap});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -104,22 +103,11 @@ class _FilterForParkingWidgetState extends State<FilterForParkingWidget> {
                                 ButtonWidget(
                                   text: 'Filter',
                                   onTap: () {
-                                    context.read<HomeBloc>().add(
-                                          HomeEvent.filterLocation(filterModel),
-                                        );
-                                    Navigator.pop(context);
-                                    showModalBottomSheet(
-                                      context: context,
-                                      isScrollControlled: true,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(20),
-                                        ),
-                                      ),
-                                      builder: (context) {
-                                        return const FilterResultWidget();
-                                      },
-                                    );
+                                    widget.onTap(filterModel);
+                                    if (state.filterLocations != null) {
+                                      print('qoyil');
+                                      Navigator.pop(context);
+                                    }
                                   },
                                 ),
                                 32.hs(),
