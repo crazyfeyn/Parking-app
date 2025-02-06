@@ -39,7 +39,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('An error occurred while loading profile data!'),
-                duration: Duration(seconds: 10),
                 backgroundColor: Colors.red,
               ),
             );
