@@ -71,9 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final profile = state.profile;
 
     if (profile == null) {
-      return const Center(
-        child: Text('No data available to display'),
-      );
+      _refreshData();
     }
 
     return RefreshIndicator(
@@ -86,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ProfilePinned(profile: profile),
+                ProfilePinned(profile: profile!),
                 _buildProfileOptions(profile),
                 const SizedBox(height: 8),
                 _buildLogoutButton(),
