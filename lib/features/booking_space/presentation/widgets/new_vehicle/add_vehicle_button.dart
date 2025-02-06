@@ -60,7 +60,7 @@ class AddVehicleButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 16),
         alignment: Alignment.center,
         child: const Text(
-          'Add vehicle',
+          'Add vehicle2',
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,

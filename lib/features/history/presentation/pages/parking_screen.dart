@@ -1,84 +1,101 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/home/data/models/filter_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:flutter_application/core/constants/app_dimens.dart';
 import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/features/history/presentation/widgets/filter_for_parking_widget.dart';
 import 'package:flutter_application/features/history/presentation/widgets/parking_item_widget.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
 
 class ParkingScreen extends StatefulWidget {
-  final List<LocationModel>? locations;
-  const ParkingScreen(this.locations, {super.key});
+  const ParkingScreen({super.key});
 
   @override
   State<ParkingScreen> createState() => _ParkingScreenState();
 }
 
-class _ParkingScreenState extends State<ParkingScreen>
-    with SingleTickerProviderStateMixin {
-  final searchController = TextEditingController();
+class _ParkingScreenState extends State<ParkingScreen> {
+  final TextEditingController searchController = TextEditingController();
   List<LocationModel> searchedLocations = [];
-  List<LocationModel> allLocations = [];
 
   @override
   void initState() {
     super.initState();
-    // Initialize allLocations and searchedLocations with widget.locations
-    allLocations = widget.locations ?? [];
-    searchedLocations = List.from(allLocations);
   }
 
   void searchLocations(String query) {
     setState(() {
       if (query.isEmpty) {
-        searchedLocations = List.from(allLocations);
+        searchedLocations = [];
       } else {
-        searchedLocations = allLocations.where((location) {
-          return location.name.toLowerCase().contains(query.toLowerCase()) ||
-              location.address.toLowerCase().contains(query.toLowerCase());
-        }).toList();
+        searchedLocations = (context.read<HomeBloc>().state.locations ?? [])
+            .where((location) =>
+                location.name.toLowerCase().contains(query.toLowerCase()) ||
+                location.address.toLowerCase().contains(query.toLowerCase()))
+            .toList();
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.locations);
     return Scaffold(
-      body: BlocConsumer<HomeBloc, HomeState>(
-        listener: (context, state) {
-          if (state.status == Status.errorNetwork) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: const Text('No Internet, check your connection.'),
-                duration: const Duration(seconds: 3),
-                action: SnackBarAction(
-                  label: 'Retry',
-                  onPressed: () {
-                    context
-                        .read<HomeBloc>()
-                        .add(const HomeEvent.fetchAllLocations());
-                  },
-                ),
-              ),
-            );
-          }
-        },
+      body: BlocBuilder<HomeBloc, HomeState>(
+        buildWhen: (previous, current) =>
+            previous.status != current.status ||
+            previous.locations != current.locations ||
+            previous.filterLocations != current.filterLocations,
         builder: (context, state) {
           if (state.status == Status.loading) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: Colors.red,
-                strokeWidth: 3,
-              ),
-            );
-          } else if (state.status == Status.success) {
-            // Add any additional handling for the success state if needed
+            return _buildShimmer();
           }
 
-          return _buildBookingList(searchedLocations, 'No locations available');
+          if (state.status == Status.errorNetwork) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('No Internet, check your connection.'),
+                  ElevatedButton(
+                    onPressed: () {
+                      context
+                          .read<HomeBloc>()
+                          .add(const HomeEvent.fetchAllLocations());
+                    },
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          // Determine which list to display: filtered, searched, or all locations
+          final List<LocationModel> locationsToDisplay =
+              (state.filterLocations != null &&
+                      state.filterLocations!.isNotEmpty)
+                  ? state.filterLocations!
+                  : state.locations ?? [];
+
+          final List<LocationModel> filteredLocations =
+              searchController.text.isEmpty
+                  ? locationsToDisplay
+                  : locationsToDisplay
+                      .where((location) =>
+                          location.name
+                              .toLowerCase()
+                              .contains(searchController.text.toLowerCase()) ||
+                          location.address
+                              .toLowerCase()
+                              .contains(searchController.text.toLowerCase()))
+                      .toList();
+
+          return _buildBookingList(
+            filteredLocations,
+            'No locations available',
+          );
         },
       ),
     );
@@ -92,6 +109,7 @@ class _ParkingScreenState extends State<ParkingScreen>
           padding: const EdgeInsets.only(left: 20, top: 60, right: 20),
           child: Row(
             children: [
+              // Search Bar
               Container(
                 width: MediaQuery.of(context).size.width * 0.7,
                 height: MediaQuery.of(context).size.height * 0.057,
@@ -103,7 +121,7 @@ class _ParkingScreenState extends State<ParkingScreen>
                 ),
                 child: TextFormField(
                   controller: searchController,
-                  onChanged: (value) => searchLocations(value),
+                  onChanged: searchLocations,
                   decoration: InputDecoration(
                     labelText: 'Where to park',
                     suffixIcon: IconButton(
@@ -120,11 +138,15 @@ class _ParkingScreenState extends State<ParkingScreen>
                   ),
                 ),
               ),
-              const FilterForParkingWidget(), // Updated
+              // Filter Button
+              FilterForParkingWidget(
+                onTap: filterFunc,
+              ),
             ],
           ),
         ),
         16.hs(),
+        // List of Locations
         Expanded(
           child: locations.isEmpty
               ? Center(
@@ -141,13 +163,89 @@ class _ParkingScreenState extends State<ParkingScreen>
                   itemCount: locations.length,
                   itemBuilder: (context, index) {
                     final location = locations[index];
-                    return ParkingItem(
-                      location: location,
-                    );
+                    return ParkingItem(location: location);
                   },
                 ),
         ),
       ],
+    );
+  }
+
+  void filterFunc(FilterModel filterModel) {
+    context.read<HomeBloc>().add(
+          HomeEvent.filterLocation(filterModel),
+        );
+  }
+
+  Widget _buildShimmer() {
+    return ListView.builder(
+      itemCount: 5, // Number of shimmer placeholders
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: Colors.grey.shade300,
+          highlightColor: Colors.grey.shade100,
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            margin: const EdgeInsets.only(bottom: 16),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Placeholder for vehicle type row
+                Container(
+                  height: 20,
+                  width: 150,
+                  color: Colors.grey[400],
+                ),
+                const SizedBox(height: 16),
+                // Placeholder row for make & model
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: 16,
+                      width: 80,
+                      color: Colors.grey[400],
+                    ),
+                    Container(
+                      height: 16,
+                      width: 80,
+                      color: Colors.grey[400],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                // Placeholder row for year & plate number
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: 16,
+                      width: 80,
+                      color: Colors.grey[400],
+                    ),
+                    Container(
+                      height: 16,
+                      width: 80,
+                      color: Colors.grey[400],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                // Placeholder for unit number
+                Container(
+                  height: 16,
+                  width: 120,
+                  color: Colors.grey[400],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

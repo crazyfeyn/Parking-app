@@ -24,13 +24,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeData();
+    _clearFilter();
   }
 
-  void _initializeData() async {
-    context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
-    // context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
-    context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
+  // void _initializeData() async {
+  //   context.read<ProfileBloc>().add(const ProfileEvent.getProfile());
+  //   context.read<HomeBloc>().add(const HomeEvent.getCurrentLocation());
+  //   context.read<HomeBloc>().add(const HomeEvent.fetchAllLocations());
+  // }
+
+  void _clearFilter() async {
+    context.read<HomeBloc>().add(const HomeEvent.clearFilterResults());
   }
 
   void _focusOnSearchedLocations(List<LocationModel> searchedLocations) {
@@ -63,44 +67,43 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: BlocConsumer<HomeBloc, HomeState>(
-        listener: (context, state) {
-          if (state.status == Status.errorNetwork) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: const Text('No Internet, check your connection.'),
-                duration: const Duration(seconds: 5),
-                action: SnackBarAction(
-                  label: 'Retry',
-                  onPressed: () {
-                    _initializeData();
-                  },
+        resizeToAvoidBottomInset: false,
+        body: BlocListener<HomeBloc, HomeState>(
+          listener: (context, state) {
+            if (state.status == Status.errorNetwork) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text('No Internet, check your connection.'),
+                  duration: const Duration(seconds: 5),
+                  action: SnackBarAction(
+                    label: 'Retry',
+                    onPressed: () {
+                      context
+                          .read<HomeBloc>()
+                          .add(const HomeEvent.fetchAllLocations());
+                    },
+                  ),
                 ),
-              ),
-            );
-          } else if (state.status == Status.error) {
-            _initializeData();
-          }
+              );
+            }
 
-          if (state.searchLocations?.isNotEmpty == true) {
-            _focusOnSearchedLocations(state.searchLocations!);
-          }
-        },
-        builder: (context, state) {
-          if (state.status == Status.initial) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: Colors.red,
-                strokeWidth: 3,
-              ),
-            );
-          }
-
-          return _buildGoogleMap(state);
-        },
-      ),
-    );
+            if (state.searchLocations?.isNotEmpty == true) {
+              _focusOnSearchedLocations(state.searchLocations!);
+            }
+          },
+          child: BlocBuilder<HomeBloc, HomeState>(
+            buildWhen: (previous, current) =>
+                previous.status != current.status ||
+                previous.currentLocation != current.currentLocation ||
+                previous.locations != current.locations,
+            builder: (context, state) {
+              if (state.status == Status.initial) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              return _buildGoogleMap(state);
+            },
+          ),
+        ));
   }
 
   Widget _buildGoogleMap(HomeState state) {

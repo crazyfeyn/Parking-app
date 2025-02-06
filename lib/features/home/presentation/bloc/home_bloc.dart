@@ -55,6 +55,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<_clearSearchResults>(_clearSearchResultsFunc);
     on<_updateVehicle>(_updateVehicleFunc);
     on<_updateIsDefaultCard>(_updateIsDefaultCardFunc);
+    on<_clearFilterResults>(_clearFilterResultsFunc);
   }
 
   Future<void> _fetchSearchAllLocationsFunc(
@@ -183,12 +184,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     response.fold(
       (error) {
-        emit(state.copyWith(
+        emit(
+          state.copyWith(
             status:
                 error is NetworkFailure ? Status.errorNetwork : Status.error,
-            errorMessage: error.toString()));
+            errorMessage: error.toString(),
+          ),
+        );
       },
       (locations) {
+        print('keldi');
+        print(locations);
         emit(
             state.copyWith(status: Status.success, filterLocations: locations));
       },
@@ -198,6 +204,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> _clearSearchResultsFunc(
       _clearSearchResults event, Emitter<HomeState> emit) async {
     emit(state.copyWith(searchLocations: []));
+  }
+
+  Future<void> _clearFilterResultsFunc(
+      _clearFilterResults event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(filterLocations: null));
   }
 
   Future<void> _updateVehicleFunc(
