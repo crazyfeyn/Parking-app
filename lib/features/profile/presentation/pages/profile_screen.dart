@@ -46,9 +46,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         },
         child: BlocBuilder<ProfileBloc, ProfileState>(
-          buildWhen: (previous, current) =>
-              previous.status != current.status ||
-              previous.profile != current.profile,
           builder: (context, state) {
             if (state.status == Status.loading) {
               return _buildLoadingState();
