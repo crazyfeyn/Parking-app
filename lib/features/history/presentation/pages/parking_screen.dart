@@ -72,12 +72,19 @@ class _ParkingScreenState extends State<ParkingScreen> {
             );
           }
 
-          // Determine which list to display: filtered, searched, or all locations
-          final List<LocationModel> locationsToDisplay =
-              (state.filterLocations != null &&
-                      state.filterLocations!.isNotEmpty)
-                  ? state.filterLocations!
-                  : state.locations ?? [];
+          // Handle filtered locations
+          final List<LocationModel> locationsToDisplay;
+          if (state.filterLocations != null) {
+            // If filterLocations is empty, show no locations
+            if (state.filterLocations!.isEmpty) {
+              locationsToDisplay = [];
+            } else {
+              locationsToDisplay = state.filterLocations!;
+            }
+          } else {
+            // No filter applied, show all locations
+            locationsToDisplay = state.locations ?? [];
+          }
 
           final List<LocationModel> filteredLocations =
               searchController.text.isEmpty
@@ -94,7 +101,9 @@ class _ParkingScreenState extends State<ParkingScreen> {
 
           return _buildBookingList(
             filteredLocations,
-            'No locations available',
+            state.filterLocations?.isEmpty == true
+                ? 'No locations match your filters'
+                : 'No locations available',
           );
         },
       ),
@@ -109,7 +118,6 @@ class _ParkingScreenState extends State<ParkingScreen> {
           padding: const EdgeInsets.only(left: 20, top: 60, right: 20),
           child: Row(
             children: [
-              // Search Bar
               Container(
                 width: MediaQuery.of(context).size.width * 0.7,
                 height: MediaQuery.of(context).size.height * 0.057,
@@ -138,7 +146,6 @@ class _ParkingScreenState extends State<ParkingScreen> {
                   ),
                 ),
               ),
-              // Filter Button
               FilterForParkingWidget(
                 onTap: filterFunc,
               ),
@@ -146,7 +153,6 @@ class _ParkingScreenState extends State<ParkingScreen> {
           ),
         ),
         16.hs(),
-        // List of Locations
         Expanded(
           child: locations.isEmpty
               ? Center(
@@ -178,74 +184,71 @@ class _ParkingScreenState extends State<ParkingScreen> {
   }
 
   Widget _buildShimmer() {
-    return ListView.builder(
-      itemCount: 5, // Number of shimmer placeholders
-      itemBuilder: (context, index) {
-        return Shimmer.fromColors(
-          baseColor: Colors.grey.shade300,
-          highlightColor: Colors.grey.shade100,
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            margin: const EdgeInsets.only(bottom: 16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.white,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Placeholder for vehicle type row
-                Container(
-                  height: 20,
-                  width: 150,
-                  color: Colors.grey[400],
+    return Column(
+      children: [
+        30.hs(),
+        Expanded(
+          // Ensuring ListView takes available space
+          child: ListView.builder(
+            itemCount: 5,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              return Shimmer.fromColors(
+                baseColor: Colors.grey.shade300,
+                highlightColor: Colors.grey.shade100,
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 20,
+                        width: 130,
+                        color: Colors.grey[400],
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: List.generate(
+                          2,
+                          (_) => Container(
+                            height: 16,
+                            width: 80,
+                            color: Colors.grey[400],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: List.generate(
+                          2,
+                          (_) => Container(
+                            height: 16,
+                            width: 80,
+                            color: Colors.grey[400],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Container(
+                        height: 16,
+                        width: 120,
+                        color: Colors.grey[400],
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 16),
-                // Placeholder row for make & model
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      height: 16,
-                      width: 80,
-                      color: Colors.grey[400],
-                    ),
-                    Container(
-                      height: 16,
-                      width: 80,
-                      color: Colors.grey[400],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                // Placeholder row for year & plate number
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      height: 16,
-                      width: 80,
-                      color: Colors.grey[400],
-                    ),
-                    Container(
-                      height: 16,
-                      width: 80,
-                      color: Colors.grey[400],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                // Placeholder for unit number
-                Container(
-                  height: 16,
-                  width: 120,
-                  color: Colors.grey[400],
-                ),
-              ],
-            ),
+              );
+            },
           ),
-        );
-      },
+        ),
+      ],
     );
   }
 

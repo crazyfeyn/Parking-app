@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -104,10 +103,7 @@ class _FilterForParkingWidgetState extends State<FilterForParkingWidget> {
                                   text: 'Filter',
                                   onTap: () {
                                     widget.onTap(filterModel);
-                                    if (state.filterLocations != null) {
-                                      print('qoyil');
-                                      Navigator.pop(context);
-                                    }
+                                    Navigator.of(context).pop();
                                   },
                                 ),
                                 32.hs(),

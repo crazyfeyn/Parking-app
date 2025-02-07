@@ -193,8 +193,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         );
       },
       (locations) {
-        print('keldi');
-        print(locations);
         emit(
             state.copyWith(status: Status.success, filterLocations: locations));
       },
