@@ -16,6 +16,7 @@ class AppConstants {
   static const String userRefresh = 'userRefresh';
   static const String sharedToken = 'tokenUser';
   static const String sharedUserId = 'userId';
+  static const String sharedProfile = 'sharedProfile';
   static const String boolHome = 'isGrid';
   static const TextStyle textStyle_16 = TextStyle(
     fontSize: 16,

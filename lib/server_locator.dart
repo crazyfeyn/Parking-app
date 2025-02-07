@@ -227,7 +227,8 @@ Future<void> init() async {
   sl.registerLazySingleton<ProfileRepositories>(
     () => ProfileRepositoriesImpl(
         profileDatasources: sl<ProfileDatasources>(),
-        profileLocalDataSources: sl<ProfileLocalDataSources>()),
+        profileLocalDataSources: sl<ProfileLocalDataSources>(),
+        localConfig: sl<LocalConfig>()),
   );
   sl.registerFactory(
     () => ProfileLocalDataSources(

@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dartz/dartz.dart';
 
+import 'package:flutter_application/core/config/local_config.dart';
 import 'package:flutter_application/core/error/failure.dart';
 import 'package:flutter_application/features/profile/data/datasources/profile_datasources.dart';
 import 'package:flutter_application/features/profile/data/datasources/profile_local_data_sources.dart';
@@ -11,10 +12,11 @@ import 'package:flutter_application/features/profile/domain/repositories/profile
 class ProfileRepositoriesImpl extends ProfileRepositories {
   ProfileLocalDataSources profileLocalDataSources;
   final ProfileDatasources profileDatasources;
-
+  LocalConfig localConfig;
   ProfileRepositoriesImpl({
     required this.profileLocalDataSources,
     required this.profileDatasources,
+    required this.localConfig,
   });
 
   @override
@@ -22,9 +24,15 @@ class ProfileRepositoriesImpl extends ProfileRepositories {
     try {
       final profile = await profileDatasources.getProfile();
       profileLocalDataSources.saveId(profile.id);
+      await localConfig.addProfile(profile);
       return Right(profile.toEntity());
     } catch (e) {
-      return Left(ServerFailure());
+      try {
+        final responce = await localConfig.getProfile();
+        return Right(responce!.toEntity());
+      } catch (e) {
+        return Left(ServerFailure());
+      }
     }
   }
 
@@ -59,6 +67,7 @@ class ProfileRepositoriesImpl extends ProfileRepositories {
     try {
       await profileDatasources.updateProfile(
           name: name, surname: surname, email: email);
+      localConfig.updateProfileInfo(name: name, surname: surname, email: email);
       return const Right(null);
     } catch (e) {
       return Left(ServerFailure());
