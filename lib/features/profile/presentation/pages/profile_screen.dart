@@ -6,6 +6,7 @@ import 'package:flutter_application/features/auth/presentation/blocs/bloc/auth_b
 import 'package:flutter_application/features/auth/presentation/pages/login_screen.dart';
 import 'package:flutter_application/features/auth/presentation/pages/reset_password_screen.dart';
 import 'package:flutter_application/features/history/presentation/pages/history_screen.dart';
+import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_application/features/payment_screen/presentation/pages/select_payment_screen.dart';
 import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_application/features/profile/presentation/pages/contact_detail_screen.dart';
@@ -45,6 +46,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         },
         child: BlocBuilder<ProfileBloc, ProfileState>(
+          buildWhen: (previous, current) =>
+              previous.status != current.status ||
+              previous.profile != current.profile,
           builder: (context, state) {
             if (state.status == Status.loading) {
               return _buildLoadingState();
@@ -236,5 +240,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
       },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _clearFilter();
+  }
+
+  void _clearFilter() async {
+    context.read<HomeBloc>().add(const HomeEvent.clearFilterResults());
   }
 }
