@@ -15,12 +15,8 @@
   },
   "source_files": "Classes/**/*",
   "dependencies": {
-    "Flutter": [
-
-    ],
-    "ZIPFoundation": [
-
-    ]
+    "Flutter": [],
+    "ZIPFoundation": []
   },
   "platforms": {
     "ios": "9.0"
