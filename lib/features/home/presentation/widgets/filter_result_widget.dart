@@ -6,6 +6,7 @@ import 'package:flutter_application/features/booking_space/presentation/pages/bo
 import 'package:flutter_application/features/history/presentation/widgets/parking_detail_screen.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class FilterResultWidget extends StatelessWidget {
@@ -39,9 +40,7 @@ class FilterResultWidget extends StatelessWidget {
 
           final locations = state.filterLocations;
           if (locations == null) {
-            return const Center(
-              child: Text('Something went wrong'),
-            );
+            return _buildShimmer();
           }
 
           if (locations.isEmpty) {
@@ -207,6 +206,75 @@ class FilterResultWidget extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  Widget _buildShimmer() {
+    return Column(
+      children: [
+        30.hs(),
+        Expanded(
+          // Ensuring ListView takes available space
+          child: ListView.builder(
+            itemCount: 5,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              return Shimmer.fromColors(
+                baseColor: Colors.grey.shade300,
+                highlightColor: Colors.grey.shade100,
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 20,
+                        width: 130,
+                        color: Colors.grey[400],
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: List.generate(
+                          2,
+                          (_) => Container(
+                            height: 16,
+                            width: 80,
+                            color: Colors.grey[400],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: List.generate(
+                          2,
+                          (_) => Container(
+                            height: 16,
+                            width: 80,
+                            color: Colors.grey[400],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Container(
+                        height: 16,
+                        width: 120,
+                        color: Colors.grey[400],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
