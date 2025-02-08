@@ -7,8 +7,8 @@ class SearchWidgetHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
+    return const Padding(
+      padding: EdgeInsets.only(
         top: AppDimens.PADDING_20,
         left: 16,
       ),

@@ -167,13 +167,13 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             50.hs(),
-            const Row(
+            Row(
               children: [
-                SearchWidgetHome(),
-                FilterWidget(),
-                SizedBox(
-                  width: 16,
-                )
+                const Expanded(
+                  child: SearchWidgetHome(),
+                ),
+                const FilterWidget(),
+                16.ws(),
               ],
             ),
           ],
