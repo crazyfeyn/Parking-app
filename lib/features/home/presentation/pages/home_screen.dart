@@ -168,9 +168,12 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             50.hs(),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Expanded(
-                  child: SearchWidgetHome(),
+                const Row(
+                  children: [
+                    SearchWidgetHome(),
+                  ],
                 ),
                 const FilterWidget(),
                 16.ws(),
