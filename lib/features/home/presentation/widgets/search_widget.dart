@@ -76,7 +76,6 @@ class _SearchWidgetState extends State<SearchWidget> {
               width: MediaQuery.of(context).size.width * 0.76,
               height: MediaQuery.of(context).size.height * 0.057,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
                 borderRadius: BorderRadius.circular(AppDimens.BORDER_RADIUS_12),
                 color: Colors.white,
               ),
