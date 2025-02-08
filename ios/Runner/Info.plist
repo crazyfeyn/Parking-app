@@ -67,6 +67,8 @@
     <key>NSLocationAlwaysUsageDescription</key>
     <string>Bizning ilovamizda doimiy joylashuvingizni ishlatish zarur, shunda biz sizni doimiy ravishda kuzatib borishimiz mumkin.</string>
 
+    
+
     <!-- URL Schemes -->
     <key>CFBundleURLTypes</key>
     <array>
