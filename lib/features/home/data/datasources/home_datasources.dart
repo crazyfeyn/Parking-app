@@ -46,108 +46,204 @@ class HomeDatasources {
   }
 
   Future<List<LocationModel>> fetchAllLocations() async {
-    final response = await dio.get('/locations/list/');
+    try {
+      final response = await dio.get('/locations/active-list/');
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data = response.data['results'] as List<dynamic>;
+      if (response.statusCode == 200) {
+        final List<dynamic> data;
+        if (response.data is List) {
+          data = response.data as List<dynamic>;
+        } else if (response.data is Map && response.data['results'] != null) {
+          data = response.data['results'] as List<dynamic>;
+        } else {
+          throw const FormatException('Unexpected response format');
+        }
 
-      if (data.isEmpty) {
-        return [];
+        if (data.isEmpty) {
+          return [];
+        }
+
+        final List<LocationModel> locations = data.map((json) {
+          int id = _parseInteger(json['id'], 'id');
+
+          Map<String, bool> booleanFields = {};
+          for (var field in [
+            'twenty_four_hours',
+            'limited_entry_exit_times',
+            'lowboys_allowed',
+            'bobtail_only',
+            'containers_only',
+            'oversized_allowed',
+            'hazmat_allowed',
+            'double_stack_allowed',
+            'security_at_gate',
+            'roaming_security',
+            'landing_gear_support_required',
+            'laundry_machines',
+            'free_showers',
+            'paid_showers',
+            'repair_shop',
+            'paid_container_stacking_services',
+            'trailer_snow_scraper',
+            'truck_wash',
+            'food',
+            'no_towed_vehicles',
+            'truck_allowed',
+            'trailer_allowed',
+            'truck_trailer_allowed',
+            'cameras',
+            'fenced',
+            'asphalt',
+            'lights',
+            'repairs_allowed'
+          ]) {
+            var value = json[field];
+            if (value is String) {
+              booleanFields[field] = value.toLowerCase() == 'true';
+            } else {
+              booleanFields[field] = value ?? false;
+            }
+          }
+
+          return LocationModel(
+            id: id,
+            name: json['name']?.toString() ?? '',
+            description: json['description']?.toString() ?? '',
+            address: json['address']?.toString() ?? '',
+            city: json['city']?.toString() ?? '',
+            state: json['state']?.toString() ?? '',
+            zipCode: json['zip_code']?.toString() ?? '',
+            phNumber: json['ph_number']?.toString() ?? '',
+            schedule: json['schedule']?.toString() ?? '',
+            weeklyRate: _parseRate(json['weekly_rate']),
+            dailyRate: _parseRate(json['daily_rate']),
+            monthlyRate: _parseRate(json['monthly_rate']),
+            twentyFourHours: booleanFields['twenty_four_hours']!,
+            limitedEntryExitTimes: booleanFields['limited_entry_exit_times']!,
+            lowboysAllowed: booleanFields['lowboys_allowed']!,
+            bobtailOnly: booleanFields['bobtail_only']!,
+            containersOnly: booleanFields['containers_only']!,
+            oversizedAllowed: booleanFields['oversized_allowed']!,
+            hazmatAllowed: booleanFields['hazmat_allowed']!,
+            doubleStackAllowed: booleanFields['double_stack_allowed']!,
+            securityAtGate: booleanFields['security_at_gate']!,
+            roamingSecurity: booleanFields['roaming_security']!,
+            landingGearSupportRequired:
+                booleanFields['landing_gear_support_required']!,
+            laundryMachines: booleanFields['laundry_machines']!,
+            freeShowers: booleanFields['free_showers']!,
+            paidShowers: booleanFields['paid_showers']!,
+            repairShop: booleanFields['repair_shop']!,
+            paidContainerStackingServices:
+                booleanFields['paid_container_stacking_services']!,
+            trailerSnowScraper: booleanFields['trailer_snow_scraper']!,
+            truckWash: booleanFields['truck_wash']!,
+            food: booleanFields['food']!,
+            noTowedVehicles: booleanFields['no_towed_vehicles']!,
+            email: json['email']?.toString() ?? '',
+            truckAllowed: booleanFields['truck_allowed']!,
+            trailerAllowed: booleanFields['trailer_allowed']!,
+            truckTrailerAllowed: booleanFields['truck_trailer_allowed']!,
+            cameras: booleanFields['cameras']!,
+            fenced: booleanFields['fenced']!,
+            asphalt: booleanFields['asphalt']!,
+            lights: booleanFields['lights']!,
+            repairsAllowed: booleanFields['repairs_allowed']!,
+            images: _parseImages(json['images']),
+            longitude: _parseCoordinate(json['longitude']),
+            latitude: _parseCoordinate(json['latitude']),
+            bankAccountAdded: json['bank_account_added'] ?? false,
+            availableSpots:
+                _parseInteger(json['available_spots'], 'available_spots'),
+            status: _parseStatus(json['status']),
+          );
+        }).toList();
+
+        return locations;
       }
 
-      final List<LocationModel> locations = data.map((json) {
-        return LocationModel(
-          id: json['id'] ?? 0, // Fallback to 0 if id is null
-          name: json['name'] ?? '',
-          description: json['description'] ?? '',
-          address: json['address'] ?? '',
-          city: json['city'] ?? '',
-          state: json['state'] ?? '',
-          zipCode: json['zip_code'] ?? '',
-          phNumber: json['ph_number'] ?? '',
-          schedule: json['schedule'] ?? '',
-
-          // Use double.tryParse for safety
-          weeklyRate:
-              double.tryParse(json['weekly_rate']?.toString() ?? '0') ?? 0.0,
-          dailyRate:
-              double.tryParse(json['daily_rate']?.toString() ?? '0') ?? 0.0,
-          monthlyRate:
-              double.tryParse(json['monthly_rate']?.toString() ?? '0') ?? 0.0,
-
-          twentyFourHours: json['twenty_four_hours'] ?? false,
-          limitedEntryExitTimes: json['limited_entry_exit_times'] ?? false,
-          lowboysAllowed: json['lowboys_allowed'] ?? false,
-          bobtailOnly: json['bobtail_only'] ?? false,
-          containersOnly: json['containers_only'] ?? false,
-          oversizedAllowed: json['oversized_allowed'] ?? false,
-          hazmatAllowed: json['hazmat_allowed'] ?? false,
-          doubleStackAllowed: json['double_stack_allowed'] ?? false,
-          securityAtGate: json['security_at_gate'] ?? false,
-          roamingSecurity: json['roaming_security'] ?? false,
-          landingGearSupportRequired:
-              json['landing_gear_support_required'] ?? false,
-          laundryMachines: json['laundry_machines'] ?? false,
-          freeShowers: json['free_showers'] ?? false,
-          paidShowers: json['paid_showers'] ?? false,
-          repairShop: json['repair_shop'] ?? false,
-          paidContainerStackingServices:
-              json['paid_container_stacking_services'] ?? false,
-          trailerSnowScraper: json['trailer_snow_scraper'] ?? false,
-          truckWash: json['truck_wash'] ?? false,
-          food: json['food'] ?? false,
-          noTowedVehicles: json['no_towed_vehicles'] ?? false,
-          email: json['email'] ?? '',
-          truckAllowed: json['truck_allowed'] ?? false,
-          trailerAllowed: json['trailer_allowed'] ?? false,
-          truckTrailerAllowed: json['truck_trailer_allowed'] ?? false,
-          cameras: json['cameras'] ?? false,
-          fenced: json['fenced'] ?? false,
-          asphalt: json['asphalt'] ?? false,
-          lights: json['lights'] ?? false,
-          repairsAllowed: json['repairs_allowed'] ?? false,
-
-          // Safely map the images list
-          images: (json['images'] as List<dynamic>?)
-              ?.map((imageJson) => LocationImage(
-                    id: imageJson['id'] ??
-                        0, // Ensure id exists or fallback to 0
-                    image: imageJson['image'] ??
-                        '', // Fallback if image is missing
-                  ))
-              .toList(),
-
-          // Parse longitude and latitude safely
-          longitude: json['longitude'] != null
-              ? double.tryParse(json['longitude'].toString()) ?? 0.0
-              : 0.0,
-          latitude: json['latitude'] != null
-              ? double.tryParse(json['latitude'].toString()) ?? 0.0
-              : 0.0,
-
-          // Check if bank account details exist
-          bankAccountAdded: json['bank_account_added'] ?? false,
-
-          // Available spots could be null, default to 0 if missing
-          availableSpots: json['available_spots'] ?? 0,
-
-          // Ensure status is properly parsed
-          status: json['status'] != null
-              ? LocationStatus.fromJson(json['status'])
-              : null,
-        );
-      }).toList();
-
-      return locations;
+      throw ServerException();
+    } catch (e) {
+      rethrow;
     }
+  }
 
-    // Handle error if response is not successful
-    throw ServerException();
+  double? _parseCoordinate(dynamic value) {
+    try {
+      if (value == null) return null;
+      if (value is double) return value;
+      if (value is int) return value.toDouble();
+      if (value is String) {
+        return double.tryParse(value);
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  double _parseRate(dynamic value) {
+    try {
+      if (value == null) return 0.0;
+      if (value is double) return value;
+      if (value is int) return value.toDouble();
+      if (value is String) {
+        final parsed = double.tryParse(value);
+        if (parsed != null) return parsed;
+      }
+      return 0.0;
+    } catch (e) {
+      return 0.0;
+    }
+  }
+
+  int _parseInteger(dynamic value, String fieldName) {
+    try {
+      if (value == null) return 0;
+      if (value is int) return value;
+      if (value is String) {
+        final parsed = int.tryParse(value);
+        if (parsed != null) return parsed;
+      }
+      return 0;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  List<LocationImage>? _parseImages(dynamic imagesJson) {
+    if (imagesJson == null) return null;
+
+    try {
+      if (imagesJson is! List) return null;
+
+      return imagesJson
+          .map((imageJson) => LocationImage(
+                id: _parseInteger(imageJson['id'], 'image_id'),
+                image: imageJson['image']?.toString() ?? '',
+              ))
+          .toList();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  LocationStatus? _parseStatus(dynamic statusJson) {
+    if (statusJson == null) return null;
+
+    try {
+      return LocationStatus(
+        id: _parseInteger(statusJson['id'], 'status_id'),
+        name: statusJson['name']?.toString() ?? '',
+      );
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<List<LocationModel>> fetchSearchAllLocations(String title) async {
     final response = await dio.get(
-      '/locations/list/',
+      '/locations/active-list/',
       queryParameters: {
         'search': title,
       },
