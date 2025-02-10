@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_application/core/error/exception.dart';
 import 'package:flutter_application/features/home/data/models/booking_view.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class HistoryDatasources {
@@ -71,7 +72,7 @@ class HistoryDatasources {
 }
 
 class PlaceService {
-  static const String apiKey = 'AIzaSyAEDZ6Ajp_0vYm-ln564Gwrrw8TJcVGC6Y';
+  static String apiKey = dotenv.env["google_api_key"]!;
 
   Future<List<dynamic>> getPlacePredictions(String input) async {
     if (input.isEmpty) {
