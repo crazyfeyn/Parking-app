@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
-import 'package:flutter_application/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_application/features/home/presentation/bloc/home_bloc.dart';
@@ -39,27 +38,32 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _focusOnSearchedLocations(List<LocationModel> searchedLocations) {
-    if (searchedLocations.isEmpty || _mapController == null) return;
+    if (_mapController == null) return;
 
     final validLocations = searchedLocations
         .where((loc) => loc.latitude != null && loc.longitude != null)
         .toList();
 
-    if (validLocations.isEmpty) return;
-
-    if (validLocations.length == 1) {
+    if (validLocations.isEmpty) {
+      _mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(
+          const LatLng(37.0902, -95.7129),
+          4.5,
+        ),
+      );
+    } else if (validLocations.length == 1) {
       _mapController?.animateCamera(
         CameraUpdate.newLatLngZoom(
           LatLng(
               validLocations.first.latitude!, validLocations.first.longitude!),
-          10,
+          12.0,
         ),
       );
     } else {
       _mapController?.animateCamera(
         CameraUpdate.newLatLngZoom(
           const LatLng(37.0902, -95.7129),
-          4,
+          4.5,
         ),
       );
     }

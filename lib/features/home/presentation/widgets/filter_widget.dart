@@ -15,8 +15,8 @@ import 'package:flutter_application/features/home/presentation/widgets/state_pic
 
 class FilterWidget extends StatefulWidget {
   const FilterWidget({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   // ignore: library_private_types_in_public_api

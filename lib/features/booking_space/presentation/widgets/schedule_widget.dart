@@ -32,7 +32,7 @@ class ScheduleWidget extends StatelessWidget {
               ),
             ),
           );
-        }).toList(),
+        }),
       ],
     );
   }

@@ -23,6 +23,7 @@ class _ParkingScreenState extends State<ParkingScreen> {
 
   @override
   void initState() {
+    context.read<HomeBloc>().add(const HomeEvent.clearSearchResults());
     super.initState();
   }
 

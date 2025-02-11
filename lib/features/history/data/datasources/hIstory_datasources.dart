@@ -37,7 +37,7 @@ class HistoryDatasources {
       } else {
         throw ServerException();
       }
-    } on DioException catch (e) {
+    } on DioException {
       throw ServerException();
     } catch (e) {
       throw ServerException();
@@ -92,9 +92,8 @@ class PlaceService {
       if (data['status'] == 'OK') {
         return data['predictions'] as List<dynamic>;
       }
-    } catch (e) {
-      print('Error fetching place predictions: $e');
-    }
+      // ignore: empty_catches
+    } catch (e) {}
 
     return [];
   }
