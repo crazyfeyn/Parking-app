@@ -4,7 +4,8 @@ import 'package:flutter_application/core/extension/extensions.dart';
 import 'package:flutter_application/core/widgets/button_widget.dart';
 import 'package:flutter_application/features/booking_space/presentation/pages/booking_space_screen.dart';
 import 'package:flutter_application/features/home/data/models/location_model.dart';
-import 'package:html/parser.dart'; // Import the html package
+// ignore: depend_on_referenced_packages
+import 'package:html/parser.dart';
 
 void showLocationDetails(BuildContext context, LocationModel location) async {
   // Precache the image before showing the modal sheet

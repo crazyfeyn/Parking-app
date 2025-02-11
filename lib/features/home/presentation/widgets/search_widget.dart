@@ -21,12 +21,27 @@ class _SearchWidgetState extends State<SearchWidget> {
   final PlaceService placeService = PlaceService();
 
   void _onSearchChanged(String value) {
+    if (value.isEmpty) {
+      _showPredictions = false;
+      _predictions = [];
+    }
     if (_debounceTimer?.isActive ?? false) {
       _debounceTimer!.cancel();
     }
-    _debounceTimer = Timer(const Duration(milliseconds: 300), () {
+    _debounceTimer = Timer(const Duration(milliseconds: 200), () {
       _getPlacePredictions(value);
     });
+  }
+
+  void _onSearchSubmitted(String value) {
+    setState(() {
+      _showPredictions = false;
+      _predictions = [];
+    });
+
+    if (value.isNotEmpty) {
+      context.read<HomeBloc>().add(HomeEvent.fetchSearchLocations(value));
+    }
   }
 
   Future<void> _getPlacePredictions(String input) async {
@@ -82,6 +97,8 @@ class _SearchWidgetState extends State<SearchWidget> {
               child: TextFormField(
                 controller: searchController,
                 onChanged: _onSearchChanged,
+                onFieldSubmitted: _onSearchSubmitted,
+                textInputAction: TextInputAction.go,
                 decoration: InputDecoration(
                   labelText: 'Where to park',
                   border: OutlineInputBorder(
@@ -105,6 +122,7 @@ class _SearchWidgetState extends State<SearchWidget> {
               borderRadius: BorderRadius.circular(AppDimens.BORDER_RADIUS_12),
               boxShadow: [
                 BoxShadow(
+                  // ignore: deprecated_member_use
                   color: Colors.black.withOpacity(0.1),
                   blurRadius: 4,
                   offset: const Offset(0, 2),

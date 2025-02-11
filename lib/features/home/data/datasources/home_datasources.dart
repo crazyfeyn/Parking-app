@@ -250,7 +250,7 @@ class HomeDatasources {
     );
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = response.data['results'] as List<dynamic>;
+      final List<dynamic> data = response.data as List<dynamic>;
 
       if (data.isEmpty) {
         return [];

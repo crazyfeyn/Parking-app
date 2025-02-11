@@ -247,5 +247,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _clearFilter() async {
     context.read<HomeBloc>().add(const HomeEvent.clearFilterResults());
+    context.read<HomeBloc>().add(const HomeEvent.clearSearchResults());
   }
 }

@@ -239,6 +239,7 @@ class ParkingDetailsScreen extends StatelessWidget {
           .map(
             (feature) => Chip(
               label: Text(feature),
+              // ignore: deprecated_member_use
               backgroundColor: Colors.blue.withOpacity(0.1),
               labelStyle: const TextStyle(color: Colors.blue),
             ),
@@ -260,6 +261,7 @@ class ParkingDetailsScreen extends StatelessWidget {
 
     return Chip(
       label: Text(status.name),
+      // ignore: deprecated_member_use
       backgroundColor: statusColor.withOpacity(0.2),
       labelStyle: TextStyle(color: statusColor),
     );

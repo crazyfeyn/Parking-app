@@ -1,11 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter_application/core/constants/app_constants.dart';
 import 'package:flutter_application/core/error/failure.dart';
 import 'package:flutter_application/features/profile/data/models/profile_model.dart';
-import 'package:flutter_application/features/profile/domain/entity/profile_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalConfig {

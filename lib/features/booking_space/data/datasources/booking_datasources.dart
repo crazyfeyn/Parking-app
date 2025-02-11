@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_application/core/constants/app_constants.dart';
-import 'package:flutter_application/features/booking_space/data/models/vehicle_model.dart';
 import 'package:flutter_application/features/home/data/models/booking_model.dart';
 
 class BookingDatasources {
