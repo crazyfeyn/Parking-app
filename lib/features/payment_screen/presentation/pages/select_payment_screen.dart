@@ -10,14 +10,68 @@ import 'package:flutter_application/features/home/presentation/bloc/home_bloc.da
 import 'package:flutter_application/features/payment_screen/presentation/widgets/card_widget.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-class SelectPaymentScreen extends StatelessWidget {
+class SelectPaymentScreen extends StatefulWidget {
   const SelectPaymentScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final StripeService stripeService = sl<StripeService>();
-    context.read<HomeBloc>().add(const HomeEvent.fetchPaymentMethodList());
+  State<SelectPaymentScreen> createState() => _SelectPaymentScreenState();
+}
 
+class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
+  final StripeService stripeService = sl<StripeService>();
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch payment methods only once when screen initializes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<HomeBloc>().add(const HomeEvent.fetchPaymentMethodList());
+    });
+  }
+
+  Widget _buildAddCardButton() {
+    return ZoomTapAnimation(
+      onTap: () async {
+        await stripeService.addCard();
+        if (mounted) {
+          context
+              .read<HomeBloc>()
+              .add(const HomeEvent.fetchPaymentMethodList());
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(AppDimens.PADDING_14),
+        margin: const EdgeInsets.only(bottom: AppDimens.MARGIN_16),
+        decoration: BoxDecoration(
+          color: AppConstants.mainColor,
+          borderRadius: BorderRadius.circular(AppDimens.BORDER_RADIUS_15),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Add Card',
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 18,
+                color: Colors.white,
+              ),
+            ),
+            8.ws(),
+            const Icon(
+              Icons.add_circle_outline_rounded,
+              color: Colors.white,
+              size: 28,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -31,15 +85,12 @@ class SelectPaymentScreen extends StatelessWidget {
         padding: const EdgeInsets.all(AppDimens.PADDING_12),
         child: BlocConsumer<HomeBloc, HomeState>(
           listener: (context, state) {
-            if (state.status == Status.error) {
-              context
-                  .read<HomeBloc>()
-                  .add(const HomeEvent.fetchPaymentMethodList());
-            } else if (state.status == Status.errorNetwork) {
+            if (state.status == Status.errorNetwork) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                      state.errorMessage ?? 'Please check your connection'),
+                    state.errorMessage ?? 'Please check your connection',
+                  ),
                   action: SnackBarAction(
                     label: 'Retry',
                     onPressed: () {
@@ -53,97 +104,16 @@ class SelectPaymentScreen extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            if (state.status == Status.loading) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ZoomTapAnimation(
-                      onTap: () async {
-                        await stripeService.addCard();
-                        context
-                            .read<HomeBloc>()
-                            .add(const HomeEvent.fetchPaymentMethodList());
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(AppDimens.PADDING_14),
-                        margin:
-                            const EdgeInsets.only(bottom: AppDimens.MARGIN_16),
-                        decoration: BoxDecoration(
-                          color: AppConstants.mainColor,
-                          borderRadius:
-                              BorderRadius.circular(AppDimens.BORDER_RADIUS_15),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'Add Card',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18,
-                                color: Colors.white,
-                              ),
-                            ),
-                            8.ws(),
-                            const Icon(
-                              Icons.add_circle_outline_rounded,
-                              color: Colors.white,
-                              size: 28,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const ShimmerCardWidget(),
-                  ],
-                ),
-              );
-            } else if (state.status == Status.success &&
-                state.listPaymentMethod != null) {
-              final paymentMethods = state.listPaymentMethod;
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ZoomTapAnimation(
-                      onTap: () async {
-                        await stripeService.addCard();
-                        context
-                            .read<HomeBloc>()
-                            .add(const HomeEvent.fetchPaymentMethodList());
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(AppDimens.PADDING_14),
-                        margin:
-                            const EdgeInsets.only(bottom: AppDimens.MARGIN_16),
-                        decoration: BoxDecoration(
-                          color: AppConstants.mainColor,
-                          borderRadius:
-                              BorderRadius.circular(AppDimens.BORDER_RADIUS_15),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'Add Card',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 18,
-                                  color: Colors.white),
-                            ),
-                            8.ws(),
-                            const Icon(
-                              Icons.add_circle_outline_rounded,
-                              color: Colors.white,
-                              size: 28,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    for (final method in paymentMethods!)
-                      Padding(
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildAddCardButton(),
+                  if (state.status == Status.loading)
+                    const ShimmerCardWidget()
+                  else if (state.status == Status.success &&
+                      state.listPaymentMethod != null)
+                    ...state.listPaymentMethod!.map(
+                      (method) => Padding(
                         padding:
                             const EdgeInsets.only(bottom: AppDimens.MARGIN_12),
                         child: CardWidget(
@@ -152,17 +122,16 @@ class SelectPaymentScreen extends StatelessWidget {
                           onTap: () {
                             context.read<HomeBloc>().add(
                                   HomeEvent.updateIsDefaultCard(
-                                      method.id.toString()),
+                                    method.id.toString(),
+                                  ),
                                 );
                           },
                         ),
                       ),
-                  ],
-                ),
-              );
-            } else {
-              return const SizedBox();
-            }
+                    ),
+                ],
+              ),
+            );
           },
         ),
       ),
